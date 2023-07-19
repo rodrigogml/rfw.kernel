@@ -51,6 +51,11 @@ public class RFW {
   private static String systemName = null;
 
   /**
+   * Indicador se foi solicitado que o sistema deve finalizar.
+   */
+  private static boolean shuttingDown = false;
+
+  /**
    * Construtor privado para uma classe completamente estática
    */
   private RFW() {
@@ -243,5 +248,20 @@ public class RFW {
       Thread.sleep(delay);
     } catch (InterruptedException e) {
     }
+  }
+
+  /**
+   * Ao chamar este método, todos os serviços do RFW serão sinalizados para que finalizem seus serviços e Threads em andamento o mais rápido possível.<br>
+   * A chamada deste método é irreversível.
+   */
+  public static void shutdownFW() {
+    RFW.shuttingDown = true;
+  }
+
+  /**
+   * @return Recupera se o Framework foi sinalizado que deve finalizar. Quando true, todos os seviços e Thread do RFW devem se encerrar para que a aplicação faça um undeploy
+   */
+  public static boolean isShuttingDown() {
+    return RFW.shuttingDown;
   }
 }
