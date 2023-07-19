@@ -8,6 +8,8 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import br.eng.rodrigogml.rfw.kernel.utils.RUFile;
 
@@ -263,5 +265,31 @@ public class RFW {
    */
   public static boolean isShuttingDown() {
     return RFW.shuttingDown;
+  }
+
+  /**
+   * Executa uma tarefa em outra thread. A idéia é facilitar a execução de algumas tarefas em uma thread paralela para liberar a execução do código principal. Muito útil para tarefas que precisam ser disparadas mas não precisamos do resultado imediato para continuar a execução do método principal.
+   *
+   * @param threadName Nome da Thread
+   * @param daemon Define se a thread de execução deve ser daemon ou não. O sistema se encerra quando apenas Threads do tipo daemon estão em execução. Em outras palavras, threads daemon não precisam ser forçadas a terminar para que o sistema finalize.
+   * @param delay Tempo em milisegundos para aguardar antes de executar a tarefa
+   * @param task Tarefa a ser executada
+   */
+  public static Timer runLater(String threadName, boolean daemon, long delay, Runnable task) {
+    Timer t = new Timer(threadName, daemon);
+    t.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        try {
+          // Executa a tarefa passada
+          task.run();
+        } finally {
+          // Garante que o Timer morra antes de finalizar a tarefa. Se a tarefa não for encerrada o Timer mantém a thread ativa esperando com a task na fila.
+          t.cancel(); // Cancela a tarefa atual
+          t.purge(); // Remove a referencia dessa tarefa na "queue" do Timer. Ao não encontrar nada na queue o Timer permite que a Thread termine ao invés de ficar aguardando outro reinício.
+        }
+      }
+    }, delay);
+    return t;
   }
 }
