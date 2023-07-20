@@ -1,4 +1,4 @@
-package br.eng.rodrigogml.rfw.kernel.dao.annotations.rfwmeta;
+package br.eng.rodrigogml.rfw.kernel.rfwmeta;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

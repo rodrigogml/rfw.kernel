@@ -1,4 +1,4 @@
-package br.eng.rodrigogml.rfw.kernel.dao.annotations.rfwmeta;
+package br.eng.rodrigogml.rfw.kernel.rfwmeta;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,14 +8,15 @@ import java.lang.annotation.Target;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess.PreProcessOption;
 
 /**
- * Description: Annotation usada para definit um atributo do tipo String.<BR>
+ * Description: Annotation usada para definir um atributo do tipo String que funcionará como um CPF ou CNPJ.<BR>
+ * O campo CPR ou CNPJ será uma String apenas com os dígitos, sem nenhum tipo de formatação.
  *
  * @author Rodrigo Leitão
- * @since 7.1.0 (03/07/2015)
+ * @since 7.1.0 (04/07/2015)
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface RFWMetaStringField {
+public @interface RFWMetaStringCPFOrCNPJField {
 
   /**
    * Define o nome da coluna na tabela do banco de dados. Caso deixado em branco, será utilizado o nome da propriedade.
@@ -37,21 +38,6 @@ public @interface RFWMetaStringField {
    * Define se o atributo é único.
    */
   boolean unique() default false;
-
-  /**
-   * Define o tamanho máximo da String.
-   */
-  int maxlength();
-
-  /**
-   * Define o tamanho mínimo da String.
-   */
-  int minlength() default -1;
-
-  /**
-   * Define o patter para validar o conteúdo do campo.
-   */
-  String pattern() default "";
 
   /**
    * Define o padrão de pré-processamento a ser aplicado na String antes da validação.<br>

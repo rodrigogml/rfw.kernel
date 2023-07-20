@@ -11,12 +11,12 @@ import java.util.Date;
 import java.util.Map;
 
 import br.eng.rodrigogml.rfw.kernel.RFW;
-import br.eng.rodrigogml.rfw.kernel.dao.annotations.rfwmeta.RFWMetaRelationshipField;
-import br.eng.rodrigogml.rfw.kernel.dao.annotations.rfwmeta.RFWMetaRelationshipField.RelationshipTypes;
-import br.eng.rodrigogml.rfw.kernel.dao.annotations.rfwmeta.RFWMetaStringField;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
+import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaRelationshipField;
+import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaRelationshipField.RelationshipTypes;
+import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaStringField;
 import br.eng.rodrigogml.rfw.kernel.utils.RUReflex;
 import br.eng.rodrigogml.rfw.kernel.utils.RUString;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;

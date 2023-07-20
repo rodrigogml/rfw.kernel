@@ -16,14 +16,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import br.eng.rodrigogml.rfw.kernel.dao.annotations.rfwmeta.RFWMetaCollectionField;
-import br.eng.rodrigogml.rfw.kernel.dao.annotations.rfwmeta.RFWMetaEncrypt;
-import br.eng.rodrigogml.rfw.kernel.dao.annotations.rfwmeta.RFWMetaRelationshipField;
-import br.eng.rodrigogml.rfw.kernel.dao.annotations.rfwmeta.RFWMetaStringField;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWRunTimeException;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess.PreProcessOption;
+import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaCollectionField;
+import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaEncrypt;
+import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaRelationshipField;
+import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaStringField;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWMO;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 

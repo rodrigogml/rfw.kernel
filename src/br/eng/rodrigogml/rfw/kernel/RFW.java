@@ -11,6 +11,9 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
+import br.eng.rodrigogml.rfw.kernel.logger.RFWLogger;
+import br.eng.rodrigogml.rfw.kernel.logger.RFWLoggerImplementation;
 import br.eng.rodrigogml.rfw.kernel.utils.RUFile;
 
 /**
@@ -91,6 +94,16 @@ public class RFW {
    */
   public static void initializeRoundingMode(RoundingMode roundingMode) {
     RFW.roundingMode = roundingMode;
+  }
+
+  /**
+   * Define o {@link RFWLoggerImplementation} que tratará os registros de log do framework.
+   *
+   * @param rfwLoggerImplementation Implementação desejada de tratamento dos Logs do Framework / Sistema.
+   * @throws RFWException Lançado em caso de falha, como valor null.
+   */
+  public static void initializeRFWLogger(RFWLoggerImplementation rfwLoggerImplementation) throws RFWException {
+    RFWLogger.setImpl(rfwLoggerImplementation);
   }
 
   /**
