@@ -3,6 +3,8 @@ package br.eng.rodrigogml.rfw.kernel.exceptions;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
+import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
+
 /**
  * Description: Classe de exceção de dados inválidos. Lançado sempre que algum dados for submetido a alguma validação e falhar, interrompendo o fluxo normal.<br>
  *
