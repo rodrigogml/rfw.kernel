@@ -1,5 +1,9 @@
 package br.eng.rodrigogml.rfw.kernel.utils;
 
+import java.lang.reflect.Method;
+
+import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
+
 /**
  * Description: Classe com métodos úteis para tratamentos e manipulação de String.<br>
  *
@@ -8,6 +12,14 @@ package br.eng.rodrigogml.rfw.kernel.utils;
  * @version 4.1.0 (23/06/2011) - rodrigogml - Nome alterado de StringUtils, para ficar no padrão do sistema.
  */
 public class RUString {
+
+  /*
+   * Referencia os métodos de normalização de string para cada um dos jdks, para evitar de se fazer diversas reflexões em cada vez que se usa o método de remover acentos.
+   */
+  private static Method normalizerJDK5 = null; // Salva o método que será usado na normalização da string no JDK5
+  private static Method normalizerJDK6 = null;// Salva o método que será usado na normalização da string no JDK6
+  private static Object normalizerJDK6form = null; // Salva o form necessário para o normalizer do jdk6
+  private static Boolean unknownormalizer = null; // Salva se o método de normalização é desconhecido, null não procurado ainda, true desconhecido (usa modo manual), false conhecido
 
   /**
    * Construtor privado para classe exclusivamente estática.
@@ -143,5 +155,205 @@ public class RUString {
       enumkey = value.getDeclaringClass().getCanonicalName() + "." + value.name();
     }
     return enumkey;
+  }
+
+  /**
+   * Substitui todas as ocorrencias de 'oldvalue' por 'newvalue' no texto de 'value'. No entanto este método diferencia maiúsculas, minúsculas, acentos, etc.
+   *
+   * @param text texto a ser manipulado
+   * @param oldvalue valor a ser procurado e substituido.
+   * @param newvalue valor que substiuirá oldvalue.
+   * @return
+   */
+  public static String replaceAll(String text, String oldvalue, String newvalue) {
+    return replaceAll(text, oldvalue, newvalue, Boolean.TRUE, Boolean.TRUE);
+  }
+
+  /**
+   * Substitui todas as ocorrencias de 'oldvalue' por 'newvalue' no texto de 'value'.<Br>
+   * De acordo com as definições passadas, ele ignora acentos e case de letras.
+   *
+   * @param text texto a ser manipulado
+   * @param oldvalue valor a ser procurado e substituido.
+   * @param newvalue valor que substiuirá oldvalue.
+   * @param distinctaccents true distingue acentos, false ignora acentos
+   * @param distinctcase true distingue letras maiusculas de minusculas, false ignora case das letras.
+   * @return
+   */
+  public static String replaceAll(String text, String oldvalue, String newvalue, Boolean distinctaccents, Boolean distinctcase) {
+    if (oldvalue.equals("")) {
+      throw new IllegalArgumentException("Old value must have content.");
+    }
+
+    String ntext = text;
+    String noldvalue = oldvalue;
+    if (!distinctaccents) {
+      ntext = removeAccents(ntext);
+      noldvalue = removeAccents(noldvalue);
+    }
+    if (!distinctcase) {
+      ntext = ntext.toUpperCase();
+      noldvalue = noldvalue.toUpperCase();
+    }
+
+    // Com os parametros corrigos (tirados os acentos se for o caso, ou em maiusculas se for o caso) verificamos as ocorrencias
+    StringBuilder buff = new StringBuilder();
+
+    int startIdx = 0;
+    int idxOld = 0;
+    while ((idxOld = ntext.indexOf(noldvalue, startIdx)) >= 0) {
+      // grab a part of aInput which does not include aOldPattern
+      buff.append(text.substring(startIdx, idxOld));
+      // add aNewPattern to take place of aOldPattern
+      buff.append(newvalue);
+
+      // reset the startIdx to just after the current match, to see
+      // if there are any further matches
+      startIdx = idxOld + noldvalue.length();
+    }
+    // the final chunk will go to the end of aInput
+    buff.append(text.substring(startIdx));
+
+    return buff.toString();
+  }
+
+  /**
+   * Remove a acentuação de um texto passado. Incluindo 'ç' por 'c', maiúsculas e minúscas (preservando a captalização da letra).
+   *
+   * @param text String que terá seus acentos removidos.
+   * @return String sem caracteres acentuados, trocados pelos seus correspondentes.
+   */
+  public static String removeAccents(String text) {
+    // Verifica se conhece o método de normalização
+    if (unknownormalizer == null) { // Se ainda não foi procurado, procura
+      try {
+        // Tenta Compatibilidade com JDK 6 - Evita o Import para evitar erros de compilação e execução
+        // Recupera a Classe do Normalizer
+        Class<?> normalizer = Class.forName("java.text.Normalizer");
+        // Encontra a classe do Form
+        Class<?> normalizerform = Class.forName("java.text.Normalizer$Form");
+        // Encontra e enum NFD
+        normalizerJDK6form = null;
+        for (int i = 0; i < normalizerform.getEnumConstants().length; i++) {
+          if ("NFD".equals(normalizerform.getEnumConstants()[i].toString())) {
+            normalizerJDK6form = normalizerform.getEnumConstants()[i];
+            break;
+          }
+        }
+        normalizerJDK6 = normalizer.getMethod("normalize", new Class[] { CharSequence.class, normalizerform });
+        unknownormalizer = Boolean.FALSE;
+        return ((String) normalizerJDK6.invoke(null, new Object[] { text, normalizerJDK6form })).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+      } catch (Exception ex) {
+        try {
+          // Compatibilidade com JDK 5 - Evita o Import para evitar erros de compilação e execução
+          Class<?> normalizerC = Class.forName("sun.text.Normalizer");
+          normalizerJDK5 = normalizerC.getMethod("decompose", new Class[] { String.class, boolean.class, int.class });
+          unknownormalizer = Boolean.FALSE;
+          return ((String) normalizerJDK5.invoke(null, new Object[] { text, false, 0 })).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+        } catch (Exception ex2) {
+          // Salva como modo manual, normalizador desconhecido
+          unknownormalizer = Boolean.TRUE;
+          text = text.replaceAll("[áàãâä]", "a");
+          text = text.replaceAll("[éèêë]", "e");
+          text = text.replaceAll("[íìîï]", "i");
+          text = text.replaceAll("[óòõôö]", "o");
+          text = text.replaceAll("[úùûü]", "u");
+          text = text.replaceAll("[ç]", "c");
+          text = text.replaceAll("[ñ]", "n");
+          text = text.replaceAll("[ÁÀÃÂÄ]", "A");
+          text = text.replaceAll("[ÉÈÊË]", "E");
+          text = text.replaceAll("[ÍÌÎÏ]", "I");
+          text = text.replaceAll("[ÓÒÕÔÖ]", "O");
+          text = text.replaceAll("[ÚÙÛÜ]", "U");
+          text = text.replaceAll("[Ñ]", "N");
+          return text;
+        }
+      }
+    } else if (unknownormalizer) {
+      text = text.replaceAll("[áàãâä]", "a");
+      text = text.replaceAll("[éèêë]", "e");
+      text = text.replaceAll("[íìîï]", "i");
+      text = text.replaceAll("[óòõôö]", "o");
+      text = text.replaceAll("[úùûü]", "u");
+      text = text.replaceAll("[ç]", "c");
+      text = text.replaceAll("[ñ]", "n");
+      text = text.replaceAll("[ÁÀÃÂÄ]", "A");
+      text = text.replaceAll("[ÉÈÊË]", "E");
+      text = text.replaceAll("[ÍÌÎÏ]", "I");
+      text = text.replaceAll("[ÓÒÕÔÖ]", "O");
+      text = text.replaceAll("[ÚÙÛÜ]", "U");
+      text = text.replaceAll("[Ñ]", "N");
+      return text;
+    } else if (!unknownormalizer) {
+      if (normalizerJDK6 != null) {
+        try {
+          return ((String) normalizerJDK6.invoke(null, new Object[] { text, normalizerJDK6form })).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+        } catch (Exception e) {
+          e.printStackTrace();
+          throw new RuntimeException("Error while normalizing string with JDK6 compatible method!");
+        }
+      } else if (normalizerJDK5 != null) {
+        try {
+          return ((String) normalizerJDK5.invoke(null, new Object[] { text, false, 0 })).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+        } catch (Exception e) {
+          e.printStackTrace();
+          throw new RuntimeException("Error while normalizing string with JDK5 compatible method!");
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Substitui o texto recursivamente até que o texto não sofra mais alterações, isto é, o texto será procurado do inicio ao fim pela substituição quantas vezes for necessárias até que seja feita uma busca completa e nada seja encontrado.<br>
+   * <b>ATENÇÂO:</b> Pode gerar StackOverflow facilmente se substituimos um texto por outro que contém o valor sendo procurado!<Br>
+   *
+   * @param text texto a ser manipulado
+   * @param oldvalue valor a ser procurado e substituido.
+   * @param newvalue valor que substiuirá oldvalue.
+   * @return
+   */
+  public static String replaceAllRecursively(String text, String oldvalue, String newvalue) {
+    String oldtext = text;
+    text = replaceAll(text, oldvalue, newvalue);
+    while (!oldtext.equals(text)) {
+      oldtext = text;
+      text = replaceAll(text, oldvalue, newvalue);
+    }
+    return text;
+  }
+
+  /**
+   * Substitui o texto recursivamente até que o texto não sofra mais alterações, isto é, o texto será procurado do inicio ao fim pela substituição quantas vezes for necessárias até que seja feita uma busca completa e nada seja encontrado.<br>
+   * <b>ATENÇÂO:</b> Pode gerar StackOverflow facilmente se substituimos um texto por outro que contém o valor sendo procurado!<Br>
+   *
+   * @param text texto a ser manipulado
+   * @param oldvalue valor a ser procurado e substituido.
+   * @param newvalue valor que substiuirá oldvalue.
+   * @param distinctaccents true distingue acentos, false ignora acentos
+   * @param distinctcase true distingue letras maiusculas de minusculas, false ignora case das letras.
+   * @return
+   */
+  public static String replaceAllRecursively(String text, String oldvalue, String newvalue, Boolean distinctaccents, Boolean distinctcase) {
+    String oldtext = text;
+    text = replaceAll(text, oldvalue, newvalue, distinctaccents, distinctcase);
+    while (!oldtext.equals(text)) {
+      oldtext = text;
+      text = replaceAll(text, oldvalue, newvalue, distinctaccents, distinctcase);
+    }
+    return text;
+  }
+
+  /**
+   * Remove da String tudo o que não for dígitos.<br>
+   * Método para remover pontuação de valores numéridos como CPF, CNPJ, Representações Numéricas de Códigos de Barras, CEP, etc.<Br>
+   *
+   * @param value Valor a ter os "não números" estripados
+   * @return String apenas com os números/dígitos recebidos.
+   * @throws RFWException
+   */
+  public static String removeNonDigits(String value) {
+    if (value == null) return null;
+    return value.replaceAll("\\D+", "");
   }
 }

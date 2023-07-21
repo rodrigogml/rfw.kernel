@@ -29,7 +29,7 @@ public class RFWGVODataFormatter<VO extends RFWVO> implements RFWDataFormatter<G
   }
 
   @Override
-  public int getMaxlenght() {
+  public int getMaxLenght() {
     return 999;
   }
 
