@@ -37,8 +37,8 @@ public @interface RFWMetaStringPhoneField {
   boolean unique() default false;
 
   /**
-   * Indica se o atributo aceita apenas formátos conhecidos ou aceita qualquer string como telefone.<br>
-   * Na prática faz com que o RFWValidator não falhe caso o método {@link RFWPhoneDataFormatter#getPhoneType(String)} retorne UNKNOW, e avisa aos desenvolvedores que o número do telefone está fora do formato do RFWDeprec, o que pode causar falhar em campos, relatórios, etc. ao ser utilizado.
+   * Indica se o atributo aceita apenas formatos conhecidos ou aceita qualquer string como telefone.<br>
+   * Na prática faz com que o RFWValidator não falhe caso o método RFWPhoneDataFormatter#getPhoneType(String) retorne UNKNOW, e avisa aos desenvolvedores que o número do telefone está fora do formato do RFWDeprec, o que pode causar falhar em campos, relatórios, etc. ao ser utilizado.
    */
   boolean acceptUnknowFormats() default false;
 

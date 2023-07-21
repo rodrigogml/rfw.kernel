@@ -121,11 +121,11 @@ public abstract class RFWVO implements RFWRecursiveClonable, Serializable, Clone
   }
 
   /**
-   * Este atributo indica se o objeto foi totalmente carregado do banco de dados (com o método {@link RFWDAO#findForUpdate(Long, String[])}). Permitindo que o objeto seja atualizado com o método {@link RFWDAO#persist(RFWVO)}.<br>
+   * Este atributo indica se o objeto foi totalmente carregado do banco de dados (com o método RFWDAO findForUpdate(Long, String[])). Permitindo que o objeto seja atualizado com o método RFWDAO persist(RFWVO).<br>
    * Caso este atributo esteja como false o método lançarpa uma exception avisando que o objeto usado não está completo para edição. Evitando assim que um update de um objeto errado faça alterações irreversíveis aos dados do sistema.<br>
-   * <b>ATENÇÃO: Não altere o valor deste atributo manualmente, ele é gerenciado pelo {@link RFWDAO}.</b>
+   * <b>ATENÇÃO: Não altere o valor deste atributo manualmente, ele é gerenciado pelo RFWDAO.</b>
    *
-   * @deprecated NÃO DEVE SER UTILIZADO EM <B><U>NENHUM</U></B> PONTO DO SISTEMA PELO USUÁRIO! EM HIPÓTESE ALGUMA FAZER O OVERRIDE! ESTE ATRIBUTO DEVE SER UTILIZADO APENAS NO {@link RFWDAO}
+   * @deprecated NÃO DEVE SER UTILIZADO EM <B><U>NENHUM</U></B> PONTO DO SISTEMA PELO USUÁRIO! EM HIPÓTESE ALGUMA FAZER O OVERRIDE! ESTE ATRIBUTO DEVE SER UTILIZADO APENAS NO RFWDAO
    * @return true se o objeto foi completamente carregado no banco de dados, false caso contrário.
    */
   @Deprecated
@@ -134,11 +134,11 @@ public abstract class RFWVO implements RFWRecursiveClonable, Serializable, Clone
   }
 
   /**
-   * Este atributo indica se o objeto foi totalmente do banco de dados (com o método {@link RFWDAO#findForUpdate(Long, String[])}). Permitindo que o objeto seja atualizado com o método {@link RFWDAO#persist(RFWVO)}.<br>
+   * Este atributo indica se o objeto foi totalmente do banco de dados (com o método RFWDAO findForUpdate(Long, String[])}). Permitindo que o objeto seja atualizado com o método RFWDAO persist(RFWVO).<br>
    * Caso este atributo esteja como false o método lançarpa uma exception avisando que o objeto usado não está completo para edição. Evitando assim que um update de um objeto errado faça alterações irreversíveis aos dados do sistema.<br>
-   * <b>ATENÇÃO: Não altere o valor deste atributo manualmente, ele é gerenciado pelo {@link RFWDAO}.</b>
+   * <b>ATENÇÃO: Não altere o valor deste atributo manualmente, ele é gerenciado pelo RFWDAO.</b>
    *
-   * @deprecated NÃO DEVE SER UTILIZADO EM <B><U>NENHUM</U></B> PONTO DO SISTEMA PELO USUÁRIO! EM HIPÓTESE ALGUMA FAZER O OVERRIDE! ESTE ATRIBUTO DEVE SER UTILIZADO APENAS NO {@link RFWDAO}
+   * @deprecated NÃO DEVE SER UTILIZADO EM <B><U>NENHUM</U></B> PONTO DO SISTEMA PELO USUÁRIO! EM HIPÓTESE ALGUMA FAZER O OVERRIDE! ESTE ATRIBUTO DEVE SER UTILIZADO APENAS NO RFWDAO
    * @param fullLoaded indicador se o objeto foi inteiramente carregado no banco de dados.
    */
   @Deprecated
@@ -162,9 +162,9 @@ public abstract class RFWVO implements RFWRecursiveClonable, Serializable, Clone
    * <br>
    *
    * O método de equals deve utilizar o equals padrão da classe Object por várias questões do framework.<br>
-   * Uma das necessidades é que o {@link RFWDAO} utiliza um cache para saber se já persistiu determinado objeto (quando está investigando cadeias circulares de referência ds objetos) e não ficar em loop persistindo o mesmo objeto.<br>
+   * Uma das necessidades é que o RFWDAO utiliza um cache para saber se já persistiu determinado objeto (quando está investigando cadeias circulares de referência ds objetos) e não ficar em loop persistindo o mesmo objeto.<br>
    * <br>
-   * Uma das necessidades de implementar um equals diferente (que comparasse IDs ao invés do objeto na memória), era necessária para o funcionamento do TreeGrid do Vaadin, que utiliza o equals para comparar os Lazy Objects na hora de expandir e reorganizar.<br>
+   * Por outro lado, uma das necessidades de implementar um equals diferente (que comparasse IDs ao invés do objeto na memória), era necessária para o funcionamento do TreeGrid do Vaadin, que utiliza o equals para comparar os Lazy Objects na hora de expandir e reorganizar.<br>
    * <br>
    * Para resolver esse e outros problemas que dependam de um equals baseado no ID e não na instância do objeto, verifique a solução dada pelo {@link GVO}.
    *
@@ -179,7 +179,7 @@ public abstract class RFWVO implements RFWRecursiveClonable, Serializable, Clone
    * Esta opção só tem a finalidade de permitir a migração de dados de outros sitemas, permitindo que os objetos utilizem os IDs de identificação já utilizados. Também só é recomendado o uso em uma base de dados "limpa" para evitar conflitos de IDs com objetos que já existam no banco. <Br>
    * <Br>
    * Note que alguns dialetos de bando de dados, como o DerbyDB, nunca inserem o atributo ID no statement de insert uma vez que ele seja gerado automaticamente. Para esses casos esse atributo não fará nenhuma diferença exceto nas validações.<br>
-   * <b>Atenção:</b> Quando um objeto tem ID, mas tem essa flag definida como true, indica que o objeto não está persistido no banco de dados. Caso o objeto seja inserido, esta flag deve ser definida como false pelo {@link RFWDAO}.
+   * <b>Atenção:</b> Quando um objeto tem ID, mas tem essa flag definida como true, indica que o objeto não está persistido no banco de dados. Caso o objeto seja inserido, esta flag deve ser definida como false pelo RFWDAO.
    *
    * @deprecated NÃO DEVE SER UTILIZADO PELO SISTEMA. Este recurso é útil em casos muito específicos, como migração de dados, nunca para as rotinas do sistema.
    * @return se o objeto é uma inserção com ID.
@@ -194,7 +194,7 @@ public abstract class RFWVO implements RFWRecursiveClonable, Serializable, Clone
    * Esta opção só tem a finalidade de permitir a migração de dados de outros sitemas, permitindo que os objetos utilizem os IDs de identificação já utilizados. Também só é recomendado o uso em uma base de dados "limpa" para evitar conflitos de IDs com objetos que já existam no banco. <Br>
    * <Br>
    * Note que alguns dialetos de bando de dados, como o DerbyDB, nunca inserem o atributo ID no statement de insert uma vez que ele seja gerado automaticamente. Para esses casos esse atributo não fará nenhuma diferença exceto nas validações.<br>
-   * <b>Atenção:</b> Quando um objeto tem ID, mas tem essa flag definida como true, indica que o objeto não está persistido no banco de dados. Caso o objeto seja inserido, esta flag deve ser definida como false pelo {@link RFWDAO}.
+   * <b>Atenção:</b> Quando um objeto tem ID, mas tem essa flag definida como true, indica que o objeto não está persistido no banco de dados. Caso o objeto seja inserido, esta flag deve ser definida como false pelo RFWDAO.
    *
    * @deprecated NÃO DEVE SER UTILIZADO PELO SISTEMA. Este recurso é útil em casos muito específicos, como migração de dados, nunca para as rotinas do sistema.
    * @param insertWithID define se este objeto deve ser inserido com um ID predefinido.

@@ -74,6 +74,21 @@ public interface RFWLoggerImplementation {
   }
 
   /**
+   * Faz o log de uma exception passando tags para categorizar o erro.
+   *
+   * @param e Exception para ser registrada.
+   * @param tags Conjunto de tags para associar ao registro.
+   */
+  public default void logException(Throwable e, String[] tags) {
+    RFWLogSeverity severity = RFWLogSeverity.EXCEPTION;
+    if (e instanceof RFWValidationException || e instanceof RFWValidationGroupException) {
+      severity = RFWLogSeverity.VALIDATION;
+    }
+    String exPoint = e.getStackTrace()[0].toString();
+    log(severity, e.getLocalizedMessage(), RFWLogger.convertExceptionToString(e), exPoint, tags);
+  }
+
+  /**
    * Faz o log com diversas informações que podem ou não serem passadas.
    *
    * @param severity Enumeration indicando a severidade (nível) do log.
@@ -83,5 +98,24 @@ public interface RFWLoggerImplementation {
    * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags são utilizadas para ajudar a filtrar vários eventos de uma mesma natureza, não jogue informações que só aparecerão em um único evento por vez nas tags. Utilize para categorizar os tipos de logs. Para dados voláteis ou únicos, crie outras entradas de INFO ou DEBUG.
    */
   public void log(RFWLogSeverity severity, String msg, String content, String exPoint, String... tags);
+
+  /**
+   * Realiza o log com a prioridade WARN
+   *
+   * @param msg Mensagem a ser registrada
+   */
+  public default void logWarn(String msg) {
+    log(RFWLogSeverity.WARN, msg, null, null);
+  }
+
+  /**
+   * Realiza o log com a prioridade WARN
+   *
+   * @param msg Mensagem a ser registrada
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags são utilizadas para ajudar a filtrar vários eventos de uma mesma natureza, não jogue informações que só aparecerão em um único evento por vez nas tags. Cria um log de debug ou info para isso.
+   */
+  public default void logWarn(String msg, String[] tags) {
+    log(RFWLogSeverity.WARN, msg, null, null, tags);
+  }
 
 }

@@ -1,5 +1,8 @@
 package br.eng.rodrigogml.rfw.kernel.utils;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -7,18 +10,28 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
 
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWRunTimeException;
+import br.eng.rodrigogml.rfw.kernel.logger.RFWLogger;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess.PreProcessOption;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaCollectionField;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaEncrypt;
@@ -380,8 +393,59 @@ public class RUReflex {
   }
 
   /**
+   * Recupera a classe de uma propriedade do bean passado.<br>
+   * Caso a propriedade tenha varios nomes separados por pontos ".", estes serao divididos e recuperados recusivamente. Neste caso, será usado o método "get" da propriedade para descobrir sua classe. <b>Este método usará sempre o tipo do objeto retornado pela instância. Logo, se a instância do objeto retornar null este método será incapaz de descobrir a classe da propriedade.</b>
+   *
+   * @param bean Object objeto o qual o metodo GET será chamado
+   * @param propertyname String nome da propriedade que deseja-se obter o valor
+   * @return Class objeto retornado pelo método get do atributo. Null caso algum algum método GET retorne null.
+   */
+  public static Class<?> getPropertyTypeByObject(Object bean, String propertyname) throws RFWException {
+    if (bean == null) {
+      throw new NullPointerException("O objeto bean recebido não pode ser nulo!");
+    }
+    try {
+      Class<?> returned = null;
+      int index = propertyname.indexOf(".");
+      if (index > -1) {
+        String firstproperty = propertyname.substring(0, index);
+        Object tmpobj;
+        try {
+          tmpobj = bean.getClass().getMethod("get" + firstproperty.substring(0, 1).toUpperCase() + firstproperty.substring(1, firstproperty.length()), (Class[]) null).invoke(bean, new Object[0]);
+        } catch (NoSuchMethodException e) {
+          try {
+            tmpobj = bean.getClass().getMethod("is" + firstproperty.substring(0, 1).toUpperCase() + firstproperty.substring(1, firstproperty.length()), (Class[]) null).invoke(bean, new Object[0]);
+          } catch (NoSuchMethodException e2) {
+            tmpobj = bean.getClass().getMethod("are" + firstproperty.substring(0, 1).toUpperCase() + firstproperty.substring(1, firstproperty.length()), (Class[]) null).invoke(bean, new Object[0]);
+          }
+        }
+        if (tmpobj != null) {
+          returned = getPropertyTypeByObject(tmpobj, propertyname.substring(index + 1, propertyname.length()));
+        }
+      } else {
+        Object tmpobj;
+        try {
+          tmpobj = bean.getClass().getMethod("get" + propertyname.substring(0, 1).toUpperCase() + propertyname.substring(1, propertyname.length()), (Class[]) null).invoke(bean, new Object[0]);
+        } catch (NoSuchMethodException e) {
+          try {
+            tmpobj = bean.getClass().getMethod("is" + propertyname.substring(0, 1).toUpperCase() + propertyname.substring(1, propertyname.length()), (Class[]) null).invoke(bean, new Object[0]);
+          } catch (NoSuchMethodException e2) {
+            tmpobj = bean.getClass().getMethod("are" + propertyname.substring(0, 1).toUpperCase() + propertyname.substring(1, propertyname.length()), (Class[]) null).invoke(bean, new Object[0]);
+          }
+        }
+        if (tmpobj != null) {
+          returned = tmpobj.getClass();
+        }
+      }
+      return returned;
+    } catch (Throwable e) {
+      throw new RFWCriticalException("RFW_ERR_200480", e);
+    }
+  }
+
+  /**
    * Recupera a classe de uma propriedade do bean passado. Caso a propriedade tenha varios nomes separados por pontos ".", estes serao divididos e recuperados recusivamente.<br>
-   * Este método é semelhante ao {@link BUReflex#getPropertyTypeByObject(Class, String)}, a diferença é que se uma propriedade retornar nula, ele continua explorando o objeto pela classes de retorno do objeto (como feito pela classe {@link BUReflex#getPropertyTypeByType(Class, String)}.<br>
+   * Este método é semelhante ao {@link RUReflex#getPropertyTypeByObject(Object, String)}, a diferença é que se uma propriedade retornar nula, ele continua explorando o objeto pela classes de retorno do objeto (como feito pela classe {@link RUReflex#getPropertyTypeByType(Class, String)}.<br>
    *
    *
    * @param bean objeto o qual o metodo GET será chamado
@@ -550,7 +614,7 @@ public class RUReflex {
    * Ex: "itemcodelist[0].itemvo" retorna "itemcodelist.itemvo". Ex: "itemcodehash{key}.itemvo" retorna "itemcodehash.itemvo".
    *
    * @param fullpath
-   * @return
+   * @return caminho limpo sem as definições de coleções.
    */
   public static String getCleanPath(String fullpath) {
     return fullpath.replaceAll("\\[[^\\]]*\\]", "").replaceAll("\\{[^\\}]*\\}", "");
@@ -738,14 +802,14 @@ public class RUReflex {
   }
 
   /**
-   * Este método tenta montar um caminho com os 'captions' das RFWMetaAnnotations recursivamente, no padrão "Caption 1 > caption 2 > Caption 3".<br>
+   * Este método tenta montar um caminho com os 'captions' das RFWMetaAnnotations recursivamente, no padrão "Caption 1 > Caption 2 > Caption 3".<br>
    * Caso algum atirbuto não tenha a RFWMetaAnnotation o método lançará exception.<br>
    * Caso o caption esteja vazio (""), o passo será ignorado para evitar a concatenação "> >". <br>
    * Este método não considera os indeces de Lista ou chaves de Hash para colocar no caminho. Essa opção deve ser criada em outro método.
    *
    * @param voClass Classe do VO do começo do caminho.
    * @param attributePath Caminho partindo do voClass até o atributo desejado
-   * @return
+   * @return Caption montado recursivamente.
    * @throws RFWException
    */
   public static String getRFWMetaAnnotationFullCaption(Class<? extends RFWVO> voClass, String attributePath) throws RFWException {
@@ -940,7 +1004,7 @@ public class RUReflex {
    * @param key Representação em String do objeto chave da hash.
    * @param clazz Classe da chave de Hash. Atualmente suporta apenas String e Long.
    * @param basepath Caminho base até chegar neste atributo.
-   * @return
+   * @return Caminho que identificau atributo em um objeto dentro de uma hash.
    */
   public static String getAttributePath(String attribute, Object key, Class<?> clazz, String basepath) {
     if (String.class.isAssignableFrom(clazz)) {
@@ -959,10 +1023,11 @@ public class RUReflex {
   }
 
   /**
+   * Monta um caminho baseado em um caminho base e o novo atributo. Faz a validação se algum dos objetos é nulo para retornar o caminho correto considerando os nulos.
    *
-   * @param attribute
-   * @param basepath
-   * @return
+   * @param attribute Nome do atributo a ser anexado.
+   * @param basepath Caminho base.
+   * @return Caminho Base + . + atributo considerando os nulos e a necessidade de agregar os separadores.
    */
   public static String getAttributePath(String attribute, String basepath) {
     if (basepath != null) {
@@ -977,11 +1042,13 @@ public class RUReflex {
   }
 
   /**
+   * Monta um caminho baseado em um caminho base e o novo atributo. Faz a validação se algum dos objetos é nulo para retornar o caminho correto considerando os nulos.
    *
-   * @param attribute
-   * @param index
-   * @param basepath
-   * @return
+   * @param attribute Nome do atributo a ser anexado.
+   * @param index índice do atributo no array.
+   * @param basepath Caminho base.
+   * @return Caminho Base + . + atributo[index] considerando os nulos e a necessidade de agregar os separadores.
+   * 
    */
   public static String getAttributePath(String attribute, int index, String basepath) {
     attribute = attribute + "[" + index + "]";
@@ -1008,4 +1075,155 @@ public class RUReflex {
     }
     return null;
   }
+
+  /**
+   * Busca um "resource" no classPath de acordo com seu nome. Este método tenta encontrar primeiro no mesmo classPath da classe que chamou este método, se não encontrar procura no ClassLoader completo.<br>
+   * <b>ATENÇÃO:</B> Este método não funciona para resources que estejam dentro de pacotes do tipo EJB/WAR, quando chamado de uma classe de fora. Isso porque o classloader deles é separado por segurança. Para ter os resources visíveis por este método coloque em um Jar "público", como o pacote client, ou um Jar específico para carregar os resources.
+   *
+   *
+   * @param resourceName Nome do Recurso sendo procurado. O nome deve incluir a pasta conforme sua posição relativa à raiz. Ex: "resources/img.gif"
+   * @return InputStream pronto para ser lido com o conteúdo do Resource.
+   * @throws RFWException
+   */
+  public static InputStream getResourceAsStream(String resourceName) throws RFWException {
+    InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName);
+    if (stream == null) {
+      try {
+        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+        stream = Class.forName(stack[2].getClassName()).getClassLoader().getResourceAsStream(resourceName);
+      } catch (ClassNotFoundException e1) {
+        // Não deve ocorrer pe estamos criando a partir do próprio nome da classe, mas logamos
+        RFWLogger.logException(e1);
+      }
+      if (stream == null) {
+        final URL url = RUReflex.createURLClassLoader().getResource(resourceName);
+        try {
+          if (url != null) stream = url.openStream();
+        } catch (IOException e) {
+          throw new RFWCriticalException("Falha ao abrir o stream da URL do Resource encontrado!", e);
+        }
+      }
+    }
+    return stream;
+  }
+
+  /**
+   * Este método cria um novo ClassLoader de URL com todos os arquivos JARs encontrados no classpath atual.
+   *
+   * @return ClassLoader com todos os arquivos .jar carregados.
+   */
+  public static URLClassLoader createURLClassLoader() {
+    Collection<String> resources = getResources(Pattern.compile(".*\\.jar"));
+    Collection<URL> urls = new ArrayList<>();
+    for (String resource : resources) {
+      File file = new File(resource);
+      // Ensure that the JAR exists and is in the globalclasspath directory.
+      if (file.isFile() && "globalclasspath".equals(file.getParentFile().getName())) {
+        try {
+          urls.add(file.toURI().toURL());
+        } catch (MalformedURLException e) {
+          // This should never happen.
+          e.printStackTrace();
+        }
+      }
+    }
+    return new URLClassLoader(urls.toArray(new URL[urls.size()]));
+  }
+
+  /**
+   * Recupera todos os "resources" do ClassLoader atual baseados em um pattern.
+   *
+   * @param pattern Expressão Regularar para filtrar os "resources" que serão retornados.
+   * @return Lista com o URL de todos os recursos encontrados.
+   */
+  public static Collection<String> getResources(final Pattern pattern) {
+    final ArrayList<String> retval = new ArrayList<>();
+    final String classPath = System.getProperty("java.class.path", ".");
+    final String[] classPathElements = classPath.split(System.getProperty("path.separator"));
+    for (final String element : classPathElements) {
+      retval.addAll(getResources(element, pattern));
+    }
+    return retval;
+  }
+
+  /**
+   * Recupera uma lista de "resources" baseado em um determinado elemento, filtrados por um pattern.
+   *
+   * @param element URI do Jar ou Diretório onde podemos encontrar os "resources".
+   * @param pattern Expressão Regular para filtrar os recursos desejados.
+   * @return Lista de URI com os "resources" encontrados.
+   */
+  private static Collection<String> getResources(final String element, final Pattern pattern) {
+    final ArrayList<String> retval = new ArrayList<>();
+    final File file = new File(element);
+    if (file.isDirectory()) {
+      retval.addAll(getResourcesFromDirectory(file, pattern));
+    } else {
+      retval.addAll(getResourcesFromJarFile(file, pattern));
+    }
+    return retval;
+  }
+
+  /**
+   * Recupera os "resources" de um diretório
+   *
+   * @param directory Diretório para recuperar os "resources"
+   * @param pattern Expressão Regulara para filtrar os "resources" retornados.
+   * @return Lista com os "resources" encontrados
+   */
+  private static Collection<String> getResourcesFromDirectory(final File directory, final Pattern pattern) {
+    final ArrayList<String> retval = new ArrayList<>();
+    final File[] fileList = directory.listFiles();
+    for (final File file : fileList) {
+      if (file.isDirectory()) {
+        retval.addAll(getResourcesFromDirectory(file, pattern));
+      } else {
+        try {
+          final String fileName = file.getCanonicalPath();
+          final boolean accept = pattern.matcher(fileName).matches();
+          if (accept) {
+            retval.add(fileName);
+          }
+        } catch (final IOException e) {
+          throw new Error(e);
+        }
+      }
+    }
+    return retval;
+  }
+
+  /**
+   * Recupera os "resources" de um arquivo JAR.
+   *
+   * @param file URI do arquivo JAR
+   * @param pattern Expressão Regular para filtrar os resultados.
+   * @return Lita de Resources encontrados.
+   */
+  private static Collection<String> getResourcesFromJarFile(final File file, final Pattern pattern) {
+    final ArrayList<String> retval = new ArrayList<>();
+    ZipFile zf;
+    try {
+      zf = new ZipFile(file);
+    } catch (final ZipException e) {
+      throw new Error(e);
+    } catch (final IOException e) {
+      throw new Error(e);
+    }
+    final Enumeration<?> e = zf.entries();
+    while (e.hasMoreElements()) {
+      final ZipEntry ze = (ZipEntry) e.nextElement();
+      final String fileName = ze.getName();
+      final boolean accept = pattern.matcher(fileName).matches();
+      if (accept) {
+        retval.add(fileName);
+      }
+    }
+    try {
+      zf.close();
+    } catch (final IOException e1) {
+      throw new Error(e1);
+    }
+    return retval;
+  }
+
 }

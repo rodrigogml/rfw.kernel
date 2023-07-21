@@ -38,8 +38,6 @@ public @interface RFWMetaCollectionField {
 
   /**
    * Define o nome da coluna que armazena o valor desta field.
-   *
-   * @return
    */
   String column();
 
@@ -54,8 +52,8 @@ public @interface RFWMetaCollectionField {
   String keyColumn() default "";
 
   /**
-   * Define a classe do {@link RFWDAOConverterInterface} que será utilizado.<Br>
-   * Se não for uma classe do tipo {@link RFWDAOConverterInterface} é considerado como valor null do atributo
+   * Define a classe do RFWDAOConverterInterface que será utilizado.<Br>
+   * Se não for uma classe do tipo link RFWDAOConverterInterface é considerado como valor null do atributo
    */
   Class<?> keyConverterClass() default Object.class;
 

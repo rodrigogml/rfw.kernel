@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import br.eng.rodrigogml.rfw.kernel.bundle.RFWBundle;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.logger.RFWLogger;
 import br.eng.rodrigogml.rfw.kernel.logger.RFWLoggerImplementation;
@@ -115,6 +116,17 @@ public class RFW {
    */
   public static void initializeSystemName(String systemName) {
     RFW.systemName = systemName;
+  }
+
+  /**
+   * Este método inicializa {@link RFWBundle} com um novo arquivo.<br>
+   * Note que cada novo arquivo carregado é lido sobre o mesmo properties. Isso faz com que em caso de conflito de chaves o conteúdo do último arquivo lido se sobreponha. Embora pareça uma falha, a ideia é proposital, assim é possível substituir mensagens padrão do RFWDeprec pelo sistema sendo feito.
+   *
+   * @param bundleName
+   * @throws RFWException
+   */
+  public static void initializeBundle(String bundleName) throws RFWException {
+    RFWBundle.loadBundle(bundleName);
   }
 
   /**

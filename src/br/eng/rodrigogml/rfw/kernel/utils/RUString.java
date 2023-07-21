@@ -130,4 +130,18 @@ public class RUString {
     }
     return value;
   }
+
+  /**
+   * Converte o valor da enumeração em "chave" que nada mais é do que sua qualificação completa de class + enumeração + objeto da enumeração. Útil para IDs e para unificação na internacionalizações de labels.
+   *
+   * @param value enum desejado.
+   * @return String com da chave.
+   */
+  public static String getEnumKey(Enum<?> value) {
+    String enumkey = null;
+    if (value != null) {
+      enumkey = value.getDeclaringClass().getCanonicalName() + "." + value.name();
+    }
+    return enumkey;
+  }
 }

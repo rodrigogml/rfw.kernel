@@ -229,7 +229,7 @@ public final class RFWMO implements Serializable, Cloneable {
 
   /**
    * Método responsável por clonar o RFWMO inteiro evitando que suas referências sejam alteradas.<br>
-   * Usado, por exemplo, nas fachadas {@link SMInterceptor} para evitar que o objeto seja alterado no CRUD e fique diferente caso Facade e Invoker estejam na mesma JVM.
+   * Usado, por exemplo, nas fachadas para evitar que o objeto seja alterado no CRUD e fique diferente caso Facade e Invoker estejam na mesma JVM.
    *
    * @return Retorna o RFWMO clonado recursivamente
    * @throws RFWException
