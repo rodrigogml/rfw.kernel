@@ -1,5 +1,6 @@
 package br.eng.rodrigogml.rfw.kernel.utils;
 
+import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 
 /**
@@ -1556,6 +1557,54 @@ public class RUDocValidation {
         break;
       default:
         throw new RFWValidationException("RFW_ERR_200305");
+    }
+
+  }
+
+  /**
+   * Valida se pe uma UF válida para o Brasil.<br>
+   * Este método simplesmente verifica se a string recebida é uma das UF do Brasil, considerando apenas 2 letras e ignorando o case.
+   *
+   * @param uf UFa ser validada.
+   * @throws RFWValidationException caso seja inválida.
+   */
+  public static void validateUF(String uf) throws RFWException {
+    if (uf == null) {
+      throw new RFWValidationException("RFW_000003", new String[] { "" });
+    }
+    // Prepara a UF para comparação
+    uf = uf.toUpperCase();
+    switch (uf) {
+      case "SP":
+      case "AC":
+      case "AL":
+      case "AP":
+      case "AM":
+      case "BA":
+      case "CE":
+      case "DF":
+      case "ES":
+      case "GO":
+      case "MA":
+      case "MT":
+      case "MS":
+      case "MG":
+      case "PA":
+      case "PB":
+      case "PR":
+      case "PE":
+      case "PI":
+      case "RJ":
+      case "RN":
+      case "RS":
+      case "RO":
+      case "RR":
+      case "SC":
+      case "SE":
+      case "TO":
+        break;
+      default:
+        throw new RFWValidationException("RFW_000003", new String[] { "" });
     }
 
   }
