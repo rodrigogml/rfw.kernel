@@ -47,7 +47,7 @@ public class RFW {
    * ZoneID padrão do sistema.<br>
    * Valor padrão inicial: "America/Sao_Paulo.
    */
-  private static ZoneId zoneId = ZoneId.of("America/Sao_Paulo");1
+  private static ZoneId zoneId = ZoneId.of("America/Sao_Paulo");
 
   /**
    * Batiza o sistema com um nome. É recomendado que se crie um label utilizando "Nome" = "Versão", algo como "RFW v10.0.0". Algo preferencialmente curto que identifique o sistema e sua versão.<br>
