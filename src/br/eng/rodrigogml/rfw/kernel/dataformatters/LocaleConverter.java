@@ -147,7 +147,7 @@ public class LocaleConverter {
     Integer parsedvalue = null;
     if (value != null && !"".equals(value.toString().trim())) {
       if (value instanceof Integer) {
-        parsedvalue = new Integer((Integer) value);
+        parsedvalue = Integer.valueOf((Integer) value);
       } else if (value instanceof String) {
         // Verifica se contem apenas os caracteres esperados para evitar que nímeros com caracteres estranhos (como pontos no lugar da virgula) sejam interpretados errados
         String newvalue = (String) value;
