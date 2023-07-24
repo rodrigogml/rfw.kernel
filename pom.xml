@@ -28,8 +28,10 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.11.0</version>
 				<configuration>
-					<release>20</release>
-					<encoding>UTF-8</encoding>
+					<source>1.8</source>
+					<target>1.8</target>
+<!--					<release>20</release>-->
+<!--					<encoding>UTF-8</encoding>-->
 				</configuration>
 			</plugin>
 			<!-- Copy project dependency -->

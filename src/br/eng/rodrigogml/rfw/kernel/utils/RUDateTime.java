@@ -28,6 +28,40 @@ public class RUDateTime {
   }
 
   /**
+   * Formata um {@link LocalDate} baseada em um pattern
+   *
+   * @param date Data a ser formatada
+   * @param pattern Pattern a ser utilizado.
+   * @return String com a data no formato desejado.
+   */
+  public static String formatLocalDate(LocalDate date, String pattern) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+    return date.format(formatter);
+  }
+
+  /**
+   * Formata um {@link LocalDateTime} baseada em um pattern
+   *
+   * @param date Data/Hora a ser formatada
+   * @param pattern Pattern a ser utilizado.
+   * @return String com a data no formato desejado.
+   */
+  public static String formatLocalDateTime(LocalDateTime date, String pattern) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+    return date.format(formatter);
+  }
+
+  /**
+   * Este método formata um LocalDate para com o patern 'ddMMyyyy'.
+   *
+   * @param date Objeto LocalDate com a data à formatar.
+   * @return String com o Dado Formatado.
+   */
+  public static String formatToddMMyyyy(LocalDate date) {
+    return formatLocalDate(date, "ddMMyyyy");
+  }
+
+  /**
    * Este método recebe uma data e força a definição de milisegundos = 000.
    *
    * @param date Data a ter o horário modificado.
@@ -533,5 +567,106 @@ public class RUDateTime {
    */
   public static LocalDateTime createLocalDateTime(int year, int month, int dayOfMonth, int hour, int minute, int second, int milliseconds, int nanoOfSecond) {
     return LocalDateTime.of(year, month, dayOfMonth, hour, minute, milliseconds, nanoOfSecond);
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formar o Date apenas no horário com o patern '23:59:59', ignorando qualquer que seja a data.
+   *
+   * @param time
+   * @return
+   */
+  public static String formatTo235959(Date time) {
+    return new SimpleDateFormat("HH:mm:ss").format(time);
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formar o Date em um TimeStamp com o patern 'yyyyMMddHHmmss'.
+   *
+   * @param date
+   * @return
+   */
+  public static String formatToyyyyMMddHHmmss(Date date) {
+    return new SimpleDateFormat("yyyyMMddHHmmss").format(date);
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formar o Date em um TimeStamp com o patern 'yyyyMMdd'.
+   *
+   * @param date
+   * @return
+   */
+  public static String formatToyyyyMMdd(Date date) {
+    return new SimpleDateFormat("yyyyMMdd").format(date);
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formar o Date em um TimeStamp com o patern 'ddMMyyyy'.
+   *
+   * @param date
+   * @return
+   */
+  public static String formatToddMMyyyy(Date date) {
+    return new SimpleDateFormat("ddMMyyyy").format(date);
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formar o Date em um TimeStamp com o patern 'ddMMyyyyHHmmss'.
+   *
+   * @param date
+   * @return
+   */
+  public static String formatToddMMyyyyHHmmss(Date date) {
+    return new SimpleDateFormat("ddMMyyyyHHmmss").format(date);
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formar o Date em um formato completo com o patern 'dd/MM/yyyy HH:mm:ss'.
+   *
+   * @param date
+   * @return
+   */
+  public static String formatTodd_MM_yyyy_HH_mm_ss(Date date) {
+    return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formar o Date em um formato completo com o patern 'dd/MM/yyyy HH:mm:ss'.
+   *
+   * @param date
+   * @return
+   */
+  public static String formatTodd_MM_yyyy_HH_mm_ss(LocalDateTime date) {
+    return formatLocalDateTime(date, "dd/MM/yyyy HH:mm:ss");
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formar o Date em um formato completo com o patern 'yyyy-MM-dd'T'HH:mm:ssXXX' (Padrão UTC utilizado no XML da NFe).
+   *
+   * @param date
+   * @return
+   */
+  public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(Date date) {
+    return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").format(date);
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formar o Date em um formato completo com o patern 'yyyy-MM-dd'T'HH:mm:ssXXX' (Padrão UTC utilizado no XML da NFe).
+   *
+   * @param date
+   * @return
+   */
+  public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(LocalDateTime date, ZoneId zoneId) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
+    return date.atZone(zoneId).format(formatter);
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formar o Date apenas no horário com o patern '23:59:59', ignorando qualquer que seja a data.
+   *
+   * @param dLastConsult
+   * @return
+   */
+  public static String formatTo235959(long timemillis) {
+    return formatTo235959(new Date(timemillis));
   }
 }

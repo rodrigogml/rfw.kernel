@@ -41,7 +41,7 @@ public class RFW {
    * Locale padrão do sistema.<br>
    * Valor Padrão inicial: Locale("pt", "BR").
    */
-  private static Locale locale = Locale.of("pt", "BR");
+  private static Locale locale = new Locale("pt", "BR"); // Locale.of("pt", "BR"); //JDK 20
 
   /**
    * ZoneID padrão do sistema.<br>
