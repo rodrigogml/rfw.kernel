@@ -61,7 +61,7 @@ public class RFWCPFOrCNPJDataFormatter implements RFWDataFormatter<String, Strin
           // Valida como CNPJ
           RUDocValidation.validateCNPJ(v.toString());
         } catch (RFWValidationException e1) {
-          throw new RFWValidationException("O valor '" + value + "' não é nem um CPF nem um CNPJ válido!");
+          throw new RFWValidationException("RFW_000012", new String[] { "" + value });
         }
       }
     }

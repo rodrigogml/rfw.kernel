@@ -162,7 +162,7 @@ public class RFWBundle {
       loadBundle("rfwbundle.properties"); // garante que a primeira chamada inclua o arquivo anterior de bundle usado no base (antes da criação do Kernel)
       return;
     } else if (bundle != null && bundleName == null) {
-      throw new RFWCriticalException("O nome do bundle não pode ser nulo!");
+      throw new RFWCriticalException("RFW_000005");
     }
 
     try (InputStream input = RUReflex.getResourceAsStream(bundleName)) {
@@ -173,7 +173,7 @@ public class RFWBundle {
         bundle.load(input);
       }
     } catch (IOException e) {
-      throw new RFWCriticalException("Não foi possível encontrar o bundle '" + bundleName + "'.", e);
+      throw new RFWCriticalException("RFW_000006", new String[] { bundleName }, e);
     }
   }
 
@@ -189,7 +189,7 @@ public class RFWBundle {
     String key = RUString.getEnumKey(value);
     String v = get(key);
     if (value != null && v == null) {
-      RFWLogger.logWarn("A chave enum foi solicitada mas não encontramos um bundle: " + key);
+      RFWLogger.logWarn("RFW_000007", new String[] { key });
       return key;
     }
     return v;

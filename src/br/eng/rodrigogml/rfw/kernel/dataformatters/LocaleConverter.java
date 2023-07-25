@@ -88,25 +88,6 @@ public class LocaleConverter {
   }
 
   /**
-   * Este método verifica o tipo de objeto e converte para uma String de acordo com sua localidade. Por exemplo, converte valores númericos usando os simbolos corretos de formatação, ou datas, etc.<br>
-   * Este método é um dispatcher que dependendo do objeto recebido chama outro parser automaticamente.
-   *
-   * @param obj Objeto a ser convertido para a localidade correta
-   * @param locale localidade do usuúrio para qual o objeto será formatado.
-   * @return String com o valor do objeto no formato do locale.
-   */
-  public static String format(Object obj, Locale locale) {
-    if (locale == null) {
-      throw new NullPointerException("Locale can't be null!");
-    }
-    String value = "";
-    if (obj instanceof Float) {
-      value = formatFloat((Float) obj, locale);
-    }
-    return toString(value);
-  }
-
-  /**
    * Este método formata um valor Inteiro para se adequar a formatação do local.
    *
    * @param value Objeto a ser formatado
@@ -437,7 +418,7 @@ public class LocaleConverter {
         String decimalsymbol = getDecimalSymbol(locale);
         String regexp = "[+-]?[0-9]*([" + groupsymbol + "]*[0-9]+)*?[" + decimalsymbol + "]?[0-9]*";
         if (!newvalue.matches(regexp)) {
-          throw new RFWValidationException("RFW_ERR_000276");
+          throw new RFWValidationException("RFW_000010");
         }
         boolean negative = !ignoresignal && newvalue.indexOf("-") != -1;
         newvalue = RUString.replaceAll(newvalue, groupsymbol, "");
@@ -447,7 +428,7 @@ public class LocaleConverter {
         try {
           parsedvalue = new BigDecimal(newvalue);
         } catch (NumberFormatException e) {
-          throw new RFWValidationException("RFW_ERR_000488", new String[] { "" + value });
+          throw new RFWValidationException("RFW_000009", new String[] { "" + value });
         }
         if (decimals != null) {
           parsedvalue = parsedvalue.setScale(decimals, roundingmode);
@@ -554,7 +535,7 @@ public class LocaleConverter {
         String decimalsymbol = getDecimalSymbol(locale);
         String regexp = "[+-]?[0-9]*([" + groupsymbol + "]*[0-9]+)*?[" + decimalsymbol + "]?[0-9]*";
         if (!newvalue.matches(regexp)) {
-          throw new RFWValidationException("RFW_ERR_000276");
+          throw new RFWValidationException("RFW_000010");
         }
         boolean negative = !ignoresignal && newvalue.indexOf("-") != -1;
         newvalue = RUString.replaceAll(newvalue, groupsymbol, "");
@@ -609,7 +590,7 @@ public class LocaleConverter {
         String decimalsymbol = getDecimalSymbol(locale);
         String regexp = "[+-]?[0-9]*([" + groupsymbol + "]*[0-9]+)*?[" + decimalsymbol + "]?[0-9]*";
         if (!newvalue.matches(regexp)) {
-          throw new RFWValidationException("RFW_ERR_000276");
+          throw new RFWValidationException("RFW_000010");
         }
         boolean negative = !ignoresignal && newvalue.indexOf("-") != -1;
         newvalue = RUString.replaceAll(newvalue, groupsymbol, "");
@@ -708,7 +689,7 @@ public class LocaleConverter {
         String decimalsymbol = getDecimalSymbol(locale);
         String regexp = "[+-]?[0-9]*([" + groupsymbol + "]*[0-9]+)*?[" + decimalsymbol + "]?[0-9]*";
         if (!newvalue.matches(regexp)) {
-          throw new RFWValidationException("RFW_ERR_000276");
+          throw new RFWValidationException("RFW_000010");
         }
         boolean negative = !ignoresignal && newvalue.indexOf("-") != -1;
         newvalue = RUString.replaceAll(newvalue, groupsymbol, "");
@@ -873,7 +854,7 @@ public class LocaleConverter {
         String decimalsymbol = getDecimalSymbol(locale);
         String regexp = "[+-]?[0-9]*([" + groupsymbol + "]*[0-9]+)*?[" + decimalsymbol + "]?[0-9]*[%]?";
         if (!newvalue.matches(regexp)) {
-          throw new RFWValidationException("RFW_ERR_000276");
+          throw new RFWValidationException("RFW_000010");
         }
         boolean negative = !ignoresignal && newvalue.indexOf("-") != -1;
         newvalue = RUString.replaceAll(newvalue, groupsymbol, "");
@@ -921,7 +902,7 @@ public class LocaleConverter {
    */
   public static String formatBytesSize(Long bytes, Locale locale, Integer decimals) {
     if (bytes == null) {
-      throw new NullPointerException("Impossível formatar valor nulo!");
+      throw new NullPointerException("RFW_000011");
     }
 
     int pow = 0;

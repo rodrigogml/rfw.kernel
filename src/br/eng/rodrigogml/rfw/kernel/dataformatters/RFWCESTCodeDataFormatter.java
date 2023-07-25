@@ -44,7 +44,7 @@ public class RFWCESTCodeDataFormatter implements RFWDataFormatter<String, Object
       String v = value.toString().replaceAll("[^0-9]", "");
       // Verifica se tem tamanho Correto depois que só sobrarem números - exige que tenha os 8 números e não completa números a esquerda para evitar que ao "esquecer" um número durante a digitação, o erro seja detectado.
       if (v.length() != 7) {
-        throw new RFWValidationException("Não é um código CEST válido!");
+        throw new RFWValidationException("RFW_000008");
       }
     }
   }
