@@ -67,7 +67,7 @@ public final class RFWMO implements Serializable, Cloneable {
 
   }
 
-  public static enum APPENDMETHOD {
+  public static enum AppendMethod {
     AND, OR
   }
 
@@ -75,7 +75,7 @@ public final class RFWMO implements Serializable, Cloneable {
    * Define como os argumentos deste MO serão conectados entre si.<br>
    * Por padrão os argumentos definidos recebem o conector condicional "AND" entre eles. Caso alterado, todos os atributos deste MO passarão se ser conectados com o novo conector condicional.
    */
-  private APPENDMETHOD appendmethod = APPENDMETHOD.AND;
+  private AppendMethod appendmethod = AppendMethod.AND;
 
   /**
    * Permite definir uma lista de MOs que montarão uma condição "isolada". Em conjunto com as definições possíveis em {@link #appendmethod} permite que condições com diferentes conectores sejam usadas em conjunto. Cria o efeito dos "parenteses" nas clausulas where do SQL.
@@ -97,7 +97,7 @@ public final class RFWMO implements Serializable, Cloneable {
   public RFWMO() {
   }
 
-  public RFWMO(APPENDMETHOD appendMethod) {
+  public RFWMO(AppendMethod appendMethod) {
     this.appendmethod = appendMethod;
   }
 
@@ -125,7 +125,7 @@ public final class RFWMO implements Serializable, Cloneable {
    * <li>ns = New Start (Valor inicial do período que estamos querendo testar a sobreposição)
    * <li>ne = New End (Valod final do período que estamos querendo testar a sobreposição) <br>
    * <br>
-   * <b>Observação:</b> por escrever duas condições que obrigatoriamente precisam ser consideradas com o operador {@link APPENDMETHOD#AND}, caso este MO esteja definido para outro {@link #appendmethod} que não {@link APPENDMETHOD#AND} será automaticamente criado um novo {@link RFWMO} e colocado como um SubMO.<br>
+   * <b>Observação:</b> por escrever duas condições que obrigatoriamente precisam ser consideradas com o operador {@link AppendMethod#AND}, caso este MO esteja definido para outro {@link #appendmethod} que não {@link AppendMethod#AND} será automaticamente criado um novo {@link RFWMO} e colocado como um SubMO.<br>
    * <b>Obsevação 2:</b> Os intervalos "são exclusivos", isto é, são utilizados os comparativos > e < e não >= e <=. Em outras palavras, mesmo que um periodo termine em uma data e o outro comece na mesma data, não é considerado sobreposição. <br>
    * <b>Observação 3:</b> Caso os valores das colunas estejam nulos é considerado que trata-se de valor "infinito". Isto é, se a coluna de início do período for nula é considerado que ela começou no "infinito incial", logo qualquer valor passado periodo informado terá iniciado depois. O mesmo vale para a coluna de fim do período, vindo valor nulo é considerado que o período do banco não terminou
    * (final infinito), em outras palavras qualquer período informado terá terminado antes do período da base.
@@ -138,18 +138,18 @@ public final class RFWMO implements Serializable, Cloneable {
    */
   public RFWMO overlap(String startFieldName, String endFieldName, Object startValue, Object endValue) {
     RFWMO mo = this;
-    if (mo.getAppendmethod() != APPENDMETHOD.AND) { // Observação 1
-      mo = new RFWMO(APPENDMETHOD.AND);
+    if (mo.getAppendmethod() != AppendMethod.AND) { // Observação 1
+      mo = new RFWMO(AppendMethod.AND);
       this.getSubmo().add(mo);
     }
     {// (fs == null || fs < ne)
-      RFWMO mo2 = new RFWMO(APPENDMETHOD.OR);
+      RFWMO mo2 = new RFWMO(AppendMethod.OR);
       mo2.isNull(startFieldName); // fs == null
       mo2.lessThan(startFieldName, endValue); // fs < ne
       mo.getSubmo().add(mo2);
     }
     { // (fe == null || fe > ns)
-      RFWMO mo2 = new RFWMO(APPENDMETHOD.OR);
+      RFWMO mo2 = new RFWMO(AppendMethod.OR);
       mo2.isNull(endFieldName);
       mo2.greaterThan(endFieldName, startValue);
       mo.getSubmo().add(mo2);
@@ -338,7 +338,7 @@ public final class RFWMO implements Serializable, Cloneable {
    *
    * @return the define como os argumentos deste MO serão conectados entre si
    */
-  public APPENDMETHOD getAppendmethod() {
+  public AppendMethod getAppendmethod() {
     return appendmethod;
   }
 
@@ -348,7 +348,7 @@ public final class RFWMO implements Serializable, Cloneable {
    *
    * @param appendmethod the new define como os argumentos deste MO serão conectados entre si
    */
-  public void setAppendmethod(APPENDMETHOD appendmethod) {
+  public void setAppendmethod(AppendMethod appendmethod) {
     this.appendmethod = appendmethod;
   }
 
@@ -920,7 +920,7 @@ public final class RFWMO implements Serializable, Cloneable {
    * Filtra os registros cujo período contenham outro período completamente. Em outras palavras, o período passado deve estar completamente dentro de um período definido no registro (VO).<br>
    * Caso a data fim do período do registro seja nula, é considerada como uma "data infinita" (um valor muito grande), fazendo com que nulo seja maior que qualquer data.<br>
    * Fará uma consulta similar à: <b>periodStartField <= periodStart && (periodEndField >= periodEnd || periodEndField is null)</b> <br>
-   * <b>Observação:</b> por escrever duas condições que obrigatoriamente precisam ser consideradas com o operador {@link APPENDMETHOD#AND}, caso este MO esteja definido para outro {@link #appendmethod} que não {@link APPENDMETHOD#AND} será automaticamente criado um novo {@link RFWMO} e colocado como um SubMO.<br>
+   * <b>Observação:</b> por escrever duas condições que obrigatoriamente precisam ser consideradas com o operador {@link AppendMethod#AND}, caso este MO esteja definido para outro {@link #appendmethod} que não {@link AppendMethod#AND} será automaticamente criado um novo {@link RFWMO} e colocado como um SubMO.<br>
    *
    * @param periodStartField Campo com a data de início do período.
    * @param periodEndField Campo com a data de fim do período.
@@ -936,13 +936,13 @@ public final class RFWMO implements Serializable, Cloneable {
     if (periodEnd.compareTo(periodStart) < 0) throw new RFWValidationException("Não há um período válido entre " + periodStart + " e " + periodEnd + "!");
 
     RFWMO mo = this;
-    if (mo.getAppendmethod() != APPENDMETHOD.AND) { // Observação 1
-      mo = new RFWMO(APPENDMETHOD.AND);
+    if (mo.getAppendmethod() != AppendMethod.AND) { // Observação 1
+      mo = new RFWMO(AppendMethod.AND);
       this.getSubmo().add(mo);
     }
 
     mo.lessThanOrEqualTo(periodStartField, periodStart); // Filtra os registros que tenham iniciado antes do período
-    RFWMO mo2 = new RFWMO(APPENDMETHOD.OR);
+    RFWMO mo2 = new RFWMO(AppendMethod.OR);
     mo2.isNull(periodEndField); // Filtra os objetos cuja da de fim não esteja definido ("válido para sempre")
     mo2.greaterThanOrEqualTo(periodEndField, periodEnd); // Ou que o período de término da vigência só tenha ocorrido depois que o nosso período tenha começado
     mo.getSubmo().add(mo2);
@@ -967,7 +967,7 @@ public final class RFWMO implements Serializable, Cloneable {
    * Filtra os registros cujo período interseccione outro período. Em outras palavras, a intersecção de um período com outro deve ser maior que zero.<br>
    * Caso a data fim do período do registro seja nula, é considerada como uma "data infinita" (um valor muito grande), fazendo com que nulo seja maior que qualquer data.<br>
    * Fará uma consulta similar à: <b>periodStartField <= periodEnd && (periodEndField >= periodStart || periodEndField is null)</b> <br>
-   * <b>Observação:</b> por escrever duas condições que obrigatoriamente precisam ser consideradas com o operador {@link APPENDMETHOD#AND}, caso este MO esteja definido para outro {@link #appendmethod} que não {@link APPENDMETHOD#AND} será automaticamente criado um novo {@link RFWMO} e colocado como um SubMO.<br>
+   * <b>Observação:</b> por escrever duas condições que obrigatoriamente precisam ser consideradas com o operador {@link AppendMethod#AND}, caso este MO esteja definido para outro {@link #appendmethod} que não {@link AppendMethod#AND} será automaticamente criado um novo {@link RFWMO} e colocado como um SubMO.<br>
    *
    * @param periodStartField Campo com a data de início do período.
    * @param periodEndField Campo com a data de fim do período.
@@ -983,13 +983,13 @@ public final class RFWMO implements Serializable, Cloneable {
     if (periodEnd.compareTo(periodStart) < 0) throw new RFWValidationException("Não há um período válido entre " + periodStart + " e " + periodEnd + "!");
 
     RFWMO mo = this;
-    if (mo.getAppendmethod() != APPENDMETHOD.AND) { // Observação 1
-      mo = new RFWMO(APPENDMETHOD.AND);
+    if (mo.getAppendmethod() != AppendMethod.AND) { // Observação 1
+      mo = new RFWMO(AppendMethod.AND);
       this.getSubmo().add(mo);
     }
 
     mo.lessThanOrEqualTo(periodStartField, periodEnd);
-    RFWMO mo2 = new RFWMO(APPENDMETHOD.OR);
+    RFWMO mo2 = new RFWMO(AppendMethod.OR);
     mo2.isNull(periodEndField); // Filtra os objetos cuja da de fim não esteja definido ("válido para sempre")
     mo2.greaterThanOrEqualTo(periodEndField, periodStart); // Ou que o período de término da vigência só tenha ocorrido depois que o nosso período tenha começado
     mo.getSubmo().add(mo2);

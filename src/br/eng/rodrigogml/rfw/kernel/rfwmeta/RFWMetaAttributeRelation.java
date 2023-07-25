@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 @Repeatable(RFWMetaAttributeRelationArray.class)
 public @interface RFWMetaAttributeRelation {
 
-  public static enum COMPAREOPERATION {
+  public static enum CompareOperation {
     EQUAL, NOTEQUAL, LESSTHAN, LESSOREQUALTHAN, MORETHAN, MOREOREQUALTHAN,
   }
 
@@ -40,7 +40,7 @@ public @interface RFWMetaAttributeRelation {
   /**
    * Operação de comparação a ser realizada entre os atributos definidos.
    */
-  COMPAREOPERATION operation();
+  CompareOperation operation();
 
   /**
    * Código da exceção a ser lançada caso a operação de comparação não se satisfaça. Caso não seja informado um código específico a validação padrão será lançada.
