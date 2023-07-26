@@ -5,6 +5,7 @@ import java.io.StringWriter;
 
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
+import br.eng.rodrigogml.rfw.kernel.utils.RUReflex;
 
 /**
  * Description: Esta classe centraliza as chamadas de Log do sistema, e repassa as chamadas para a classe de implementação ativa para registrar e salvar os registros de Log.<br>
@@ -104,6 +105,64 @@ public final class RFWLogger {
    */
   public final static void logWarn(String msg, String... tags) {
     impl.logWarn(msg, tags);
+  }
+
+  /**
+   * Faz o log do conteúdo de um objeto. Utilizando o método {@link RUReflex#printObject(Object)}
+   *
+   * @param msg Mensagem a ser colocada no registro do Log.
+   * @param obj Objeto a ser impresso no anexo do Log.
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags são utilizadas para ajudar a filtrar vários eventos de uma mesma natureza, não jogue informações que só aparecerão em um único evento por vez nas tags. Cria um log de debug ou info para isso.
+   */
+  public final static void logObject(String msg, Object obj, String... tags) {
+    impl.logObject(msg, obj, tags);
+  }
+
+  /**
+   * Realiza o log com a prioridade DEBUG.
+   *
+   * @param msg Mensagem a ser registrada
+   */
+  public final static void logDebug(String msg) {
+    impl.logDebug(msg);
+  }
+
+  /**
+   * Realiza o log com a prioridade INFO
+   *
+   * @param msg Mensagem a ser registrada
+   */
+  public final static void logInfo(String msg) {
+    impl.logInfo(msg);
+  }
+
+  /**
+   * Realiza o log de uma mensagem para os desenvolvedores, registrando alguma informação para melhoria do código no futuro.
+   *
+   * @param msg Mensagem a ser registrada
+   */
+  public final static void logImprovement(String msg) {
+    impl.logImprovement(msg);
+  }
+
+  /**
+   * Realiza o log com a prioridade DEBUG.
+   *
+   * @param msg Mensagem a ser registrada
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags são utilizadas para ajudar a filtrar vários eventos de uma mesma natureza, não jogue informações que só aparecerão em um único evento por vez nas tags. Cria um log de debug ou info para isso.
+   */
+  public final static void logDebug(String msg, String... tags) {
+    impl.logDebug(msg, tags);
+  }
+
+  /**
+   * Realiza o log de uma mensagem para os desenvolvedores, registrando alguma informação para melhoria do código no futuro.
+   *
+   * @param msg Mensagem a ser registrada
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags são utilizadas para ajudar a filtrar vários eventos de uma mesma natureza, não jogue informações que só aparecerão em um único evento por vez nas tags. Cria um log de debug ou info para isso.
+   */
+  public final static void logImprovement(String msg, String... tags) {
+    impl.logImprovement(msg, tags);
   }
 
   /**

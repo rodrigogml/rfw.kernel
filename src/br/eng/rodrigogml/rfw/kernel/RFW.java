@@ -268,11 +268,11 @@ public class RFW {
    * Faz o mesmo que o {@link Thread#sleep(long)}, porém já captura o {@link InterruptedException} caso ele ocorra.<Br>
    * Para os casos em que a exception não é importante, deixa o código mais limpo.
    *
-   * @param delay tempo em milisegundos que o código (Thread atual) deverá aguardar.
+   * @param millisecondsDelay tempo em milisegundos que o código (Thread atual) deverá aguardar.
    */
-  public static void sleep(long delay) {
+  public static void sleep(long millisecondsDelay) {
     try {
-      Thread.sleep(delay);
+      Thread.sleep(millisecondsDelay);
     } catch (InterruptedException e) {
     }
   }
