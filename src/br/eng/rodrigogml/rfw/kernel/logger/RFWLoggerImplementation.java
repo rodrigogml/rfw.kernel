@@ -118,4 +118,14 @@ public interface RFWLoggerImplementation {
     log(RFWLogSeverity.WARN, msg, null, null, tags);
   }
 
+  /**
+   * Realiza o log com a prioridade ERROR
+   *
+   * @param msg Mensagem a ser registrada
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags são utilizadas para ajudar a filtrar vários eventos de uma mesma natureza, não jogue informações que só aparecerão em um único evento por vez nas tags. Cria um log de debug ou info para isso.
+   */
+  public default void logError(String msg, String[] tags) {
+    log(RFWLogSeverity.ERROR, msg, null, null, tags);
+  }
+
 }

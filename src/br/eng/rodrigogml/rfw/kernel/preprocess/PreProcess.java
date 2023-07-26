@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 
 import br.eng.rodrigogml.rfw.kernel.RFW;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
@@ -518,25 +519,6 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se dois objetos são "equals()".<br>
-   * Se ambos forem nulos o método considera que são válidos pois NULL == NULL.<br>
-   * Lança uma exception Crítica.
-   *
-   * @param obj1 Objeto para teste.
-   * @param obj2 Objeto para teste.
-   * @param msg Mesagem de Erro da Exception.
-   * @throws RFWException
-   */
-  public static void requiredEqualsCritical(Object obj1, Object obj2, String msg) throws RFWException {
-    if (obj1 == null && obj2 == null) {
-    } else {
-      if (obj1 == null || !obj1.equals(obj2)) {
-        throw new RFWCriticalException(msg);
-      }
-    }
-  }
-
-  /**
    * Garante que o array recebido não é nulo e nem vazio, tem o tamanho maior ou igual a 1.<br>
    * Note que este método não verificará se o conteúdo dentro do array é nulo, só se o array é nulo e de tamanho maior que zero.
    *
@@ -631,6 +613,47 @@ public final class PreProcess {
    */
   public static <T> void requiredNonNullNorEmptyCritical(Collection<T> list, String message) throws RFWCriticalException {
     if (list == null || list.size() == 0) {
+      throw new RFWCriticalException(message);
+    }
+  }
+
+  /**
+   * Requer que os objetos A e B sejam iguais. Testa o equals com null safe (ambos nulos são considerados iguais).
+   *
+   * @param a Objeto A para comparação
+   * @param b Objeto B para comparação
+   * @throws RFWValidationException Lançado caso os objetos não satisfação o equals.
+   */
+  public static void requiredEquals(Object a, Object b) throws RFWValidationException {
+    if (!Objects.equals(a, b)) {
+      throw new RFWValidationException("RFW_000013");
+    }
+  }
+
+  /**
+   * Requer que os objetos A e B sejam iguais. Testa o equals com null safe (ambos nulos são considerados iguais).
+   *
+   * @param a Objeto A para comparação
+   * @param b Objeto B para comparação
+   * @param message Mensagem/Código de Erro personalizado para a exceção.
+   * @throws RFWValidationException Lançado caso os objetos não satisfação o equals.
+   */
+  public static void requiredEquals(Object a, Object b, String message) throws RFWException {
+    if (!Objects.equals(a, b)) {
+      throw new RFWValidationException(message);
+    }
+  }
+
+  /**
+   * Requer que os objetos A e B sejam iguais. Testa o equals com null safe (ambos nulos são considerados iguais).
+   *
+   * @param a Objeto A para comparação
+   * @param b Objeto B para comparação
+   * @param message Mensagem/Código de Erro personalizado para a exceção.
+   * @throws RFWValidationException Lançado caso os objetos não satisfação o equals.
+   */
+  public static void requiredEqualsCritical(Object a, Object b, String message) throws RFWException {
+    if (!Objects.equals(a, b)) {
       throw new RFWCriticalException(message);
     }
   }
