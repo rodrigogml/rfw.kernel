@@ -49,6 +49,12 @@ import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 public class RUReflex {
 
   /**
+   * Construtor privado para classe utilitária com métodos exclusivamente estáticos.
+   */
+  private RUReflex() {
+  }
+
+  /**
    * Imprime os valores de um objeto simulando uma estrutura XML.<br>
    * Recupera os métodos Get para imprimir os objetos.
    */
@@ -1048,7 +1054,7 @@ public class RUReflex {
    * @param index índice do atributo no array.
    * @param basepath Caminho base.
    * @return Caminho Base + . + atributo[index] considerando os nulos e a necessidade de agregar os separadores.
-   * 
+   *
    */
   public static String getAttributePath(String attribute, int index, String basepath) {
     attribute = attribute + "[" + index + "]";
@@ -1226,4 +1232,45 @@ public class RUReflex {
     return retval;
   }
 
+  /**
+   * Método auxiliar para obter o "último atributo do caminho".<br>
+   *
+   * @param path Caminho para extrair o último bloco.
+   * @return Retorna o caminho pai. Ex:
+   *         <li>Se passado "a.b.c.d.e" este método deve retornar "e".
+   *         <li>Se passado "a" o método deve retornar "a".
+   *         <li>Se passado null ou "" retornamos null já que não temos nenhum atributo.
+   */
+  public static String getLastPath(String path) {
+    if (path == null || "".equals(path)) {
+      return null;
+    }
+    int p = path.lastIndexOf(".");
+    if (p == -1) {
+      return path;
+    } else {
+      return path.substring(p + 1, path.length());
+    }
+  }
+
+  /**
+   * Método auxiliar para obter o "caminho pai".<br>
+   *
+   * @param path Caminho para extrair o caminho pai.
+   * @return Retorna o caminho pai. Ex:
+   *         <li>Se passado "a.b.c.d.e" este método deve retornar "a.b.c.d".
+   *         <li>Se passado "a" o método deve retornar "" já que vazio é caminho raiz.
+   *         <li>Se passado "" retornamos null já que não temos um caminho pai.
+   */
+  public static String getParentPath(String path) {
+    if (path == null || "".equals(path)) {
+      return null;
+    }
+    int p = path.lastIndexOf(".");
+    if (p == -1) {
+      return "";
+    } else {
+      return path.substring(0, p);
+    }
+  }
 }

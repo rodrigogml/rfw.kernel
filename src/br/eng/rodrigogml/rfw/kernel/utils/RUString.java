@@ -356,4 +356,15 @@ public class RUString {
     if (value == null) return null;
     return value.replaceAll("\\D+", "");
   }
+
+  /**
+   * Cria uma String com n repetições de uma determinada cadeira de caracteres (ou caracter simples).
+   *
+   * @param repeats Número de repetições na String final.
+   * @param base Conteúdo a ser repetido na String.
+   * @return String montada conforme as definições. Com tamanho total = repeats * base.length();
+   */
+  public static String repeatString(int repeats, String base) {
+    return new String(new char[repeats]).replaceAll("\0", base);
+  }
 }
