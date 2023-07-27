@@ -3,6 +3,7 @@ package br.eng.rodrigogml.rfw.kernel.logger;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import br.eng.rodrigogml.rfw.kernel.bundle.RFWBundle;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 import br.eng.rodrigogml.rfw.kernel.utils.RUReflex;
@@ -172,7 +173,7 @@ public final class RFWLogger {
     StringWriter sw = new StringWriter();
     sw.write("<MESSAGE>");
     if (e instanceof RFWException) sw.write(((RFWException) e).getExceptionCode() + " - ");
-    sw.write(e.getLocalizedMessage() + "</MESSAGE>\r\n");
+    sw.write(RFWBundle.get(e) + "</MESSAGE>\r\n");
     // Verifica os paremetros para exibir no LOG
     if (e instanceof RFWException && ((RFWException) e).getParams() != null) {
       for (String p : ((RFWException) e).getParams()) {

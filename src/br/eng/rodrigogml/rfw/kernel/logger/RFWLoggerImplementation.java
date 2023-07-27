@@ -1,5 +1,6 @@
 package br.eng.rodrigogml.rfw.kernel.logger;
 
+import br.eng.rodrigogml.rfw.kernel.bundle.RFWBundle;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationGroupException;
 import br.eng.rodrigogml.rfw.kernel.utils.RUReflex;
@@ -71,7 +72,7 @@ public interface RFWLoggerImplementation {
       severity = RFWLogSeverity.VALIDATION;
     }
     String exPoint = e.getStackTrace()[0].toString();
-    log(severity, e.getLocalizedMessage(), RFWLogger.convertExceptionToString(e), exPoint);
+    log(severity, RFWBundle.get(e), RFWLogger.convertExceptionToString(e), exPoint);
   }
 
   /**
@@ -86,7 +87,7 @@ public interface RFWLoggerImplementation {
       severity = RFWLogSeverity.VALIDATION;
     }
     String exPoint = e.getStackTrace()[0].toString();
-    log(severity, e.getLocalizedMessage(), RFWLogger.convertExceptionToString(e), exPoint, tags);
+    log(severity, RFWBundle.get(e), RFWLogger.convertExceptionToString(e), exPoint, tags);
   }
 
   /**
