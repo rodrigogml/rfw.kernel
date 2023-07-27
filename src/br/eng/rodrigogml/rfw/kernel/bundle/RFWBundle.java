@@ -189,7 +189,7 @@ public class RFWBundle {
     String key = RUString.getEnumKey(value);
     String v = get(key);
     if (value != null && v == null) {
-      RFWLogger.logWarn("RFW_000007", new String[] { key });
+      RFWLogger.logWarn(RFWBundle.get("RFW_000007", new String[] { key }));
       return key;
     }
     return v;

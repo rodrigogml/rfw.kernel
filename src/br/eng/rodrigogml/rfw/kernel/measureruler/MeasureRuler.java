@@ -149,46 +149,46 @@ public final class MeasureRuler {
    * @throws RFWException
    */
   public static BigDecimal convertTo(MeasureRulerEquivalenceInterface equivalence, BigDecimal value, MeasureUnit startUnit, MeasureUnit endUnit, int precision) throws RFWException {
-    if (startUnit == null || endUnit == null || value == null) {
-      throw new RFWCriticalException("Para converter unidades de medidas, todas as informaçães são obrigatórias!");
+    PreProcess.requiredNonNullCritical(startUnit, "Para converter unidades de medidas, startUnit é obrigatório!");
+    PreProcess.requiredNonNullCritical(endUnit, "Para converter unidades de medidas, endUnit é obrigatório!");
+    PreProcess.requiredNonNullCritical(value, "Para converter unidades de medidas, value é obrigatório!");
+
+    BigDecimal startWeight = null;
+    BigDecimal endWeight = null;
+
+    if (startUnit.getDimension() != MeasureDimension.CUSTOM && startUnit.getDimension() == endUnit.getDimension()) {
+      startWeight = BigDecimal.ONE;
+      endWeight = BigDecimal.ONE;
     } else {
-      BigDecimal startWeight = null;
-      BigDecimal endWeight = null;
+      if (equivalence == null) throw new RFWValidationException("Não é possível converter entre Dimensões diferentes sem uma regra de equivalência definida! (${0} -> ${1}')", new String[] { RFWBundle.get(startUnit.getDimension()), RFWBundle.get(endUnit.getDimension()) });
 
-      if (startUnit.getDimension() != MeasureDimension.CUSTOM && startUnit.getDimension() == endUnit.getDimension()) {
-        startWeight = BigDecimal.ONE;
-        endWeight = BigDecimal.ONE;
-      } else {
-        if (equivalence == null) throw new RFWValidationException("Não é possível converter entre Dimensões diferentes sem uma regra de equivalência definida! (${0} -> ${1}')", new String[] { RFWBundle.get(startUnit.getDimension()), RFWBundle.get(endUnit.getDimension()) });
+      HashMap<MeasureUnit, BigDecimal> eqHash = equivalence.getMeasureUnitHash();
+      for (Entry<MeasureUnit, BigDecimal> entry : eqHash.entrySet()) {
+        MeasureUnit tmu = entry.getKey();
+        BigDecimal weight = entry.getValue();
 
-        HashMap<MeasureUnit, BigDecimal> eqHash = equivalence.getMeasureUnitHash();
-        for (Entry<MeasureUnit, BigDecimal> entry : eqHash.entrySet()) {
-          MeasureUnit tmu = entry.getKey();
-          BigDecimal weight = entry.getValue();
-
-          if (tmu.getDimension() == MeasureDimension.CUSTOM) {
-            if (startUnit.getDimension() == MeasureDimension.CUSTOM && tmu.getSymbol().equals(startUnit.getSymbol()) && tmu.name().equals(startUnit.name())) {
-              startWeight = weight.multiply(tmu.getRatio());
-            } else if (endUnit.getDimension() == MeasureDimension.CUSTOM && tmu.getSymbol().equals(endUnit.getSymbol()) && tmu.name().equals(endUnit.name())) {
-              endWeight = weight.multiply(tmu.getRatio());
-            }
-          } else {
-            if (startUnit.getClass() == tmu.getClass()) {
-              startWeight = weight.multiply(tmu.getRatio());
-            } else if (endUnit.getClass() == tmu.getClass()) {
-              endWeight = weight.multiply(tmu.getRatio());
-            }
+        if (tmu.getDimension() == MeasureDimension.CUSTOM) {
+          if (startUnit.getDimension() == MeasureDimension.CUSTOM && tmu.getSymbol().equals(startUnit.getSymbol()) && tmu.name().equals(startUnit.name())) {
+            startWeight = weight.multiply(tmu.getRatio());
+          } else if (endUnit.getDimension() == MeasureDimension.CUSTOM && tmu.getSymbol().equals(endUnit.getSymbol()) && tmu.name().equals(endUnit.name())) {
+            endWeight = weight.multiply(tmu.getRatio());
           }
-          if (startWeight != null && endWeight != null) break;
+        } else {
+          if (startUnit.getClass() == tmu.getClass()) {
+            startWeight = weight.multiply(tmu.getRatio());
+          } else if (endUnit.getClass() == tmu.getClass()) {
+            endWeight = weight.multiply(tmu.getRatio());
+          }
         }
-        if (startWeight == null) throw new RFWValidationException("Não foi possível converter as dimensões de medida pois a régua de equivalencias não tem informações para a '" + RFWBundle.get(startUnit) + "/" + RFWBundle.get(startUnit.getDimension()) + "'!");
-        if (endWeight == null) throw new RFWValidationException("Não foi possível converter as dimensões de medida pois a régua de equivalencias não tem informações para a '" + RFWBundle.get(endUnit) + "/" + RFWBundle.get(endUnit.getDimension()) + "'!");
+        if (startWeight != null && endWeight != null) break;
       }
-
-      BigDecimal num = value.multiply(startUnit.getRatio()).multiply(endWeight);
-      BigDecimal div = startWeight.multiply(endUnit.getRatio());
-      return num.divide(div, precision, RFW.getRoundingMode());
+      if (startWeight == null) throw new RFWValidationException("Não foi possível converter as dimensões de medida pois a régua de equivalencias não tem informações para a '" + RFWBundle.get(startUnit) + "/" + RFWBundle.get(startUnit.getDimension()) + "'!");
+      if (endWeight == null) throw new RFWValidationException("Não foi possível converter as dimensões de medida pois a régua de equivalencias não tem informações para a '" + RFWBundle.get(endUnit) + "/" + RFWBundle.get(endUnit.getDimension()) + "'!");
     }
+
+    BigDecimal num = value.multiply(startUnit.getRatio()).multiply(endWeight);
+    BigDecimal div = startWeight.multiply(endUnit.getRatio());
+    return num.divide(div, precision, RFW.getRoundingMode());
   }
 
   /**
