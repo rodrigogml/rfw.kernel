@@ -35,6 +35,14 @@ public final class MeasureRuler {
   private MeasureRuler() {
   }
 
+  /**
+   * Recupera a unidade de medida de acordo com o nome. Mesma função que o método {@link Enum#valueOf(Class, String)}, porém cruza entre todas a MeasureUnit conhecidas.<br>
+   * Este método não é capaz de obter valor para unidades de medidas personalizadas, pois cada sistema pode serializa-las de forma diferente.
+   *
+   * @param name Nome da enum de MeasureUnit para retornar o objeto.
+   * @return Enum da {@link MeasureDimension} encontrada.
+   * @throws RFWCriticalException Lançado caso o nome passado não seja identificado como nenhuma das {@link MeasureUnit} conhecidas.
+   */
   public static MeasureUnit valueOf(String name) throws RFWCriticalException {
     MeasureUnit result = null;
     try {
@@ -52,34 +60,7 @@ public final class MeasureRuler {
             try {
               result = Enum.valueOf(LengthUnit.class, name);
             } catch (IllegalArgumentException e4) {
-              // Se não é de nenhuma unidade acima, tentamos as EQUIVALENCIAS
-              // try {
-              // final String[] params = name.split("\\|");
-              // final EntityManager em = TransactionManager.getEntityManager();
-              // final CriteriaBuilder cb = em.getCriteriaBuilder();
-              // final CriteriaQuery<MeasureEquivalenceVO> cq = cb.createQuery(MeasureEquivalenceVO.class);
-              // final Root<MeasureEquivalenceVO> root = cq.from(MeasureEquivalenceVO.class);
-              //
-              // final MeasureEquivalenceVO_ v_ = MeasureEquivalenceVO_.VO;
-              // final RFWMO mo = new RFWMO();
-              // mo.equal(v_.measurerulervo().id(), params[0]);
-              // mo.equal(v_.measureCustomVO().id(), params[1]);
-              //
-              // cq.where(RFWDAO.createPredicateFromMO(cb, cq, root, mo));
-              // final TypedQuery<MeasureEquivalenceVO> query = em.createQuery(cq);
-              // if (query.getResultList().size() == 1) {
-              // MeasureEquivalenceVO equiVO = query.getResultList().get(0);
-              // RFWDAO.exploitAttribute(equiVO, MeasureEquivalenceVO_.vo().measureCustomVO().id(), em);
-              // RFWDAO.exploitAttribute(equiVO, MeasureEquivalenceVO_.vo().measurerulervo().id(), em);
-              // em.flush();
-              // em.detach(equiVO);
-              // result = new MeasureEquivalenceBean(equiVO);
-              // } else if (query.getResultList().size() > 1) {
-              // throw new RFWCriticalException("RFW_ERR_100713", e4);
-              // }
-              // } catch (Exception e5) {
-              // throw new RFWCriticalException("não foi possível desserializar o valor '" + name + "'", e4);
-              // }
+              throw new RFWCriticalException("Não foi possível desserializar o valor '" + name + "'", e4);
             }
           }
         }
