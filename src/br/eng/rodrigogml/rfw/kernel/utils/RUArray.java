@@ -1,9 +1,11 @@
 package br.eng.rodrigogml.rfw.kernel.utils;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 import br.eng.rodrigogml.rfw.kernel.bundle.RFWBundle;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
@@ -18,7 +20,7 @@ import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 public class RUArray {
 
   /**
-   *  Construtor privado para classe statica
+   * Construtor privado para classe statica
    */
   private RUArray() {
   }
@@ -308,4 +310,48 @@ public class RUArray {
     return buff.toString();
   }
 
+  /**
+   * Este método itera o array para remover os dados de um array. Sua lógica consiste em contabilizar quantos itens destinados a remoção são encontrados, reposicioar os itens do array para as posições dos itens que devem ser removidos e no fim realizar uma cópia do array descartando as últimas posições.
+   *
+   * @param <T> Tipo do Array que será operado
+   * @param dataArray Array com os dados que serão removidos.
+   * @param valueToRemove Array com os dados que devem ser removidos do array.
+   * @return
+   */
+  @SuppressWarnings("unchecked")
+  public static <T extends Object> T[] removeValues(T[] dataArray, T valueToRemove) {
+    T[] itemsToRemove = (T[]) Array.newInstance(valueToRemove.getClass(), 1);
+    itemsToRemove[0] = valueToRemove;
+    return removeValues(dataArray, itemsToRemove);
+  }
+
+  /**
+   * Este método itera o array para remover os dados de um array. Sua lógica consiste em contabilizar quantos itens destinados a remoção são encontrados, reposicioar os itens do array para as posições dos itens que devem ser removidos e no fim realizar uma cópia do array descartando as últimas posições.
+   *
+   * @param <T> Tipo do Array que será operado
+   * @param dataArray Array com os dados que serão removidos.
+   * @param valuesToRemove Array com os dados que devem ser removidos do array.
+   * @return
+   */
+  public static <T extends Object> T[] removeValues(T[] dataArray, T[] valuesToRemove) {
+
+    int writePos = 0; // Ponteiro de escrita do Array
+
+    for (int i = 0; i < dataArray.length; i++) {
+      boolean found = false;
+      for (int j = 0; j < valuesToRemove.length; j++) {
+        if (Objects.equals(valuesToRemove[j], dataArray[i])) {
+          found = true;
+          break;
+        }
+      }
+
+      if (!found) {
+        dataArray[writePos] = dataArray[i];
+        writePos++;
+      }
+    }
+
+    return Arrays.copyOf(dataArray, writePos);
+  }
 }
