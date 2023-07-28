@@ -1,5 +1,8 @@
 package br.eng.rodrigogml.rfw.kernel.utils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 
@@ -26,64 +29,27 @@ public class RUMail {
   }
 
   /**
-   * Valida se a string passada é um e-mail. Aceita apenas o e-mail e não uma string contendo um e-mail.
+   * Valida se o endereço é válido de acordo com a RFC822.<br>
    *
-   * @param mail E-mail a ser validado.
-   * @throws RFWException lança a exceção com a mensagem do porque o e-mail não é válido.
+   * @param mail
+   * @throws RFWException
    */
   public static void validateMailAddress(String mail) throws RFWException {
-    if (mail == null) throw new RFWValidationException("RFW_ERR_200489");
+    if (mail == null) throw new RFWValidationException("RFW_000018");
+    // try {
+    // InternetAddress emailAddr = new InternetAddress(mail);
+    // emailAddr.validate();
+    // } catch (AddressException ex) {
+    // throw new RFWValidationException("O endereço de e-mail não é um endereço válido.");
+    // }
+    // Implementação removendo a dependência do javamail durante a migração para o RFW Kernel
+    String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
-    // 1-Quebramos o valor pela @ para pegar o usuário e o domain do e-mail.
-    String[] parts = mail.toString().split("@");
-    if (parts.length != 2) {
-      throw new RFWValidationException("RFW_ERR_200317", new String[] { mail });
-    }
-    // Pattern geral usado apenas para validar se os caractes usados no e-mail são validos
-    String generalpatter = mailAcceptedChar + "+";
-    // 2- Validamos a parte do usuário
-    if (!parts[0].matches(generalpatter)) {
-      throw new RFWValidationException("RFW_ERR_200318", new String[] { mail });
-    }
-    if (parts[0].indexOf("..") >= 0) {
-      throw new RFWValidationException("RFW_ERR_200319", new String[] { mail });
-    }
-    if (parts[0].charAt(0) == '.' || parts[0].charAt(parts[0].length() - 1) == '.') {
-      throw new RFWValidationException("RFW_ERR_200320", new String[] { mail });
-    }
-    if (parts[0].length() > 64) {
-      throw new RFWValidationException("RFW_ERR_200322", new String[] { mail });
-    }
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(mail);
 
-    // 3-Validamos o domain
-    if (!parts[1].matches(generalpatter)) {
-      throw new RFWValidationException("RFW_ERR_200318", new String[] { mail });
-    }
-    if (parts[1].indexOf("..") >= 0) {
-      throw new RFWValidationException("RFW_ERR_200319", new String[] { mail });
-    }
-    if (parts[1].indexOf("--") >= 0) {
-      throw new RFWValidationException("RFW_ERR_200325", new String[] { mail });
-    }
-    if (parts[1].charAt(0) == '.' || parts[1].charAt(parts[1].length() - 1) == '.') {
-      throw new RFWValidationException("RFW_ERR_200321", new String[] { mail });
-    }
-    if (parts[1].length() > 253) {
-      throw new RFWValidationException("RFW_ERR_200323", new String[] { mail });
-    }
-    // Validamos se todos os domínios do e-mail têm menos de 63 caracteres.
-    String[] domainparts = parts[1].split("\\.");
-    for (int i = 0; i < domainparts.length; i++) {
-      if (domainparts[i].length() > 63) {
-        throw new RFWValidationException("RFW_ERR_200324", new String[] { mail });
-      }
-      if (domainparts[i].charAt(0) == '-' || domainparts[i].charAt(domainparts[i].length() - 1) == '-') {
-        throw new RFWValidationException("RFW_ERR_200326", new String[] { mail });
-      }
-    }
-    // Valida se a parte mais a direia é só alfabética
-    if (!domainparts[domainparts.length - 1].matches("[A-Za-z]+")) {
-      throw new RFWValidationException("RFW_ERR_200327", new String[] { mail });
+    if (!matcher.matches()) {
+      throw new RFWValidationException("O endereço de e-mail não é um endereço válido.");
     }
   }
 }
