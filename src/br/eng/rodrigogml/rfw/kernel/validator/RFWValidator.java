@@ -396,53 +396,55 @@ public abstract class RFWValidator {
    * @param basepath Caminho base até chegar nesta validação
    */
   private void validateUniqueConstraint(Class<? extends RFWVO> voClass, RFWVO vo, String basepath) throws RFWException {
-    // Recuperamos a anotação se suas definições
-    final RFWMetaUniqueConstraint ann = voClass.getAnnotation(RFWMetaUniqueConstraint.class);
+    // Busca no banco se temos
+    if (areDataBaseValidationsEnabled()) {
+      // Recuperamos a anotação se suas definições
+      final RFWMetaUniqueConstraint ann = voClass.getAnnotation(RFWMetaUniqueConstraint.class);
 
-    // Verificamos os valores dos campos definidos na constraint
-    Object[] value = new Object[ann.fields().length];
-    String[] fieldcaptions = new String[ann.fields().length];
-    for (int i = 0; i < ann.fields().length; i++) {
-      String fieldname = ann.fields()[i];
-      try {
-        value[i] = RUReflex.getPropertyValue(vo, fieldname);
-        fieldcaptions[i] = RUReflex.getRFWMetaAnnotationCaption(vo.getClass(), ann.fields()[i]);
-      } catch (Exception e) {
-        throw new RFWCriticalException("BISMetaField '${1}' usado em um campo não compatível no '${2} da '${0}'.", new String[] { voClass.getCanonicalName(), RFWMetaUniqueConstraint.class.getName(), fieldname }, e);
-      }
-    }
-
-    // Montamos o MO para verificar se encontramos um objeto no banco com os mesmos valores
-    RFWMO mo = new RFWMO();
-    try {
-      for (int i = 0; i < value.length; i++) {
-        Object object = value[i];
+      // Verificamos os valores dos campos definidos na constraint
+      Object[] value = new Object[ann.fields().length];
+      String[] fieldcaptions = new String[ann.fields().length];
+      for (int i = 0; i < ann.fields().length; i++) {
         String fieldname = ann.fields()[i];
-
-        // Se o valor da propriedade for null vamos utilizar o método de isnull do MO
-        if (object == null) {
-          mo.isNull(fieldname);
-        } else {
-          if (object instanceof RFWVO) {
-            // Se o ID estiver nulo, abortamos a validação, pois consideramos que esse ID nulo seja de um objeto que ainda será persistido. Logo não terá problema de constraint. (talvez tenha problema se o próprio objeto estiver criando objetos com contraints duplicadas.
-            if (((RFWVO) value[i]).getId() == null) return;
-            // Se for um RFWVO, buscamos pela igualdade do seu ID e não do próprio objeto
-            mo.equal(fieldname + ".id", ((RFWVO) value[i]).getId());
-          } else {
-            mo.equal(fieldname, value[i]);
-          }
+        try {
+          value[i] = RUReflex.getPropertyValue(vo, fieldname);
+          fieldcaptions[i] = RUReflex.getRFWMetaAnnotationCaption(vo.getClass(), ann.fields()[i]);
+        } catch (Exception e) {
+          throw new RFWCriticalException("BISMetaField '${1}' usado em um campo não compatível no '${2} da '${0}'.", new String[] { voClass.getCanonicalName(), RFWMetaUniqueConstraint.class.getName(), fieldname }, e);
         }
       }
-      // Caso o VO tenha um ID, adicionamos a condição de não aceitar esse objeto na busca para evitar de contrastar a constraint com esse próprio objeto no caso de um update.
-      if (vo.getId() != null) mo.notEqual("id", vo.getId());
-    } catch (Exception e) {
-      throw new RFWCriticalException("Falha ao montar MO para teste de UniqueConstraint: '${0}'.", new String[] { e.getMessage() }, e);
-    }
 
-    // Busca no banco se temos
-    RFWVO dbvo = findUniqueMatch(voClass, mo);
-    if (dbvo != null) {
-      throw new RFWValidationException("Já existe um cadastro com os mesmos valores nos campos: ${fieldname}!", createPath(basepath, ann.fields()[0], null), voClass.getCanonicalName(), fieldcaptions);
+      // Montamos o MO para verificar se encontramos um objeto no banco com os mesmos valores
+      RFWMO mo = new RFWMO();
+      try {
+        for (int i = 0; i < value.length; i++) {
+          Object object = value[i];
+          String fieldname = ann.fields()[i];
+
+          // Se o valor da propriedade for null vamos utilizar o método de isnull do MO
+          if (object == null) {
+            mo.isNull(fieldname);
+          } else {
+            if (object instanceof RFWVO) {
+              // Se o ID estiver nulo, abortamos a validação, pois consideramos que esse ID nulo seja de um objeto que ainda será persistido. Logo não terá problema de constraint. (talvez tenha problema se o próprio objeto estiver criando objetos com contraints duplicadas.
+              if (((RFWVO) value[i]).getId() == null) return;
+              // Se for um RFWVO, buscamos pela igualdade do seu ID e não do próprio objeto
+              mo.equal(fieldname + ".id", ((RFWVO) value[i]).getId());
+            } else {
+              mo.equal(fieldname, value[i]);
+            }
+          }
+        }
+        // Caso o VO tenha um ID, adicionamos a condição de não aceitar esse objeto na busca para evitar de contrastar a constraint com esse próprio objeto no caso de um update.
+        if (vo.getId() != null) mo.notEqual("id", vo.getId());
+      } catch (Exception e) {
+        throw new RFWCriticalException("Falha ao montar MO para teste de UniqueConstraint: '${0}'.", new String[] { e.getMessage() }, e);
+      }
+
+      RFWVO dbvo = findUniqueMatch(voClass, mo);
+      if (dbvo != null) {
+        throw new RFWValidationException("Já existe um cadastro com os mesmos valores nos campos: ${fieldname}!", createPath(basepath, ann.fields()[0], null), voClass.getCanonicalName(), fieldcaptions);
+      }
     }
   }
 
@@ -521,34 +523,36 @@ public abstract class RFWValidator {
    * @param basepath Caminho base até chegar nesta validação
    */
   private void validateUsedBy(Class<? extends RFWVO> voClass, Long id, String basepath) throws RFWException {
-    // Recuperamos a anotação se suas definições
-    RFWMetaUsedBy[] annlist = voClass.getAnnotationsByType(RFWMetaUsedBy.class);
-    if (annlist != null) {
-      for (int j = 0; j < annlist.length; j++) {
-        final RFWMetaUsedBy ann = annlist[j];
+    if (areDataBaseValidationsEnabled()) {
+      // Recuperamos a anotação se suas definições
+      RFWMetaUsedBy[] annlist = voClass.getAnnotationsByType(RFWMetaUsedBy.class);
+      if (annlist != null) {
+        for (int j = 0; j < annlist.length; j++) {
+          final RFWMetaUsedBy ann = annlist[j];
 
-        // Procuramos na classe dependente a anotação do BISDepency cujo alvo seja esta classe
-        RFWMetaDependency[] dependentTargetVOClass = ann.voClass().getAnnotationsByType(RFWMetaDependency.class);
-        boolean found = false;
-        if (dependentTargetVOClass != null) {
-          for (int i = 0; i < dependentTargetVOClass.length; i++) {
-            RFWMetaDependency dependentAnn = dependentTargetVOClass[i];
-            if (dependentAnn.voClass().equals(voClass)) {
-              found = true;
-              // Se encontramos a annotationd e dependecy na outra classe, buscamos através do MO se alguma classe está usando este objeto
-              RFWMO mo = new RFWMO();
-              mo.equal(dependentAnn.attribute() + ".id", id);
+          // Procuramos na classe dependente a anotação do BISDepency cujo alvo seja esta classe
+          RFWMetaDependency[] dependentTargetVOClass = ann.voClass().getAnnotationsByType(RFWMetaDependency.class);
+          boolean found = false;
+          if (dependentTargetVOClass != null) {
+            for (int i = 0; i < dependentTargetVOClass.length; i++) {
+              RFWMetaDependency dependentAnn = dependentTargetVOClass[i];
+              if (dependentAnn.voClass().equals(voClass)) {
+                found = true;
+                // Se encontramos a annotationd e dependecy na outra classe, buscamos através do MO se alguma classe está usando este objeto
+                RFWMO mo = new RFWMO();
+                mo.equal(dependentAnn.attribute() + ".id", id);
 
-              // Busca no banco se temos
-              List<Long> list = findIDs(ann.voClass(), mo);
-              if (list != null && list.size() > 0) {
-                throw new RFWValidationException("O cadastro está em uso no momento e não pode ser exclúido!", new String[] { "" + list.get(0) }, createPath(basepath, "id", null), ann.voClass().getCanonicalName(), null);
+                // Busca no banco se temos
+                List<Long> list = findIDs(ann.voClass(), mo);
+                if (list != null && list.size() > 0) {
+                  throw new RFWValidationException("O cadastro está em uso no momento e não pode ser exclúido!", new String[] { "" + list.get(0) }, createPath(basepath, "id", null), ann.voClass().getCanonicalName(), null);
+                }
               }
             }
           }
-        }
-        if (!found) {
-          throw new RFWCriticalException("Impossível encontrar a annotation RFWMetaDependency na classe '${0}' com dependência para a classe '${1}'.", new String[] { ann.voClass().getCanonicalName(), voClass.getCanonicalName() });
+          if (!found) {
+            throw new RFWCriticalException("Impossível encontrar a annotation RFWMetaDependency na classe '${0}' com dependência para a classe '${1}'.", new String[] { ann.voClass().getCanonicalName(), voClass.getCanonicalName() });
+          }
         }
       }
     }
@@ -599,10 +603,12 @@ public abstract class RFWValidator {
                 throw new RFWValidationException("Associação inválida! É esperado um objeto pré-existente no atributo '${fieldname}'!", createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
               }
             } else {
-              // Valida se o objeto já está no banco de dados...
-              RFWVO dbvo = find((Class<? extends RFWVO>) value.getClass(), ((RFWVO) value).getId());
-              if (dbvo == null) {
-                throw new RFWCriticalException("O objeto associado não foi encontrado no banco de dados! Atributo: '${0}'", new String[] { field.getName() });
+              if (areDataBaseValidationsEnabled()) {
+                // Valida se o objeto já está no banco de dados...
+                RFWVO dbvo = find((Class<? extends RFWVO>) value.getClass(), ((RFWVO) value).getId());
+                if (dbvo == null) {
+                  throw new RFWCriticalException("O objeto associado não foi encontrado no banco de dados! Atributo: '${0}'", new String[] { field.getName() });
+                }
               }
               // Valida unicidade do relacionamento
               if (ann.unique()) {
@@ -622,9 +628,11 @@ public abstract class RFWValidator {
                 throw new RFWCriticalException("A associação, ou seu ID, do atributo '${0}' da classe '${1}' é nulo!", new String[] { field.getName(), voClass.getCanonicalName() });
               }
               // agora se cada existe no banco
-              final RFWVO dbvo = find((Class<? extends RFWVO>) listvo.getClass(), ((RFWVO) listvo).getId());
-              if (dbvo == null) {
-                throw new RFWCriticalException("'${fieldname}' contém uma associação com um objeto que não foi encontrado na base de dados: '${0}' / ID: '${1}'.", new String[] { listvo.getClass().getCanonicalName(), "" + ((RFWVO) listvo).getId() });
+              if (areDataBaseValidationsEnabled()) {
+                final RFWVO dbvo = find((Class<? extends RFWVO>) listvo.getClass(), ((RFWVO) listvo).getId());
+                if (dbvo == null) {
+                  throw new RFWCriticalException("'${fieldname}' contém uma associação com um objeto que não foi encontrado na base de dados: '${0}' / ID: '${1}'.", new String[] { listvo.getClass().getCanonicalName(), "" + ((RFWVO) listvo).getId() });
+                }
               }
             }
             // Se o relacionamento for marcado como único, verificamos se cada uma das associações não está em uso por outro objeto
@@ -639,14 +647,16 @@ public abstract class RFWValidator {
                       throw new RFWValidationException("'${fieldname}' duplicado!. Não podem existir dois cadastros com o mesmo '${fieldname}'.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
                     }
                   }
-                  // Busca algum outro relacionamento com este mesmo objeto no banco de dados.
-                  RFWMO mo = new RFWMO();
-                  mo.equal(field.getName() + ".id", ((RFWVO) assocVO).getId());
-                  // Caso este objeto tenha um ID, garantimos que a busca não vai encontrar esse próprio objeto na busca, afinal em caso de update o relacionamento pode já existir no banco
-                  mo.notEqual("id", vo.getId());
-                  List<Long> foundList = findIDs(voClass, mo);
-                  if (foundList != null && foundList.size() > 0) {
-                    throw new RFWValidationException("'${fieldname}' duplicado. Não podem existir dois cadastros com o mesmo '${fieldname}'.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+                  if (areDataBaseValidationsEnabled()) {
+                    // Busca algum outro relacionamento com este mesmo objeto no banco de dados.
+                    RFWMO mo = new RFWMO();
+                    mo.equal(field.getName() + ".id", ((RFWVO) assocVO).getId());
+                    // Caso este objeto tenha um ID, garantimos que a busca não vai encontrar esse próprio objeto na busca, afinal em caso de update o relacionamento pode já existir no banco
+                    mo.notEqual("id", vo.getId());
+                    List<Long> foundList = findIDs(voClass, mo);
+                    if (foundList != null && foundList.size() > 0) {
+                      throw new RFWValidationException("'${fieldname}' duplicado. Não podem existir dois cadastros com o mesmo '${fieldname}'.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+                    }
                   }
                 }
               }
@@ -664,9 +674,11 @@ public abstract class RFWValidator {
                 throw new RFWCriticalException("A associação, ou seu ID, do atributo '${0}' da classe '${1}' é nulo!", new String[] { field.getName(), voClass.getCanonicalName() });
               }
               // agora se cada existe no banco
-              final RFWVO dbvo = find((Class<? extends RFWVO>) listvo.getClass(), ((RFWVO) listvo).getId());
-              if (dbvo == null) {
-                throw new RFWCriticalException("'${fieldname}' contém uma associação com um objeto que não foi encontrado na base de dados: '${0}' / ID: '${1}'.", new String[] { listvo.getClass().getCanonicalName(), "" + ((RFWVO) listvo).getId() });
+              if (areDataBaseValidationsEnabled()) {
+                final RFWVO dbvo = find((Class<? extends RFWVO>) listvo.getClass(), ((RFWVO) listvo).getId());
+                if (dbvo == null) {
+                  throw new RFWCriticalException("'${fieldname}' contém uma associação com um objeto que não foi encontrado na base de dados: '${0}' / ID: '${1}'.", new String[] { listvo.getClass().getCanonicalName(), "" + ((RFWVO) listvo).getId() });
+                }
               }
             }
             // Se o relacionamento for marcado como único, verificamos se cada uma das associações não está em uso por outro objeto
@@ -682,13 +694,15 @@ public abstract class RFWValidator {
                     }
                   }
                   // Busca algum outro relacionamento com este mesmo objeto no banco de dados.
-                  RFWMO mo = new RFWMO();
-                  mo.equal(field.getName() + ".id", ((RFWVO) assocVO).getId());
-                  // Caso este objeto tenha um ID, garantimos que a busca não vai encontrar esse próprio objeto na busca, afinal em caso de update o relacionamento pode já existir no banco
-                  mo.notEqual("id", vo.getId());
-                  List<Long> foundList = findIDs(voClass, mo);
-                  if (foundList != null && foundList.size() > 0) {
-                    throw new RFWValidationException("'${fieldname}' duplicado. Não podem existir dois cadastros com o mesmo '${fieldname}'.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+                  if (areDataBaseValidationsEnabled()) {
+                    RFWMO mo = new RFWMO();
+                    mo.equal(field.getName() + ".id", ((RFWVO) assocVO).getId());
+                    // Caso este objeto tenha um ID, garantimos que a busca não vai encontrar esse próprio objeto na busca, afinal em caso de update o relacionamento pode já existir no banco
+                    mo.notEqual("id", vo.getId());
+                    List<Long> foundList = findIDs(voClass, mo);
+                    if (foundList != null && foundList.size() > 0) {
+                      throw new RFWValidationException("'${fieldname}' duplicado. Não podem existir dois cadastros com o mesmo '${fieldname}'.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+                    }
                   }
                 }
               }
@@ -749,9 +763,11 @@ public abstract class RFWValidator {
               }
             } else {
               // Valida se o objeto já está no banco de dados...
-              RFWVO dbvo = find((Class<? extends RFWVO>) value.getClass(), ((RFWVO) value).getId());
-              if (dbvo == null) {
-                throw new RFWCriticalException("O objeto associado não foi encontrado no banco de dados! Atributo: '${0}'", new String[] { field.getName() });
+              if (areDataBaseValidationsEnabled()) {
+                RFWVO dbvo = find((Class<? extends RFWVO>) value.getClass(), ((RFWVO) value).getId());
+                if (dbvo == null) {
+                  throw new RFWCriticalException("O objeto associado não foi encontrado no banco de dados! Atributo: '${0}'", new String[] { field.getName() });
+                }
               }
               // Valida unicidade do relacionamento
               if (ann.unique()) {
@@ -770,9 +786,11 @@ public abstract class RFWValidator {
               // ... Não causamos erro aqui pq ele pode ser inserido junto com o objeto, mesmo que este objeto seja inserido no banco antes do INNER_ASSOCIATION, ele entra na lista de pendências. Se no final ele ainda não estiver pronto para ser associado, o RFWDAO causará erro posterior
             } else {
               // Valida se o objeto já está no banco de dados...
-              RFWVO dbvo = find((Class<? extends RFWVO>) value.getClass(), ((RFWVO) value).getId());
-              if (dbvo == null) {
-                throw new RFWCriticalException("O objeto associado não foi encontrado no banco de dados mesmo já vindo com um ID definido! Atributo: '${0}'", new String[] { field.getName() });
+              if (areDataBaseValidationsEnabled()) {
+                RFWVO dbvo = find((Class<? extends RFWVO>) value.getClass(), ((RFWVO) value).getId());
+                if (dbvo == null) {
+                  throw new RFWCriticalException("O objeto associado não foi encontrado no banco de dados mesmo já vindo com um ID definido! Atributo: '${0}'", new String[] { field.getName() });
+                }
               }
               // Valida a unicidade do relacionamento
               if (ann.unique()) {
@@ -1821,5 +1839,12 @@ public abstract class RFWValidator {
    * @throws RFWException
    */
   protected abstract RFWVO findUniqueMatch(Class<? extends RFWVO> voClass, RFWMO mo) throws RFWException;
+
+  /**
+   * Indicador para o RFWValidator saber se deve ou não realizar as validações que incluem consulta no banco de dados.
+   *
+   * @return true caso deva fazer as consultas no banco de dados, falso caso contrário.
+   */
+  protected abstract boolean areDataBaseValidationsEnabled();
 
 }
