@@ -455,9 +455,21 @@ public final class PreProcess {
    * Valida se o objeto passado não é nulo. Caso seja lança {@link RFWValidationException} com mensagem personalizada.
    *
    * @param value Objeto a ser testado.
+   * @param msg Mensagem/Código da Exception a ser colocado na Exception
    */
   public static void requiredNonNull(Object value, String msg) throws RFWException {
     if (value == null) throw new RFWValidationException(msg);
+  }
+
+  /**
+   * Valida se o objeto passado não é nulo. Caso seja lança {@link RFWValidationException} com mensagem personalizada.
+   *
+   * @param value Objeto a ser testado.
+   * @param msg Mensagem/Código da Exception a ser colocado na Exception
+   * @param params Argumentos para serem usados como substitutos de campos ${i} na mensagem de erro.
+   */
+  public static void requiredNonNull(Object value, String msg, String[] params) throws RFWException {
+    if (value == null) throw new RFWValidationException(msg, params);
   }
 
   /**
@@ -475,9 +487,22 @@ public final class PreProcess {
    * Lança uma exception Crítica.
    *
    * @param value Objeto a ser testado.
+   * @param msg Mensagem/Código da Exception a ser colocado na Exception
    */
   public static void requiredNonNullCritical(Object value, String msg) throws RFWException {
     if (value == null) throw new RFWCriticalException(msg);
+  }
+
+  /**
+   * Valida se o objeto passado não é nulo. Caso seja lança exceção com mensagem personalizada.<br>
+   * Lança uma exception Crítica.
+   *
+   * @param value Objeto a ser testado.
+   * @param msg Mensagem/Código da Exception a ser colocado na Exception
+   * @param params Argumentos para serem usados como substitutos de campos ${i} na mensagem de erro.
+   */
+  public static void requiredNonNullCritical(Object value, String msg, String[] params) throws RFWException {
+    if (value == null) throw new RFWCriticalException(msg, params);
   }
 
   /**
@@ -493,6 +518,7 @@ public final class PreProcess {
    * Valida se o objeto passado é nulo. Caso seja lança {@link RFWValidationException} com mensagem personalizada.
    *
    * @param value Objeto a ser testado.
+   * @param msg Mensagem/Código da Exception a ser colocado na Exception
    */
   public static void requiredNull(Object value, String msg) throws RFWException {
     if (value != null) throw new RFWValidationException(msg);
@@ -513,6 +539,7 @@ public final class PreProcess {
    * Lança uma exception Crítica.
    *
    * @param value Objeto a ser testado.
+   * @param msg Mensagem/Código da Exception a ser colocado na Exception
    */
   public static void requiredNullCritical(Object value, String msg) throws RFWException {
     if (value != null) throw new RFWCriticalException(msg);

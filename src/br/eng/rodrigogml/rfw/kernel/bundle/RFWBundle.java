@@ -103,7 +103,7 @@ public class RFWBundle {
         }
 
         // Substitui os parametros
-        replaceParameters(msg, e.getParams());
+        msg = replaceParameters(msg, e.getParams());
 
         if (msg != null) {
           // Substitui variáveis da exception de validação

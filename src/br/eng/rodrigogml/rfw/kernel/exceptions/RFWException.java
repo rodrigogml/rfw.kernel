@@ -1,5 +1,6 @@
 package br.eng.rodrigogml.rfw.kernel.exceptions;
 
+import br.eng.rodrigogml.rfw.kernel.bundle.RFWBundle;
 import br.eng.rodrigogml.rfw.kernel.utils.RUGenerators;
 
 /**
@@ -115,6 +116,19 @@ public abstract class RFWException extends Exception {
    */
   public String getUuid() {
     return uuid;
+  }
+
+  /**
+   * Sobrescreve este método para que seja exibido no console a mensagem de erro
+   */
+  @Override
+  public String getMessage() {
+    return RFWBundle.get(this);
+  }
+
+  @Override
+  public String getLocalizedMessage() {
+    return RFWBundle.get(this);
   }
 
 }
