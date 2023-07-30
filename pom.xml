@@ -44,7 +44,7 @@
 						<id>libs</id>
 						<phase>package</phase>
 						<goals>
-							<goal>copy-dependencies</goal>
+							<goal>copy</goal>
 						</goals>
 						<configuration>
 							<!-- exclude junit, we need runtime dependency only -->
