@@ -37,6 +37,7 @@ import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaCollectionField;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaEncrypt;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaRelationshipField;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaStringField;
+import br.eng.rodrigogml.rfw.kernel.vo.GVO;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWMO;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 
@@ -1272,5 +1273,17 @@ public class RUReflex {
     } else {
       return path.substring(0, p);
     }
+  }
+
+  /**
+   * Transforma uma Coleção de GVO em uma Lista contendo todos os VOs internos.
+   *
+   * @param <VO> Qualquer classe de VO do {@link RFWVO} (extenda {@link RFWVO}).
+   * @param vos Array com os {@link GVO}s
+   * @return Lista contendo todos os {@link RFWVO}s dos {@link GVO}s recebidos.
+   * @throws RFWException
+   */
+  public static <VO extends RFWVO> List<VO> collectGVOToVOList(Collection<GVO<VO>> vos) throws RFWException {
+    return vos.stream().map(GVO::getVO).collect(Collectors.toList());
   }
 }
