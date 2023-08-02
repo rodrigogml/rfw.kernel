@@ -180,12 +180,13 @@ public class RFWBundle {
   /**
    * Recupera um Bundle definido para uma enumeration. Note que a chave da enumeration é definida conforme seu package, class, nome da enum e valor da enum.<br>
    * Para mais informações veja o método {@link RUString#getEnumKey(Enum)} <br>
-   * Caso o conteúdo não seja encontrado no bundle, é lançado um {@link RFWLogger#logWarn(String)}
+   * Caso o conteúdo não seja encontrado no bundle, é registrado um {@link RFWLogger#logWarn(String)} com o código "RFW_000007" e a chave do enumeration que não foi encontrada no bundle.
    *
    * @param value Enumeration
-   * @return Bundle do enumeration, ou a própria enumeration (caminho completo do objeto) caso a chave não seja encontrada no bundle.
+   * @return Bundle do enumeration, ou a própria enumeration (caminho completo do objeto) caso a chave não seja encontrada no bundle. Retorna null caso o parâmetro calue seja nulo.
    */
   public static String get(Enum<?> value) {
+    if (value == null) return null;
     String key = RUString.getEnumKey(value);
     String v = get(key);
     if (value != null && v == null) {
