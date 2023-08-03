@@ -165,9 +165,14 @@ public class EventDispatcher {
             }
 
             // Disparamos uma Thread para cada evento recebido, exatamente como se fosse um evento do fire(), se tivermos listeners para esse evento
-            final HashSet<EventDispatcherListener> listenersSet;
+            HashSet<EventDispatcherListener> listenersSet;
             synchronized (listeners) {
-              listenersSet = new HashSet<>(listeners.get(eventID));
+              final HashSet<EventDispatcherListener> tmpSet = listeners.get(eventID);
+              if (tmpSet != null) {
+                listenersSet = new HashSet<>(tmpSet);
+              } else {
+                listenersSet = null;
+              }
             }
             if (listenersSet != null && listenersSet.size() > 0) {
               HashMap<String, Object> eventParamFinal = eventParam;
