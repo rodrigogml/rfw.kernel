@@ -32,6 +32,7 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWRunTimeException;
 import br.eng.rodrigogml.rfw.kernel.logger.RFWLogger;
+import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess.PreProcessOption;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaCollectionField;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaEncrypt;
@@ -598,7 +599,7 @@ public class RUReflex {
 
     // Continuamos normalmente agora que pegamos a classe correta para obter o atributo
     try {
-      if (!"id".equals(attribute)) field = voClass.getDeclaredField(getCleanPath(attribute));
+      if (!"id".equals(attribute)) field = getDeclaredFieldRecursively(voClass, getCleanPath(attribute));
     } catch (Exception e) {
       throw new RFWCriticalException("Falha ao encontrar uma RFWMeta annotation no atributo '${0}' da classe '${1}'", new String[] { attribute, voClass.getCanonicalName() }, e);
     }
@@ -613,6 +614,50 @@ public class RUReflex {
       }
     }
     return ann;
+  }
+
+  /**
+   * Busca um 'field' por reflaxão na classe passada, se não encontrar continua buscando recursivamente nas classes pais até encontrar.
+   *
+   * @param voClass Classe extendendo o {@link RFWVO} para obter o 'field'
+   * @param attribute Nome do atributo ('field') para buscar.
+   * @return Objeto representando a definição do 'field' no objeto passado ou classe pai mais imediata que contenha a definição.
+   * @throws RFWException Lançado caso o field não seja encontrado na hierarquia ('RFW_000020')
+   */
+  @SuppressWarnings("unchecked")
+  public static Field getDeclaredFieldRecursively(Class<? extends RFWVO> voClass, String attribute) throws RFWException {
+    PreProcess.requiredNonNull(voClass);
+    PreProcess.requiredNonNull(attribute);
+
+    Field field = null;
+    while (voClass != null && field == null) {
+      try {
+        field = voClass.getDeclaredField(attribute);
+      } catch (NoSuchFieldException e) {
+        voClass = (Class<? extends RFWVO>) voClass.getSuperclass();
+      }
+    }
+    if (field == null) throw new RFWCriticalException("RFW_000020", new String[] { attribute, voClass.getCanonicalName() });
+    return field;
+  }
+
+  /**
+   * Busca as definições dos fields da classe com o método {@link Class#getDeclaredFields()} da classe passada e de todas as classes acima na hierarquia.
+   *
+   * @param voClass Classe do objeto que extenda {@link RFWVO} para objter as declarações de todos os fields na hierarquia.
+   * @return Array com a declaração de todos os fields encontrados.
+   * @throws RFWException Lançado em caso de falha do sistema.
+   */
+  @SuppressWarnings("unchecked")
+  public static Field[] getDeclaredFieldsRecursively(Class<? extends RFWVO> voClass) throws RFWException {
+    PreProcess.requiredNonNull(voClass);
+
+    Field[] fields = new Field[0];
+    while (voClass != null) {
+      fields = RUArray.addValues(fields, voClass.getDeclaredFields());
+      voClass = (Class<? extends RFWVO>) voClass.getSuperclass();
+    }
+    return fields;
   }
 
   /**
