@@ -50,7 +50,7 @@ public class LocationCityVO extends RFWVO {
   /**
    * Estado à qual este município pertence.
    */
-  @RFWMetaRelationshipField(caption = "Estado", relationship = RelationshipTypes.ASSOCIATION, required = true, column = "idk_locationstate")
+  @RFWMetaRelationshipField(caption = "Estado", relationship = RelationshipTypes.ASSOCIATION, required = true)
   private LocationStateVO locationStateVO = null;
 
   /**

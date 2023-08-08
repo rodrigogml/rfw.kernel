@@ -36,7 +36,7 @@ public class LocationStateVO extends RFWVO {
   /**
    * País ao qual este estado pertence.
    */
-  @RFWMetaRelationshipField(caption = "País", required = true, relationship = RelationshipTypes.ASSOCIATION, column = "idk_locationcountry")
+  @RFWMetaRelationshipField(caption = "País", required = true, relationship = RelationshipTypes.ASSOCIATION)
   private LocationCountryVO locationCountryVO = null;
 
   /**

@@ -43,7 +43,7 @@ public class LocationAddressVO extends RFWVO {
   /**
    * Cidade à qual este endereço pertence.
    */
-  @RFWMetaRelationshipField(caption = "Cidade", required = true, relationship = RelationshipTypes.ASSOCIATION, column = "idk_locationcity")
+  @RFWMetaRelationshipField(caption = "Cidade", required = true, relationship = RelationshipTypes.ASSOCIATION)
   private LocationCityVO locationCityVO = null;
 
   /**
