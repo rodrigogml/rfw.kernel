@@ -1,5 +1,9 @@
 package br.eng.rodrigogml.rfw.kernel;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -8,14 +12,15 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import br.eng.rodrigogml.rfw.kernel.bundle.RFWBundle;
+import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.logger.RFWLogger;
 import br.eng.rodrigogml.rfw.kernel.logger.RFWLoggerImplementation;
-import br.eng.rodrigogml.rfw.kernel.utils.RUFile;
 
 /**
  * Description: Classe utilitária geral do RFW com métodos utilitários comuns genéricos.<br>
@@ -24,6 +29,11 @@ import br.eng.rodrigogml.rfw.kernel.utils.RUFile;
  * @since 10.0 (12 de out de 2020)
  */
 public class RFW {
+
+  /**
+   * Referência para o File do arquivo de definição de ambiente de desenvolvimento.
+   */
+  private static File devFile = null;
 
   /**
    * Constante com o BigDecimal de "100", para evitar sua construção o tempo todo.<br>
@@ -221,7 +231,7 @@ public class RFW {
    * @return true, se o arquivo for encontrado.
    */
   public static boolean isDevelopmentEnvironment() {
-    return RUFile.fileExists("c:\\rfwdev.txt");
+    return getDevFile().exists();
   }
 
   /**
@@ -316,5 +326,38 @@ public class RFW {
       }
     }, delay);
     return t;
+  }
+
+  /**
+   * Lê uma propriedade dentro do arquivo de definições do ambiente de desenvolvimento, definido em {@link #RFWDEVPROPERTIESFILE}.
+   *
+   * @param property Nome da propriedade a ser lida.
+   * @return Valor da propriedade encontrada. Nulo se: o arquivo não existir; a propriedade não existir.
+   * @throws RFWException
+   */
+  public static String getDevProperty(String property) throws RFWException {
+    if (isDevelopmentEnvironment()) {
+      try {
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(getDevFile()));
+        return properties.getProperty(property);
+      } catch (FileNotFoundException e) {
+        throw new RFWCriticalException("Arquivo Não encontrado!", e);
+      } catch (IOException e) {
+        throw new RFWCriticalException("Falha ao lêr o arquivo de properties!", e);
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Retorna o objeto File com o caminho para o arquivo de propriedades do desenvolvedor.<br>
+   * A existência desse arquivo configura o sistema todo como ambiente de desenvolvimento, independente de ter ou não conteúdo.
+   *
+   * @return Objeto File com o caminho para o arquivo independente de plataforma (Linux, Windows, Unis, etc.)
+   */
+  private static File getDevFile() {
+    if (RFW.devFile == null) RFW.devFile = new File(System.getProperty("user.home") + File.separatorChar + "rfwdev.properties");
+    return RFW.devFile;
   }
 }

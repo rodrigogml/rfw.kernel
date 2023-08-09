@@ -399,4 +399,25 @@ public class RUFile {
   public static File createFileInTemporaryPath(String fileName) throws RFWException {
     return createFileInTemporaryPath(fileName, null, StandardCharsets.UTF_8);
   }
+
+  /**
+   * Extrai o nome do arquivo de um caminho completo recebido.
+   *
+   * @param file Caminho com o nome do arquivo
+   * @return
+   */
+  public static String extractFileExtension(File file) {
+    return extractFileExtension(file.getAbsolutePath());
+  }
+
+  /**
+   * Extrai o nome do arquivo de um caminho completo recebido.
+   *
+   * @param file Caminho com o nome do arquivo
+   * @return
+   */
+  public static String extractFileExtension(String file) {
+    return file.substring(file.lastIndexOf('.') + 1);
+  }
+
 }
