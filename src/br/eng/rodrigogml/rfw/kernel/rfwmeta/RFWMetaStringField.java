@@ -41,7 +41,7 @@ public @interface RFWMetaStringField {
   /**
    * Define o tamanho máximo da String.
    */
-  int maxlength();
+  int maxLength();
 
   /**
    * Define o tamanho mínimo da String.

@@ -34,6 +34,11 @@ public @interface RFWMetaStringEmailField {
   boolean required();
 
   /**
+   * Define o tamanho máximo da String.
+   */
+  int maxLength() default -1;
+
+  /**
    * Define se o atributo é único.
    */
   boolean unique() default false;

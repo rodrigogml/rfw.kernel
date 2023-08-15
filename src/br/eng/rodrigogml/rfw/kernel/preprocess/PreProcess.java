@@ -107,7 +107,7 @@ public final class PreProcess {
                     Annotation ann = RUReflex.getRFWMetaAnnotation(field);
                     int maxLength = 0;
                     if (ann instanceof RFWMetaStringField) {
-                      maxLength = ((RFWMetaStringField) ann).maxlength();
+                      maxLength = ((RFWMetaStringField) ann).maxLength();
                     } else {
                       throw new RFWCriticalException("O preProcess '${0}' não é tem suporte para a annotation '${3}' do atributo '${1}' da classe '${2}'", new String[] { preProcess.toString(), field.getName(), vo.getClass().getCanonicalName(), ann.getClass().getCanonicalName() });
                     }

@@ -2,7 +2,7 @@ package br.eng.rodrigogml.rfw.kernel.location.vo;
 
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO_;
 
-// Esta classe foi gerada utilizando o MetaObjectGenerator em 08/08/2023 14:56:38. Não edite!
+// Esta classe foi gerada utilizando o MetaObjectGenerator em 15/08/2023 15:19:39. Não edite!
 public class LocationCityVO_ extends RFWVO_ {
 	private static final long serialVersionUID = -9144907281519546430L;
 

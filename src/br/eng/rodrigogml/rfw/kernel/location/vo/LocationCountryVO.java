@@ -21,20 +21,20 @@ public class LocationCountryVO extends RFWVO {
   /**
    * Sigla de duas letras do país, sempre em maiúsculas.
    */
-  @RFWMetaStringField(caption = "UF", required = true, maxlength = 2, minlength = 2, pattern = "[A-Z]{2}", unique = true)
+  @RFWMetaStringField(caption = "UF", required = true, maxLength = 2, minlength = 2, pattern = "[A-Z]{2}", unique = true)
   private String acronym = null;
 
   /**
    * Nome completo do País
    */
-  @RFWMetaStringField(caption = "Nome", required = true, maxlength = 250, unique = true, preProcess = PreProcessOption.STRING_SPACESCLEAN_TO_NULL)
+  @RFWMetaStringField(caption = "Nome", required = true, maxLength = 250, unique = true, preProcess = PreProcessOption.STRING_SPACESCLEAN_TO_NULL)
   private String name = null;
 
   /**
    * Código do país de acordo com a tabela do IBGE.<br>
    * Código com 5 algarísmos. Apenas números.
    */
-  @RFWMetaStringField(caption = "Código BACEN", maxlength = 5, required = false)
+  @RFWMetaStringField(caption = "Código BACEN", maxLength = 5, required = false)
   private String bacenCode = null;
 
   /**

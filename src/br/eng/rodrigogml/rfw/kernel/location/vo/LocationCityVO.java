@@ -25,7 +25,7 @@ public class LocationCityVO extends RFWVO {
   /**
    * Nome completo da cidade.
    */
-  @RFWMetaStringField(caption = "Município", maxlength = 250, required = true)
+  @RFWMetaStringField(caption = "Município", maxLength = 250, required = true)
   private String name = null;
 
   /**
@@ -56,7 +56,7 @@ public class LocationCityVO extends RFWVO {
   /**
    * Mantém o código do IBGE para esta cidade. O código pode ser nulo para cidades não conhecidas ou para cidades não cadastradas no IBGE, como por exemplo cidades fora do Brasil.
    */
-  @RFWMetaStringField(caption = "Código IBGE", maxlength = 7, required = false)
+  @RFWMetaStringField(caption = "Código IBGE", maxLength = 7, required = false)
   private String ibgeCode = null;
 
   /**

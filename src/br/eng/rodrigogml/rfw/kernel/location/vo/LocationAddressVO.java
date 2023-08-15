@@ -31,13 +31,13 @@ public class LocationAddressVO extends RFWVO {
   /**
    * Nome da rua/avenida/travessa/etc.
    */
-  @RFWMetaStringField(caption = "Logradouro", maxlength = 250, required = true, preProcess = PreProcessOption.STRING_SPACESCLEAN_TO_NULL)
+  @RFWMetaStringField(caption = "Logradouro", maxLength = 250, required = true, preProcess = PreProcessOption.STRING_SPACESCLEAN_TO_NULL)
   private String name = null;
 
   /**
    * Bairro
    */
-  @RFWMetaStringField(caption = "Bairro", maxlength = 250, required = false, preProcess = PreProcessOption.STRING_SPACESCLEAN_TO_NULL)
+  @RFWMetaStringField(caption = "Bairro", maxLength = 250, required = false, preProcess = PreProcessOption.STRING_SPACESCLEAN_TO_NULL)
   private String neighborhood = null;
 
   /**

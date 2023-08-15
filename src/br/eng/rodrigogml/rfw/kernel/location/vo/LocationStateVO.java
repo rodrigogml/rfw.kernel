@@ -24,13 +24,13 @@ public class LocationStateVO extends RFWVO {
    * Sigla de duas letras do estado (UF), Sempre maiúsculas.<br>
    * Campo obrigatório para Estados Brasileiros. Normalmente únicos em cada país, mas podem se repetir em países diferentes.
    */
-  @RFWMetaStringField(caption = "UF", required = false, maxlength = 2, minlength = 2, pattern = "[A-Z] {2}", unique = false)
+  @RFWMetaStringField(caption = "UF", required = false, maxLength = 2, minlength = 2, pattern = "[A-Z] {2}", unique = false)
   private String acronym = null;
 
   /**
    * Nome completo do Estado.
    */
-  @RFWMetaStringField(caption = "Estado", maxlength = 250, required = true, preProcess = PreProcessOption.STRING_SPACESCLEAN_TO_NULL)
+  @RFWMetaStringField(caption = "Estado", maxLength = 250, required = true, preProcess = PreProcessOption.STRING_SPACESCLEAN_TO_NULL)
   private String name = null;
 
   /**
@@ -42,7 +42,7 @@ public class LocationStateVO extends RFWVO {
   /**
    * Mantém o Código do IBGE para o estado. Obrigatório para estados brasileiros.
    */
-  @RFWMetaStringField(caption = "Código IBGE", maxlength = 2, required = false)
+  @RFWMetaStringField(caption = "Código IBGE", maxLength = 2, required = false)
   private String ibgeCode = null;
 
   /**

@@ -313,10 +313,10 @@ public class RFWValidator {
       checkUnique(value, voClass, field.getName(), vo, basepath, ann.caption(), rootvo, rootpath);
     }
     // Valida maxlength
-    if (ann.maxlength() <= 0) {
+    if (ann.maxLength() <= 0) {
       throw new RFWCriticalException("RFWMetaStringField definido com maxlength = 0 na classe '${0}'.", new String[] { voClass.getCanonicalName() });
     } else if (value != null) {
-      if (value.length() > ann.maxlength()) throw new RFWValidationException("'${fieldname}' com tamanho excessivo! O tamanho máximo deve ser de ${0} caracteres.", new String[] { "" + ann.maxlength() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+      if (value.length() > ann.maxLength()) throw new RFWValidationException("'${fieldname}' com tamanho excessivo! O tamanho máximo deve ser de ${0} caracteres.", new String[] { "" + ann.maxLength() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
     }
     if (value != null) {
       // Valida minlength
@@ -973,11 +973,11 @@ public class RFWValidator {
    * @param vo Entidade sendo validada.
    * @param field com a anotação.
    * @param basepath Caminho base até este atributo, caso a validação esteja ocorrendo cascata.
-   * @param rootvo
+   * @param rootVO
    * @param rootpath
    * @param forceRequired
    */
-  private void validateStringEmailField(Class<? extends RFWVO> voClass, RFWVO vo, Field field, String basepath, RFWVO rootvo, String rootpath, boolean forceRequired) throws RFWException {
+  private void validateStringEmailField(Class<? extends RFWVO> voClass, RFWVO vo, Field field, String basepath, RFWVO rootVO, String rootpath, boolean forceRequired) throws RFWException {
     // Recuperamos a anotação se suas definições
     final RFWMetaStringEmailField ann = field.getAnnotation(RFWMetaStringEmailField.class);
     String value;
@@ -990,11 +990,15 @@ public class RFWValidator {
     }
     // Valida obrigatoriedade
     if ((forceRequired || ann.required()) && value == null) {
-      throw new RFWValidationException("'${fieldname}' é obrigatório.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+      throw new RFWValidationException("'${fieldname}' é obrigatório.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootVO.getClass(), basepath, field.getName()) });
+    }
+    // Valida o tamanho máximo
+    if (ann.maxLength() > 0 && value != null && value.length() > ann.maxLength()) {
+      throw new RFWValidationException("O valor '${0}' é muito grande. Deve ter no máximo '${1}' caracteres.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { value, "" + ann.maxLength(), getAttributeFullCaption(rootVO.getClass(), basepath, field.getName()) });
     }
     // Valida unicidade
     if (ann.unique()) {
-      checkUnique(value, voClass, field.getName(), vo, basepath, ann.caption(), rootvo, rootpath);
+      checkUnique(value, voClass, field.getName(), vo, basepath, ann.caption(), rootVO, rootpath);
     }
     // Valida o dado se preenchido
     if (value != null) {
