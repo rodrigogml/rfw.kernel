@@ -684,4 +684,37 @@ public final class PreProcess {
       throw new RFWCriticalException(message);
     }
   }
+
+  /**
+   * Tenta converter uma String para {@link Integer} utilizando o construtor Integer(String), mas salvo de {@link NullPointerException}.
+   *
+   * @param value Valor em String para tentar converter para o Integer
+   * @return nulo se receber o valor nulo, objeto {@link Integer} com o valor da {@link String}.
+   */
+  public static Integer toInteger(String value) {
+    if (value == null) return null;
+    return new Integer(value);
+  }
+
+  /**
+   * Tenta converter uma String para {@link BigDecimal} utilizando o construtor BigDecimal(String), mas salvo de {@link NullPointerException}.
+   *
+   * @param value Valor em String para tentar converter para o {@link BigDecimal}
+   * @return nulo se receber o valor nulo, objeto Integer com o valor da {@link String}.
+   */
+  public static BigDecimal toBigDecimal(String value) {
+    if (value == null) return null;
+    return new BigDecimal(value);
+  }
+
+  /**
+   * Tenta converter uma String para {@link Long} utilizando o construtor Long(String), mas salvo de {@link NullPointerException}.
+   *
+   * @param value Valor em String para tentar converter para o Long
+   * @return nulo se receber o valor nulo, objeto {@link Long} com o valor da {@link String}.
+   */
+  public static Long toLong(String value) {
+    if (value == null) return null;
+    return new Long(value);
+  }
 }

@@ -455,7 +455,7 @@ public final class RUXML {
    *
    * @param doc
    * @param xPath
-   * @return
+   * @return O valor da tag ou nulo caso a tag não seja encontrada.
    * @throws RFWException
    */
   public static String getTextContent(Document doc, String xPath) throws RFWException {
@@ -483,7 +483,7 @@ public final class RUXML {
    *
    * @param node
    * @param xPath
-   * @return
+   * @return O valor da tag ou nulo caso a tag não seja encontrada.
    * @throws RFWException
    */
   public static String getTextContent(Node node, String xPath) throws RFWException {
