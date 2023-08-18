@@ -3,6 +3,7 @@ package br.eng.rodrigogml.rfw.kernel.exceptions;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
+import br.eng.rodrigogml.rfw.kernel.utils.RUArray;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 
 /**
@@ -187,14 +188,14 @@ public class RFWValidationException extends RFWException {
 
   @Override
   public void printStackTrace(PrintStream s) {
-    if (this.fieldName != null) s.println("<fieldName>" + this.fieldName + "</fieldName>");
+    if (this.fieldName != null) s.println("<fieldName>" + RUArray.concatArrayIntoString(this.fieldName, "|") + "</fieldName>");
     if (this.fieldPath != null) s.println("<fieldPath>" + this.fieldPath + "</fieldPath>");
     super.printStackTrace(s);
   }
 
   @Override
   public void printStackTrace(PrintWriter s) {
-    if (this.fieldName != null) s.println("<fieldName>" + this.fieldName + "</fieldName>");
+    if (this.fieldName != null) s.println("<fieldName>" + RUArray.concatArrayIntoString(this.fieldName, "|") + "</fieldName>");
     if (this.fieldPath != null) s.println("<fieldPath>" + this.fieldPath + "</fieldPath>");
     super.printStackTrace(s);
   }

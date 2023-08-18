@@ -229,7 +229,7 @@ public class RUReflex {
       }
       return returned;
     } catch (Exception e) {
-      throw new RFWCriticalException("RFW_ERR_200067", new String[] { propertyname }, e);
+      throw new RFWCriticalException("RFW_000032", new String[] { propertyname, bean.getClass().getCanonicalName() }, e);
     }
   }
 

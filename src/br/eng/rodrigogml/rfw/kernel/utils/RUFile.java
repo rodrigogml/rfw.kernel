@@ -1,17 +1,22 @@
 package br.eng.rodrigogml.rfw.kernel.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 import br.eng.rodrigogml.rfw.kernel.RFW;
+import br.eng.rodrigogml.rfw.kernel.dataformatters.LocaleConverter;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
+import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWWarningException;
 
 /**
@@ -420,4 +425,141 @@ public class RUFile {
     return file.substring(file.lastIndexOf('.') + 1);
   }
 
+  /**
+   * Obtém os arquivos de uma pasta/diretório e retorna o caminho completo (absolutePath) dos elementos encontrados.<br>
+   * Utiliza o método {@link #getFilesFromDirectory(String)} e chama o método {@link File#getAbsolutePath()} de cada elemento.
+   *
+   * @param path Caminho da Pasta/Diretório para obter os elementos.
+   * @return Array com os caminhos absolutos dos arquivos de um diretório.
+   */
+  public static String[] getFileNamesFromDirectory(String path) {
+    File[] listOfFiles = getFilesFromDirectory(path);
+    return Arrays.stream(listOfFiles).map(File::getAbsolutePath).toArray(String[]::new);
+  }
+
+  /**
+   * Recupera todos os arquivos de um diretório já representados pelo objeto {@link File}.
+   *
+   * @param path Caminho da pasta/diretório.
+   * @return Array com os objetos {@link File} representando os elementos encontrados.
+   */
+  public static File[] getFilesFromDirectory(String path) {
+    return new File(path).listFiles();
+  }
+
+  /**
+   * Lê o conteúdo de um arquivo para uma String.
+   *
+   * @param fileName Arquivo para ser lido.
+   * @param charset Charset do arquivo para interpretação do byte.
+   * @return String contendo o arquivo.
+   * @throws RFWException Caso ocorra algum erro na leitura do arquivo.
+   */
+  public static String readFileContentToString(String fileName) throws RFWException {
+    File file = new File(fileName);
+    return readFileContentToString(file);
+  }
+
+  /**
+   * Lê o conteúdo de um arquivo para uma String.
+   *
+   * @param file Arquivo para ser lido.
+   * @return String contendo o arquivo.
+   * @throws RFWException Caso ocorra algum erro na leitura do arquivo.
+   */
+  public static String readFileContentToString(File file) throws RFWException {
+    return new String(RUFile.readFileContent(file));
+  }
+
+  /**
+   * Lê o conteúdo de um arquivo para uma String.
+   *
+   * @param fileName Arquivo para ser lido.
+   * @param charset Charset do arquivo para interpretação do byte.
+   * @return String contendo o arquivo.
+   * @throws RFWException Caso ocorra algum erro na leitura do arquivo.
+   */
+  public static String readFileContentToString(String fileName, String charset) throws RFWException {
+    File file = new File(fileName);
+    return readFileContentToString(file, charset);
+  }
+
+  /**
+   * Lê o conteúdo de um arquivo para uma String.
+   *
+   * @param fileName Arquivo para ser lido.
+   * @param charset Charset do arquivo para interpretação do byte.
+   * @return String contendo o arquivo.
+   * @throws RFWException Caso ocorra algum erro na leitura do arquivo.
+   */
+  public static String readFileContentToString(String fileName, Charset charset) throws RFWException {
+    File file = new File(fileName);
+    return readFileContentToString(file, charset);
+  }
+
+  /**
+   * Lê o conteúdo de um arquivo para uma String.
+   *
+   * @param file Arquivo para ser lido.
+   * @param charset Charset do arquivo para interpretação do byte.
+   * @return String contendo o arquivo.
+   * @throws RFWException Caso ocorra algum erro na leitura do arquivo.
+   */
+  public static String readFileContentToString(File file, Charset charset) throws RFWException {
+    return new String(RUFile.readFileContent(file), charset);
+  }
+
+  /**
+   * Lê o conteúdo de um arquivo para uma String.
+   *
+   * @param file Arquivo para ser lido.
+   * @param charset Charset do arquivo para interpretação do byte.
+   * @return String contendo o arquivo.
+   * @throws RFWException Caso ocorra algum erro na leitura do arquivo.
+   */
+  public static String readFileContentToString(File file, String charset) throws RFWException {
+    try {
+      return new String(RUFile.readFileContent(file), charset);
+    } catch (UnsupportedEncodingException e) {
+      throw new RFWCriticalException("RFW_ERR_200332");
+    }
+  }
+
+  /**
+   * Lê o conteúdo de um arquivo para um array de bytes.
+   *
+   * @param file O arquivo a ser lido.
+   * @return Um array de bytes contendo o conteúdo do arquivo.
+   * @throws RFWException Se houver um erro ao ler o arquivo.
+   */
+  public static byte[] readFileContent(String fileName) throws RFWException {
+    return readFileContent(new File(fileName));
+  }
+
+  /**
+   * Lê o conteúdo de um arquivo para um array de bytes.
+   *
+   * @param file O arquivo a ser lido.
+   * @return Um array de bytes contendo o conteúdo do arquivo.
+   * @throws RFWException Se houver um erro ao ler o arquivo.
+   */
+  public static byte[] readFileContent(File file) throws RFWException {
+    if (!file.exists()) {
+      throw new RFWValidationException("RFW_000027", new String[] { file.getPath() });
+    }
+    if (!file.canRead()) {
+      throw new RFWValidationException("RFW_000028", new String[] { file.getPath() });
+    }
+    if (file.length() > Integer.MAX_VALUE) {
+      throw new RFWValidationException("RFW_000030", new String[] { LocaleConverter.formatBytesSize(file.length(), null, 1) });
+    }
+    // Lê o conteúdo do arquivo para um array de bytes.
+    byte[] bytes = new byte[(int) file.length()];
+    try (FileInputStream in = new FileInputStream(file)) {
+      in.read(bytes);
+    } catch (IOException e) {
+      throw new RFWValidationException("RFW_000031", new String[] { file.getPath() });
+    }
+    return bytes;
+  }
 }
