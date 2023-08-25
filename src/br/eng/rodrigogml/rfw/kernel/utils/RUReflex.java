@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -101,7 +102,9 @@ public class RUReflex {
         } else if (Enum.class.isInstance(obj)) {
           buff.append(obj);
         } else if (obj instanceof LocalDate) {
-          buff.append(obj);
+          buff.append(obj.toString());
+        } else if (obj instanceof LocalDateTime) {
+          buff.append(obj.toString());
         } else if (Date.class.isInstance(obj)) {
           buff.append(obj);
         } else if (BigDecimal.class.isInstance(obj)) {
