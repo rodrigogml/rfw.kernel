@@ -4,11 +4,11 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 
 /**
- * Description: Classe de utilidades de manipulação do CNPJ.<br>
+ * Description: Classe de utilidades de manipulação e validação de documentos.<br>
  *
  * @author Rodrigo Leitão
  * @since 3.1.0 (NOV / 2009)
- * @version 4.1.0 (24/06/2011) - rodrigogml - Nome alterado de DOcumentValidationUtils para ficar no padrão do Framework.
+ * @version 4.1.0 (24/06/2011) - rodrigogml - Nome alterado de DocumentValidationUtils para ficar no padrão do Framework.
  */
 public class RUDocValidation {
 

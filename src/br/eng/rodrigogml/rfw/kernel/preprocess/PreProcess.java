@@ -717,4 +717,15 @@ public final class PreProcess {
     if (value == null) return null;
     return new Long(value);
   }
+
+  /**
+   * Tenta converter uma String para {@link Double} utilizando o construtor Double(String), mas salvo de {@link NullPointerException}.
+   *
+   * @param value Valor em String para tentar converter para o Double
+   * @return nulo se receber o valor nulo, objeto {@link Double} com o valor da {@link String}.
+   */
+  public static Double toDouble(String value) {
+    if (value == null) return null;
+    return new Double(value);
+  }
 }
