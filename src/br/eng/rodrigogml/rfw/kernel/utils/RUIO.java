@@ -3,6 +3,7 @@ package br.eng.rodrigogml.rfw.kernel.utils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -66,5 +67,35 @@ public class RUIO {
    */
   public static String toString(InputStream in, Charset charset) throws RFWException {
     return new String(toByteArray(in), charset);
+  }
+
+  /**
+   * Escreve o conteúdo lido de um InputStream em um OutputStream.<Br>
+   * Este método invoca o .close() de ambos os streams ao finalizar a cópia.
+   *
+   * @param in InputStream para leitura dos dados.
+   * @param out OutputStream para escrita dos dados.
+   * @param closeStreams se true, o método chama as funções .close() dos streams, caso false os streams são deixados em aberto após a cópia. Útil quando vamos compiar multiplos conteúdos ou se os streams já foram criandos dentro de blocos try() que executam o fechamento.
+   * @throws RFWException Lançado caso não seja possível manipular algum dos Streams.
+   */
+  public static void copy(InputStream in, OutputStream out, boolean closeStreams) throws RFWException {
+    try {
+      byte[] buf = new byte[1024];
+      int len;
+      while ((len = in.read(buf)) > 0) {
+        out.write(buf, 0, len);
+      }
+    } catch (IOException e) {
+      throw new RFWCriticalException("Falha ao copiar conteúdo do InputStream para o OutputStream.", e);
+    } finally {
+      try {
+        if (closeStreams) out.close();
+      } catch (IOException e) {
+      }
+      try {
+        if (closeStreams) in.close();
+      } catch (IOException e) {
+      }
+    }
   }
 }
