@@ -708,6 +708,19 @@ public final class PreProcess {
   }
 
   /**
+   * Tenta converter uma String para {@link BigDecimal} utilizando o construtor BigDecimal(String), mas salvo de {@link NullPointerException}.<br>
+   * Em seguida, força o tamanho do Scale utilizando o {@link RFW#getRoundingMode()} para arredondamento.
+   *
+   * @param value Valor em String para tentar converter para o {@link BigDecimal}
+   * @param newScale Quantidade de casas decimais que o BigDecimal deve conter.
+   * @return nulo se receber o valor nulo, objeto Integer com o valor da {@link String}.
+   */
+  public static BigDecimal toBigDecimal(String value, int newScale) {
+    if (value == null) return null;
+    return new BigDecimal(value).setScale(newScale, RFW.getRoundingMode());
+  }
+
+  /**
    * Tenta converter uma String para {@link Long} utilizando o construtor Long(String), mas salvo de {@link NullPointerException}.
    *
    * @param value Valor em String para tentar converter para o Long
