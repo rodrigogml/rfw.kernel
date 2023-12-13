@@ -356,7 +356,7 @@ public class RFW {
    *
    * @return Objeto File com o caminho para o arquivo independente de plataforma (Linux, Windows, Unis, etc.)
    */
-  private static File getDevFile() {
+  public static File getDevFile() {
     if (RFW.devFile == null) RFW.devFile = new File(System.getProperty("user.home") + File.separatorChar + "rfwdev.properties");
     return RFW.devFile;
   }
