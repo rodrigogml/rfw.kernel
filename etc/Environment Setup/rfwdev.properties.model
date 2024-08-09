@@ -1,0 +1,9 @@
+# ### Atributos utilizados nas classes de Teste
+# Certificado Digital A1 e Senha para teste das funcionalidades de Certificados
+rfw.kernel.utils.rucert.a1certpath=
+rfw.kernel.utils.rucert.a1certpass=
+# Chave e Secret de acesso do AWS S3 para testar classes de acesso e funcionalidades
+aws.s3.key=
+aws.s3.secret=
+# Teste de abertura e interpretação dos XMLs da NFe / SEFAZ
+rfw.sefaz.pathToNFeXMLToTest=

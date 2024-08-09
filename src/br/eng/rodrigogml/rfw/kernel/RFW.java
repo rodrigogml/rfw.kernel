@@ -271,7 +271,6 @@ public class RFW {
    */
   public static void pDev(Throwable t) {
     if (RFW.isDevelopmentEnvironment()) t.printStackTrace();
-    ;
   }
 
   /**
