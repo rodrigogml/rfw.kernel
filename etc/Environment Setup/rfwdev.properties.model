@@ -2,10 +2,19 @@
 rfw.kernel.utils.rucerttest.a1certpath=
 rfw.kernel.utils.rucerttest.a1certpass=
 
+# Certificado digital para teste das operações com a SEFAZ, precisa ser um certificado válido, tipo A1
+rfw.sefaz.cert.path=
+rfw.sefaz.cert.pass=
+
+# Caminho para o Trust CA da receita federal. Em geral mantido na pasta RFW.SEFAZ\etc\SEFAZ Certificates\sefazca.jks com a senha 'sefazca'
+rfw.sefaz.trust.path=
+rfw.sefaz.trust.pass=
+
 # Teste de abertura e interpretaÃ§Ã£o dos XMLs da NFe / SEFAZ. Informar o caminho de diretório onde podem ser encontrados arquivos XML de DANFEs para execução dos testes.
 rfw.sefaz.pathToNFeXMLToTest=
 
 # Chave e Secret de acesso do AWS S3 para testar classes de acesso e funcionalidades de integração com o S3 da AWS
 aws.s3.key=
 aws.s3.secret=
+
 
