@@ -25,8 +25,8 @@ public class RUCertTest {
 
   @Test
   public void t00_testA1CertificateLoad() throws RFWException, Exception {
-    String filePath = RFW.getDevProperty("rfw.kernel.utils.rucert.a1certpath");
-    String password = RFW.getDevProperty("rfw.kernel.utils.rucert.a1certpass");
+    String filePath = RFW.getDevProperty("rfw.kernel.utils.rucerttest.a1certpath");
+    String password = RFW.getDevProperty("rfw.kernel.utils.rucerttest.a1certpass");
     PreProcess.requiredNonNull(filePath);
     PreProcess.requiredNonNull(password);
 

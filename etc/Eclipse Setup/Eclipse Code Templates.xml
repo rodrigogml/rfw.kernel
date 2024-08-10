@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="java" deleted="false" description="Comentário/JavaDOC de Classe do BIS" enabled="true" name="ccbis">/**&#13;
- * Description: ${cursor}.&lt;br&gt;&#13;
- * &#13;
- * @author Rodrigo GML&#13;
- * @since 10.0 (${date})&#13;
- * @version 1.0.0 Rodrigo GML&#13;
- */</template></templates>
