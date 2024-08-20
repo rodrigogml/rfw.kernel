@@ -126,7 +126,7 @@ public class RFWBundle {
       }
       if (RFW.isDevelopmentEnvironment()) {
         // Se estamos no desenvolvimento vamos validar se a mensagem foi totalmente substituida e avisamos no console sobre o problema
-        if (msg.matches(".*(\\$\\{\\w*\\}).*")) {
+        if (msg != null && msg.matches(".*(\\$\\{\\w*\\}).*")) {
           RFW.pDev("Não foi possível encontrar valores para todos os campos na mensagem da Exception:");
           RFW.pDev(t);
         }
