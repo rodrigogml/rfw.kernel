@@ -1334,4 +1334,72 @@ public class RUReflex {
   public static <VO extends RFWVO> List<VO> collectGVOToVOList(Collection<GVO<VO>> vos) throws RFWException {
     return vos.stream().map(GVO::getVO).collect(Collectors.toList());
   }
+
+  /**
+   * Verifica se um método é um getter. Um método é considerado um getter se seu nome começar com "get", não tiver parâmetros e retornar um valor.
+   *
+   * @param method O método a ser verificado.
+   * @return true se o método for um getter, false caso contrário.
+   */
+  public static boolean isGetterMethod(Method method) {
+    return method.getName().startsWith("get") && method.getParameterCount() == 0 && !method.getReturnType().equals(void.class);
+  }
+
+  /**
+   * Verifica se um método é um setter. Um método é considerado um setter se seu nome começar com "set" e tiver exatamente um parâmetro.
+   *
+   * @param method O método a ser verificado.
+   * @return true se o método for um setter, false caso contrário.
+   */
+  public static boolean isSetterMethod(Method method) {
+    return method.getName().startsWith("set") && method.getParameterCount() == 1;
+  }
+
+  /**
+   * Encontra o método setter correspondente a um getter, com base no nome da propriedade e no tipo do parâmetro. Ajusta a capitalização do nome da propriedade para seguir as convenções de métodos Java.
+   *
+   * @param clazz A classe que contém o método setter.
+   * @param propertyName O nome da propriedade (como declarado).
+   * @param parameterType O tipo do parâmetro que o setter deve aceitar.
+   * @return O método setter correspondente, ou null se não for encontrado.
+   */
+  public static Method findSetterMethod(Class<?> clazz, String propertyName, Class<?> parameterType) {
+    try {
+      String capitalizedPropertyName = RUString.capitalize(propertyName);
+      return clazz.getMethod("set" + capitalizedPropertyName, parameterType);
+    } catch (NoSuchMethodException e) {
+      return null; // Se não houver um setter correspondente, retorna null
+    }
+  }
+
+  /**
+   * Encontra o método getter correspondente a um setter, com base no nome da propriedade. Ajusta a capitalização do nome da propriedade para seguir as convenções de métodos Java.
+   *
+   * @param clazz A classe que contém o método getter.
+   * @param propertyName O nome da propriedade (como declarado).
+   * @return O método getter correspondente, ou null se não for encontrado.
+   */
+  public static Method findGetterMethod(Class<?> clazz, String propertyName) {
+    try {
+      String capitalizedPropertyName = RUString.capitalize(propertyName);
+      return clazz.getMethod("get" + capitalizedPropertyName);
+    } catch (NoSuchMethodException e) {
+      return null; // Se não houver um getter correspondente, retorna null
+    }
+  }
+
+  /**
+   * Verifica se uma classe possui tanto um método getter quanto um método setter para uma propriedade específica.
+   *
+   * @param clazz A classe a ser verificada.
+   * @param propertyName O nome da propriedade (como declarado).
+   * @param propertyType O tipo do parâmetro que o setter deve aceitar.
+   * @return true se ambos os métodos getter e setter existirem, false caso contrário.
+   */
+  public static boolean hasGetterAndSetter(Class<?> clazz, String propertyName, Class<?> propertyType) {
+    Method getter = findGetterMethod(clazz, propertyName);
+    Method setter = findSetterMethod(clazz, propertyName, propertyType);
+    return getter != null && setter != null;
+  }
+
 }
