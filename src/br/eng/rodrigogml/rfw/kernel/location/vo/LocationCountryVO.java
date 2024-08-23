@@ -19,9 +19,9 @@ public class LocationCountryVO extends RFWVO {
   private static final long serialVersionUID = 5918641088186601780L;
 
   /**
-   * Sigla de duas letras do país, sempre em maiúsculas.
+   * Sigla de duas letras do país, sempre em maiúsculas, seguindo a ISO 3166-1 alfa-2.
    */
-  @RFWMetaStringField(caption = "UF", required = true, maxLength = 2, minlength = 2, pattern = "[A-Z]{2}", unique = true)
+  @RFWMetaStringField(caption = "Sigla ISO 3166-1", required = true, maxLength = 2, minlength = 2, pattern = "[A-Z]{2}", unique = true)
   private String acronym = null;
 
   /**
@@ -41,7 +41,7 @@ public class LocationCountryVO extends RFWVO {
    * Data da última alteração neste objeto. Utilizado para fins de sincronização com sistemas externos.<br>
    * Toda vez que este objeto sofrer alguma alteração esta data deve ser atualizada para a data da alteração.
    */
-  @RFWMetaDateField(caption = "Última Alteração", required = true, resolution = DateResolution.SECOND)
+  @RFWMetaDateField(caption = "Última Alteração", required = true, resolution = DateResolution.SECOND, preProcess = PreProcessOption.DATE_TONOW)
   private LocalDate lastchange = null;
 
   /**

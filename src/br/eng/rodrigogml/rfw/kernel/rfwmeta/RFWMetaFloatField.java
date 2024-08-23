@@ -6,14 +6,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Description: Annotation usada para definir um atributo do tipo Double.<BR>
+ * Description: Annotation usada para definir um atributo do tipo Float.<BR>
  *
  * @author Rodrigo Leitão
- * @since 7.1.0 (17/07/2015)
+ * @since (21 de ago. de 2024)
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface RFWMetaDoubleField {
+public @interface RFWMetaFloatField {
 
   /**
    * Define o nome do atributo/campo. Este nome é usado para facilitar mensagens de erros, validações, em UIs, etc.<br>
@@ -34,11 +34,11 @@ public @interface RFWMetaDoubleField {
   /**
    * Valor máximo aceito pelo atributo.
    */
-  double maxValue() default Double.MAX_VALUE;
+  double maxValue() default Float.MAX_VALUE;
 
   /**
    * Valor mínimo aceito pelo atributo.
    */
-  double minValue() default Double.MIN_VALUE;
+  double minValue() default Float.MIN_VALUE;
 
 }

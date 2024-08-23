@@ -38,6 +38,7 @@ import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaDateField;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaDependency;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaDoubleField;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaEnumField;
+import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaFloatField;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaGenericField;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaIntegerField;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaLongField;
@@ -215,6 +216,8 @@ public class RFWValidator {
           validateCollectionField(voClass, vo, field, basepath, rootvo, rootpath, forceRequired);
         } else if (field.isAnnotationPresent(RFWMetaDoubleField.class)) {
           validateDoubleField(voClass, vo, field, basepath, rootvo, rootpath, forceRequired);
+        } else if (field.isAnnotationPresent(RFWMetaFloatField.class)) {
+          validateFloatField(voClass, vo, field, basepath, rootvo, rootpath, forceRequired);
         } else if (field.isAnnotationPresent(RFWMetaBooleanField.class)) {
           validateBooleanField(voClass, vo, field, basepath, rootvo, rootpath, forceRequired);
         } else if (field.isAnnotationPresent(RFWMetaStringCNPJField.class)) {
@@ -1156,6 +1159,48 @@ public class RFWValidator {
       throw e;
     } catch (Exception e) {
       throw new RFWCriticalException("BISMetaField '${1}' usado em um campo não compatível no '${2} da '${0}'.", new String[] { voClass.getCanonicalName(), RFWMetaDoubleField.class.getName(), field.getName() }, e);
+    }
+    // Valida obrigatoriedade
+    if ((forceRequired || ann.required()) && value == null) {
+      throw new RFWValidationException("'${fieldname}' é obrigatório.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+    }
+    // Valida unicidade
+    if (ann.unique()) {
+      checkUnique(value, voClass, field.getName(), vo, basepath, ann.caption(), rootvo, rootpath);
+    }
+    if (value != null) {
+      // Valida max value
+      if (ann.maxValue() < value) {
+        throw new RFWValidationException("'${fieldname}' valor maior que o permitido! O maior valor aceito é ${0}.", new String[] { "" + ann.maxValue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+      }
+      // Valida minvalue
+      if (ann.minValue() > value) {
+        throw new RFWValidationException("'${fieldname}' valor menor que o permitido! O menor valor aceito é ${0}.", new String[] { "" + ann.minValue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+      }
+    }
+  }
+
+  /**
+   * Este método executa as validações necessárias em um field atribuido com a meta-annotation RFWMetaFloatField.
+   *
+   * @param voClass Classe da Entidade/VO sendo validada.
+   * @param vo Entidade sendo validada.
+   * @param field com a anotação.
+   * @param basepath Caminho base até este atributo, caso a validação esteja ocorrendo cascata.
+   * @param rootvo
+   * @param rootpath
+   * @param forceRequired
+   */
+  private void validateFloatField(Class<? extends RFWVO> voClass, RFWVO vo, Field field, String basepath, RFWVO rootvo, String rootpath, boolean forceRequired) throws RFWException {
+    // Recuperamos a anotação se suas definições
+    final RFWMetaFloatField ann = field.getAnnotation(RFWMetaFloatField.class);
+    Float value;
+    try {
+      value = (Float) RUReflex.getPropertyValue(vo, field.getName());
+    } catch (RFWException e) {
+      throw e;
+    } catch (Exception e) {
+      throw new RFWCriticalException("BISMetaField '${1}' usado em um campo não compatível no '${2} da '${0}'.", new String[] { voClass.getCanonicalName(), RFWMetaFloatField.class.getName(), field.getName() }, e);
     }
     // Valida obrigatoriedade
     if ((forceRequired || ann.required()) && value == null) {

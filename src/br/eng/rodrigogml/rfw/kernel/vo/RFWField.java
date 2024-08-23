@@ -48,6 +48,10 @@ public class RFWField implements Serializable, Cloneable {
      */
     COUNT,
     /**
+     * Cria a função DISTINCT(*) para encontrar todos os valores distintos de uma determinada coluna.
+     */
+    DISTINCT,
+    /**
      * Cria a função COALESCE para recuperar valores que não estejam nulos.
      */
     COALESCE,
@@ -140,6 +144,16 @@ public class RFWField implements Serializable, Cloneable {
    */
   public static RFWField sum(String field) {
     return new RFWField(FieldFunction.SUM, field, null, null);
+  }
+
+  /**
+   * Cria a função DISTINCT para trazer os valores únicos de uma coluna.
+   *
+   * @param field Caminho da coluna a ser sumarizada.
+   * @return Objeto montado indicando a função selecionada.
+   */
+  public static RFWField distinct(String field) {
+    return new RFWField(FieldFunction.DISTINCT, field, null, null);
   }
 
   /**
