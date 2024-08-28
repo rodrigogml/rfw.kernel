@@ -2,6 +2,9 @@
 rfw.kernel.utils.rucerttest.a1certpath=
 rfw.kernel.utils.rucerttest.a1certpass=
 
+# Desabilita o warning de recomendação de troca de java.util.Date por LocalDate/Time durante o desenvolvimento
+rfw.orm.dao.disableLocalDateTimeRecomendation=(true|false)
+
 # Certificado digital para teste das operações com a SEFAZ, precisa ser um certificado válido, tipo A1
 rfw.sefaz.cert.path=
 rfw.sefaz.cert.pass=

@@ -24,7 +24,7 @@ public class RFWField implements Serializable, Cloneable {
 
   public static enum FieldFunction {
     /**
-     * Define que trata-se apenas de um camp, sem função encapsulando.
+     * Define que trata-se apenas de um campo, sem função encapsulando.
      */
     FIELD,
     /**
@@ -44,6 +44,10 @@ public class RFWField implements Serializable, Cloneable {
      */
     SUM,
     /**
+     * Define uma operação de subtração de dois valores.
+     */
+    SUBTRACT,
+    /**
      * Cria a função COUNT(*) para contabilizar o total de resultados retornados.
      */
     COUNT,
@@ -56,6 +60,14 @@ public class RFWField implements Serializable, Cloneable {
      */
     COALESCE,
     /**
+     * Cria a função HOUR para separar a hora de uma coluna de data.
+     */
+    HOUR,
+    /**
+     * Cria a função DAY para separar o dia de uma coluna de data.
+     */
+    DAY,
+    /**
      * Cria a função MONTH para separar o mês de uma coluna de data.
      */
     MONTH,
@@ -63,6 +75,17 @@ public class RFWField implements Serializable, Cloneable {
      * Cria a função YEAR para separar o ano de uma coluna de data.
      */
     YEAR,
+    /**
+     * Cria a função WEEKDAY para retornar um valor numérico de acordo com o dia da semana de uma data.<br>
+     * Retorna valores de 0 a 6, começando na segunda-feira.<br>
+     * <br>
+     * <i><b>Observação:</b>
+     * <ul>
+     * <li>Esta implementação é padrão do MySQL. Outros bancos utilizam outras funções como DATEPART (SQL Server: valores de 1 a 7, começando no domingo por padrão) e EXTRACT (PostgreSQL: valores de 0 a 6, começando no domingo) que trazem valores diferentes.
+     * <li>Aqui no RFW para todas as implementações (dialetos) este método deve ser padronizado e trazer o resultado de 0 a 6 começando na segunda-feira, seguindo a implementação inicial.</i>
+     * </ul>
+     */
+    WEEKDAY,
     /**
      * Cria a função de Mínimo de um valor.
      */
@@ -120,7 +143,7 @@ public class RFWField implements Serializable, Cloneable {
   /**
    * Cria um field de campo, sem qualquer função encapsulado diretamente.
    *
-   * @param field Caminho da coluna a ser utilizada.
+   * @param field Caminho da coluna a ser passada para a função
    * @return Objeto montado indicando a função selecionada.
    */
   public static RFWField field(String field) {
@@ -137,9 +160,31 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
+   * Cria uma subtração simples entre dois valores, o equivalente a: (fieldA - fieldB) já operado pelo banco de dados. <br>
+   * Em uma operação de subtração, como na expressão (10 - 3 = 7):<br>
+   * <ul>
+   * <li>
+   *
+   * 10 é o minuendo.
+   * <li>3 é o subtraendo.
+   * <li>7 é a diferença.
+   * </ul>
+   *
+   * @param fieldA Minuendo da operação
+   * @param fieldB Subtraendo da operação
+   * @return Objeto montado indicando a subtração desejada.
+   */
+  public static RFWField subtract(RFWField fieldA, RFWField fieldB) {
+    LinkedList<RFWField> list = new LinkedList<RFWField>();
+    list.add(fieldA);
+    list.add(fieldB);
+    return new RFWField(FieldFunction.SUBTRACT, null, list, null);
+  }
+
+  /**
    * Cria a função SUM para sumarizar valores de uma coluna numérica do banco de dados.
    *
-   * @param field Caminho da coluna a ser sumarizada.
+   * @param field Caminho da coluna a ser passada para a função
    * @return Objeto montado indicando a função selecionada.
    */
   public static RFWField sum(String field) {
@@ -147,9 +192,45 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
+   * Cria a função WEEKDAY para retornar um valor numérico de acordo com o dia da semana de uma data.<br>
+   * Retorna valores de 0 a 6, começando na segunda-feira.<br>
+   * <br>
+   * <i><b>Observação:</b>
+   * <ul>
+   * <li>Esta implementação é padrão do MySQL. Outros bancos utilizam outras funções como DATEPART (SQL Server: valores de 1 a 7, começando no domingo por padrão) e EXTRACT (PostgreSQL: valores de 0 a 6, começando no domingo) que trazem valores diferentes.
+   * <li>Aqui no RFW para todas as implementações (dialetos) este método deve ser padronizado e trazer o resultado de 0 a 6 começando na segunda-feira, seguindo a implementação inicial.</i>
+   * </ul>
+   *
+   * @param field Caminho da coluna a ser passada para a função
+   * @return Objeto montado indicando a função selecionada.
+   */
+  public static RFWField weekday(RFWField field) {
+    LinkedList<RFWField> list = new LinkedList<RFWField>();
+    list.add(field);
+    return new RFWField(FieldFunction.WEEKDAY, null, list, null);
+  }
+
+  /**
+   * Cria a função WEEKDAY para retornar um valor numérico de acordo com o dia da semana de uma data.<br>
+   * Retorna valores de 0 a 6, começando na segunda-feira.<br>
+   * <br>
+   * <i><b>Observação:</b>
+   * <ul>
+   * <li>Esta implementação é padrão do MySQL. Outros bancos utilizam outras funções como DATEPART (SQL Server: valores de 1 a 7, começando no domingo por padrão) e EXTRACT (PostgreSQL: valores de 0 a 6, começando no domingo) que trazem valores diferentes.
+   * <li>Aqui no RFW para todas as implementações (dialetos) este método deve ser padronizado e trazer o resultado de 0 a 6 começando na segunda-feira, seguindo a implementação inicial.</i>
+   * </ul>
+   *
+   * @param field Caminho da coluna a ser passada para a função
+   * @return Objeto montado indicando a função selecionada.
+   */
+  public static RFWField weekday(String field) {
+    return new RFWField(FieldFunction.WEEKDAY, field, null, null);
+  }
+
+  /**
    * Cria a função DISTINCT para trazer os valores únicos de uma coluna.
    *
-   * @param field Caminho da coluna a ser sumarizada.
+   * @param field Caminho da coluna a ser passada para a função
    * @return Objeto montado indicando a função selecionada.
    */
   public static RFWField distinct(String field) {
@@ -159,7 +240,7 @@ public class RFWField implements Serializable, Cloneable {
   /**
    * Cria a função SUM para sumarizar valores de uma coluna numérica do banco de dados.
    *
-   * @param field Caminho da coluna a ser sumarizada.
+   * @param field Caminho da coluna a ser passada para a função
    * @return Objeto montado indicando a função selecionada.
    */
   public static RFWField sum(RFWField field) {
@@ -171,7 +252,7 @@ public class RFWField implements Serializable, Cloneable {
   /**
    * Cria a função Mínimo.
    *
-   * @param field Caminho da coluna.
+   * @param field Caminho da coluna a ser passada para a função
    * @return Objeto montado indicando a função selecionada.
    */
   public static RFWField minimum(String field) {
@@ -181,7 +262,7 @@ public class RFWField implements Serializable, Cloneable {
   /**
    * Cria a função Mínimo.
    *
-   * @param field Caminho da coluna.
+   * @param field Caminho da coluna a ser passada para a função
    * @return Objeto montado indicando a função selecionada.
    */
   public static RFWField minimum(RFWField field) {
@@ -193,8 +274,8 @@ public class RFWField implements Serializable, Cloneable {
   /**
    * Cria a função aritmética de Multiplicação.
    *
-   * @param field1 Caminho da coluna1.
-   * @param field2 Caminho da coluna2.
+   * @param field Caminho da coluna a ser passada para a função como primeiro argumento.
+   * @param field Caminho da coluna a ser passada para a função como segundo argumento.
    * @return Objeto montado indicando a função selecionada.
    */
   public static RFWField multiply(RFWField field1, RFWField field2) {
@@ -229,9 +310,53 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
+   * Cria a função HOUR para separar a hora de uma coluna de data.
+   *
+   * @param field Caminho da coluna a ser passada para a função.
+   * @return Objeto montado indicando a função selecionada.
+   */
+  public static RFWField hour(String field) {
+    return new RFWField(FieldFunction.HOUR, field, null, null);
+  }
+
+  /**
+   * Cria a função HOUR para separar a hora de uma coluna de data.
+   *
+   * @param field Caminho da coluna a ser passada para a função.
+   * @return Objeto montado indicando a função selecionada.
+   */
+  public static RFWField hour(RFWField field) {
+    LinkedList<RFWField> list = new LinkedList<RFWField>();
+    list.add(field);
+    return new RFWField(FieldFunction.HOUR, null, list, null);
+  }
+
+  /**
+   * Cria a função DAY para separar o dia de uma coluna de data.
+   *
+   * @param field Caminho da coluna a ser passada para a função.
+   * @return Objeto montado indicando a função selecionada.
+   */
+  public static RFWField day(String field) {
+    return new RFWField(FieldFunction.DAY, field, null, null);
+  }
+
+  /**
+   * Cria a função DAY para separar o dia de uma coluna de data.
+   *
+   * @param field Caminho da coluna a ser passada para a função.
+   * @return Objeto montado indicando a função selecionada.
+   */
+  public static RFWField day(RFWField field) {
+    LinkedList<RFWField> list = new LinkedList<RFWField>();
+    list.add(field);
+    return new RFWField(FieldFunction.DAY, null, list, null);
+  }
+
+  /**
    * Cria a função MONTH para obter o mês de uma coluna de data.
    *
-   * @param field Caminho da coluna a ser sumarizada.
+   * @param field Caminho da coluna a ser passada para a função
    * @return Objeto montado indicando a função selecionada.
    */
   public static RFWField month(String field) {
@@ -241,7 +366,7 @@ public class RFWField implements Serializable, Cloneable {
   /**
    * Cria a função YEAR para obter o mês de uma coluna de data.
    *
-   * @param field Caminho da coluna a ser sumarizada.
+   * @param field Caminho da coluna a ser passada para a função
    * @return Objeto montado indicando a função selecionada.
    */
   public static RFWField year(String field) {
@@ -251,7 +376,7 @@ public class RFWField implements Serializable, Cloneable {
   /**
    * Cria a função MONTH para obter o mês de uma coluna de data.
    *
-   * @param field Caminho da coluna a ser sumarizada.
+   * @param field Caminho da coluna a ser passada para a função
    * @return Objeto montado indicando a função selecionada.
    */
   public static RFWField month(RFWField field) {
@@ -263,7 +388,7 @@ public class RFWField implements Serializable, Cloneable {
   /**
    * Cria a função YEAR para obter o mês de uma coluna de data.
    *
-   * @param field Caminho da coluna a ser sumarizada.
+   * @param field Caminho da coluna a ser passada para a função
    * @return Objeto montado indicando a função selecionada.
    */
   public static RFWField year(RFWField field) {
@@ -275,7 +400,7 @@ public class RFWField implements Serializable, Cloneable {
   /**
    * Cria a função CONCAT para "juntar" os valores obeitdos.<Br>
    *
-   * @param fields Caminho da(s) coluna(s) a ser utilizada(s).
+   * @param field Caminho da coluna a ser passada para a função
    * @return Objeto montado indicando a função selecionada.
    */
   public static RFWField concat(RFWField... fields) {
@@ -290,7 +415,7 @@ public class RFWField implements Serializable, Cloneable {
    * Cria a função COALESCE para obter os valores.<Br>
    * A função coalesce recupera o valor da primeira coluna passada, se este for nulo ele retornará o valor da seguinte. E assim por diante até encontrar um valor que não seja nulo. Caso todos sejam, o valor nulo é retornado igualmente.
    *
-   * @param fields Caminho da(s) coluna(s) a ser utilizada(s).
+   * @param field Caminho da coluna a ser passada para a função
    * @return Objeto montado indicando a função selecionada.
    */
   public static RFWField coalesce(RFWField... fields) {
@@ -305,7 +430,7 @@ public class RFWField implements Serializable, Cloneable {
    * Cria a função COALESCE para obter os valores.<Br>
    * A função coalesce recupera o valor da primeira coluna passada, se este for nulo ele retornará o valor da seguinte. E assim por diante até encontrar um valor que não seja nulo. Caso todos sejam, o valor nulo é retornado igualmente.
    *
-   * @param fields Caminho da(s) coluna(s) a ser utilizada(s).
+   * @param field Caminho da coluna a ser passada para a função
    * @return Objeto montado indicando a função selecionada.
    */
   public static RFWField coalesce(String... fields) {
@@ -327,12 +452,23 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
-   * Cria a função COUNT para contar a quantidade de Linhas que foram retornadas.
+   * Cria a função COUNT para contar a quantidade de Linhas que foram retornadas.<br>
+   * Equivalente a expressão count(*) no SQL.
    *
    * @return Objeto montado indicando a função selecionada.
    */
   public static RFWField count() {
     return new RFWField(FieldFunction.COUNT, null, null, null);
+  }
+
+  /**
+   * Cria a função COUNT para contar a quantidade de Linhas que foram retornadas.<br>
+   * Equivalente a expressão count(*) no SQL.
+   *
+   * @return Objeto montado indicando a função selecionada.
+   */
+  public static RFWField count(String field) {
+    return new RFWField(FieldFunction.COUNT, field, null, null);
   }
 
   /**

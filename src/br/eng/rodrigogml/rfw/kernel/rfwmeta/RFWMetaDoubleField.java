@@ -16,6 +16,11 @@ import java.lang.annotation.Target;
 public @interface RFWMetaDoubleField {
 
   /**
+   * Define o nome da coluna na tabela do banco de dados. Caso deixado em branco, será utilizado o nome da propriedade.
+   */
+  String column() default "";
+
+  /**
    * Define o nome do atributo/campo. Este nome é usado para facilitar mensagens de erros, validações, em UIs, etc.<br>
    * Não utilize ":" no final ou outras formatações específicas do local de uso. Aqui deve ser definido apenas o nome, como "Caixa", "Nome do Usuário", etc.
    */

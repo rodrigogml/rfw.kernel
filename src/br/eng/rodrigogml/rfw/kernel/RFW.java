@@ -331,7 +331,7 @@ public class RFW {
    * Lê uma propriedade dentro do arquivo de definições do ambiente de desenvolvimento, definido em {@link #RFWDEVPROPERTIESFILE}.
    *
    * @param property Nome da propriedade a ser lida.
-   * @return Valor da propriedade encontrada. Nulo se: o arquivo não existir; a propriedade não existir.
+   * @return Valor da propriedade encontrada. Nulo se: Não estiver no ambiente de desenvolvimento ({@link #isDevelopmentEnvironment()} retornar falso porque o arquivo não existe); ou a propriedade não existir.
    * @throws RFWException
    */
   public static String getDevProperty(String property) throws RFWException {
@@ -341,12 +341,25 @@ public class RFW {
         properties.load(new FileInputStream(getDevFile()));
         return properties.getProperty(property);
       } catch (FileNotFoundException e) {
+        // Não deve ser lançado pois o isDevelopmentEnvironment() já testa, a não ser que haja erro de lógica/definição do arquivo.
         throw new RFWCriticalException("Arquivo Não encontrado!", e);
       } catch (IOException e) {
         throw new RFWCriticalException("Falha ao lêr o arquivo de properties!", e);
       }
     }
     return null;
+  }
+
+  /**
+   * Lê uma propriedade dentro do arquivo de definições do ambiente de desenvolvimento utilizando o método {@link #getDevProperty(String)} e verifica se a propriedade existe e está definida como "true".
+   *
+   * @param property Propriedade a ser verificada
+   * @return true se o arquivo e a propriedade for encontrada com o valor true (case insensitive). False caso o contrário.
+   * @throws RFWException Só é lançado em caso de erro de leitura ou de sistema, em geral o método retorna false se a propriedade não for encontrada com sucesso e com o valor 'true'.
+   */
+  public static boolean isDevPropertyTrue(String property) throws RFWException {
+    String value = getDevProperty(property);
+    return value != null && "true".equalsIgnoreCase(value);
   }
 
   /**

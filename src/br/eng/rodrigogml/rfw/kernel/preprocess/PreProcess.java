@@ -554,6 +554,43 @@ public final class PreProcess {
    * @param msg Mensagem da Exception caso não passe na validação.
    * @throws RFWCriticalException
    */
+  public static <T> void requiredNonEmpty(T[] array, String msg) throws RFWException {
+    if (array == null || array.length == 0) throw new RFWValidationException(msg);
+  }
+
+  /**
+   * Garante que o array recebido não é nulo e nem vazio, tem o tamanho maior ou igual a 1.<br>
+   * Note que este método não verificará se o conteúdo dentro do array é nulo, só se o array é nulo e de tamanho maior que zero.
+   *
+   *
+   * @param array Array para validação
+   * @throws RFWCriticalException
+   */
+  public static <T> void requiredNonEmpty(T[] array) throws RFWException {
+    if (array == null || array.length == 0) throw new RFWValidationException("RFW_000042");
+  }
+
+  /**
+   * Garante que o array recebido não é nulo e nem vazio, tem o tamanho maior ou igual a 1.<br>
+   * Note que este método não verificará se o conteúdo dentro do array é nulo, só se o array é nulo e de tamanho maior que zero.
+   *
+   *
+   * @param array Array para validação
+   * @throws RFWCriticalException
+   */
+  public static <T> void requiredNonEmptyCritical(T[] array) throws RFWException {
+    if (array == null || array.length == 0) throw new RFWCriticalException("RFW_000042");
+  }
+
+  /**
+   * Garante que o array recebido não é nulo e nem vazio, tem o tamanho maior ou igual a 1.<br>
+   * Note que este método não verificará se o conteúdo dentro do array é nulo, só se o array é nulo e de tamanho maior que zero.
+   *
+   *
+   * @param array Array para validação
+   * @param msg Mensagem da Exception caso não passe na validação.
+   * @throws RFWCriticalException
+   */
   public static <T> void requiredNonEmptyCritical(T[] array, String msg) throws RFWException {
     if (array == null || array.length == 0) throw new RFWCriticalException(msg);
   }

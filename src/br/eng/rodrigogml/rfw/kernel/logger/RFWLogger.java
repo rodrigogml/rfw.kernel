@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import br.eng.rodrigogml.rfw.kernel.bundle.RFWBundle;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
+import br.eng.rodrigogml.rfw.kernel.utils.RUMachine;
 import br.eng.rodrigogml.rfw.kernel.utils.RUReflex;
 
 /**
@@ -25,6 +26,11 @@ public final class RFWLogger {
     @Override
     public void log(RFWLogSeverity severity, String msg, String content, String exPoint, String... tags) {
       System.out.println("#RFWLogger Não Definido# ");
+      try {
+        System.out.println("\t ClassLoaderName: " + RUMachine.getClassLoaderName(this.getClass()));
+      } catch (RFWException e) {
+        System.out.println("\t ClassLoaderName: <Erro ao Obter: " + e.getMessage() + ">");
+      }
       System.out.print('\t' + severity.name());
       System.out.print(' ');
       System.out.println(msg);
