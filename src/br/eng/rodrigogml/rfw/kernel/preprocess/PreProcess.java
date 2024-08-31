@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
@@ -621,6 +622,378 @@ public final class PreProcess {
     for (T i : values)
       if (i != null) return i;
     return null;
+  }
+
+  /**
+   * Calculates the average of the given BigDecimal values, ignoring nulls. Returns null if all values are null.
+   *
+   * @param values the BigDecimal values to calculate the average
+   * @return the average of the non-null values or null if all are null
+   */
+  public static BigDecimal avg(BigDecimal... values) {
+    if (values == null || values.length == 0) {
+      return null;
+    }
+
+    BigDecimal sum = BigDecimal.ZERO;
+    int count = 0;
+
+    for (BigDecimal value : values) {
+      if (value != null) {
+        sum = sum.add(value);
+        count++;
+      }
+    }
+
+    return count == 0 ? null : sum.divide(BigDecimal.valueOf(count), BigDecimal.ROUND_HALF_UP);
+  }
+
+  /**
+   * Calculates the average of the given Double values, ignoring nulls. Returns null if all values are null.
+   *
+   * @param values the Double values to calculate the average
+   * @return the average of the non-null values or null if all are null
+   */
+  public static Double avg(Double... values) {
+    if (values == null || values.length == 0) {
+      return null;
+    }
+
+    double sum = 0.0;
+    int count = 0;
+
+    for (Double value : values) {
+      if (value != null) {
+        sum += value;
+        count++;
+      }
+    }
+
+    return count == 0 ? null : sum / count;
+  }
+
+  /**
+   * Calculates the average of the given Integer values, ignoring nulls. Returns null if all values are null.
+   *
+   * @param values the Integer values to calculate the average
+   * @return the average of the non-null values or null if all are null
+   */
+  public static Integer avg(Integer... values) {
+    if (values == null || values.length == 0) {
+      return null;
+    }
+
+    int sum = 0;
+    int count = 0;
+
+    for (Integer value : values) {
+      if (value != null) {
+        sum += value;
+        count++;
+      }
+    }
+
+    return count == 0 ? null : sum / count;
+  }
+
+  /**
+   * Calculates the average of the given Long values, ignoring nulls. Returns null if all values are null.
+   *
+   * @param values the Long values to calculate the average
+   * @return the average of the non-null values or null if all are null
+   */
+  public static Long avg(Long... values) {
+    if (values == null || values.length == 0) {
+      return null;
+    }
+
+    long sum = 0L;
+    int count = 0;
+
+    for (Long value : values) {
+      if (value != null) {
+        sum += value;
+        count++;
+      }
+    }
+
+    return count == 0 ? null : sum / count;
+  }
+
+  /**
+   * Calculates the average of the given Float values, ignoring nulls. Returns null if all values are null.
+   *
+   * @param values the Float values to calculate the average
+   * @return the average of the non-null values or null if all are null
+   */
+  public static Float avg(Float... values) {
+    if (values == null || values.length == 0) {
+      return null;
+    }
+
+    float sum = 0f;
+    int count = 0;
+
+    for (Float value : values) {
+      if (value != null) {
+        sum += value;
+        count++;
+      }
+    }
+
+    return count == 0 ? null : sum / count;
+  }
+
+  /**
+   * Calculates the average of the given Short values, ignoring nulls. Returns null if all values are null.
+   *
+   * @param values the Short values to calculate the average
+   * @return the average of the non-null values or null if all are null
+   */
+  public static Short avg(Short... values) {
+    if (values == null || values.length == 0) {
+      return null;
+    }
+
+    int sum = 0;
+    int count = 0;
+
+    for (Short value : values) {
+      if (value != null) {
+        sum += value;
+        count++;
+      }
+    }
+
+    return count == 0 ? null : (short) (sum / count);
+  }
+
+  /**
+   * Retorna o menor valor entre uma série de BigDecimals passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem comparados.
+   * @return o menor valor não nulo ou nulo se todos os valores forem nulos.
+   */
+  public static BigDecimal min(BigDecimal... values) {
+    return Arrays.stream(values)
+        .filter(value -> value != null)
+        .min(BigDecimal::compareTo)
+        .orElse(null);
+  }
+
+  /**
+   * Retorna o menor valor entre uma série de Doubles passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem comparados.
+   * @return o menor valor não nulo ou nulo se todos os valores forem nulos.
+   */
+  public static Double min(Double... values) {
+    return Arrays.stream(values)
+        .filter(value -> value != null)
+        .min(Double::compareTo)
+        .orElse(null);
+  }
+
+  /**
+   * Retorna o menor valor entre uma série de Integers passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem comparados.
+   * @return o menor valor não nulo ou nulo se todos os valores forem nulos.
+   */
+  public static Integer min(Integer... values) {
+    return Arrays.stream(values)
+        .filter(value -> value != null)
+        .min(Integer::compareTo)
+        .orElse(null);
+  }
+
+  /**
+   * Retorna o menor valor entre uma série de Longs passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem comparados.
+   * @return o menor valor não nulo ou nulo se todos os valores forem nulos.
+   */
+  public static Long min(Long... values) {
+    return Arrays.stream(values)
+        .filter(value -> value != null)
+        .min(Long::compareTo)
+        .orElse(null);
+  }
+
+  /**
+   * Retorna o menor valor entre uma série de Floats passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem comparados.
+   * @return o menor valor não nulo ou nulo se todos os valores forem nulos.
+   */
+  public static Float min(Float... values) {
+    return Arrays.stream(values)
+        .filter(value -> value != null)
+        .min(Float::compareTo)
+        .orElse(null);
+  }
+
+  /**
+   * Retorna o menor valor entre uma série de Shorts passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem comparados.
+   * @return o menor valor não nulo ou nulo se todos os valores forem nulos.
+   */
+  public static Short min(Short... values) {
+    return Arrays.stream(values)
+        .filter(value -> value != null)
+        .min(Short::compareTo)
+        .orElse(null);
+  }
+
+  /**
+   * Retorna o maior valor entre uma série de BigDecimals passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem comparados.
+   * @return o maior valor não nulo ou nulo se todos os valores forem nulos.
+   */
+  public static BigDecimal max(BigDecimal... values) {
+    return Arrays.stream(values)
+        .filter(value -> value != null)
+        .max(BigDecimal::compareTo)
+        .orElse(null);
+  }
+
+  /**
+   * Retorna o maior valor entre uma série de Doubles passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem comparados.
+   * @return o maior valor não nulo ou nulo se todos os valores forem nulos.
+   */
+  public static Double max(Double... values) {
+    return Arrays.stream(values)
+        .filter(value -> value != null)
+        .max(Double::compareTo)
+        .orElse(null);
+  }
+
+  /**
+   * Retorna o maior valor entre uma série de Integers passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem comparados.
+   * @return o maior valor não nulo ou nulo se todos os valores forem nulos.
+   */
+  public static Integer max(Integer... values) {
+    return Arrays.stream(values)
+        .filter(value -> value != null)
+        .max(Integer::compareTo)
+        .orElse(null);
+  }
+
+  /**
+   * Retorna o maior valor entre uma série de Longs passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem comparados.
+   * @return o maior valor não nulo ou nulo se todos os valores forem nulos.
+   */
+  public static Long max(Long... values) {
+    return Arrays.stream(values)
+        .filter(value -> value != null)
+        .max(Long::compareTo)
+        .orElse(null);
+  }
+
+  /**
+   * Retorna o maior valor entre uma série de Floats passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem comparados.
+   * @return o maior valor não nulo ou nulo se todos os valores forem nulos.
+   */
+  public static Float max(Float... values) {
+    return Arrays.stream(values)
+        .filter(value -> value != null)
+        .max(Float::compareTo)
+        .orElse(null);
+  }
+
+  /**
+   * Retorna o maior valor entre uma série de Shorts passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem comparados.
+   * @return o maior valor não nulo ou nulo se todos os valores forem nulos.
+   */
+  public static Short max(Short... values) {
+    return Arrays.stream(values)
+        .filter(value -> value != null)
+        .max(Short::compareTo)
+        .orElse(null);
+  }
+
+  /**
+   * Retorna a soma de uma série de BigDecimals passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem somados.
+   * @return a soma dos valores não nulos ou nulo se todos os valores forem nulos.
+   */
+  public static BigDecimal sum(BigDecimal... values) {
+    return Arrays.stream(values)
+        .filter(Objects::nonNull)
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
+  }
+
+  /**
+   * Retorna a soma de uma série de Doubles passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem somados.
+   * @return a soma dos valores não nulos ou nulo se todos os valores forem nulos.
+   */
+  public static Double sum(Double... values) {
+    return Arrays.stream(values)
+        .filter(Objects::nonNull)
+        .reduce(0.0, Double::sum);
+  }
+
+  /**
+   * Retorna a soma de uma série de Integers passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem somados.
+   * @return a soma dos valores não nulos ou nulo se todos os valores forem nulos.
+   */
+  public static Integer sum(Integer... values) {
+    return Arrays.stream(values)
+        .filter(Objects::nonNull)
+        .reduce(0, Integer::sum);
+  }
+
+  /**
+   * Retorna a soma de uma série de Longs passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem somados.
+   * @return a soma dos valores não nulos ou nulo se todos os valores forem nulos.
+   */
+  public static Long sum(Long... values) {
+    return Arrays.stream(values)
+        .filter(Objects::nonNull)
+        .reduce(0L, Long::sum);
+  }
+
+  /**
+   * Retorna a soma de uma série de Floats passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem somados.
+   * @return a soma dos valores não nulos ou nulo se todos os valores forem nulos.
+   */
+  public static Float sum(Float... values) {
+    return Arrays.stream(values)
+        .filter(Objects::nonNull)
+        .reduce(0.0f, Float::sum);
+  }
+
+  /**
+   * Retorna a soma de uma série de Shorts passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   *
+   * @param values os valores a serem somados.
+   * @return a soma dos valores não nulos ou nulo se todos os valores forem nulos.
+   */
+  public static Short sum(Short... values) {
+    return Arrays.stream(values)
+        .filter(Objects::nonNull)
+        .reduce((short) 0, (a, b) -> (short) (a + b));
   }
 
   /**
