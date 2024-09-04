@@ -93,7 +93,7 @@ public class RFWBundle {
       if (t instanceof RFWException) {
         RFWException e = (RFWException) t;
         msg = e.getExceptionCode();
-        if (e.getExceptionCode() != null && e.getExceptionCode().matches("[A-Z0-9_]+_[0-9]{6}")) {
+        if (e.getExceptionCode() != null && e.getExceptionCode().matches("[A-Za-z0-9_]+_[0-9]{6}")) {
           String bundle = getReader().getProperty(e.getExceptionCode());
           // Se encontrou algo no bundle
           if (bundle != null) {
@@ -145,7 +145,12 @@ public class RFWBundle {
    */
   private static Properties getReader() throws RFWException {
     if (bundle == null) {
-      loadBundle(null); // tentamos carregar com o nome padrão
+      // Se ainda não temos o bundle inicializado, inicalizamos ele com os arquivos padrão do RFW antes de carregar o bundle solicitado.
+      if (bundle == null) {
+        bundle = new Properties();
+      }
+      loadBundle("rfwkernelbundle.properties"); // garante que a primeira chamada seja sempre com o bundleName do arquivo principal do RFWKernel
+      loadBundle("rfwbundle.properties"); // garante que a primeira chamada inclua o arquivo anterior de bundle usado no base (antes da criação do Kernel)
     }
     return RFWBundle.bundle;
   }
@@ -157,20 +162,13 @@ public class RFWBundle {
    * @throws RFWException
    */
   public static void loadBundle(String bundleName) throws RFWException {
-    if (bundle == null && bundleName == null) {
-      loadBundle("rfwkernelbundle.properties"); // garante que a primeira chamada seja sempre com o bundleName do arquivo principal do RFWKernel
-      loadBundle("rfwbundle.properties"); // garante que a primeira chamada inclua o arquivo anterior de bundle usado no base (antes da criação do Kernel)
-      return;
-    } else if (bundle != null && bundleName == null) {
+    if (bundleName == null) {
       throw new RFWCriticalException("RFW_000005");
     }
 
     try (InputStream input = RUReflex.getResourceAsStream(bundleName)) {
       if (input != null) {
-        if (bundle == null) {
-          bundle = new Properties();
-        }
-        bundle.load(input);
+        getReader().load(input);
       }
     } catch (IOException e) {
       throw new RFWCriticalException("RFW_000006", new String[] { bundleName }, e);
