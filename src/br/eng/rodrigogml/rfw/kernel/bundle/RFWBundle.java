@@ -2,6 +2,7 @@ package br.eng.rodrigogml.rfw.kernel.bundle;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 import java.util.Properties;
 
 import br.eng.rodrigogml.rfw.kernel.RFW;
@@ -41,6 +42,18 @@ public class RFWBundle {
    * @return Mengam do bundle com as substituições dos parâmetros.
    */
   public static String get(String key, String... params) {
+    return get(key, null, params);
+  }
+
+  /**
+   * Recupera um bundle dos arquivos de properties carregas, e substitui seus parâmetros.
+   *
+   * @param key Chave do Bundle para recuperar mensagem.
+   * @param locale Localidade do bundle a ser lido. Se passado nulo, ou se não forem encontrados bundle para o Locale passado, o bundle padrão será utilizado.
+   * @param params Parãmetros que serão substituidos na mensagem recuperada do arquivo de bundle. Os parâmetros serão substituidos na mensagem conforme o padrão ${i}, onde i é o índice do parâmetro recebido.
+   * @return Mengam do bundle com as substituições dos parâmetros.
+   */
+  public static String get(String key, Locale locale, String... params) {
     String msg = null;
     try {
       // Busca a causa original, primeira exception
@@ -82,6 +95,17 @@ public class RFWBundle {
    * @return Texto com a mensagem do Bundle já decodificada para exibição.
    */
   public static String get(Throwable t) {
+    return get(t, null);
+  }
+
+  /**
+   * Recupera a mensagem formatada a partir de uma RFWException.
+   *
+   * @param t Throwable para tecuperar a mensagem.
+   * @param locale Localidade do bundle a ser lido. Se passado nulo, ou se não forem encontrados bundle para o Locale passado, o bundle padrão será utilizado.
+   * @return Texto com a mensagem do Bundle já decodificada para exibição.
+   */
+  public static String get(Throwable t, Locale locale) {
     String msg = null;
     try {
       // Busca a causa original, primeira exception
@@ -184,6 +208,19 @@ public class RFWBundle {
    * @return Bundle do enumeration, ou a própria enumeration (caminho completo do objeto) caso a chave não seja encontrada no bundle. Retorna null caso o parâmetro calue seja nulo.
    */
   public static String get(Enum<?> value) {
+    return get(value, null);
+  }
+
+  /**
+   * Recupera um Bundle definido para uma enumeration. Note que a chave da enumeration é definida conforme seu package, class, nome da enum e valor da enum.<br>
+   * Para mais informações veja o método {@link RUString#getEnumKey(Enum)} <br>
+   * Caso o conteúdo não seja encontrado no bundle, é registrado um {@link RFWLogger#logWarn(String)} com o código "RFW_000007" e a chave do enumeration que não foi encontrada no bundle.
+   *
+   * @param value Enumeration
+   * @param locale Localidade do bundle a ser lido. Se passado nulo, ou se não forem encontrados bundle para o Locale passado, o bundle padrão será utilizado.
+   * @return Bundle do enumeration, ou a própria enumeration (caminho completo do objeto) caso a chave não seja encontrada no bundle. Retorna null caso o parâmetro calue seja nulo.
+   */
+  public static String get(Enum<?> value, Locale locale) {
     if (value == null) return null;
     String key = RUString.getEnumKey(value);
     String v = get(key);
@@ -201,6 +238,17 @@ public class RFWBundle {
    * @return Texto para o usuário identificar a Unidade de medida.
    */
   public static String get(MeasureUnit measureUnit) {
+    return get(measureUnit, null);
+  }
+
+  /**
+   * Recupera um Bundle definido para uma das enumeraçõesd e MeasureUnit. De forma geral {@link MeasureUnit} funciona como uma enumeration, porém instâncias do {@link CustomMeasureUnit} precisam de um tratamento diferente, seu texto é montado a partir das informações do próprio objeto.
+   *
+   * @param measureUnit Valor da MeasureUnit para recuperar o Bundle.
+   * @param locale Localidade do bundle a ser lido. Se passado nulo, ou se não forem encontrados bundle para o Locale passado, o bundle padrão será utilizado.
+   * @return Texto para o usuário identificar a Unidade de medida.
+   */
+  public static String get(MeasureUnit measureUnit, Locale locale) {
     if (measureUnit instanceof CustomMeasureUnit) {
       CustomMeasureUnit mu = ((CustomMeasureUnit) measureUnit);
       return mu.getSymbol() + " (" + mu.name() + ")";
