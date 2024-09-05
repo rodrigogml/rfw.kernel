@@ -963,9 +963,6 @@ public class RUReflex {
       final RFWMetaRelationshipField ann = field.getAnnotation(RFWMetaRelationshipField.class);
       if (ann != null) {
         switch (ann.relationship()) {
-          case WEAK_ASSOCIATION:
-            // Nada para fazer, esse tipo de associação é como se não existisse para o RFWDAO.
-            break;
           case COMPOSITION:
             list.add(addPath(path, field.getName()) + ".id");
 
@@ -984,6 +981,7 @@ public class RUReflex {
               list.addAll(getRFWVOUpdateAttributes(entityType, addPath(path, field.getName())));
             }
             break;
+          case WEAK_ASSOCIATION:
           case ASSOCIATION:
           case PARENT_ASSOCIATION:
           case INNER_ASSOCIATION:
