@@ -109,7 +109,45 @@ public class RUJNDI {
    * @throws RFWException
    */
   public static Object lookupRemoteContextWildFly24(String host, Integer port, String jndiName) throws RFWException {
-    InitialContext context = getRemoteContextWildFly24(host, port);
+    InitialContext context = getRemoteContextWildFly24(host, port, null, null);
+    try {
+      return context.lookup(jndiName);
+    } catch (NamingException e) {
+      throw new RFWCriticalException(e);
+    }
+  }
+
+  /**
+   * Recupera a interface a partir de um contexto remoto passando um host e porta específicos e o JNDI name.
+   *
+   * @param host host do servidor
+   * @param port porta do servidor
+   * @param user usuário para autenticação JNDI remota.
+   * @param password senha para autenticação JNDI remota.
+   * @param jndiName Nome do JNDI para o looup do EJB. Normalmente ao levantar um EJB o WildFly dá uma coleção de nomes no seu log, por exemplo:<br>
+   *          <ul>
+   *          2024-08-19 20:55:57,524 INFO [org.jboss.as.ejb3.deployment] (MSC service thread 1-8) WFLYEJB0473: JNDI bindings for session bean named 'APPKernelFacade' in deployment unit 'subdeployment "APPCoreEJB.jar" of deployment "APPEAR-8.0.0.ear"' are as follows:<br>
+   *          <ul>
+   *          java:global/APPERP/APPCoreEJB/APPKernelFacade!br.com.app.kernel.facade.APPKernelFacadeRemote<br>
+   *          java:app/APPCoreEJB/APPKernelFacade!br.com.app.kernel.facade.APPKernelFacadeRemote<br>
+   *          java:module/APPKernelFacade!br.com.app.kernel.facade.APPKernelFacadeRemote<br>
+   *          java:jboss/exported/APPERP/APPCoreEJB/APPKernelFacade!br.com.app.kernel.facade.APPKernelFacadeRemote<br>
+   *          ejb:APPERP/APPCoreEJB/APPKernelFacade!br.com.app.kernel.facade.APPKernelFacadeRemote<br>
+   *          java:global/APPERP/APPCoreEJB/APPKernelFacade<br>
+   *          java:app/APPCoreEJB/APPKernelFacade<br>
+   *          java:module/APPKernelFacade<br>
+   *          </ul>
+   *          Este método funcionará com o nome completo, incluindo a definição da interface remota (o nome da classe depois do !). Considerando os exemplos acima, o valor a ser passado neste argumento seria:<br>
+   *          <ul>
+   *          <li>/APPERP/APPCoreEJB/APPKernelFacade!br.com.app.kernel.facade.APPKernelFacadeRemote</li>
+   *          </ul>
+   *          </ul>
+   *
+   * @return A interface solicitada.
+   * @throws RFWException
+   */
+  public static Object lookupRemoteContextWildFly24(String host, Integer port, String user, String password, String jndiName) throws RFWException {
+    InitialContext context = getRemoteContextWildFly24(host, port, user, password);
     try {
       return context.lookup(jndiName);
     } catch (NamingException e) {
