@@ -1,15 +1,18 @@
 package br.eng.rodrigogml.rfw.kernel.utils;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
+import java.util.Base64;
 
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
+import br.eng.rodrigogml.rfw.kernel.utils.extra.Base32;
 
 /**
  * Description: Classe com métodos úteis para tratamentos e manipulação de String.<br>
@@ -639,5 +642,108 @@ public class RUString {
       return str;
     }
     return str.substring(0, 1).toUpperCase() + str.substring(1);
+  }
+
+  /**
+   * Este método decodifica uma string codificada em base 64.
+   *
+   * @param encodedContent String codificada
+   * @return String decodificada
+   */
+  public static String decodeBase64(String encodedContent) {
+    return new String(Base64.getMimeDecoder().decode(encodedContent));
+  }
+
+  /**
+   * Este método decodifica uma string codificada em base 64.
+   *
+   * @param encodedContent String codificada
+   * @return String decodificada
+   * @throws UnsupportedEncodingException
+   */
+  public static String decodeBase64(String encodedContent, String charset) throws RFWException {
+    try {
+      return new String(Base64.getMimeDecoder().decode(encodedContent), charset);
+    } catch (UnsupportedEncodingException e) {
+      throw new RFWCriticalException("Charset inválido: '" + charset + "'!");
+    }
+  }
+
+  /**
+   * Este método decodifica uma string codificada em base 64.
+   *
+   * @param encodedContent String codificada
+   * @return String decodificada
+   */
+  public static byte[] decodeBase64ToByte(String encodedContent) {
+    return Base64.getMimeDecoder().decode(encodedContent);
+  }
+
+  /**
+   * Este método codifica uma string em base 64.
+   *
+   * @param content String para ser codificada.
+   * @return String codificada
+   */
+  public static String encodeBase64(String content) {
+    return new String(Base64.getMimeEncoder().encodeToString(content.getBytes()));
+  }
+
+  /**
+   * Este método codifica um array de bytes em base 64.
+   *
+   * @param content String para ser codificada.
+   * @return String codificada
+   */
+  public static String encodeBase64(byte[] content) {
+    return new String(Base64.getMimeEncoder().encodeToString(content));
+  }
+
+  /**
+   * Este método codifica um array de bytes em base 32.
+   *
+   * @param content String para ser codificada.
+   * @return String codificada
+   */
+  public static String encodeBase32(byte[] content) {
+    // Estamos usando o Google Guava (já presente no RFW por conta do Vaadin e outras bibliotecas) Outra opção seria utilizar o Apache Commons, mas este ainda não está presente no RFW. No futuro quem sabe ter a própria implementação
+    // return BaseEncoding.base32().encode(content);
+    return Base32.encode(content);
+  }
+
+  /**
+   * Este método codifica uma String em base 32.
+   *
+   * @param content String para ser codificada.
+   * @return String codificada
+   */
+  public static String encodeBase32(String content) {
+    // Estamos usando o Google Guava (já presente no RFW por conta do Vaadin e outras bibliotecas) Outra opção seria utilizar o Apache Commons, mas este ainda não está presente no RFW. No futuro quem sabe ter a própria implementação
+    // return BaseEncoding.base32().encode(content.getBytes());
+    return Base32.encode(content.getBytes());
+  }
+
+  /**
+   * Este método decodifica uma String em base 32.
+   *
+   * @param content String para codificada.
+   * @return String codificada
+   */
+  public static String decodeBase32(String content) {
+    // Estamos usando o Google Guava (já presente no RFW por conta do Vaadin e outras bibliotecas) Outra opção seria utilizar o Apache Commons, mas este ainda não está presente no RFW. No futuro quem sabe ter a própria implementação
+    // return new String(BaseEncoding.base32().decode(content));
+    return new String(Base32.decode(content));
+  }
+
+  /**
+   * Este método decodifica uma String em base 32.
+   *
+   * @param content String para codificada.
+   * @return String codificada
+   */
+  public static byte[] decodeBase32ToByte(String content) {
+    // Estamos usando o Google Guava (já presente no RFW por conta do Vaadin e outras bibliotecas) Outra opção seria utilizar o Apache Commons, mas este ainda não está presente no RFW. No futuro quem sabe ter a própria implementação
+    // return BaseEncoding.base32().decode(content);
+    return Base32.decode(content);
   }
 }

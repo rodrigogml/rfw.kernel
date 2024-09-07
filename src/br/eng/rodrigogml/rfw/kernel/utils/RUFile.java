@@ -200,7 +200,7 @@ public class RUFile {
    * @throws RFWException
    */
   public static File writeFileContentInTemporaryPathWithDelete(String fileName, byte[] fileContent, long delayToDelete) throws RFWException {
-    File file = createFileInTemporaryPathWithDelete(fileName, delayToDelete); // Exclui em 5 minutos
+    File file = createFileInTemporaryPathWithDelete(fileName, delayToDelete);
     writeFileContent(file, fileContent);
     return file;
   }
@@ -219,7 +219,7 @@ public class RUFile {
   public static File createFileInTemporaryPathWithDelete(String fileName, long delayToDelete) throws RFWException {
     File file = createFileInTemporaryPath(fileName, null, StandardCharsets.UTF_8);
     if (delayToDelete >= 0) {
-      RFW.runLater("### BUFile Delete Temporary File", true, delayToDelete, new Runnable() {
+      RFW.runLater("### RUFile Delete Temporary File", true, delayToDelete, new Runnable() {
         @Override
         public void run() {
           file.delete();

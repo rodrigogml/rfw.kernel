@@ -27,7 +27,7 @@ public final class RFWLogger {
     public void log(RFWLogSeverity severity, String msg, String content, String exPoint, String... tags) {
       System.out.println("#RFWLogger Não Definido# ");
       try {
-        System.out.println("\t ClassLoaderName: " + RUMachine.getClassLoaderName(this.getClass()));
+        System.out.println("#\t ClassLoaderName: " + RUMachine.getClassLoaderName(this.getClass()));
       } catch (RFWException e) {
         System.out.println("\t ClassLoaderName: <Erro ao Obter: " + e.getMessage() + ">");
       }
