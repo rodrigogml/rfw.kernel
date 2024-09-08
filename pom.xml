@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.eng.rodrigogml.rfw</groupId>
 	<artifactId>RFW.Kernel</artifactId>
@@ -30,8 +32,8 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
-<!--					<release>20</release>-->
-<!--					<encoding>UTF-8</encoding>-->
+					<!--					<release>20</release>-->
+					<!--					<encoding>UTF-8</encoding>-->
 				</configuration>
 			</plugin>
 			<!-- Copy project dependency -->
@@ -58,27 +60,42 @@
 	</build>
 
 	<dependencies>
-		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
-		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
-		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
-		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
-		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
-		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
-		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
-		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
+		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser
+		pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
+		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser
+		pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
+		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser
+		pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
+		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser
+		pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
+		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser
+		pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
+		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser
+		pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
+		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser
+		pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
+		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser
+		pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
 		<!-- junit - Utilizado para realizar os testes apenas -->
-		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+		<!--
+		https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.13.2</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
-		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
-		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
-		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
-		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
-		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
+		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser
+		pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
+		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser
+		pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
+		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser
+		pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
+		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser
+		pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
+		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser
+		pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
+		<!-- NÃO INSIRA DEPENDÊNCIAS NESTE PROJETO!!!! O RFW.Kernel deve ser
+		pequeno e SEMPRE independente de bibliotecas externas para rodar!!!! -->
 	</dependencies>
 </project>
