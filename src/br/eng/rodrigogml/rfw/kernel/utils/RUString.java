@@ -54,7 +54,7 @@ public class RUString {
   }
 
   /**
-   * Faz a mesma função que os método {@link #completeUntilLengthLeft(String, String, int)}, mas também faz a função de {@link #truncate(String, int)} caso o tamanho recebido em data já seja maior que o tamanho de length.
+   * Faz a mesma função que os método {@link #completeUntilLengthLeft(String, String, int)}, mas também faz a função de {@link #truncate(String, int)} caso o tamanho recebido em data já seja maior que o tamanho de length ou as concatenações geram um dado maior (caso do appendValue ser maior que 1 caracteres).
    *
    * @param appendvalue string que será adicionada a string principal
    * @param data string principal.
@@ -66,7 +66,7 @@ public class RUString {
   }
 
   /**
-   * Faz a mesma função que os métoso {@link #completeUntilLengthRight(String, String, int)}, mas também faz a função de {@link #truncate(String, int)} caso o tamanho recebido em data já seja maior que o tamanho de length.
+   * Faz a mesma função que os métoso {@link #completeUntilLengthRight(String, String, int)}, mas também faz a função de {@link #truncate(String, int)} caso o tamanho recebido em data já seja maior que o tamanho de length ou as concatenações geram um dado maior (caso do appendValue ser maior que 1 caracteres).
    *
    * @param appendvalue string que será adicionada a string principal
    * @param data string principal.
