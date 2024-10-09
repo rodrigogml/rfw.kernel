@@ -57,6 +57,11 @@ public class RUJNDI {
     props.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
     props.put(Context.PROVIDER_URL, "http-remoting://" + host + ":" + port);
     props.put("jboss.naming.client.ejb.context", true);
+    // props.put("jboss.naming.client.connect.options.org.xnio.Options.CONNECT_TIMEOUT", "60000");
+    // props.put("jboss.naming.client.connect.options.org.xnio.Options.READ_TIMEOUT", "60000");
+    // props.put("jboss.ejb.client.connection.timeout", "60000"); // Timeout de conexão (ms)
+    // props.put("jboss.ejb.client.invocation.timeout", "60000"); // Timeout de invocação (ms)
+
     if (user != null) props.put(Context.SECURITY_PRINCIPAL, user);
     if (password != null) props.put(Context.SECURITY_CREDENTIALS, password);
 
