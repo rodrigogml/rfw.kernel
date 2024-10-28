@@ -8,7 +8,6 @@ import javax.naming.NamingException;
 
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
-import br.eng.rodrigogml.rfw.kernel.interfaces.RFWFacadeInterface;
 
 /**
  * Description: Classe utilitária com métodos para acessos e operações via JNDI.<br>
@@ -35,11 +34,7 @@ public class RUJNDI {
   public static Object lookup(String jndiName) throws RFWException {
     Object facade = null;
     try {
-      InitialContext context = new InitialContext();
-      facade = context.lookup(jndiName);
-      if (facade != null && (facade instanceof RFWFacadeInterface)) {
-        ((RFWFacadeInterface) facade).setContext(context);
-      }
+      facade = new InitialContext().lookup(jndiName);
     } catch (NamingException e) {
       throw new RFWCriticalException(e);
     }
@@ -120,11 +115,7 @@ public class RUJNDI {
   public static Object lookupRemoteContextWildFly24(String host, Integer port, String jndiName) throws RFWException {
     InitialContext context = getRemoteContextWildFly24(host, port, null, null);
     try {
-      Object facade = context.lookup(jndiName);
-      if (facade != null && (facade instanceof RFWFacadeInterface)) {
-        ((RFWFacadeInterface) facade).setContext(context);
-      }
-      return facade;
+      return context.lookup(jndiName);
     } catch (NamingException e) {
       throw new RFWCriticalException(e);
     }
@@ -162,11 +153,7 @@ public class RUJNDI {
   public static Object lookupRemoteContextWildFly24(String host, Integer port, String user, String password, String jndiName) throws RFWException {
     InitialContext context = getRemoteContextWildFly24(host, port, user, password);
     try {
-      Object facade = context.lookup(jndiName);
-      if (facade != null && (facade instanceof RFWFacadeInterface)) {
-        ((RFWFacadeInterface) facade).setContext(context);
-      }
-      return facade;
+      return context.lookup(jndiName);
     } catch (NamingException e) {
       throw new RFWCriticalException(e);
     }
