@@ -22,9 +22,9 @@ public class RUDocValidation {
    * Valida um número de CNPJ (Cadastro Nacional de Pessoa Jurídica).
    *
    * @param cnpj número do cnpj apenas números (sem pontos, traços, etc.) incluindo o dígito verificador.
-   * @throws RFWValidationException lançado para qualquer erro que seja encontrado na validação do CNPJ.
+   * @throws RFWException lançado para qualquer erro que seja encontrado na validação do CNPJ.
    */
-  public static void validateCNPJ(String cnpj) throws RFWValidationException {
+  public static void validateCNPJ(String cnpj) throws RFWException {
     if (cnpj == null) {
       throw new RFWValidationException("RFW_ERR_200011", new String[] { cnpj });
     }
@@ -41,7 +41,7 @@ public class RUDocValidation {
       throw new RFWValidationException("RFW_ERR_200014", new String[] { cnpj });
     }
     // Verifica se os digitos verificadores conferem
-    if (!cnpj.substring(12, 14).equals(RUDVCalc.calcCNPJValidateDigit(cnpj.substring(0, 12)))) {
+    if (!cnpj.substring(12, 14).equals(RUDVCalc.calcDVCNPJ(cnpj.substring(0, 12)))) {
       throw new RFWValidationException("RFW_ERR_200016", new String[] { cnpj });
     }
   }
@@ -49,9 +49,9 @@ public class RUDocValidation {
   /**
    *
    * @param cpf
-   * @throws RFWValidationException
+   * @throws RFWException
    */
-  public static void validateCPF(String cpf) throws RFWValidationException {
+  public static void validateCPF(String cpf) throws RFWException {
     if (cpf == null) {
       throw new RFWValidationException("RFW_ERR_200017", new String[] { cpf });
     }
@@ -64,7 +64,7 @@ public class RUDocValidation {
       throw new RFWValidationException("RFW_ERR_200019", new String[] { cpf });
     }
     // Verifica se os digitos verificadores conferem
-    if (!cpf.substring(9, 11).equals(RUDVCalc.calcCPFValidateDigit(cpf.substring(0, 9)))) {
+    if (!cpf.substring(9, 11).equals(RUDVCalc.calcDVCPF(cpf.substring(0, 9)))) {
       throw new RFWValidationException("RFW_ERR_200021", new String[] { cpf });
     }
   }
@@ -74,9 +74,9 @@ public class RUDocValidation {
    *
    *
    * @param cpfOrCnpj
-   * @throws RFWValidationException
+   * @throws RFWException
    */
-  public static void validateCPFOrCNPJ(String cpfOrCnpj) throws RFWValidationException {
+  public static void validateCPFOrCNPJ(String cpfOrCnpj) throws RFWException {
     if (cpfOrCnpj == null) {
       throw new RFWValidationException("RFW_ERR_200018", new String[] { cpfOrCnpj });
     }
@@ -89,7 +89,7 @@ public class RUDocValidation {
       throw new RFWValidationException("RFW_ERR_200420", new String[] { cpfOrCnpj });
     }
     // Verifica se os digitos verificadores conferem
-    if ((cpfOrCnpj.length() == 11 && !cpfOrCnpj.substring(9, 11).equals(RUDVCalc.calcCPFValidateDigit(cpfOrCnpj.substring(0, 9)))) || (cpfOrCnpj.length() == 14 && !cpfOrCnpj.substring(12, 14).equals(RUDVCalc.calcCNPJValidateDigit(cpfOrCnpj.substring(0, 12))))) {
+    if ((cpfOrCnpj.length() == 11 && !cpfOrCnpj.substring(9, 11).equals(RUDVCalc.calcDVCPF(cpfOrCnpj.substring(0, 9)))) || (cpfOrCnpj.length() == 14 && !cpfOrCnpj.substring(12, 14).equals(RUDVCalc.calcDVCNPJ(cpfOrCnpj.substring(0, 12))))) {
       throw new RFWValidationException("RFW_ERR_200021", new String[] { cpfOrCnpj });
     }
   }
