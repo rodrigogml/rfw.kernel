@@ -1161,7 +1161,7 @@ public final class PreProcess {
    * @throws RFWException
    */
   public static void requiredNonNullMatch(String value, String regExp) throws RFWException {
-    requiredNonNullMatch(value, regExp, "RFW_000051");
+    requiredNonNullMatch(value, regExp, "RFW_000057");
   }
 
   /**
@@ -1192,7 +1192,7 @@ public final class PreProcess {
    */
   public static void requiredMatch(String value, String regExp) throws RFWException {
     if (value == null) return;
-    requiredMatch(value, regExp, "RFW_000051");
+    requiredMatch(value, regExp, "RFW_000057");
   }
 
   /**
