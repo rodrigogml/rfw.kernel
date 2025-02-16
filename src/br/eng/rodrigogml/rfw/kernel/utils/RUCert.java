@@ -294,4 +294,31 @@ public class RUCert {
     return ks;
   }
 
+  /**
+   * Recupera a chave privada e o certificado X.509 a partir de um {@link RFWCertificate}.
+   *
+   * @param certificate Instância do certificado contendo o arquivo e senha.
+   * @return Um {@link KeyStore.PrivateKeyEntry} contendo a chave privada e o certificado.
+   * @throws RFWException Se houver falha ao carregar o certificado ou se nenhuma chave privada for encontrada.
+   */
+  public static KeyStore.PrivateKeyEntry extractPrivateKey(RFWCertificate certificate) throws RFWException {
+    PreProcess.requiredNonNull(certificate, "Certificado não pode ser nulo!");
+
+    KeyStore keyStore = loadKeyStore(certificate);
+
+    try {
+      Enumeration<String> aliases = keyStore.aliases();
+      while (aliases.hasMoreElements()) {
+        String alias = aliases.nextElement();
+        if (keyStore.isKeyEntry(alias)) {
+          return (KeyStore.PrivateKeyEntry) keyStore.getEntry(
+              alias, new KeyStore.PasswordProtection(certificate.getCertificateFilePassword().toCharArray()));
+        }
+      }
+    } catch (KeyStoreException | NoSuchAlgorithmException | java.security.UnrecoverableEntryException e) {
+      throw new RFWCriticalException("Falha ao extrair a chave privada do certificado!", e);
+    }
+
+    throw new RFWCriticalException("Nenhuma chave privada encontrada no certificado!");
+  }
 }

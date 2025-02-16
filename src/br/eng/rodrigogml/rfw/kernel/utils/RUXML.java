@@ -2,14 +2,36 @@ package br.eng.rodrigogml.rfw.kernel.utils;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.xml.XMLConstants;
+import javax.xml.crypto.dsig.CanonicalizationMethod;
+import javax.xml.crypto.dsig.DigestMethod;
+import javax.xml.crypto.dsig.Reference;
+import javax.xml.crypto.dsig.SignatureMethod;
+import javax.xml.crypto.dsig.SignedInfo;
+import javax.xml.crypto.dsig.Transform;
+import javax.xml.crypto.dsig.XMLSignature;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
+import javax.xml.crypto.dsig.dom.DOMSignContext;
+import javax.xml.crypto.dsig.keyinfo.KeyInfo;
+import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
+import javax.xml.crypto.dsig.keyinfo.X509Data;
+import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
+import javax.xml.crypto.dsig.spec.TransformParameterSpec;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -34,6 +56,7 @@ import org.xml.sax.SAXException;
 
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
+import br.eng.rodrigogml.rfw.kernel.interfaces.RFWCertificate;
 import br.eng.rodrigogml.rfw.kernel.logger.RFWLogger;
 
 /**
@@ -503,7 +526,7 @@ public final class RUXML {
    * @param xml XML a ser importando no documento.
    * @throws RFWException
    */
-  public static void createElementTagFromXML(Document doc, Element tag, String xml) throws RFWException {
+  public static void createElementTagFromXML(Document doc, Node tag, String xml) throws RFWException {
     final Document newDoc = parseXMLToDOMDocumentNormalized(xml);
     final Node rootElement = newDoc.getFirstChild();
     final Node newNode = doc.importNode(rootElement, true);
@@ -518,7 +541,7 @@ public final class RUXML {
    * @param childDoc Árvore DOM a ser importada como tag filha.
    * @throws RFWException
    */
-  public static void createElementTagFromDOMRoot(Document doc, Element tag, Document childDoc) throws RFWException {
+  public static void createElementTagFromDOMRoot(Document doc, Node tag, Document childDoc) throws RFWException {
     final Node rootElement = childDoc.getFirstChild();
     final Node newNode = doc.importNode(rootElement, true);
     tag.appendChild(newNode);
@@ -564,6 +587,131 @@ public final class RUXML {
       throw new RFWCriticalException("RFW_ERR_200487", e);
     }
   }
+
+  /**
+   * Assina digitalmente um documento XML, assinando todas as ocorrências de uma tag específica.
+   * <p>
+   * Esse método percorre todo o XML e aplica a assinatura digital em cada elemento que corresponde à tag informada. Ele encapsula a lógica de assinatura e delega a assinatura individual para o método {@link #signSingleXmlElement}.
+   * </p>
+   *
+   * <p>
+   * <b>Diferença para {@link #signSingleXmlElement}:</b>
+   * </p>
+   * <ul>
+   * <li>Esse método <b>varre o XML</b> e assina <b>todas</b> as ocorrências da tag informada.</li>
+   * <li>Útil para documentos que possuem várias seções assináveis, como a NF-e da SEFAZ.</li>
+   * <li>Chama {@link #signSingleXmlElement} internamente para cada elemento encontrado.</li>
+   * </ul>
+   *
+   * @param xml XML a ser assinado.
+   * @param signTag Tag que deve ser assinada.
+   * @param rfwCertificate Certificado para assinatura das Tags do XML.
+   * @return XML com as tags assinadas digitalmente.
+   * @throws RFWCriticalException se ocorrer erro na assinatura ou se a tag não for encontrada no XML.
+   */
+  public static String signXmlDocument(String xml, String signTag, RFWCertificate rfwCertificate) throws RFWException {
+    KeyStore.PrivateKeyEntry keyEntry = RUCert.extractPrivateKey(rfwCertificate);
+    PrivateKey privateKey = keyEntry.getPrivateKey();
+    X509Certificate certificate = (X509Certificate) keyEntry.getCertificate();
+
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    Document doc;
+    try {
+      byte[] bytes = xml.getBytes(StandardCharsets.UTF_8);
+      doc = factory.newDocumentBuilder().parse(new ByteArrayInputStream(bytes), StandardCharsets.UTF_8.name());
+    } catch (Exception e) {
+      throw new RFWCriticalException("RFW_000054", e);
+    }
+
+    // Cria a fábrica de assinatura
+    XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
+
+    // Define os "Transforms"
+    List<Transform> transformList = new ArrayList<>();
+    try {
+      transformList.add(fac.newTransform(Transform.ENVELOPED, (TransformParameterSpec) null));
+      transformList.add(fac.newTransform(CanonicalizationMethod.INCLUSIVE, (TransformParameterSpec) null));
+    } catch (Exception e) {
+      throw new RFWCriticalException("RFW_000055", e);
+    }
+
+    // Obtém a lista de elementos que devem ser assinados
+    NodeList nodes = doc.getDocumentElement().getElementsByTagName(signTag);
+    if (nodes.getLength() == 0) {
+      throw new RFWCriticalException("RFW_000056", new String[] { "Tag " + signTag + " não encontrada no XML." });
+    }
+
+    for (int i = 0; i < nodes.getLength(); i++) {
+      signSingleXmlElement(fac, transformList, privateKey, certificate, (Element) nodes.item(i));
+    }
+
+    // Converte DOM para String
+    ByteArrayOutputStream os = new ByteArrayOutputStream();
+    try {
+      TransformerFactory tf = TransformerFactory.newInstance();
+      Transformer trans = tf.newTransformer();
+      trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+      trans.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+      trans.transform(new DOMSource(doc), new StreamResult(os));
+    } catch (Exception e) {
+      throw new RFWCriticalException("RFW_000056", e);
+    }
+
+    try {
+      return os.toString(StandardCharsets.UTF_8.name());
+    } catch (UnsupportedEncodingException e) {
+      return os.toString();
+    }
+  }
+
+  /**
+   * Assina digitalmente um único elemento XML dentro de um documento.
+   * <p>
+   * Esse método aplica a assinatura digital em apenas um elemento dentro do XML, baseado na tag informada. Ele deve ser chamado manualmente para assinar elementos específicos ou usado pelo método {@link #signXmlDocument}, que assina todas as ocorrências da tag no documento.
+   * </p>
+   *
+   * <p>
+   * <b>Diferença para {@link #signXmlDocument}:</b>
+   * </p>
+   * <ul>
+   * <li>Esse método assina apenas <b>um elemento</b> do XML por vez.</li>
+   * <li>Útil quando é necessário assinar um único nó específico, sem percorrer todo o documento.</li>
+   * <li>É um método auxiliar de {@link #signXmlDocument}, mas pode ser chamado diretamente se necessário.</li>
+   * </ul>
+   *
+   * @param fac Fábrica de assinatura XML.
+   * @param transformList Lista de transformações para aplicar à assinatura.
+   * @param privateKey Chave privada utilizada para assinar.
+   * @param certificate Certificado X.509 correspondente.
+   * @param element Elemento XML que deve ser assinado.
+   * @throws RFWCriticalException Se ocorrer erro durante a assinatura.
+   */
+  public static void signSingleXmlElement(XMLSignatureFactory fac, List<Transform> transformList, PrivateKey privateKey, X509Certificate certificate, Element element) throws RFWException {
+    try {
+      element.setIdAttributeNode(element.getAttributeNode("Id"), true); // Define o atributo ID como ID. Resposta obtida no post: http://stackoverflow.com/questions/17331187/xml-dig-sig-error-after-upgrade-to-java7u25
+      String id = element.getAttribute("Id");
+
+      // Cria a referência para a assinatura
+      Reference ref = fac.newReference("#" + id, fac.newDigestMethod(DigestMethod.SHA1, null), transformList, null, null);
+      SignedInfo si = fac.newSignedInfo(fac.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null), fac.newSignatureMethod(SignatureMethod.RSA_SHA1, null), Collections.singletonList(ref));
+
+      // Cria a assinatura XML
+      KeyInfoFactory kif = fac.getKeyInfoFactory();
+      X509Data xData = kif.newX509Data(Collections.singletonList(certificate));
+      KeyInfo ki = kif.newKeyInfo(Collections.singletonList(xData));
+      XMLSignature signature = fac.newXMLSignature(si, ki);
+
+      // Define o local onde a assinatura será inserida
+      DOMSignContext dsc = new DOMSignContext(privateKey, element.getParentNode());
+
+      // Gera e aplica a assinatura
+      signature.sign(dsc);
+    } catch (Exception e) {
+      throw new RFWCriticalException("RFW_000058", e);
+    }
+  }
+
 }
 
 /**

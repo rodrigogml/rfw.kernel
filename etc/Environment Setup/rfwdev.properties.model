@@ -16,6 +16,9 @@ rfw.sefaz.trust.pass=
 # Teste de abertura e interpretaÃ§Ã£o dos XMLs da NFe / SEFAZ. Informar o caminho de diretório onde podem ser encontrados arquivos XML de DANFEs para execução dos testes.
 rfw.sefaz.pathToNFeXMLToTest=
 
+# Exporta o XML da NFe enviado para a SEFAZ e o Recebido para Log em pasta (cada comunicação, tanto envio quando retorno, devem ter arquivo distintos com o nome da tag raiz enviada, e substituir o arquivo anterior com o mesmo nome)
+rfw.sefaz.pathToLogCommunicationXML=c:\\T\\
+
 # Chave e Secret de acesso do AWS S3 para testar classes de acesso e funcionalidades de integração com o S3 da AWS
 aws.s3.key=
 aws.s3.secret=

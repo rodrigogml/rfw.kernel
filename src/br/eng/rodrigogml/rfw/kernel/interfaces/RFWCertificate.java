@@ -16,6 +16,9 @@ public interface RFWCertificate {
      */
     A1,
     /**
+     * Certificado A3.
+     */
+    /**
      * Certificado/Arquivo JKS padrão do KeyStore do java. Que será lido no KeyStore com o {@link java.security.KeyStore#getDefaultType()}.
      */
     KeyStore

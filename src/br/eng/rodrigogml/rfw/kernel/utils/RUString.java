@@ -2,15 +2,19 @@ package br.eng.rodrigogml.rfw.kernel.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
+import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 import br.eng.rodrigogml.rfw.kernel.utils.extra.Base32;
 
@@ -645,13 +649,73 @@ public class RUString {
   }
 
   /**
+   * Este método decodifica uma string codificada em base 64.<br>
+   * A diferença do método 'mime' é que ele quebra a linha a cada 76 caracteres (compátivel com e-mails), enquanto que o método padrão não considera as quebras de linha.
+   *
+   * @param encodedContent String codificada
+   * @return String decodificada
+   */
+  public static String decodeMimeBase64(String encodedContent) {
+    return new String(Base64.getMimeDecoder().decode(encodedContent));
+  }
+
+  /**
+   * Este método decodifica uma string codificada em base 64.<br>
+   * A diferença do método 'mime' é que ele quebra a linha a cada 76 caracteres (compátivel com e-mails), enquanto que o método padrão não considera as quebras de linha.
+   *
+   * @param encodedContent String codificada
+   * @return String decodificada
+   * @throws UnsupportedEncodingException
+   */
+  public static String decodeMimeBase64(String encodedContent, String charset) throws RFWException {
+    try {
+      return new String(Base64.getMimeDecoder().decode(encodedContent), charset);
+    } catch (UnsupportedEncodingException e) {
+      throw new RFWCriticalException("Charset inválido: '" + charset + "'!");
+    }
+  }
+
+  /**
+   * Este método decodifica uma string codificada em base 64.<br>
+   * A diferença do método 'mime' é que ele quebra a linha a cada 76 caracteres (compátivel com e-mails), enquanto que o método padrão não considera as quebras de linha.
+   *
+   * @param encodedContent String codificada
+   * @return String decodificada
+   */
+  public static byte[] decodeMimeBase64ToByte(String encodedContent) {
+    return Base64.getMimeDecoder().decode(encodedContent);
+  }
+
+  /**
+   * Este método codifica uma string em base 64.<br>
+   * A diferença do método 'mime' é que ele quebra a linha a cada 76 caracteres (compátivel com e-mails), enquanto que o método padrão não considera as quebras de linha.
+   *
+   * @param content String para ser codificada.
+   * @return String codificada
+   */
+  public static String encodeMimeBase64(String content) {
+    return new String(Base64.getMimeEncoder().encodeToString(content.getBytes()));
+  }
+
+  /**
+   * Este método codifica um array de bytes em base 64.<br>
+   * A diferença do método 'mime' é que ele quebra a linha a cada 76 caracteres (compátivel com e-mails), enquanto que o método padrão não considera as quebras de linha.
+   *
+   * @param content String para ser codificada.
+   * @return String codificada
+   */
+  public static String encodeMimeBase64(byte[] content) {
+    return new String(Base64.getMimeEncoder().encodeToString(content));
+  }
+
+  /**
    * Este método decodifica uma string codificada em base 64.
    *
    * @param encodedContent String codificada
    * @return String decodificada
    */
   public static String decodeBase64(String encodedContent) {
-    return new String(Base64.getMimeDecoder().decode(encodedContent));
+    return new String(Base64.getDecoder().decode(encodedContent));
   }
 
   /**
@@ -663,7 +727,7 @@ public class RUString {
    */
   public static String decodeBase64(String encodedContent, String charset) throws RFWException {
     try {
-      return new String(Base64.getMimeDecoder().decode(encodedContent), charset);
+      return new String(Base64.getDecoder().decode(encodedContent), charset);
     } catch (UnsupportedEncodingException e) {
       throw new RFWCriticalException("Charset inválido: '" + charset + "'!");
     }
@@ -676,7 +740,7 @@ public class RUString {
    * @return String decodificada
    */
   public static byte[] decodeBase64ToByte(String encodedContent) {
-    return Base64.getMimeDecoder().decode(encodedContent);
+    return Base64.getDecoder().decode(encodedContent);
   }
 
   /**
@@ -686,7 +750,7 @@ public class RUString {
    * @return String codificada
    */
   public static String encodeBase64(String content) {
-    return new String(Base64.getMimeEncoder().encodeToString(content.getBytes()));
+    return Base64.getEncoder().encodeToString(content.getBytes());
   }
 
   /**
@@ -696,7 +760,7 @@ public class RUString {
    * @return String codificada
    */
   public static String encodeBase64(byte[] content) {
-    return new String(Base64.getMimeEncoder().encodeToString(content));
+    return Base64.getEncoder().encodeToString(content);
   }
 
   /**
@@ -746,4 +810,128 @@ public class RUString {
     // return BaseEncoding.base32().decode(content);
     return Base32.decode(content);
   }
+
+  /**
+   * Método utilizado para converter um byte array de base 64 em uma String para Hexadecimal.<br>
+   * Este método é utilizado por exemplo para receber o bytearray do campo DigestValue do XML da NFe/NFCe (cuja base é 64), e converte para uma representação Hexadecimal. Essa representação Hexa é utilizada na geração da URL no QRCode da NFCe.
+   *
+   * @param bytearray
+   * @return String com o valor em HexaDecimal com as letras em lowercase.
+   */
+  public static String toHexFromBase64(byte[] bytearray) throws RFWException {
+    return toHex(Base64.getEncoder().encodeToString(bytearray));
+  }
+
+  /**
+   * Método utilizado extrair o byte array de base 64 a partir de uma string que represente um valor em hexa.<br>
+   * Faz o procedimento contrário ao {@link #toHexFromBase64(byte[])}<br>
+   *
+   * @param bytearray
+   * @param hexstring
+   * @return String com o valor em HexaDecimal com as letras em lowercase.
+   */
+  public static byte[] fromHexToByteArrayBase64(String hexstring) throws RFWException {
+    return Base64.getDecoder().decode(fromHexToByteArray(hexstring));
+  }
+
+  /**
+   * Método utilizado para converter uma String para Hexadecimal.<br>
+   * Este método utiliza o CharSet Padrão do ambiente.
+   *
+   * @param value Valor a ser convertido
+   * @return String com o valor em HexaDecimal com as letras em lowercase.
+   */
+  public static String toHex(String value) throws RFWException {
+    return toHex(value.getBytes(/* YOUR_CHARSET? */));
+  }
+
+  /**
+   * Método utilizado para converter uma String para Hexadecimal.<br>
+   * Este método permite identificar o charset usado para decodificar a String.
+   *
+   * @param value Valor a ser convertido
+   * @param charset Charset para decodificação da String
+   * @return String com o valor em HexaDecimal com as letras em lowercase.
+   */
+  public static String toHex(String value, Charset charset) throws RFWException {
+    return toHex(value.getBytes(charset));
+  }
+
+  /**
+   * Método utilizado para converter um array de bytes para Hexadecimal.<br>
+   *
+   * @param bytes cadeia de bytes a ser convertido para uma String representando o valor Hexadecimal
+   * @return String com o valor em HexaDecimal com as letras em lowercase.
+   */
+  public static String toHex(byte[] bytes) throws RFWException {
+    return String.format("%040x", new BigInteger(1, bytes));
+  }
+
+  /**
+   * Este método recebe uma string representando valores em hexa e retorna os valores em um array de bytes.
+   *
+   * @param hexstring String representando um valor hexa
+   * @return array de bytes com os mesmos valores representados em hexa na string.
+   * @throws RFWException
+   */
+  public static byte[] fromHexToByteArray(String hexstring) throws RFWException {
+    // Valida a String recebida se só tem caracteres em Hexa
+    if (!hexstring.matches("[0-9A-Fa-f]*")) {
+      throw new RFWValidationException("BISERP_000362");
+    }
+    return new BigInteger(hexstring, 16).toByteArray();
+  }
+
+  /**
+   * Método utilizado para converter uma string de valor hexadecimal para uma String. Utiliza os bytes dos valores hexa decimal para converter em String utilizando o charset padrão do sistema.
+   *
+   * @param hexstring String com valores em hexa
+   * @return String montada usando os bytes do valor hexa com o charset padrão do sistema.
+   * @throws RFWException
+   */
+  public static String fromHexToString(String hexstring) throws RFWException {
+    // Valida a String recebida se só tem caracteres em Hexa
+    if (!hexstring.matches("[0-9A-Fa-f]*")) {
+      throw new RFWValidationException("BISERP_000362");
+    }
+    return new String(new BigInteger(hexstring, 16).toByteArray());
+  }
+
+  /**
+   * Calcula a Hash SHA1 de uma String.
+   *
+   * @param value Valor a ter a Hash calculada.
+   * @return Valor em Hexa calculado com o algorítimo de SHA1.
+   * @throws RFWException
+   */
+  public static String calcSHA1(String value) throws RFWException {
+    try {
+      MessageDigest cript = MessageDigest.getInstance("SHA-1");
+      cript.reset();
+      cript.update(value.getBytes());
+      return toHex(cript.digest());
+    } catch (NoSuchAlgorithmException e) {
+      throw new RFWCriticalException("BISERP_000307", e);
+    }
+  }
+
+  /**
+   * Calcula a Hash SHA1 de uma String.
+   *
+   * @param value Valor a ter a Hash calculada.
+   * @param charset Defineo charset do valor, usado para converter corretamente em bytes.
+   * @return Valor em Hexa calculado com o algorítimo de SHA1.
+   * @throws RFWException
+   */
+  public static String calcSHA1(String value, String charset) throws RFWException {
+    try {
+      MessageDigest cript = MessageDigest.getInstance("SHA-1");
+      cript.reset();
+      cript.update(value.getBytes(charset));
+      return toHex(cript.digest());
+    } catch (Exception e) {
+      throw new RFWCriticalException("BISERP_000307", e);
+    }
+  }
+
 }

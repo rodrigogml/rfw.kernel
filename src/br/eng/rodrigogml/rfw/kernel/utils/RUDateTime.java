@@ -5,8 +5,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -286,59 +288,173 @@ public class RUDateTime {
   }
 
   /**
-   * Este método interpreta todos os formatos já encontrados de datas que podem vir na NFe para o formato do Java. Atualmente os formatos reconhecidos são:<br>
-   * <li>"yyyy-MM-dd'T'HH:mm:ssXXX", onde XXX é algo como "-07:00" (Padrão UTC)</li>
-   * <li>"yyyy-MM-dd'T'HH:mm:ssZ", onde Z é algo como "-0700" (Padrão UTC)</li>
-   * <li>"yyyy-MM-dd'T'HH:mm:ss" (Padrão UTC Sem TimeZone)</li>
-   * <li>"yyyy-MM-dd"</li>
-   * <li>"dd/MM/yyyy"</li>
+   * Interpreta diversos formatos de data e os converte para {@link LocalDateTime}.
+   * <p>
+   * Os formatos suportados são:
+   * <ul>
+   * <li>"yyyy-MM-dd'T'HH:mm:ssXXX" Exemplo: "2024-02-20T15:30:00-07:00" (UTC com timezone)</li>
+   * <li>"yyyy-MM-dd'T'HH:mm:ssZ" Exemplo: "2024-02-20T15:30:00-0700" (UTC com timezone)</li>
+   * <li>"yyyy-MM-dd'T'HH:mm:ss" Exemplo: "2024-02-20T15:30:00" (UTC sem timezone)</li>
+   * <li>"yyyy-MM-dd" Exemplo: "2024-02-20"</li>
+   * <li>"dd/MM/yyyy" Exemplo: "20/02/2024"</li>
+   * </ul>
+   * <p>
+   * Quando o timezone está presente na string, ele é ignorado e a data é retornada no horário local. Se não houver timezone, assume-se o fuso horário do sistema.
    *
-   * @param date Data com os valores recebidos na String. Na ausência de um TimeZone é considerado que o TImeZone
-   * @return
-   * @throws RFWException
+   * <p>
+   * <b>Diferença para {@link #parseLocalDateTime(String, ZoneId)}:</b> Esse método apenas interpreta a data sem fazer conversão de fusos horários.
+   * </p>
+   *
+   * @param date String representando a data.
+   * @return {@link LocalDateTime} correspondente.
+   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
+   */
+  public static LocalDateTime parseLocalDateTime(String date) throws RFWException {
+    if (date == null || date.trim().isEmpty()) {
+      return null;
+    }
+
+    try {
+      if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]")) {
+        // yyyy-MM-dd (Apenas Data)
+        return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay();
+      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9]:[0-5][0-9]")) {
+        // yyyy-MM-dd'T'HH:mm:ssXXX (Padrão UTC com TimeZone, ex: -07:00)
+        return OffsetDateTime.parse(date, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toLocalDateTime();
+      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9][0-5][0-9]")) {
+        // yyyy-MM-dd'T'HH:mm:ssZ (Padrão UTC com TimeZone sem separador, ex: -0700)
+        return OffsetDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")).toLocalDateTime();
+      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9]")) {
+        // yyyy-MM-dd'T'HH:mm:ss (UTC Sem TimeZone)
+        return LocalDateTime.parse(date, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+      } else if (date.matches("[0-3][0-9]/[0-1][0-9]/[1-2][0-9]{3}")) {
+        // dd/MM/yyyy
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay();
+      } else {
+        throw new RFWValidationException("Formato da Data não suportado. Data: '${0}'", new String[] { date });
+      }
+    } catch (DateTimeParseException e) {
+      throw new RFWCriticalException("Falha ao realizar o parser da data. Data '${0}'.", new String[] { date }, e);
+    }
+  }
+
+  /**
+   * Interpreta diversos formatos de data e os converte para {@link LocalDateTime}, ajustando a data para o timezone especificado.
+   * <p>
+   * Os formatos suportados são os mesmos do método {@link #parseLocalDateTime(String)}, porém, caso a data contenha um timezone, ele será convertido para o {@link ZoneId} fornecido.
+   * </p>
+   *
+   * <p>
+   * <b>Diferença para {@link #parseLocalDateTime(String)}:</b> Esse método converte o horário para o fuso horário recebido como argumento.
+   * </p>
+   *
+   * @param date String representando a data.
+   * @param zoneID O {@link ZoneId} para o qual a data deve ser convertida.
+   * @return {@link LocalDateTime} correspondente no timezone especificado.
+   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
+   */
+  public static LocalDateTime parseLocalDateTime(String date, ZoneId zoneID) throws RFWException {
+    if (date == null || date.trim().isEmpty()) {
+      return null;
+    }
+
+    try {
+      if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]")) {
+        // yyyy-MM-dd (Apenas Data)
+        return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay(zoneID).toLocalDateTime();
+      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9]:[0-5][0-9]")) {
+        // yyyy-MM-dd'T'HH:mm:ssXXX (Padrão UTC com TimeZone, ex: -07:00)
+        return OffsetDateTime.parse(date, DateTimeFormatter.ISO_OFFSET_DATE_TIME).atZoneSameInstant(zoneID).toLocalDateTime();
+      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9][0-5][0-9]")) {
+        // yyyy-MM-dd'T'HH:mm:ssZ (Padrão UTC com TimeZone sem separador, ex: -0700)
+        return OffsetDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")).atZoneSameInstant(zoneID).toLocalDateTime();
+      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9]")) {
+        // yyyy-MM-dd'T'HH:mm:ss (UTC Sem TimeZone)
+        return LocalDateTime.parse(date, DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(zoneID).toLocalDateTime();
+      } else if (date.matches("[0-3][0-9]/[0-1][0-9]/[1-2][0-9]{3}")) {
+        // dd/MM/yyyy
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay(zoneID).toLocalDateTime();
+      } else {
+        throw new RFWValidationException("Formato da Data não suportado. Data: '${0}'", new String[] { date });
+      }
+    } catch (DateTimeParseException e) {
+      throw new RFWCriticalException("Falha ao realizar o parser da data. Data '${0}'.", new String[] { date }, e);
+    }
+  }
+
+  /**
+   * Interpreta diversos formatos de data e os converte para {@link Date}.
+   * <p>
+   * Os formatos suportados são:
+   * <ul>
+   * <li>"yyyy-MM-dd'T'HH:mm:ssXXX" Exemplo: "2024-02-20T15:30:00-07:00" (UTC com timezone)</li>
+   * <li>"yyyy-MM-dd'T'HH:mm:ssZ" Exemplo: "2024-02-20T15:30:00-0700" (UTC com timezone)</li>
+   * <li>"yyyy-MM-dd'T'HH:mm:ss" Exemplo: "2024-02-20T15:30:00" (UTC sem timezone)</li>
+   * <li>"yyyy-MM-dd" Exemplo: "2024-02-20"</li>
+   * <li>"dd/MM/yyyy" Exemplo: "20/02/2024"</li>
+   * </ul>
+   * <p>
+   * Se um timezone for especificado na string, ele será utilizado para calcular o timestamp UTC. Caso contrário, assume-se o fuso horário do sistema.
+   *
+   * <p>
+   * <b>Diferença para {@link #parseDate(String, ZoneId)}:</b> Esse método apenas faz o parser da data sem conversão de timezone.
+   * </p>
+   *
+   * @param date String representando a data.
+   * @return {@link Date} correspondente.
+   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
    */
   public static Date parseDate(String date) throws RFWException {
-    if (date != null) {
-      if (date.matches("[1-2][0-9]{3}\\-[0-1][0-9]\\-[0-3][0-9]")) {
-        int year = Integer.parseInt(date.substring(0, 4));
-        int month = Integer.parseInt(date.substring(5, 7)) - 1;
-        int day = Integer.parseInt(date.substring(8, 10));
-        GregorianCalendar gc = new GregorianCalendar(year, month, day);
-        return gc.getTime();
-      } else if (date.matches("[1-2][0-9]{3}\\-[0-1][0-9]\\-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9]:[0-5][0-9]")) {
-        try {
-          final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-          return df.parse(date);
-        } catch (ParseException e) {
-          throw new RFWCriticalException("Falha ao realizar o parser da data. Data '${0}'.", new String[] { date }, e);
-        }
-      } else if (date.matches("[1-2][0-9]{3}\\-[0-1][0-9]\\-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9][0-5][0-9]")) {
-        try {
-          final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-          return df.parse(date);
-        } catch (ParseException e) {
-          throw new RFWCriticalException("Falha ao realizar o parser da data. Data '${0}'.", new String[] { date }, e);
-        }
-      } else if (date.matches("[1-2][0-9]{3}\\-[0-1][0-9]\\-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9]")) {
-        try {
-          final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-          return df.parse(date);
-        } catch (ParseException e) {
-          throw new RFWCriticalException("Falha ao realizar o parser da data. Data '${0}'.", new String[] { date }, e);
-        }
-      } else if (date.matches("[0-3][0-9]/[0-1][0-9]/[1-2][0-9]{3}")) {
-        try {
-          final SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-          return df.parse(date);
-        } catch (ParseException e) {
-          throw new RFWCriticalException("Falha ao realizar o parser da data. Data '${0}'.", new String[] { date }, e);
-        }
-      } else {
-        throw new RFWValidationException("Formato da Data não está em formato não suportado por este método. Data: '${0}'", new String[] { date });
-      }
-    }
-    return null;
+    return parseDate(date, ZoneId.systemDefault());
+  }
 
+  /**
+   * Interpreta diversos formatos de data e os converte para {@link Date}, ajustando a data para o timezone especificado.
+   * <p>
+   * Os formatos suportados são os mesmos do método {@link #parseDate(String)}, porém, caso a data contenha um timezone, ele será convertido para o {@link ZoneId} fornecido.
+   * </p>
+   *
+   * <p>
+   * <b>Diferença para {@link #parseDate(String)}:</b> Esse método converte o horário para o fuso horário recebido como argumento.
+   * </p>
+   *
+   * @param date String representando a data.
+   * @param zoneID O {@link ZoneId} para o qual a data deve ser convertida.
+   * @return {@link Date} correspondente no timezone especificado.
+   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
+   */
+  public static Date parseDate(String date, ZoneId zoneID) throws RFWException {
+    if (date == null || date.trim().isEmpty()) {
+      return null;
+    }
+
+    try {
+      if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]")) {
+        // yyyy-MM-dd (Apenas Data)
+        LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
+        return Date.from(localDate.atStartOfDay(zoneID).toInstant());
+      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9]:[0-5][0-9]")) {
+        // yyyy-MM-dd'T'HH:mm:ssXXX (UTC com TimeZone ex: -07:00)
+        OffsetDateTime offsetDateTime = OffsetDateTime.parse(date, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        return Date.from(offsetDateTime.atZoneSameInstant(zoneID).toInstant());
+      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9][0-5][0-9]")) {
+        // yyyy-MM-dd'T'HH:mm:ssZ (UTC com TimeZone sem separador ex: -0700)
+        OffsetDateTime offsetDateTime = OffsetDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ"));
+        return Date.from(offsetDateTime.atZoneSameInstant(zoneID).toInstant());
+      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9]")) {
+        // yyyy-MM-dd'T'HH:mm:ss (Sem TimeZone)
+        LocalDateTime localDateTime = LocalDateTime.parse(date, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        return Date.from(localDateTime.atZone(zoneID).toInstant());
+      } else if (date.matches("[0-3][0-9]/[0-1][0-9]/[1-2][0-9]{3}")) {
+        // dd/MM/yyyy
+        LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        return Date.from(localDate.atStartOfDay(zoneID).toInstant());
+      } else {
+        throw new RFWValidationException("Formato da Data não suportado. Data: '${0}'", new String[] { date });
+      }
+    } catch (DateTimeParseException e) {
+      throw new RFWCriticalException("Falha ao realizar o parser da data. Data '${0}'.", new String[] { date }, e);
+    }
   }
 
   /**
@@ -356,19 +472,6 @@ public class RUDateTime {
   }
 
   /**
-   * Chama o método {@link #parseDate(String)} e converte para um {@link LocalDateTime} considerando o ZoneID configurado em {@link RFWDeprec#getZoneId()}<br>
-   * Verifique os padrões de entrada suportados na documentação do {@link #parseDate(String)}
-   *
-   * @param date Objeto data a ser convertido, já com a definição de fuso embutida.
-   * @return Objeto convertido ou nulo caso receba uma entrada nula.
-   * @throws RFWException
-   */
-  public static LocalDate parseLocalDate(String date) throws RFWException {
-    if (date == null) return null;
-    return toLocalDateTime(parseDate(date)).toLocalDate();
-  }
-
-  /**
    * Realiza o parser da String utilizando o {@link DateTimeFormatter}.<Br>
    *
    * @param date Data no formato String que precisa ser lida.
@@ -379,47 +482,6 @@ public class RUDateTime {
   public static LocalDate parseLocalDate(String date, String pattern) throws RFWException {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
     return LocalDate.parse(date, formatter);
-  }
-
-  /**
-   * Chama o método {@link #parseDate(String)} e converte para um {@link LocalDateTime} considerando o ZoneID configurado em {@link RFWDeprec#getZoneId()}<br>
-   * Verifique os padrões de entrada suportados na documentação do {@link #parseDate(String)}
-   *
-   * @param date Objeto data a ser convertido, já com a definição de fuso embutida.
-   * @param zoneID Especificação da Zona (fuso horário) para o quam desejamos converter a hora.
-   * @return Objeto convertido ou nulo casa date == null;
-   * @throws RFWException
-   */
-  public static LocalDate parseLocalDate(String date, ZoneId zoneID) throws RFWException {
-    if (date == null) return null;
-    return toLocalDateTime(parseDate(date), zoneID).toLocalDate();
-  }
-
-  /**
-   * Chama o método {@link #parseDate(String)} e converte para um {@link LocalDateTime} considerando o ZoneID configurado em {@link RFWDeprec#getZoneId()}<br>
-   * Verifique os padrões de entrada suportados na documentação do {@link #parseDate(String)}
-   *
-   * @param date Objeto data a ser convertido, já com a definição de fuso embutida.
-   * @return retorna LocalDateTime com o horário retirado da String. Se recebido o valor nulo, retorna nulo.
-   * @throws RFWException
-   */
-  public static LocalDateTime parseLocalDateTime(String date) throws RFWException {
-    if (date == null) return null;
-    return toLocalDateTime(parseDate(date));
-  }
-
-  /**
-   * Chama o método {@link #parseDate(String)} e converte para um {@link LocalDateTime} considerando o ZoneID configurado em {@link RFWDeprec#getZoneId()}<br>
-   * Verifique os padrões de entrada suportados na documentação do {@link #parseDate(String)}
-   *
-   * @param date Objeto data a ser convertido, já com a definição de fuso embutida.
-   * @param zoneID Especificação da Zona (fuso horário) para o quam desejamos converter a hora.
-   * @return Objeto convertido ou nulo caso receba date == null.
-   * @throws RFWException
-   */
-  public static LocalDateTime parseLocalDateTime(String date, ZoneId zoneID) throws RFWException {
-    if (date == null) return null;
-    return toLocalDateTime(parseDate(date), zoneID);
   }
 
   /**
@@ -668,5 +730,75 @@ public class RUDateTime {
    */
   public static String formatTo235959(long timemillis) {
     return formatTo235959(new Date(timemillis));
+  }
+
+  /**
+   * Interpreta diversos formatos de data e os converte para {@link LocalDate}.
+   * <p>
+   * Os formatos suportados são:
+   * <ul>
+   * <li>"yyyy-MM-dd'T'HH:mm:ssXXX" Exemplo: "2024-02-20T15:30:00-07:00" (UTC com timezone)</li>
+   * <li>"yyyy-MM-dd'T'HH:mm:ssZ" Exemplo: "2024-02-20T15:30:00-0700" (UTC com timezone)</li>
+   * <li>"yyyy-MM-dd'T'HH:mm:ss" Exemplo: "2024-02-20T15:30:00" (UTC sem timezone)</li>
+   * <li>"yyyy-MM-dd" Exemplo: "2024-02-20"</li>
+   * <li>"dd/MM/yyyy" Exemplo: "20/02/2024"</li>
+   * </ul>
+   * <p>
+   * Se um timezone for especificado na string, ele será utilizado apenas para conversão do timestamp UTC, mas o retorno será um {@link LocalDate} sem informações de horário.
+   *
+   * <p>
+   * <b>Diferença para {@link #parseLocalDate(String, ZoneId)}:</b> Esse método apenas faz o parser da data sem conversão de timezone.
+   * </p>
+   *
+   * @param date String representando a data.
+   * @return {@link LocalDate} correspondente.
+   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
+   */
+  public static LocalDate parseLocalDate(String date) throws RFWException {
+    return parseLocalDate(date, ZoneId.systemDefault());
+  }
+
+  /**
+   * Interpreta diversos formatos de data e os converte para {@link LocalDate}, ajustando a data para o timezone especificado antes de descartar a informação de horário.
+   * <p>
+   * Os formatos suportados são os mesmos do método {@link #parseLocalDate(String)}, porém, caso a data contenha um timezone, ele será convertido para o {@link ZoneId} fornecido antes de extrair a data.
+   * </p>
+   *
+   * <p>
+   * <b>Diferença para {@link #parseLocalDate(String)}:</b> Esse método converte o horário para o fuso horário recebido como argumento antes de extrair a data.
+   * </p>
+   *
+   * @param date String representando a data.
+   * @param zoneID O {@link ZoneId} para o qual a data deve ser convertida antes de extrair a parte da data.
+   * @return {@link LocalDate} correspondente sem informações de horário.
+   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
+   */
+  public static LocalDate parseLocalDate(String date, ZoneId zoneID) throws RFWException {
+    if (date == null || date.trim().isEmpty()) {
+      return null;
+    }
+
+    try {
+      if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]")) {
+        // yyyy-MM-dd (Apenas Data)
+        return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
+      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9]:[0-5][0-9]")) {
+        // yyyy-MM-dd'T'HH:mm:ssXXX (UTC com TimeZone ex: -07:00)
+        return OffsetDateTime.parse(date, DateTimeFormatter.ISO_OFFSET_DATE_TIME).atZoneSameInstant(zoneID).toLocalDate();
+      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9][0-5][0-9]")) {
+        // yyyy-MM-dd'T'HH:mm:ssZ (UTC com TimeZone sem separador ex: -0700)
+        return OffsetDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")).atZoneSameInstant(zoneID).toLocalDate();
+      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9]")) {
+        // yyyy-MM-dd'T'HH:mm:ss (Sem TimeZone)
+        return LocalDateTime.parse(date, DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(zoneID).toLocalDate();
+      } else if (date.matches("[0-3][0-9]/[0-1][0-9]/[1-2][0-9]{3}")) {
+        // dd/MM/yyyy
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+      } else {
+        throw new RFWValidationException("Formato da Data não suportado. Data: '${0}'", new String[] { date });
+      }
+    } catch (DateTimeParseException e) {
+      throw new RFWCriticalException("Falha ao realizar o parser da data. Data '${0}'.", new String[] { date }, e);
+    }
   }
 }
