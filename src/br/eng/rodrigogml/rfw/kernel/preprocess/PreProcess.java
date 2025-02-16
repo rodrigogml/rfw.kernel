@@ -1151,4 +1151,66 @@ public final class PreProcess {
     if (value == null) return null;
     return new Double(value);
   }
+
+  /**
+   * Valida se o conteúdo não é nulo e se satisfaz a expressão regular passada. Caso contráio emite uma {@link RFWValidationException} com a mensagem passada.
+   *
+   * @param value Valor em String para tentar validar com a Expressão Regular
+   * @param regExp Expressão regulara para validação
+   * @param msg Mensagem/Código da Exception a ser colocado na Exception
+   * @throws RFWException
+   */
+  public static void requiredNonNullMatch(String value, String regExp) throws RFWException {
+    requiredNonNullMatch(value, regExp, "RFW_000051");
+  }
+
+  /**
+   * Valida se o conteúdo não é nulo e se satisfaz a expressão regular passada. Caso contráio emite uma {@link RFWValidationException} com a mensagem passada.
+   *
+   * @param value Valor em String para tentar validar com a Expressão Regular
+   * @param regExp Expressão regulara para validação
+   * @param msg Mensagem/Código da Exception a ser colocado na Exception
+   * @throws RFWException
+   */
+  public static void requiredNonNullMatch(String value, String regExp, String msg) throws RFWException {
+    requiredNonNull(value, msg);
+    try {
+      value.matches(regExp);
+    } catch (Exception e) {
+      throw new RFWValidationException(msg, new String[] { value, regExp }, e);
+    }
+  }
+
+  /**
+   * Valida se o conteúdo satisfaz a expressão regular passada. Caso contráio emite uma {@link RFWValidationException} com a mensagem passada. <Br>
+   * Se o conteúdo for nulo, apenas ignora.
+   *
+   * @param value Valor em String para tentar validar com a Expressão Regular
+   * @param regExp Expressão regulara para validação
+   * @param msg Mensagem/Código da Exception a ser colocado na Exception
+   * @throws RFWException
+   */
+  public static void requiredMatch(String value, String regExp) throws RFWException {
+    if (value == null) return;
+    requiredMatch(value, regExp, "RFW_000051");
+  }
+
+  /**
+   * Valida se o conteúdo satisfaz a expressão regular passada. Caso contráio emite uma {@link RFWValidationException} com a mensagem passada. <Br>
+   * Se o conteúdo for nulo, apenas ignora.
+   *
+   * @param value Valor em String para tentar validar com a Expressão Regular
+   * @param regExp Expressão regulara para validação
+   * @param msg Mensagem/Código da Exception a ser colocado na Exception
+   * @throws RFWException
+   */
+  public static void requiredMatch(String value, String regExp, String msg) throws RFWException {
+    if (value == null) return;
+    requiredNonNull(value, msg);
+    try {
+      value.matches(regExp);
+    } catch (Exception e) {
+      throw new RFWValidationException(msg, new String[] { value, regExp }, e);
+    }
+  }
 }
