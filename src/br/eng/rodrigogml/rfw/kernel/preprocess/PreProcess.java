@@ -232,7 +232,7 @@ public final class PreProcess {
    * @param value valor a ser processado
    * @return valor processado
    */
-  public static Float processFloatToNullIfZeroOrNegative(Float value) {
+  public static Float processFloatToNullIfZeroOrNonPositive(Float value) {
     if (value != null && value <= 0) {
       value = null;
     }
@@ -245,9 +245,22 @@ public final class PreProcess {
    * @param value valor a ser processado
    * @return valor processado
    */
-  public static BigDecimal processBigDecimalToNullIfZeroOrNegative(BigDecimal value) {
+  public static BigDecimal processBigDecimalToNullIfZeroOrNonPositive(BigDecimal value) {
     if (value != null && value.compareTo(BigDecimal.ZERO) <= 0) {
       value = null;
+    }
+    return value;
+  }
+
+  /**
+   * Processa qualquer número BigDecimal para Zero, caso seja nulo ou negativo.
+   *
+   * @param value valor a ser processado
+   * @return valor processado
+   */
+  public static BigDecimal processBigDecimalToZeroIfNullOrNegative(BigDecimal value) {
+    if (value == null || value.signum() < 0) {
+      value = BigDecimal.ZERO;
     }
     return value;
   }
@@ -423,24 +436,6 @@ public final class PreProcess {
       }
     }
     return date;
-  }
-
-  /**
-   * Valida se o valor passado é positivo.
-   *
-   * @throws RFWException
-   */
-  public static void requiredPositive(Long value) throws RFWException {
-    requiredPositive(value, "Esperado um valor positivo.");
-  }
-
-  /**
-   * Valida se o valor passado é positivo.
-   *
-   * @throws RFWException
-   */
-  public static void requiredPositive(Long value, String message) throws RFWException {
-    if (value == null || value <= 0) throw new RFWValidationException(message);
   }
 
   /**
@@ -1213,4 +1208,1265 @@ public final class PreProcess {
       throw new RFWValidationException(msg, new String[] { value, regExp }, e);
     }
   }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositive(BigDecimal value) throws RFWValidationException {
+    requiredNonNullPositive(value, "Esperado um valor não nulo e positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositive(BigDecimal value, String message) throws RFWValidationException {
+    if (value == null || value.signum() <= 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositive(BigDecimal value) throws RFWValidationException {
+    requiredPositive(value, "Esperado um valor positivo.");
+  }
+
+  /**
+   * Valida se o valor passado é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositive(BigDecimal value, String message) throws RFWValidationException {
+    if (value != null && value.signum() <= 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegative(BigDecimal value) throws RFWValidationException {
+    requiredNonNullNonNegative(value, "Esperado um valor não nulo e não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegative(BigDecimal value, String message) throws RFWValidationException {
+    if (value == null || value.signum() < 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for negativo.
+   */
+  public static void requiredNonNegative(BigDecimal value) throws RFWValidationException {
+    requiredNonNegative(value, "Esperado um valor não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for negativo.
+   */
+  public static void requiredNonNegative(BigDecimal value, String message) throws RFWValidationException {
+    if (value != null && value.signum() < 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositive(BigDecimal value) throws RFWValidationException {
+    requiredNonNullNonPositive(value, "Esperado um valor não nulo e não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositive(BigDecimal value, String message) throws RFWValidationException {
+    if (value == null || value.signum() > 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for positivo.
+   */
+  public static void requiredNonPositive(BigDecimal value) throws RFWValidationException {
+    requiredNonPositive(value, "Esperado um valor não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for positivo.
+   */
+  public static void requiredNonPositive(BigDecimal value, String message) throws RFWValidationException {
+    if (value != null && value.signum() > 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositiveCritical(BigDecimal value) throws RFWCriticalException {
+    requiredNonNullPositiveCritical(value, "Esperado um valor não nulo e positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositiveCritical(BigDecimal value, String message) throws RFWCriticalException {
+    if (value == null || value.signum() <= 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositiveCritical(BigDecimal value) throws RFWCriticalException {
+    requiredPositiveCritical(value, "Esperado um valor positivo.");
+  }
+
+  /**
+   * Valida se o valor passado é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositiveCritical(BigDecimal value, String message) throws RFWCriticalException {
+    if (value != null && value.signum() <= 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegativeCritical(BigDecimal value) throws RFWCriticalException {
+    requiredNonNullNonNegativeCritical(value, "Esperado um valor não nulo e não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegativeCritical(BigDecimal value, String message) throws RFWCriticalException {
+    if (value == null || value.signum() < 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for negativo.
+   */
+  public static void requiredNonNegativeCritical(BigDecimal value) throws RFWCriticalException {
+    requiredNonNegativeCritical(value, "Esperado um valor não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for negativo.
+   */
+  public static void requiredNonNegativeCritical(BigDecimal value, String message) throws RFWCriticalException {
+    if (value != null && value.signum() < 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositiveCritical(BigDecimal value) throws RFWCriticalException {
+    requiredNonNullNonPositiveCritical(value, "Esperado um valor não nulo e não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositiveCritical(BigDecimal value, String message) throws RFWCriticalException {
+    if (value == null || value.signum() > 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for positivo.
+   */
+  public static void requiredNonPositiveCritical(BigDecimal value) throws RFWCriticalException {
+    requiredNonPositiveCritical(value, "Esperado um valor não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for positivo.
+   */
+  public static void requiredNonPositiveCritical(BigDecimal value, String message) throws RFWCriticalException {
+    if (value != null && value.signum() > 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositive(Integer value) throws RFWValidationException {
+    requiredNonNullPositive(value, "Esperado um valor não nulo e positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositive(Integer value, String message) throws RFWValidationException {
+    if (value == null || value <= 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositive(Integer value) throws RFWValidationException {
+    requiredPositive(value, "Esperado um valor positivo.");
+  }
+
+  /**
+   * Valida se o valor passado é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositive(Integer value, String message) throws RFWValidationException {
+    if (value != null && value <= 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegative(Integer value) throws RFWValidationException {
+    requiredNonNullNonNegative(value, "Esperado um valor não nulo e não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegative(Integer value, String message) throws RFWValidationException {
+    if (value == null || value < 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for negativo.
+   */
+  public static void requiredNonNegative(Integer value) throws RFWValidationException {
+    requiredNonNegative(value, "Esperado um valor não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for negativo.
+   */
+  public static void requiredNonNegative(Integer value, String message) throws RFWValidationException {
+    if (value != null && value < 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositive(Integer value) throws RFWValidationException {
+    requiredNonNullNonPositive(value, "Esperado um valor não nulo e não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositive(Integer value, String message) throws RFWValidationException {
+    if (value == null || value > 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for positivo.
+   */
+  public static void requiredNonPositive(Integer value) throws RFWValidationException {
+    requiredNonPositive(value, "Esperado um valor não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for positivo.
+   */
+  public static void requiredNonPositive(Integer value, String message) throws RFWValidationException {
+    if (value != null && value > 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositiveCritical(Integer value) throws RFWCriticalException {
+    requiredNonNullPositiveCritical(value, "Esperado um valor não nulo e positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositiveCritical(Integer value, String message) throws RFWCriticalException {
+    if (value == null || value <= 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositiveCritical(Integer value) throws RFWCriticalException {
+    requiredPositiveCritical(value, "Esperado um valor positivo.");
+  }
+
+  /**
+   * Valida se o valor passado é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositiveCritical(Integer value, String message) throws RFWCriticalException {
+    if (value != null && value <= 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegativeCritical(Integer value) throws RFWCriticalException {
+    requiredNonNullNonNegativeCritical(value, "Esperado um valor não nulo e não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegativeCritical(Integer value, String message) throws RFWCriticalException {
+    if (value == null || value < 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for negativo.
+   */
+  public static void requiredNonNegativeCritical(Integer value) throws RFWCriticalException {
+    requiredNonNegativeCritical(value, "Esperado um valor não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for negativo.
+   */
+  public static void requiredNonNegativeCritical(Integer value, String message) throws RFWCriticalException {
+    if (value != null && value < 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositiveCritical(Integer value) throws RFWCriticalException {
+    requiredNonNullNonPositiveCritical(value, "Esperado um valor não nulo e não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositiveCritical(Integer value, String message) throws RFWCriticalException {
+    if (value == null || value > 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for positivo.
+   */
+  public static void requiredNonPositiveCritical(Integer value) throws RFWCriticalException {
+    requiredNonPositiveCritical(value, "Esperado um valor não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for positivo.
+   */
+  public static void requiredNonPositiveCritical(Integer value, String message) throws RFWCriticalException {
+    if (value != null && value > 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositive(Float value) throws RFWValidationException {
+    requiredNonNullPositive(value, "Esperado um valor não nulo e positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositive(Float value, String message) throws RFWValidationException {
+    if (value == null || value <= 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositive(Float value) throws RFWValidationException {
+    requiredPositive(value, "Esperado um valor positivo.");
+  }
+
+  /**
+   * Valida se o valor passado é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositive(Float value, String message) throws RFWValidationException {
+    if (value != null && value <= 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegative(Float value) throws RFWValidationException {
+    requiredNonNullNonNegative(value, "Esperado um valor não nulo e não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegative(Float value, String message) throws RFWValidationException {
+    if (value == null || value < 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for negativo.
+   */
+  public static void requiredNonNegative(Float value) throws RFWValidationException {
+    requiredNonNegative(value, "Esperado um valor não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for negativo.
+   */
+  public static void requiredNonNegative(Float value, String message) throws RFWValidationException {
+    if (value != null && value < 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositive(Float value) throws RFWValidationException {
+    requiredNonNullNonPositive(value, "Esperado um valor não nulo e não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositive(Float value, String message) throws RFWValidationException {
+    if (value == null || value > 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for positivo.
+   */
+  public static void requiredNonPositive(Float value) throws RFWValidationException {
+    requiredNonPositive(value, "Esperado um valor não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for positivo.
+   */
+  public static void requiredNonPositive(Float value, String message) throws RFWValidationException {
+    if (value != null && value > 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositiveCritical(Float value) throws RFWCriticalException {
+    requiredNonNullPositiveCritical(value, "Esperado um valor não nulo e positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositiveCritical(Float value, String message) throws RFWCriticalException {
+    if (value == null || value <= 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositiveCritical(Float value) throws RFWCriticalException {
+    requiredPositiveCritical(value, "Esperado um valor positivo.");
+  }
+
+  /**
+   * Valida se o valor passado é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositiveCritical(Float value, String message) throws RFWCriticalException {
+    if (value != null && value <= 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegativeCritical(Float value) throws RFWCriticalException {
+    requiredNonNullNonNegativeCritical(value, "Esperado um valor não nulo e não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegativeCritical(Float value, String message) throws RFWCriticalException {
+    if (value == null || value < 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for negativo.
+   */
+  public static void requiredNonNegativeCritical(Float value) throws RFWCriticalException {
+    requiredNonNegativeCritical(value, "Esperado um valor não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for negativo.
+   */
+  public static void requiredNonNegativeCritical(Float value, String message) throws RFWCriticalException {
+    if (value != null && value < 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositiveCritical(Float value) throws RFWCriticalException {
+    requiredNonNullNonPositiveCritical(value, "Esperado um valor não nulo e não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositiveCritical(Float value, String message) throws RFWCriticalException {
+    if (value == null || value > 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for positivo.
+   */
+  public static void requiredNonPositiveCritical(Float value) throws RFWCriticalException {
+    requiredNonPositiveCritical(value, "Esperado um valor não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for positivo.
+   */
+  public static void requiredNonPositiveCritical(Float value, String message) throws RFWCriticalException {
+    if (value != null && value > 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositiveCritical(Long value) throws RFWCriticalException {
+    requiredNonNullPositiveCritical(value, "Esperado um valor não nulo e positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositiveCritical(Long value, String message) throws RFWCriticalException {
+    if (value == null || value <= 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositiveCritical(Long value) throws RFWCriticalException {
+    requiredPositiveCritical(value, "Esperado um valor positivo.");
+  }
+
+  /**
+   * Valida se o valor passado é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositiveCritical(Long value, String message) throws RFWCriticalException {
+    if (value != null && value <= 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegativeCritical(Long value) throws RFWCriticalException {
+    requiredNonNullNonNegativeCritical(value, "Esperado um valor não nulo e não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegativeCritical(Long value, String message) throws RFWCriticalException {
+    if (value == null || value < 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for negativo.
+   */
+  public static void requiredNonNegativeCritical(Long value) throws RFWCriticalException {
+    requiredNonNegativeCritical(value, "Esperado um valor não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for negativo.
+   */
+  public static void requiredNonNegativeCritical(Long value, String message) throws RFWCriticalException {
+    if (value != null && value < 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositiveCritical(Long value) throws RFWCriticalException {
+    requiredNonNullNonPositiveCritical(value, "Esperado um valor não nulo e não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositiveCritical(Long value, String message) throws RFWCriticalException {
+    if (value == null || value > 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for positivo.
+   */
+  public static void requiredNonPositiveCritical(Long value) throws RFWCriticalException {
+    requiredNonPositiveCritical(value, "Esperado um valor não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for positivo.
+   */
+  public static void requiredNonPositiveCritical(Long value, String message) throws RFWCriticalException {
+    if (value != null && value > 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositive(Long value) throws RFWValidationException {
+    requiredNonNullPositive(value, "Esperado um valor não nulo e positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositive(Long value, String message) throws RFWValidationException {
+    if (value == null || value <= 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositive(Long value) throws RFWValidationException {
+    requiredPositive(value, "Esperado um valor positivo.");
+  }
+
+  /**
+   * Valida se o valor passado é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositive(Long value, String message) throws RFWValidationException {
+    if (value != null && value <= 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegative(Long value) throws RFWValidationException {
+    requiredNonNullNonNegative(value, "Esperado um valor não nulo e não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegative(Long value, String message) throws RFWValidationException {
+    if (value == null || value < 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for negativo.
+   */
+  public static void requiredNonNegative(Long value) throws RFWValidationException {
+    requiredNonNegative(value, "Esperado um valor não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for negativo.
+   */
+  public static void requiredNonNegative(Long value, String message) throws RFWValidationException {
+    if (value != null && value < 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositive(Long value) throws RFWValidationException {
+    requiredNonNullNonPositive(value, "Esperado um valor não nulo e não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositive(Long value, String message) throws RFWValidationException {
+    if (value == null || value > 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for positivo.
+   */
+  public static void requiredNonPositive(Long value) throws RFWValidationException {
+    requiredNonPositive(value, "Esperado um valor não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for positivo.
+   */
+  public static void requiredNonPositive(Long value, String message) throws RFWValidationException {
+    if (value != null && value > 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositive(Double value) throws RFWValidationException {
+    requiredNonNullPositive(value, "Esperado um valor não nulo e positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositive(Double value, String message) throws RFWValidationException {
+    if (value == null || value <= 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositive(Double value) throws RFWValidationException {
+    requiredPositive(value, "Esperado um valor positivo.");
+  }
+
+  /**
+   * Valida se o valor passado é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositive(Double value, String message) throws RFWValidationException {
+    if (value != null && value <= 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegative(Double value) throws RFWValidationException {
+    requiredNonNullNonNegative(value, "Esperado um valor não nulo e não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegative(Double value, String message) throws RFWValidationException {
+    if (value == null || value < 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for negativo.
+   */
+  public static void requiredNonNegative(Double value) throws RFWValidationException {
+    requiredNonNegative(value, "Esperado um valor não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é negativo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for negativo.
+   */
+  public static void requiredNonNegative(Double value, String message) throws RFWValidationException {
+    if (value != null && value < 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositive(Double value) throws RFWValidationException {
+    requiredNonNullNonPositive(value, "Esperado um valor não nulo e não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositive(Double value, String message) throws RFWValidationException {
+    if (value == null || value > 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWValidationException Se o valor for positivo.
+   */
+  public static void requiredNonPositive(Double value) throws RFWValidationException {
+    requiredNonPositive(value, "Esperado um valor não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é positivo.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWValidationException Se o valor for positivo.
+   */
+  public static void requiredNonPositive(Double value, String message) throws RFWValidationException {
+    if (value != null && value > 0) throw new RFWValidationException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositiveCritical(Double value) throws RFWCriticalException {
+    requiredNonNullPositiveCritical(value, "Esperado um valor não nulo e positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
+   */
+  public static void requiredNonNullPositiveCritical(Double value, String message) throws RFWCriticalException {
+    if (value == null || value <= 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositiveCritical(Double value) throws RFWCriticalException {
+    requiredPositiveCritical(value, "Esperado um valor positivo.");
+  }
+
+  /**
+   * Valida se o valor passado é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for menor ou igual a zero.
+   */
+  public static void requiredPositiveCritical(Double value, String message) throws RFWCriticalException {
+    if (value != null && value <= 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegativeCritical(Double value) throws RFWCriticalException {
+    requiredNonNullNonNegativeCritical(value, "Esperado um valor não nulo e não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for nulo ou negativo.
+   */
+  public static void requiredNonNullNonNegativeCritical(Double value, String message) throws RFWCriticalException {
+    if (value == null || value < 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for negativo.
+   */
+  public static void requiredNonNegativeCritical(Double value) throws RFWCriticalException {
+    requiredNonNegativeCritical(value, "Esperado um valor não negativo.");
+  }
+
+  /**
+   * Valida se o valor passado não é negativo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for negativo.
+   */
+  public static void requiredNonNegativeCritical(Double value, String message) throws RFWCriticalException {
+    if (value != null && value < 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositiveCritical(Double value) throws RFWCriticalException {
+    requiredNonNullNonPositiveCritical(value, "Esperado um valor não nulo e não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é nulo e não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for nulo ou positivo.
+   */
+  public static void requiredNonNullNonPositiveCritical(Double value, String message) throws RFWCriticalException {
+    if (value == null || value > 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o valor passado não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @throws RFWCriticalException Se o valor for positivo.
+   */
+  public static void requiredNonPositiveCritical(Double value) throws RFWCriticalException {
+    requiredNonPositiveCritical(value, "Esperado um valor não positivo.");
+  }
+
+  /**
+   * Valida se o valor passado não é positivo. Lança RFWCriticalException se inválido.
+   *
+   * @param value O valor a ser validado.
+   * @param message Mensagem personalizada da exceção.
+   * @throws RFWCriticalException Se o valor for positivo.
+   */
+  public static void requiredNonPositiveCritical(Double value, String message) throws RFWCriticalException {
+    if (value != null && value > 0) throw new RFWCriticalException(message);
+  }
+
 }
