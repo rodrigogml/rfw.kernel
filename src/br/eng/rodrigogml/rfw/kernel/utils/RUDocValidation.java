@@ -9,89 +9,15 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
  * @author Rodrigo Leitão
  * @since 3.1.0 (NOV / 2009)
  * @version 4.1.0 (24/06/2011) - rodrigogml - Nome alterado de DocumentValidationUtils para ficar no padrão do Framework.
+ * @deprecated O conteúdo desta classe deve migrar para {@link RUDV}
  */
+@Deprecated
 public class RUDocValidation {
 
   /**
    * Classe estática, denecessário instancia-la.
    */
   private RUDocValidation() {
-  }
-
-  /**
-   * Valida um número de CNPJ (Cadastro Nacional de Pessoa Jurídica).
-   *
-   * @param cnpj número do cnpj apenas números (sem pontos, traços, etc.) incluindo o dígito verificador.
-   * @throws RFWException lançado para qualquer erro que seja encontrado na validação do CNPJ.
-   */
-  public static void validateCNPJ(String cnpj) throws RFWException {
-    if (cnpj == null) {
-      throw new RFWValidationException("RFW_ERR_200011", new String[] { cnpj });
-    }
-    // Verifica se o CNPJ tem 14 algarismos
-    if (!cnpj.matches("[0-9]{14}")) {
-      throw new RFWValidationException("RFW_ERR_200012", new String[] { cnpj });
-    }
-    // Vericamos se os números que definem a matriz ou número de filial não estão zerados
-    if (Integer.parseInt(cnpj.substring(8, 12)) == 0) {
-      throw new RFWValidationException("RFW_ERR_200013", new String[] { cnpj });
-    }
-    // Verifica se os números de cadastro não estão zerados
-    if (Integer.parseInt(cnpj.substring(0, 8)) == 0) {
-      throw new RFWValidationException("RFW_ERR_200014", new String[] { cnpj });
-    }
-    // Verifica se os digitos verificadores conferem
-    if (!cnpj.substring(12, 14).equals(RUDVCalc.calcDVCNPJ(cnpj.substring(0, 12)))) {
-      throw new RFWValidationException("RFW_ERR_200016", new String[] { cnpj });
-    }
-  }
-
-  /**
-   *
-   * @param cpf
-   * @throws RFWException
-   */
-  public static void validateCPF(String cpf) throws RFWException {
-    if (cpf == null) {
-      throw new RFWValidationException("RFW_ERR_200017", new String[] { cpf });
-    }
-    // Verifica se o CNPJ tem 11 algarismos
-    if (!cpf.matches("[0-9]{11}")) {
-      throw new RFWValidationException("RFW_ERR_200018", new String[] { cpf });
-    }
-    // Verifica se os números de cadastro não estão zerados
-    if (Integer.parseInt(cpf.substring(0, 9)) == 0) {
-      throw new RFWValidationException("RFW_ERR_200019", new String[] { cpf });
-    }
-    // Verifica se os digitos verificadores conferem
-    if (!cpf.substring(9, 11).equals(RUDVCalc.calcDVCPF(cpf.substring(0, 9)))) {
-      throw new RFWValidationException("RFW_ERR_200021", new String[] { cpf });
-    }
-  }
-
-  /**
-   *
-   *
-   *
-   * @param cpfOrCnpj
-   * @throws RFWException
-   */
-  public static void validateCPFOrCNPJ(String cpfOrCnpj) throws RFWException {
-    if (cpfOrCnpj == null) {
-      throw new RFWValidationException("RFW_ERR_200018", new String[] { cpfOrCnpj });
-    }
-    // Verifica se o CNPJ tem 11 algarismos
-    if (!cpfOrCnpj.matches("[0-9]{11}") && !cpfOrCnpj.matches("[0-9]{14}")) {
-      throw new RFWValidationException("RFW_ERR_200419", new String[] { cpfOrCnpj });
-    }
-    // Verifica se os números de cadastro não estão zerados
-    if ((cpfOrCnpj.length() == 11 && Integer.parseInt(cpfOrCnpj.substring(0, 9)) == 0) || (cpfOrCnpj.length() == 14 && Integer.parseInt(cpfOrCnpj.substring(0, 9)) == 0)) {
-      throw new RFWValidationException("RFW_ERR_200420", new String[] { cpfOrCnpj });
-    }
-    // Verifica se os digitos verificadores conferem
-    if ((cpfOrCnpj.length() == 11 && !cpfOrCnpj.substring(9, 11).equals(RUDVCalc.calcDVCPF(cpfOrCnpj.substring(0, 9)))) || (cpfOrCnpj.length() == 14 && !cpfOrCnpj.substring(12, 14).equals(RUDVCalc.calcDVCNPJ(cpfOrCnpj.substring(0, 12))))) {
-      throw new RFWValidationException("RFW_ERR_200021", new String[] { cpfOrCnpj });
-    }
   }
 
   /**

@@ -172,63 +172,44 @@ public class RUString {
   }
 
   /**
-   * Substitui todas as ocorrencias de 'oldvalue' por 'newvalue' no texto de 'value'. No entanto este método diferencia maiúsculas, minúsculas, acentos, etc.
+   * Substitui todas as ocorrências de {@code oldValue} por {@code newValue} no texto de {@code text}.
+   * <p>
+   * De acordo com as definições passadas, pode ignorar acentos e diferenciação entre maiúsculas e minúsculas.
+   * </p>
    *
-   * @param text texto a ser manipulado
-   * @param oldvalue valor a ser procurado e substituido.
-   * @param newvalue valor que substiuirá oldvalue.
-   * @return
+   * @param text Texto a ser manipulado.
+   * @param oldValue Valor a ser procurado e substituído.
+   * @param newValue Valor que substituirá {@code oldValue}.
+   * @param distinctAccents {@code true} diferencia acentos, {@code false} ignora acentos.
+   * @param distinctCase {@code true} diferencia maiúsculas de minúsculas, {@code false} ignora diferenciação de case.
+   * @return Texto com as substituições realizadas.
+   * @throws IllegalArgumentException Se {@code oldValue} for uma string vazia.
    */
-  public static String replaceAll(String text, String oldvalue, String newvalue) {
-    return replaceAll(text, oldvalue, newvalue, Boolean.TRUE, Boolean.TRUE);
-  }
+  public static String replaceAll(String text, String oldValue, String newValue, boolean distinctAccents, boolean distinctCase) {
+    if (oldValue.isEmpty()) throw new IllegalArgumentException("Old value must have content.");
 
-  /**
-   * Substitui todas as ocorrencias de 'oldvalue' por 'newvalue' no texto de 'value'.<Br>
-   * De acordo com as definições passadas, ele ignora acentos e case de letras.
-   *
-   * @param text texto a ser manipulado
-   * @param oldvalue valor a ser procurado e substituido.
-   * @param newvalue valor que substiuirá oldvalue.
-   * @param distinctaccents true distingue acentos, false ignora acentos
-   * @param distinctcase true distingue letras maiusculas de minusculas, false ignora case das letras.
-   * @return
-   */
-  public static String replaceAll(String text, String oldvalue, String newvalue, Boolean distinctaccents, Boolean distinctcase) {
-    if (oldvalue.equals("")) {
-      throw new IllegalArgumentException("Old value must have content.");
+    String normalizedText = text;
+    String normalizedOldValue = oldValue;
+
+    if (!distinctAccents) {
+      normalizedText = removeAccents(normalizedText);
+      normalizedOldValue = removeAccents(normalizedOldValue);
+    }
+    if (!distinctCase) {
+      normalizedText = normalizedText.toUpperCase();
+      normalizedOldValue = normalizedOldValue.toUpperCase();
     }
 
-    String ntext = text;
-    String noldvalue = oldvalue;
-    if (!distinctaccents) {
-      ntext = removeAccents(ntext);
-      noldvalue = removeAccents(noldvalue);
+    StringBuilder result = new StringBuilder();
+    int startIdx = 0, idxOld;
+
+    while ((idxOld = normalizedText.indexOf(normalizedOldValue, startIdx)) >= 0) {
+      result.append(text, startIdx, idxOld).append(newValue);
+      startIdx = idxOld + oldValue.length();
     }
-    if (!distinctcase) {
-      ntext = ntext.toUpperCase();
-      noldvalue = noldvalue.toUpperCase();
-    }
+    result.append(text.substring(startIdx));
 
-    // Com os parametros corrigos (tirados os acentos se for o caso, ou em maiusculas se for o caso) verificamos as ocorrencias
-    StringBuilder buff = new StringBuilder();
-
-    int startIdx = 0;
-    int idxOld = 0;
-    while ((idxOld = ntext.indexOf(noldvalue, startIdx)) >= 0) {
-      // grab a part of aInput which does not include aOldPattern
-      buff.append(text.substring(startIdx, idxOld));
-      // add aNewPattern to take place of aOldPattern
-      buff.append(newvalue);
-
-      // reset the startIdx to just after the current match, to see
-      // if there are any further matches
-      startIdx = idxOld + noldvalue.length();
-    }
-    // the final chunk will go to the end of aInput
-    buff.append(text.substring(startIdx));
-
-    return buff.toString();
+    return result.toString();
   }
 
   /**
@@ -316,46 +297,6 @@ public class RUString {
       }
     }
     return null;
-  }
-
-  /**
-   * Substitui o texto recursivamente até que o texto não sofra mais alterações, isto é, o texto será procurado do inicio ao fim pela substituição quantas vezes for necessárias até que seja feita uma busca completa e nada seja encontrado.<br>
-   * <b>ATENÇÂO:</b> Pode gerar StackOverflow facilmente se substituimos um texto por outro que contém o valor sendo procurado!<Br>
-   *
-   * @param text texto a ser manipulado
-   * @param oldvalue valor a ser procurado e substituido.
-   * @param newvalue valor que substiuirá oldvalue.
-   * @return
-   */
-  public static String replaceAllRecursively(String text, String oldvalue, String newvalue) {
-    String oldtext = text;
-    text = replaceAll(text, oldvalue, newvalue);
-    while (!oldtext.equals(text)) {
-      oldtext = text;
-      text = replaceAll(text, oldvalue, newvalue);
-    }
-    return text;
-  }
-
-  /**
-   * Substitui o texto recursivamente até que o texto não sofra mais alterações, isto é, o texto será procurado do inicio ao fim pela substituição quantas vezes for necessárias até que seja feita uma busca completa e nada seja encontrado.<br>
-   * <b>ATENÇÂO:</b> Pode gerar StackOverflow facilmente se substituimos um texto por outro que contém o valor sendo procurado!<Br>
-   *
-   * @param text texto a ser manipulado
-   * @param oldvalue valor a ser procurado e substituido.
-   * @param newvalue valor que substiuirá oldvalue.
-   * @param distinctaccents true distingue acentos, false ignora acentos
-   * @param distinctcase true distingue letras maiusculas de minusculas, false ignora case das letras.
-   * @return
-   */
-  public static String replaceAllRecursively(String text, String oldvalue, String newvalue, Boolean distinctaccents, Boolean distinctcase) {
-    String oldtext = text;
-    text = replaceAll(text, oldvalue, newvalue, distinctaccents, distinctcase);
-    while (!oldtext.equals(text)) {
-      oldtext = text;
-      text = replaceAll(text, oldvalue, newvalue, distinctaccents, distinctcase);
-    }
-    return text;
   }
 
   /**
@@ -934,4 +875,64 @@ public class RUString {
     }
   }
 
+  /**
+   * Substitui o texto recursivamente até que o texto não sofra mais alterações.
+   * <p>
+   * O texto será processado do início ao fim quantas vezes forem necessárias até que nenhuma substituição ocorra.
+   * </p>
+   * <p>
+   * <b>ATENÇÃO:</b> Pode causar um loop infinito e gerar {@code StackOverflowError} se {@code newValue} contiver {@code oldValue}!
+   * </p>
+   *
+   * @param text Texto a ser manipulado.
+   * @param oldValue Valor a ser procurado e substituído.
+   * @param newValue Valor que substituirá {@code oldValue}.
+   * @param distinctAccents {@code true} diferencia acentos, {@code false} ignora acentos.
+   * @param distinctCase {@code true} diferencia maiúsculas de minúsculas, {@code false} ignora diferenciação de case.
+   * @return Texto processado com todas as substituições aplicadas recursivamente.
+   * @throws StackOverflowError Se a substituição entrar em um ciclo infinito.
+   */
+  public static String replaceAllRecursively(String text, String oldValue, String newValue, boolean distinctAccents, boolean distinctCase) {
+    if (oldValue.isEmpty()) throw new IllegalArgumentException("Old value must have content.");
+    if (oldValue.equals(newValue)) return text; // Evita loop infinito
+
+    String previousText;
+    do {
+      previousText = text;
+      text = replaceAll(text, oldValue, newValue, distinctAccents, distinctCase);
+    } while (!previousText.equals(text));
+
+    return text;
+  }
+
+  /**
+   * Substitui todas as ocorrencias de 'oldvalue' por 'newvalue' no texto de 'value'. No entanto este método diferencia maiúsculas, minúsculas, acentos, etc.
+   *
+   * @param text texto a ser manipulado
+   * @param oldValue Valor a ser procurado e substituído.
+   * @param newValue Valor que substituirá {@code oldValue}.
+   * @return
+   */
+  public static String replaceAll(String text, String oldValue, String newValue) {
+    return replaceAll(text, oldValue, newValue, Boolean.TRUE, Boolean.TRUE);
+  }
+
+  /**
+   * Substitui o texto recursivamente até que o texto não sofra mais alterações, isto é, o texto será procurado do inicio ao fim pela substituição quantas vezes for necessárias até que seja feita uma busca completa e nada seja encontrado.<br>
+   * <b>ATENÇÂO:</b> Pode gerar StackOverflow facilmente se substituimos um texto por outro que contém o valor sendo procurado!<Br>
+   *
+   * @param text texto a ser manipulado
+   * @param oldValue Valor a ser procurado e substituído.
+   * @param newValue Valor que substituirá {@code oldValue}.
+   * @return
+   */
+  public static String replaceAllRecursively(String text, String oldValue, String newValue) {
+    String oldtext = text;
+    text = replaceAll(text, oldValue, newValue);
+    while (!oldtext.equals(text)) {
+      oldtext = text;
+      text = replaceAll(text, oldValue, newValue);
+    }
+    return text;
+  }
 }

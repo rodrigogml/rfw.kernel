@@ -55,7 +55,7 @@ import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaStringPhoneField;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaUniqueConstraint;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaUsedBy;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaUsedByArray;
-import br.eng.rodrigogml.rfw.kernel.utils.RUDocValidation;
+import br.eng.rodrigogml.rfw.kernel.utils.RUDV;
 import br.eng.rodrigogml.rfw.kernel.utils.RUMail;
 import br.eng.rodrigogml.rfw.kernel.utils.RUReflex;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWMO;
@@ -893,7 +893,7 @@ public class RFWValidator {
     }
     // Valida o dado se preenchido
     if (value != null) {
-      RUDocValidation.validateCNPJ(value);
+      RUDV.validateCNPJ(value);
     }
   }
 
@@ -929,7 +929,7 @@ public class RFWValidator {
     }
     // Valida o dado se preenchido
     if (value != null) {
-      RUDocValidation.validateCPF(value);
+      RUDV.validateCPF(value);
     }
   }
 
@@ -965,7 +965,7 @@ public class RFWValidator {
     }
     // Valida o dado se preenchido
     if (value != null) {
-      RUDocValidation.validateCPFOrCNPJ(value);
+      RUDV.validateCPFOrCNPJ(value);
     }
   }
 
@@ -1047,21 +1047,21 @@ public class RFWValidator {
     if (value != null) {
       // Verificase temos uma UF Definida
       if (!"".equals(ann.uf())) {
-        RUDocValidation.validateIE(value, ann.uf());
+        RUDV.validateIE(value, ann.uf());
       } else if (!"".equals(ann.uffield())) {
         // Verifica se conseguimos um valor pela UF Atribuida
         final Object uf = RUReflex.getPropertyValue(vo, ann.uffield());
         if (uf != null) {
           if (uf instanceof String) {
-            RUDocValidation.validateIE(value, (String) uf);
+            RUDV.validateIE(value, (String) uf);
           } else {
             throw new RFWCriticalException("O tipo do campo indicado como sendo a UF na BISMetaIEField no campo '${0}' da classe '${1}' não é suportado!");
           }
         } else {
-          RUDocValidation.validateIE(value);
+          RUDV.validateIE(value);
         }
       } else {
-        RUDocValidation.validateIE(value);
+        RUDV.validateIE(value);
       }
     }
   }

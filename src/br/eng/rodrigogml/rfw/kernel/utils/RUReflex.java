@@ -492,6 +492,64 @@ public class RUReflex {
     return returned;
   }
 
+  // TODO 20250221 - Apagar depois que o BIS2 estiver bem validado, a seguir está o método original do BIS2, acima uma versão do BIS10 que reaproveita outros métodos da classe
+  // /**
+  // * Recupera a classe de uma propriedade do bean passado. Caso a propriedade tenha varios nomes separados por pontos ".", estes serao divididos e recuperados recusivamente.<br>
+  // * Este método é semelhante ao {@link BISUtilsReflex#getPropertyTypeByObject(Class, String)}, a diferença é que se uma propriedade retornar nula, ele continua explorando o objeto pela classes de retorno do objeto (como feito pela classe {@link BISUtilsReflex#getPropertyTypeByType(Class, String)}.<br>
+  // *
+  // *
+  // * @param bean objeto o qual o metodo GET será chamado
+  // * @param propertyname String nome da propriedade que deseja-se obter o valor
+  // * @return Class objeto retornado pelo método get do atributo. Null caso algum algum método GET retorne null.
+  // */
+  // public static Class<?> getPropertyTypeByObjectAndType(Object bean, String propertyname) throws RFWException {
+  // if (bean == null) {
+  // throw new NullPointerException("O objeto bean recebido não pode ser nulo!");
+  // }
+  // Class<?> returned;
+  // try {
+  // returned = null;
+  // int index = propertyname.indexOf(".");
+  // if (index > -1) {
+  // String firstproperty = propertyname.substring(0, index);
+  // Object tmpobj;
+  // try { // Tenta recuperar o objeto de retorno
+  // tmpobj = bean.getClass().getMethod("get" + firstproperty.substring(0, 1).toUpperCase() + firstproperty.substring(1, firstproperty.length()), (Class[]) null).invoke(bean, new Object[0]);
+  // } catch (NoSuchMethodException e) {
+  // try {
+  // tmpobj = bean.getClass().getMethod("is" + firstproperty.substring(0, 1).toUpperCase() + firstproperty.substring(1, firstproperty.length()), (Class[]) null).invoke(bean, new Object[0]);
+  // } catch (NoSuchMethodException e2) {
+  // tmpobj = bean.getClass().getMethod("are" + firstproperty.substring(0, 1).toUpperCase() + firstproperty.substring(1, firstproperty.length()), (Class[]) null).invoke(bean, new Object[0]);
+  // }
+  // }
+  // if (tmpobj == null) { // Se o objeto de retorno é nulo, apelamos para usar o tipo de retorno do método
+  // returned = getPropertyTypeByType(bean.getClass(), propertyname);
+  // } else { // Caso contrário, continuamos usando o objeto
+  // returned = getPropertyTypeByObjectAndType(tmpobj, propertyname.substring(index + 1, propertyname.length()));
+  // }
+  // } else {
+  // Object tmpobj;
+  // try {
+  // tmpobj = bean.getClass().getMethod("get" + propertyname.substring(0, 1).toUpperCase() + propertyname.substring(1, propertyname.length()), (Class[]) null).invoke(bean, new Object[0]);
+  // } catch (NoSuchMethodException e) {
+  // try {
+  // tmpobj = bean.getClass().getMethod("is" + propertyname.substring(0, 1).toUpperCase() + propertyname.substring(1, propertyname.length()), (Class[]) null).invoke(bean, new Object[0]);
+  // } catch (NoSuchMethodException e2) {
+  // tmpobj = bean.getClass().getMethod("are" + propertyname.substring(0, 1).toUpperCase() + propertyname.substring(1, propertyname.length()), (Class[]) null).invoke(bean, new Object[0]);
+  // }
+  // }
+  // if (tmpobj == null) { // Se o objeto de retorno é nulo, apelamos para usar o tipo de retorno do método
+  // returned = getPropertyTypeByType(bean.getClass(), propertyname);
+  // } else { // Caso contrário, continuamos usando o objeto
+  // returned = tmpobj.getClass();
+  // }
+  // }
+  // } catch (Throwable e) {
+  // throw new RFWCriticalException("BISERP_000480", e);
+  // }
+  // return returned;
+  // }
+
   /**
    * Este método vasculha o caminho de propriedades recebido em "propertyPath" e verifica se algum dos atributos retorna uma estrutura de conjunto de objetos (tipicamente uma lista, hashMap, collection, etc.). Caso encontre alguma e que no próprio caminho não especifique o índice ou chave (definidos com os caracteres "[]") o método retornará o caminho até o ponto em que o objeto de
    * "coleção/map/list" foi encontrado.<br>

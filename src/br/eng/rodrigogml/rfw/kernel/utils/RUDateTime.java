@@ -1,21 +1,16 @@
 package br.eng.rodrigogml.rfw.kernel.utils;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
+import java.time.Period;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
-import br.eng.rodrigogml.rfw.kernel.RFW;
-import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
-import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 
 /**
@@ -30,37 +25,25 @@ public class RUDateTime {
   }
 
   /**
-   * Formata um {@link LocalDate} baseada em um pattern
+   * Compara duas datas ignorando a parte de tempo (horas, minutos, segundos e milissegundos).
    *
-   * @param date Data a ser formatada
-   * @param pattern Pattern a ser utilizado.
-   * @return String com a data no formato desejado.
-   */
-  public static String formatLocalDate(LocalDate date, String pattern) {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-    return date.format(formatter);
-  }
-
-  /**
-   * Formata um {@link LocalDateTime} baseada em um pattern
+   * <p>
+   * Retorna:
+   * <ul>
+   * <li>Valor negativo se {@code date1} for anterior a {@code date2}.</li>
+   * <li>Zero se ambas as datas forem iguais.</li>
+   * <li>Valor positivo se {@code date1} for posterior a {@code date2}.</li>
+   * </ul>
    *
-   * @param date Data/Hora a ser formatada
-   * @param pattern Pattern a ser utilizado.
-   * @return String com a data no formato desejado.
+   * @param date1 A primeira data a ser comparada (não pode ser nula).
+   * @param date2 A segunda data a ser comparada (não pode ser nula).
+   * @return Um valor negativo, zero ou positivo conforme {@code date1} for antes, igual ou depois de {@code date2}.
+   * @throws NullPointerException Se {@code date1} ou {@code date2} forem nulos.
    */
-  public static String formatLocalDateTime(LocalDateTime date, String pattern) {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-    return date.format(formatter);
-  }
-
-  /**
-   * Este método formata um LocalDate para com o patern 'ddMMyyyy'.
-   *
-   * @param date Objeto LocalDate com a data à formatar.
-   * @return String com o Dado Formatado.
-   */
-  public static String formatToddMMyyyy(LocalDate date) {
-    return formatLocalDate(date, "ddMMyyyy");
+  public static int compareDateWithoutTime(Date date1, Date date2) {
+    LocalDate localDate1 = date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    LocalDate localDate2 = date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    return localDate1.compareTo(localDate2);
   }
 
   /**
@@ -129,143 +112,6 @@ public class RUDateTime {
   }
 
   /**
-   * Converte um {@link LocalDate} para {@link Date} utilizando a Zona do Sistema {@link RFW#getZoneId()}.<br>
-   * É considerada a hora zero do dia passaro na conversão para a Zona.
-   *
-   * @param date Valor de Entrada a ser convertido
-   * @return Valor Convertido
-   */
-  public static Date toDate(LocalDate date) {
-    return Date.from(date.atStartOfDay().atZone(RFW.getZoneId()).toInstant());
-  }
-
-  /**
-   * Converte um {@link LocalDate} para {@link Date} utilizando uma Zona personalizada.<br>
-   * É considerada a hora zero do dia passaro na conversão para a Zona.
-   *
-   * @param date Valor de Entrada a ser convertido
-   * @param zone Zona a ser utilizada.
-   * @return Valor Convertido
-   */
-  public static Date toDate(LocalDate date, ZoneId zone) {
-    return Date.from(date.atStartOfDay().atZone(zone).toInstant());
-  }
-
-  /**
-   * Converte um {@link LocalDateTime} para {@link Date} utilizando a Zona do Sistema {@link RFW#getZoneId()}.
-   *
-   * @param dateTime Valor de Entrada a ser convertido
-   * @return Valor Convertido ou nulo caso o valor de entrada seja nulo.
-   */
-  public static Date toDate(LocalDateTime dateTime) {
-    if (dateTime == null) return null;
-    return Date.from(dateTime.atZone(RFW.getZoneId()).toInstant());
-  }
-
-  /**
-   * Converte um {@link LocalDateTime} para {@link Date} utilizando uma Zona personalizada.
-   *
-   * @param dateTime Valor de Entrada a ser convertido
-   * @param zone Zona a ser utilizada.
-   * @return Valor Convertido
-   */
-  public static Date toDate(LocalDateTime dateTime, ZoneId zone) {
-    return Date.from(dateTime.atZone(zone).toInstant());
-  }
-
-  /**
-   * Converte um {@link Date} em {@link LocalDate}. Utiliza a Zona padrão do sistema
-   *
-   * @param date Data a ser convertida em LocalDate
-   * @return LocalDate conforme a zona, ou nulo caso a entrada seja nula.
-   */
-  public static LocalDate toLocalDate(Date date) {
-    if (date == null) return null;
-    return date.toInstant().atZone(RFW.getZoneId()).toLocalDate();
-  }
-
-  /**
-   * Converte um {@link Date} em {@link LocalDate}.
-   *
-   * @param date Data a ser convertida em LocalDate
-   * @param zone Zone para correta conversão entre objetos temporais.
-   * @return LocalDate conforme a zona, ou nulo caso date == null;
-   */
-  public static LocalDate toLocalDate(Date date, ZoneId zone) {
-    if (date == null) return null;
-    return date.toInstant().atZone(zone).toLocalDate();
-  }
-
-  /**
-   * Converte um {@link java.sql.Date} em {@link LocalDate}. Utiliza a Zona padrão do sistema
-   *
-   * @param date Data a ser convertida em LocalDate
-   * @return LocalDate conforme a zona ou null caso a entrada seja nula.
-   */
-  public static LocalDate toLocalDate(java.sql.Date date) {
-    if (date == null) return null;
-    return date.toLocalDate();
-  }
-
-  /**
-   * Converte um {@link LocalDateTime} em {@link LocalDate}.
-   *
-   * @param date Data a ser convertida em LocalDate
-   * @return LocalDate conforme o valor de entrada, ou nulo caso a entrada seja nula.
-   */
-  public static LocalDate toLocalDate(LocalDateTime date) {
-    if (date == null) return null;
-    return date.toLocalDate();
-  }
-
-  /**
-   * Converte a {@link Timestamp} recebida para o LocalDate<br>
-   *
-   * @param stamp Data a ser convertida.
-   * @return Objeto com o dia/horário convertido para a zona solicitada, ou nulo se receber uma entrada nula.
-   * @throws RFWException
-   */
-  public static LocalDate toLocalDate(Timestamp stamp) throws RFWException {
-    if (stamp == null) return null;
-    return stamp.toLocalDateTime().toLocalDate();
-  }
-
-  /**
-   * Converte um {@link Date} em {@link LocalDateTime}. Utiliza a Zona padrão do sistema {@link RFWDeprec#getZoneId()}.
-   *
-   * @param date Data a ser convertida em LocalDateTime
-   * @return LocalDateTime conforme a zona, ou nulo se receber o valor nulo como parâmetro.
-   */
-  public static LocalDateTime toLocalDateTime(Date date) {
-    if (date == null) return null;
-    return date.toInstant().atZone(RFW.getZoneId()).toLocalDateTime();
-  }
-
-  /**
-   * Converte um {@link Date} em {@link LocalDateTime}.
-   *
-   * @param date Data a ser convertida em LocalDateTime
-   * @param zone Zone para correta conversão entre objetos temporais.
-   * @return LocalDateTime conforme a zona, ou nulo caso a entrada seja nula.
-   */
-  public static LocalDateTime toLocalDateTime(Date date, ZoneId zone) {
-    if (date == null) return null;
-    return date.toInstant().atZone(zone).toLocalDateTime();
-  }
-
-  /**
-   * Converte a {@link Timestamp} recebida para o LocalDateTime<br>
-   *
-   * @param stamp DataHora a ser convertida.
-   * @return Objeto com o dia/horário convertido para a zona solicitada, ou nulo se receber uma entrada nula.
-   * @throws RFWException
-   */
-  public static LocalDateTime toLocalDateTime(Timestamp stamp) throws RFWException {
-    if (stamp == null) return null;
-    return stamp.toLocalDateTime();
-  }
-
-  /**
    * Verifica se o dia de uma determinada data é o último dia do mês com base no calendário Gregoriano.
    *
    * @param date Data base para análise
@@ -285,203 +131,6 @@ public class RUDateTime {
     final Calendar c = GregorianCalendar.getInstance();
     c.setTime(date);
     return c.get(Calendar.DAY_OF_MONTH);
-  }
-
-  /**
-   * Interpreta diversos formatos de data e os converte para {@link LocalDateTime}.
-   * <p>
-   * Os formatos suportados são:
-   * <ul>
-   * <li>"yyyy-MM-dd'T'HH:mm:ssXXX" Exemplo: "2024-02-20T15:30:00-07:00" (UTC com timezone)</li>
-   * <li>"yyyy-MM-dd'T'HH:mm:ssZ" Exemplo: "2024-02-20T15:30:00-0700" (UTC com timezone)</li>
-   * <li>"yyyy-MM-dd'T'HH:mm:ss" Exemplo: "2024-02-20T15:30:00" (UTC sem timezone)</li>
-   * <li>"yyyy-MM-dd" Exemplo: "2024-02-20"</li>
-   * <li>"dd/MM/yyyy" Exemplo: "20/02/2024"</li>
-   * </ul>
-   * <p>
-   * Quando o timezone está presente na string, ele é ignorado e a data é retornada no horário local. Se não houver timezone, assume-se o fuso horário do sistema.
-   *
-   * <p>
-   * <b>Diferença para {@link #parseLocalDateTime(String, ZoneId)}:</b> Esse método apenas interpreta a data sem fazer conversão de fusos horários.
-   * </p>
-   *
-   * @param date String representando a data.
-   * @return {@link LocalDateTime} correspondente.
-   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
-   */
-  public static LocalDateTime parseLocalDateTime(String date) throws RFWException {
-    if (date == null || date.trim().isEmpty()) {
-      return null;
-    }
-
-    try {
-      if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]")) {
-        // yyyy-MM-dd (Apenas Data)
-        return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay();
-      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9]:[0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ssXXX (Padrão UTC com TimeZone, ex: -07:00)
-        return OffsetDateTime.parse(date, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toLocalDateTime();
-      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9][0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ssZ (Padrão UTC com TimeZone sem separador, ex: -0700)
-        return OffsetDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")).toLocalDateTime();
-      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ss (UTC Sem TimeZone)
-        return LocalDateTime.parse(date, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-      } else if (date.matches("[0-3][0-9]/[0-1][0-9]/[1-2][0-9]{3}")) {
-        // dd/MM/yyyy
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay();
-      } else {
-        throw new RFWValidationException("Formato da Data não suportado. Data: '${0}'", new String[] { date });
-      }
-    } catch (DateTimeParseException e) {
-      throw new RFWCriticalException("Falha ao realizar o parser da data. Data '${0}'.", new String[] { date }, e);
-    }
-  }
-
-  /**
-   * Interpreta diversos formatos de data e os converte para {@link LocalDateTime}, ajustando a data para o timezone especificado.
-   * <p>
-   * Os formatos suportados são os mesmos do método {@link #parseLocalDateTime(String)}, porém, caso a data contenha um timezone, ele será convertido para o {@link ZoneId} fornecido.
-   * </p>
-   *
-   * <p>
-   * <b>Diferença para {@link #parseLocalDateTime(String)}:</b> Esse método converte o horário para o fuso horário recebido como argumento.
-   * </p>
-   *
-   * @param date String representando a data.
-   * @param zoneID O {@link ZoneId} para o qual a data deve ser convertida.
-   * @return {@link LocalDateTime} correspondente no timezone especificado.
-   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
-   */
-  public static LocalDateTime parseLocalDateTime(String date, ZoneId zoneID) throws RFWException {
-    if (date == null || date.trim().isEmpty()) {
-      return null;
-    }
-
-    try {
-      if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]")) {
-        // yyyy-MM-dd (Apenas Data)
-        return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay(zoneID).toLocalDateTime();
-      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9]:[0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ssXXX (Padrão UTC com TimeZone, ex: -07:00)
-        return OffsetDateTime.parse(date, DateTimeFormatter.ISO_OFFSET_DATE_TIME).atZoneSameInstant(zoneID).toLocalDateTime();
-      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9][0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ssZ (Padrão UTC com TimeZone sem separador, ex: -0700)
-        return OffsetDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")).atZoneSameInstant(zoneID).toLocalDateTime();
-      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ss (UTC Sem TimeZone)
-        return LocalDateTime.parse(date, DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(zoneID).toLocalDateTime();
-      } else if (date.matches("[0-3][0-9]/[0-1][0-9]/[1-2][0-9]{3}")) {
-        // dd/MM/yyyy
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay(zoneID).toLocalDateTime();
-      } else {
-        throw new RFWValidationException("Formato da Data não suportado. Data: '${0}'", new String[] { date });
-      }
-    } catch (DateTimeParseException e) {
-      throw new RFWCriticalException("Falha ao realizar o parser da data. Data '${0}'.", new String[] { date }, e);
-    }
-  }
-
-  /**
-   * Interpreta diversos formatos de data e os converte para {@link Date}.
-   * <p>
-   * Os formatos suportados são:
-   * <ul>
-   * <li>"yyyy-MM-dd'T'HH:mm:ssXXX" Exemplo: "2024-02-20T15:30:00-07:00" (UTC com timezone)</li>
-   * <li>"yyyy-MM-dd'T'HH:mm:ssZ" Exemplo: "2024-02-20T15:30:00-0700" (UTC com timezone)</li>
-   * <li>"yyyy-MM-dd'T'HH:mm:ss" Exemplo: "2024-02-20T15:30:00" (UTC sem timezone)</li>
-   * <li>"yyyy-MM-dd" Exemplo: "2024-02-20"</li>
-   * <li>"dd/MM/yyyy" Exemplo: "20/02/2024"</li>
-   * </ul>
-   * <p>
-   * Se um timezone for especificado na string, ele será utilizado para calcular o timestamp UTC. Caso contrário, assume-se o fuso horário do sistema.
-   *
-   * <p>
-   * <b>Diferença para {@link #parseDate(String, ZoneId)}:</b> Esse método apenas faz o parser da data sem conversão de timezone.
-   * </p>
-   *
-   * @param date String representando a data.
-   * @return {@link Date} correspondente.
-   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
-   */
-  public static Date parseDate(String date) throws RFWException {
-    return parseDate(date, ZoneId.systemDefault());
-  }
-
-  /**
-   * Interpreta diversos formatos de data e os converte para {@link Date}, ajustando a data para o timezone especificado.
-   * <p>
-   * Os formatos suportados são os mesmos do método {@link #parseDate(String)}, porém, caso a data contenha um timezone, ele será convertido para o {@link ZoneId} fornecido.
-   * </p>
-   *
-   * <p>
-   * <b>Diferença para {@link #parseDate(String)}:</b> Esse método converte o horário para o fuso horário recebido como argumento.
-   * </p>
-   *
-   * @param date String representando a data.
-   * @param zoneID O {@link ZoneId} para o qual a data deve ser convertida.
-   * @return {@link Date} correspondente no timezone especificado.
-   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
-   */
-  public static Date parseDate(String date, ZoneId zoneID) throws RFWException {
-    if (date == null || date.trim().isEmpty()) {
-      return null;
-    }
-
-    try {
-      if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]")) {
-        // yyyy-MM-dd (Apenas Data)
-        LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
-        return Date.from(localDate.atStartOfDay(zoneID).toInstant());
-      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9]:[0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ssXXX (UTC com TimeZone ex: -07:00)
-        OffsetDateTime offsetDateTime = OffsetDateTime.parse(date, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        return Date.from(offsetDateTime.atZoneSameInstant(zoneID).toInstant());
-      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9][0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ssZ (UTC com TimeZone sem separador ex: -0700)
-        OffsetDateTime offsetDateTime = OffsetDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ"));
-        return Date.from(offsetDateTime.atZoneSameInstant(zoneID).toInstant());
-      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ss (Sem TimeZone)
-        LocalDateTime localDateTime = LocalDateTime.parse(date, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        return Date.from(localDateTime.atZone(zoneID).toInstant());
-      } else if (date.matches("[0-3][0-9]/[0-1][0-9]/[1-2][0-9]{3}")) {
-        // dd/MM/yyyy
-        LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        return Date.from(localDate.atStartOfDay(zoneID).toInstant());
-      } else {
-        throw new RFWValidationException("Formato da Data não suportado. Data: '${0}'", new String[] { date });
-      }
-    } catch (DateTimeParseException e) {
-      throw new RFWCriticalException("Falha ao realizar o parser da data. Data '${0}'.", new String[] { date }, e);
-    }
-  }
-
-  /**
-   * Este método utiliza o SimpleDateFormat para formar o Date em um TimeStamp com o patern 'yyyyMMddHHmmss'.
-   *
-   * @param value
-   * @return
-   */
-  public static Date parseFromyyyyMMddHHmmss(String value) throws RFWException {
-    try {
-      return new SimpleDateFormat("yyyyMMddHHmmss").parse(value);
-    } catch (ParseException e) {
-      throw new RFWCriticalException("Falha ao fazer o parse da data '${0}'!", e);
-    }
-  }
-
-  /**
-   * Realiza o parser da String utilizando o {@link DateTimeFormatter}.<Br>
-   *
-   * @param date Data no formato String que precisa ser lida.
-   * @param pattern no Formado específicado pela documentação do método {@link DateTimeFormatter#ofPattern(String)}.
-   * @return Objeto Com o a Data.
-   * @throws RFWException
-   */
-  public static LocalDate parseLocalDate(String date, String pattern) throws RFWException {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-    return LocalDate.parse(date, formatter);
   }
 
   /**
@@ -632,173 +281,278 @@ public class RUDateTime {
   }
 
   /**
-   * Este método utiliza o SimpleDateFormat para formar o Date apenas no horário com o patern '23:59:59', ignorando qualquer que seja a data.
+   * Calcula quantos minutos se passaram desde o tempo especificado até o momento atual.
    *
-   * @param time
-   * @return
+   * @param milliseconds O timestamp de referência em milissegundos (epoch time).
+   * @return O número de minutos decorridos desde o tempo especificado até agora.
    */
-  public static String formatTo235959(Date time) {
-    return new SimpleDateFormat("HH:mm:ss").format(time);
+  public static double countMinutesFrom(long milliseconds) {
+    return (System.currentTimeMillis() - milliseconds) / 60000.0;
   }
 
   /**
-   * Este método utiliza o SimpleDateFormat para formar o Date em um TimeStamp com o patern 'yyyyMMddHHmmss'.
-   *
-   * @param date
-   * @return
-   */
-  public static String formatToyyyyMMddHHmmss(Date date) {
-    return new SimpleDateFormat("yyyyMMddHHmmss").format(date);
-  }
-
-  /**
-   * Este método utiliza o SimpleDateFormat para formar o Date em um TimeStamp com o patern 'yyyyMMdd'.
-   *
-   * @param date
-   * @return
-   */
-  public static String formatToyyyyMMdd(Date date) {
-    return new SimpleDateFormat("yyyyMMdd").format(date);
-  }
-
-  /**
-   * Este método utiliza o SimpleDateFormat para formar o Date em um TimeStamp com o patern 'ddMMyyyy'.
-   *
-   * @param date
-   * @return
-   */
-  public static String formatToddMMyyyy(Date date) {
-    return new SimpleDateFormat("ddMMyyyy").format(date);
-  }
-
-  /**
-   * Este método utiliza o SimpleDateFormat para formar o Date em um TimeStamp com o patern 'ddMMyyyyHHmmss'.
-   *
-   * @param date
-   * @return
-   */
-  public static String formatToddMMyyyyHHmmss(Date date) {
-    return new SimpleDateFormat("ddMMyyyyHHmmss").format(date);
-  }
-
-  /**
-   * Este método utiliza o SimpleDateFormat para formar o Date em um formato completo com o patern 'dd/MM/yyyy HH:mm:ss'.
-   *
-   * @param date
-   * @return
-   */
-  public static String formatTodd_MM_yyyy_HH_mm_ss(Date date) {
-    return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
-  }
-
-  /**
-   * Este método utiliza o SimpleDateFormat para formar o Date em um formato completo com o patern 'dd/MM/yyyy HH:mm:ss'.
-   *
-   * @param date
-   * @return
-   */
-  public static String formatTodd_MM_yyyy_HH_mm_ss(LocalDateTime date) {
-    return formatLocalDateTime(date, "dd/MM/yyyy HH:mm:ss");
-  }
-
-  /**
-   * Este método utiliza o SimpleDateFormat para formar o Date em um formato completo com o patern 'yyyy-MM-dd'T'HH:mm:ssXXX' (Padrão UTC utilizado no XML da NFe).
-   *
-   * @param date
-   * @return
-   */
-  public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(Date date) {
-    return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").format(date);
-  }
-
-  /**
-   * Este método utiliza o SimpleDateFormat para formar o Date em um formato completo com o patern 'yyyy-MM-dd'T'HH:mm:ssXXX' (Padrão UTC utilizado no XML da NFe).
-   *
-   * @param date
-   * @return
-   */
-  public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(LocalDateTime date, ZoneId zoneId) {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
-    return date.atZone(zoneId).format(formatter);
-  }
-
-  /**
-   * Este método utiliza o SimpleDateFormat para formar o Date apenas no horário com o patern '23:59:59', ignorando qualquer que seja a data.
-   *
-   * @param dLastConsult
-   * @return
-   */
-  public static String formatTo235959(long timemillis) {
-    return formatTo235959(new Date(timemillis));
-  }
-
-  /**
-   * Interpreta diversos formatos de data e os converte para {@link LocalDate}.
+   * Calcula o número de meses entre duas datas.
    * <p>
-   * Os formatos suportados são:
-   * <ul>
-   * <li>"yyyy-MM-dd'T'HH:mm:ssXXX" Exemplo: "2024-02-20T15:30:00-07:00" (UTC com timezone)</li>
-   * <li>"yyyy-MM-dd'T'HH:mm:ssZ" Exemplo: "2024-02-20T15:30:00-0700" (UTC com timezone)</li>
-   * <li>"yyyy-MM-dd'T'HH:mm:ss" Exemplo: "2024-02-20T15:30:00" (UTC sem timezone)</li>
-   * <li>"yyyy-MM-dd" Exemplo: "2024-02-20"</li>
-   * <li>"dd/MM/yyyy" Exemplo: "20/02/2024"</li>
-   * </ul>
+   * Mesmo que as datas sejam diferentes, se estiverem dentro do mesmo mês e ano, o valor retornado será zero.
+   * </p>
    * <p>
-   * Se um timezone for especificado na string, ele será utilizado apenas para conversão do timestamp UTC, mas o retorno será um {@link LocalDate} sem informações de horário.
-   *
-   * <p>
-   * <b>Diferença para {@link #parseLocalDate(String, ZoneId)}:</b> Esse método apenas faz o parser da data sem conversão de timezone.
+   * Caso a data final esteja em um mês anterior à data inicial, o valor retornado será negativo.
    * </p>
    *
-   * @param date String representando a data.
-   * @return {@link LocalDate} correspondente.
-   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
+   * @param initialDate Data inicial (não pode ser nula).
+   * @param finalDate Data final (não pode ser nula).
+   * @return Número de meses completos entre as duas datas.
+   * @throws NullPointerException Se {@code initialDate} ou {@code finalDate} forem nulos.
    */
-  public static LocalDate parseLocalDate(String date) throws RFWException {
-    return parseLocalDate(date, ZoneId.systemDefault());
+  public static long calcDiferenceInMonths(LocalDate initialDate, LocalDate finalDate) {
+    return Period.between(initialDate.withDayOfMonth(1), finalDate.withDayOfMonth(1)).toTotalMonths();
   }
 
   /**
-   * Interpreta diversos formatos de data e os converte para {@link LocalDate}, ajustando a data para o timezone especificado antes de descartar a informação de horário.
+   * Calcula o número de dias completos entre duas datas.
    * <p>
-   * Os formatos suportados são os mesmos do método {@link #parseLocalDate(String)}, porém, caso a data contenha um timezone, ele será convertido para o {@link ZoneId} fornecido antes de extrair a data.
+   * O cálculo considera apenas períodos completos de 24 horas.
    * </p>
    *
-   * <p>
-   * <b>Diferença para {@link #parseLocalDate(String)}:</b> Esse método converte o horário para o fuso horário recebido como argumento antes de extrair a data.
-   * </p>
-   *
-   * @param date String representando a data.
-   * @param zoneID O {@link ZoneId} para o qual a data deve ser convertida antes de extrair a parte da data.
-   * @return {@link LocalDate} correspondente sem informações de horário.
-   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
+   * @param initialDate Data inicial (inclusivo, não pode ser nula).
+   * @param finalDate Data final (exclusivo, não pode ser nula).
+   * @return Total de dias completos entre a data inicial e a final.
+   * @throws NullPointerException Se {@code initialDate} ou {@code finalDate} forem nulos.
    */
-  public static LocalDate parseLocalDate(String date, ZoneId zoneID) throws RFWException {
-    if (date == null || date.trim().isEmpty()) {
-      return null;
-    }
-
-    try {
-      if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]")) {
-        // yyyy-MM-dd (Apenas Data)
-        return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
-      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9]:[0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ssXXX (UTC com TimeZone ex: -07:00)
-        return OffsetDateTime.parse(date, DateTimeFormatter.ISO_OFFSET_DATE_TIME).atZoneSameInstant(zoneID).toLocalDate();
-      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9][0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ssZ (UTC com TimeZone sem separador ex: -0700)
-        return OffsetDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")).atZoneSameInstant(zoneID).toLocalDate();
-      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ss (Sem TimeZone)
-        return LocalDateTime.parse(date, DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(zoneID).toLocalDate();
-      } else if (date.matches("[0-3][0-9]/[0-1][0-9]/[1-2][0-9]{3}")) {
-        // dd/MM/yyyy
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-      } else {
-        throw new RFWValidationException("Formato da Data não suportado. Data: '${0}'", new String[] { date });
-      }
-    } catch (DateTimeParseException e) {
-      throw new RFWCriticalException("Falha ao realizar o parser da data. Data '${0}'.", new String[] { date }, e);
-    }
+  public static long calcDiferenceInDays(LocalDate initialDate, LocalDate finalDate) {
+    return ChronoUnit.DAYS.between(initialDate, finalDate);
   }
+
+  /**
+   * Calcula o número de dias completos entre duas datas e horários.
+   * <p>
+   * O cálculo considera apenas períodos completos de 24 horas.
+   * </p>
+   *
+   * @param initialDate Data e hora inicial (não pode ser nula).
+   * @param finalDate Data e hora final (não pode ser nula).
+   * @return Total de dias completos entre as datas.
+   * @throws NullPointerException Se {@code initialDate} ou {@code finalDate} forem nulos.
+   */
+  public static long calcDiferenceInDays(LocalDateTime initialDate, LocalDateTime finalDate) {
+    return ChronoUnit.DAYS.between(initialDate, finalDate);
+  }
+
+  /**
+   * Calcula a diferença entre duas datas em dias.
+   * <p>
+   * Retorna um valor negativo caso a data inicial seja futura em relação à data final.
+   * </p>
+   *
+   * @param initialDate Data inicial (não pode ser nula).
+   * @param finalDate Data final (não pode ser nula).
+   * @return Diferença entre as datas em dias.
+   * @throws NullPointerException Se {@code initialDate} ou {@code finalDate} forem nulos.
+   */
+  public static double calcDiferenceInDays(Date initialDate, Date finalDate) {
+    return calcDiferenceInDays(initialDate.getTime(), finalDate.getTime());
+  }
+
+  /**
+   * Calcula a diferença entre duas datas em dias.
+   * <p>
+   * Retorna um valor negativo caso a data inicial seja futura em relação à data final.
+   * </p>
+   *
+   * @param initialDate Timestamp inicial (epoch time).
+   * @param finalDate Timestamp final (epoch time).
+   * @return Diferença entre as datas em dias.
+   */
+  public static double calcDiferenceInDays(long initialDate, long finalDate) {
+    return (finalDate - initialDate) / 86400000.0; // 1 dia = 86.400.000ms
+  }
+
+  /**
+   * Calcula a diferença entre duas datas em horas.
+   * <p>
+   * Retorna um valor negativo caso a data inicial seja futura em relação à data final.
+   * </p>
+   *
+   * @param initialDate Data inicial (não pode ser nula).
+   * @param finalDate Data final (não pode ser nula).
+   * @return Diferença entre as datas em horas.
+   * @throws NullPointerException Se {@code initialDate} ou {@code finalDate} forem nulos.
+   */
+  public static double calcDiferenceInHours(Date initialDate, Date finalDate) {
+    return calcDiferenceInHours(initialDate.getTime(), finalDate.getTime());
+  }
+
+  /**
+   * Calcula a diferença entre duas datas em horas.
+   * <p>
+   * Retorna um valor negativo caso a data inicial seja futura em relação à data final.
+   * </p>
+   *
+   * @param initialDate Timestamp inicial (epoch time).
+   * @param finalDate Timestamp final (epoch time).
+   * @return Diferença entre as datas em horas.
+   */
+  public static double calcDiferenceInHours(long initialDate, long finalDate) {
+    return (finalDate - initialDate) / 3600000.0; // 1 hora = 3.600.000ms
+  }
+
+  /**
+   * Calcula a diferença entre duas datas em minutos.
+   * <p>
+   * Retorna um valor negativo caso a data inicial seja futura em relação à data final.
+   * </p>
+   *
+   * @param initialDate Data inicial (não pode ser nula).
+   * @param finalDate Data final (não pode ser nula).
+   * @return Diferença entre as datas em minutos.
+   * @throws NullPointerException Se {@code initialDate} ou {@code finalDate} forem nulos.
+   */
+  public static double calcDiferenceInMinutes(Date initialDate, Date finalDate) {
+    return calcDiferenceInMinutes(initialDate.getTime(), finalDate.getTime());
+  }
+
+  /**
+   * Calcula a diferença entre dois timestamps em minutos.
+   * <p>
+   * Retorna um valor negativo caso o timestamp inicial seja maior que o final.
+   * </p>
+   *
+   * @param initialDate Timestamp inicial (epoch time).
+   * @param finalDate Timestamp final (epoch time).
+   * @return Diferença entre os timestamps em minutos.
+   */
+  public static double calcDiferenceInMinutes(long initialDate, long finalDate) {
+    return (finalDate - initialDate) / 60000.0; // 1 minuto = 60.000ms
+  }
+
+  /**
+   * Adiciona ou subtrai um período a uma data.
+   * <p>
+   * Permite modificar a data base somando ou subtraindo dias, meses, anos, horas, minutos, etc.
+   * </p>
+   *
+   * @param date Data base para a operação (não pode ser nula).
+   * @param period Define o período a ser adicionado/subtraído. Valores podem ser encontrados em {@link Calendar}, ex: {@link Calendar#MONTH}.
+   * @param amount Quantidade do período a ser somado/subtraído. Valores negativos subtraem da data.
+   * @return Nova data com o período ajustado.
+   * @throws NullPointerException Se {@code date} for nulo.
+   */
+  public static Date calcDateAdd(Date date, int period, int amount) {
+    Calendar gc = Calendar.getInstance();
+    gc.setTime(date);
+    gc.add(period, amount);
+    return gc.getTime();
+  }
+
+  /**
+   * Retorna o número do mês de uma determinada data no calendário Gregoriano.
+   *
+   * @param date Data base para extração do valor (não pode ser nula).
+   * @return Número do mês, onde 1 representa Janeiro e 12 representa Dezembro.
+   * @throws NullPointerException Se {@code date} for nula.
+   */
+  public static int getMonth(Date date) {
+    Calendar c = Calendar.getInstance();
+    c.setTime(date);
+    return c.get(Calendar.MONTH) + 1; // Soma 1 porque a função do Java retorna de 0 a 11.
+  }
+
+  /**
+   * Retorna o ano de uma determinada data no calendário Gregoriano.
+   *
+   * @param date Data base para extração do valor (não pode ser nula).
+   * @return O número do ano com 4 dígitos.
+   * @throws NullPointerException Se {@code date} for nula.
+   */
+  public static int getYear(Date date) {
+    Calendar c = Calendar.getInstance();
+    c.setTime(date);
+    return c.get(Calendar.YEAR);
+  }
+
+  /**
+   * Retorna um {@link LocalDate} com o último dia do mês de uma determinada data, de acordo com o calendário Gregoriano.
+   *
+   * @param date Data base para determinar o último dia do mês (não pode ser nula).
+   * @return Último dia do mês correspondente à data informada.
+   * @throws NullPointerException Se {@code date} for nula.
+   */
+  public static LocalDate getLastLocalDateOfMonth(LocalDateTime date) {
+    return getLastLocalDateOfMonth(date.toLocalDate());
+  }
+
+  /**
+   * Retorna um {@link LocalDate} com o último dia do mês de uma determinada data, de acordo com o calendário Gregoriano.
+   *
+   * @param date Data base para determinar o último dia do mês (não pode ser nula).
+   * @return Último dia do mês correspondente à data informada.
+   * @throws NullPointerException Se {@code date} for nula.
+   */
+  public static LocalDate getLastLocalDateOfMonth(LocalDate date) {
+    return date.withDayOfMonth(date.lengthOfMonth());
+  }
+
+  /**
+   * Retorna o nome do mês por extenso, de acordo com o {@code Locale} informado.
+   *
+   * @param locale Locale para tradução do nome do mês (não pode ser nulo).
+   * @param month Mês do calendário gregoriano (1 para Janeiro, 12 para Dezembro).
+   * @return Nome completo do mês no idioma correspondente ao {@code Locale}.
+   * @throws IllegalArgumentException Se o mês estiver fora do intervalo 1-12.
+   */
+  public static String getMonthName(Locale locale, int month) {
+    if (month < 1 || month > 12) throw new IllegalArgumentException("Mês inválido: " + month);
+    return new DateFormatSymbols(locale).getMonths()[month - 1];
+  }
+
+  /**
+   * Retorna o nome abreviado (normalmente com 3 letras) do mês, de acordo com o {@code Locale} informado.
+   *
+   * @param locale Locale para tradução do nome do mês (não pode ser nulo).
+   * @param month Mês do calendário gregoriano (1 para Janeiro, 12 para Dezembro).
+   * @return Nome abreviado do mês no idioma correspondente ao {@code Locale}.
+   * @throws IllegalArgumentException Se o mês estiver fora do intervalo 1-12.
+   */
+  public static String getMonthShortName(Locale locale, int month) {
+    if (month < 1 || month > 12) throw new IllegalArgumentException("Mês inválido: " + month);
+    return new DateFormatSymbols(locale).getShortMonths()[month - 1];
+  }
+
+  /**
+   * Retorna o dia da semana de uma determinada data.
+   *
+   * @param date Data base para obtenção do dia da semana (não pode ser nula).
+   * @return Inteiro representando o dia da semana, conforme {@link Calendar}.
+   */
+  public static int getWeekDay(Date date) {
+    Calendar c = Calendar.getInstance();
+    c.setTime(date);
+    return c.get(Calendar.DAY_OF_WEEK);
+  }
+
+  /**
+   * Calcula a sobreposição de dias entre dois períodos de tempo.
+   * <p>
+   * As datas são inclusivas, ou seja, se os períodos estiverem encostados, a sobreposição será de 1 dia.
+   * </p>
+   *
+   * @param period1Start Início do primeiro período.
+   * @param period1End Fim do primeiro período.
+   * @param period2Start Início do segundo período.
+   * @param period2End Fim do segundo período.
+   * @return Número de dias que os períodos se sobrepõem.
+   * @throws RFWValidationException Se a data final de um período for anterior à sua data inicial.
+   */
+  public static long calcOverlappingDays(LocalDate period1Start, LocalDate period1End, LocalDate period2Start, LocalDate period2End) throws RFWValidationException {
+    if (period1End.isBefore(period1Start)) throw new RFWValidationException("A data de fim do primeiro período é anterior à data de início!");
+    if (period2End.isBefore(period2Start)) throw new RFWValidationException("A data de fim do segundo período é anterior à data de início!");
+
+    if (period1End.isBefore(period2Start) || period2End.isBefore(period1Start)) return 0;
+
+    LocalDate start = period1Start.isAfter(period2Start) ? period1Start : period2Start;
+    LocalDate end = period1End.isBefore(period2End) ? period1End : period2End;
+
+    return ChronoUnit.DAYS.between(start, end.plusDays(1));
+  }
+
 }
