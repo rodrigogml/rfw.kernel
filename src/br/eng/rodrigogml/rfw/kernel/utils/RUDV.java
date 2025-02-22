@@ -1390,4 +1390,33 @@ public class RUDV {
         throw new RFWValidationException("BISERP_000305"); // UF inválida
     }
   }
+
+  /**
+   * Este método calcula um Dígito Verificador baseado no módulo de 11 com uma implementação genérica para ser utilizada pelo sistema.<Br>
+   * Muitos documentos utilizam a validação com o módulo de 11 (que se refere a utlização do resto da divisão por onze), no entando muitas diferem nas regras de definição do DV.<br>
+   * NÃO ALTERE O FUNCIONAMENTO DESTE MÉTODO, pois ele já é utilizado no sistema para diversos cálculos de segurança. Para validação de DV de documentos específicos, crie métodos próprios.
+   *
+   * @param value valor contendo apenas dígitos para que seja calculado o DV.
+   * @return String contendo apenas 1 caracter que será o DV.
+   * @throws RFWException Lançado caso o valor não tenha apenas números, ou seja um valor nulo/vazio.
+   */
+  public static String calcDVGenericMod11(String value) throws RFWException {
+    value = RUString.removeNonDigits(value);
+    if (value == null || !value.matches("[0-9]+")) {
+      throw new RFWValidationException("RFW_000050");
+    }
+
+    int[] base = { 2, 3, 4, 5, 6, 7, 8, 9 };
+    String[] digits = value.split("|");
+
+    long sum = 0;
+    int basecount = 0;
+    for (int i = value.length() - 1; i >= 0; i--) {
+      sum += base[basecount++] * new Long(digits[i]);
+      if (basecount > 7) basecount = 0;
+    }
+    long mod = 11 - (sum % 11);
+    if (mod >= 10) mod = 0;
+    return "" + mod;
+  }
 }

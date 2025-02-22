@@ -2,7 +2,9 @@ package br.eng.rodrigogml.rfw.kernel.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -11,7 +13,9 @@ import java.nio.charset.CodingErrorAction;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.LinkedList;
 
+import br.eng.rodrigogml.rfw.kernel.RFW;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
@@ -934,5 +938,305 @@ public class RUString {
       text = replaceAll(text, oldValue, newValue);
     }
     return text;
+  }
+
+  /**
+   * Coloca espaços no começo do texto para dar a sensação de centralização de um texto com número de colunas certo. Útil quando trabalhamos com fontes de largura fixa e queremos deixar o texto centralizado em um espaço, como em impressões matriciais (por colunas) ou janelas de terminais.
+   *
+   * @param text Texto para ser centralizado
+   * @param columns Número de colunas totais para calcular o "offset" inicial
+   * @return Texto recebido com espaços em brancos no começo equivalente a metade do espaço restante entre o número de colunas passado e o tamanho do texto.
+   */
+  public static String centerTextInColumns(String text, int columns) {
+    return completeUntilLengthLeft(" ", text, text.length() + (columns - text.length()) / 2);
+  }
+
+  /**
+   * Este método recebe um valor string e quebra em linhas com o tamanho máximo definido. Este método quebrará as linhas somente nos espaços em branco entre as palavras, não quebra as palavras no meio.
+   *
+   * @param content Conteúdo a ser quebrado em linhas
+   * @param maxlength tamanho máximo de cada linha.
+   * @return Array de String com todas as linhas criadas.
+   */
+  public static String[] breakLineInBlankSpaces(String content, int maxlength) {
+    final LinkedList<String> lines = new LinkedList<>();
+
+    String[] blines = content.split("\\ ");
+    final StringBuilder b = new StringBuilder(maxlength);
+    for (int i = 0; i < blines.length; i++) {
+      // Verifica se ainda cabe na mesmoa linha
+      if (b.length() + blines[i].length() + 1 <= maxlength) { // O +1 refere-se ao espaço que será adicionado entre o conteúdo do buffer e a nova palavra
+        b.append(" ").append(blines[i]);
+      } else {
+        lines.add(b.toString());
+        b.delete(0, b.length());
+        b.append(blines[i]);
+      }
+    }
+    // Ao acabar, verificamose se temos conteúdo no buff e passamos e acrescentamos à lista, caso contrário perdemos a última linha
+    if (b.length() > 0) lines.add(b.toString());
+    String[] a = new String[lines.size()];
+    return lines.toArray(a);
+  }
+
+  /**
+   * Escreve um valor por extenso. Apesar de aceitar um BigDecimal por causa do tamanho dos números, os valores fracionários serão simplesmente ignorados.
+   *
+   * @param value Valor a ser transformado por extenso.
+   * @return String com o valor por extenso em Português Brasileiro.
+   */
+  public static Object valueToExtense_BrazilianPortuguese(BigDecimal value) {
+    final StringBuilder buff = new StringBuilder();
+    final BigDecimal BIGTHOUSAND = new BigDecimal("1000");
+
+    // Garante que os decimais serão ignorados
+    value = value.setScale(0, RoundingMode.FLOOR);
+
+    // Se o valor é zero já retorna logo, não sai tentando calcular e esrever para não escrever errado. Esse é o único número em que "zero" é escrito
+    if (value.compareTo(BigDecimal.ZERO) == 0) {
+      return "zero";
+    }
+
+    // Quebra o valor em cada milhar para ir compondo o valor
+    int pow = 0;
+    while (value.compareTo(BigDecimal.ZERO) > 0) {
+      long hundreds = value.remainder(BIGTHOUSAND).longValue();
+      value = value.divide(BIGTHOUSAND, 0, RoundingMode.FLOOR);
+
+      if (hundreds > 0) {
+        // Decopõe o número em unidades, dezens e centenas para criar o texto
+        int uvalue = (int) (hundreds % 10);
+        int dvalue = (int) ((hundreds / 10f) % 10);
+        int cvalue = (int) ((hundreds / 100f) % 10);
+
+        String ctext = null;
+        String dtext = null;
+        String utext = null;
+
+        if (hundreds == 100) {
+          ctext = "cem";
+        } else {
+          if (cvalue == 1) {
+            if (dvalue > 0 || uvalue > 0) {
+              ctext = "cento";
+            } else {
+              ctext = "cem";
+            }
+          } else if (cvalue == 2) {
+            ctext = "duzentos";
+          } else if (cvalue == 3) {
+            ctext = "trezentos";
+          } else if (cvalue == 4) {
+            ctext = "quatrocentos";
+          } else if (cvalue == 5) {
+            ctext = "quinhentos";
+          } else if (cvalue == 6) {
+            ctext = "seiscentos";
+          } else if (cvalue == 7) {
+            ctext = "setecentos";
+          } else if (cvalue == 8) {
+            ctext = "oitocentos";
+          } else if (cvalue == 9) {
+            ctext = "novecentos";
+          }
+
+          // Verifica o texto das dezenas
+          if (dvalue == 1) {
+            if (uvalue == 0) {
+              dtext = "dez";
+            } else if (uvalue == 1) {
+              dtext = "onze";
+            } else if (uvalue == 2) {
+              dtext = "doze";
+            } else if (uvalue == 3) {
+              dtext = "treze";
+            } else if (uvalue == 4) {
+              dtext = "quatorze";
+            } else if (uvalue == 5) {
+              dtext = "quinze";
+            } else if (uvalue == 6) {
+              dtext = "dezesseis";
+            } else if (uvalue == 7) {
+              dtext = "dezessete";
+            } else if (uvalue == 8) {
+              dtext = "dezoito";
+            } else if (uvalue == 9) {
+              dtext = "dezenove";
+            }
+          } else {
+            // Se não tem nome específico para o conjunto dezena e unidade, separamos em dezena e unidade
+            if (dvalue == 2) {
+              dtext = "vinte";
+            } else if (dvalue == 3) {
+              dtext = "trinta";
+            } else if (dvalue == 4) {
+              dtext = "quarenta";
+            } else if (dvalue == 5) {
+              dtext = "cinquenta";
+            } else if (dvalue == 6) {
+              dtext = "sessenta";
+            } else if (dvalue == 7) {
+              dtext = "setenta";
+            } else if (dvalue == 8) {
+              dtext = "oitenta";
+            } else if (dvalue == 9) {
+              dtext = "noventa";
+            }
+            // Texto das unidades
+            if (uvalue == 1) {
+              utext = "um";
+            } else if (uvalue == 2) {
+              utext = "dois";
+            } else if (uvalue == 3) {
+              utext = "três";
+            } else if (uvalue == 4) {
+              utext = "quatro";
+            } else if (uvalue == 5) {
+              utext = "cinco";
+            } else if (uvalue == 6) {
+              utext = "seis";
+            } else if (uvalue == 7) {
+              utext = "sete";
+            } else if (uvalue == 8) {
+              utext = "oito";
+            } else if (uvalue == 9) {
+              utext = "nove";
+            }
+          }
+        }
+
+        String text = ctext;
+        if (dtext != null) {
+          if (text != null) {
+            text = text + " e " + dtext;
+          } else {
+            text = dtext;
+          }
+        }
+        if (utext != null) {
+          if (text != null) {
+            text = text + " e " + utext;
+          } else {
+            text = utext;
+          }
+        }
+
+        // Depois que o número está pronto, verificamos em que casa de milhar estamos para anexar o valor
+        switch (pow) {
+          case 0:
+            // Não há nada, só o número mesmo
+            break;
+          case 1:
+            text += " mil";
+            break;
+          case 2:
+            text += (hundreds == 1 ? " milhão" : " milhões");
+            break;
+          case 3:
+            text += (hundreds == 1 ? " bilhão" : " bilhões");
+            break;
+          case 4:
+            text += (hundreds == 1 ? " trilhão" : " trilhões");
+            break;
+          case 5:
+            text += (hundreds == 1 ? " quatrilhão" : " quatrilhões");
+            break;
+          case 6:
+            text += (hundreds == 1 ? " quintilhão" : " quintilhões");
+            break;
+          case 7:
+            text += (hundreds == 1 ? " sextilhão" : " sextilhões");
+            break;
+          case 8:
+            text += (hundreds == 1 ? " setilhão" : " setilhões");
+            break;
+          case 9:
+            text += (hundreds == 1 ? " octilhão" : " octilhões");
+            break;
+          case 10:
+            text += (hundreds == 1 ? " nonilhão" : " nonilhões");
+            break;
+          default:
+            break;
+        }
+        if (buff.length() > 0) buff.insert(0, "e ");
+        buff.insert(0, text + ' ');
+      }
+      pow++;
+    }
+    return buff.toString().trim();
+  }
+
+  /**
+   * Recebe um valor em BigDecimal e o escreve por extenso. Se passado algum valor com mais de 2 casas decimais o valor será arredondado.
+   *
+   * @param value Valor a ser transformado por extenso.
+   * @return String com o texto do valor por extenso em Reais, escrito em Português brasileiro.
+   */
+  public static String currencyToExtense_BrazilianReal_BrazilianPortuguese(BigDecimal value) {
+    // Garante que teremos apenas duas casas decimais
+    value = value.setScale(2, RFW.getRoundingMode());
+
+    final StringBuilder buff = new StringBuilder();
+
+    // Separa a parte inteira e os centavos do valor
+    BigDecimal integer = value.setScale(0, RoundingMode.FLOOR);
+    BigDecimal fraction = value.remainder(BigDecimal.ONE);
+
+    // Recuperar o extenso da parte inteira
+    buff.append(valueToExtense_BrazilianPortuguese(integer));
+    // Anexa a moeda
+    if (integer.compareTo(BigDecimal.ONE) == 0) {
+      buff.append(" Real");
+    } else {
+      buff.append(" Reais");
+    }
+
+    // Só processa os centavos se ele existir, se estiver zerado não escreve "zero centavos"
+    if (fraction.signum() != 0) {
+      // Recupera o extendo da parte dos centavos
+      buff.append(" e ").append(valueToExtense_BrazilianPortuguese(fraction.movePointRight(2)));
+      // Anexa a palavra centavos se existir
+      if (fraction.compareTo(BigDecimal.ONE) == 0) {
+        buff.append(" centavo");
+      } else {
+        buff.append(" centavos");
+      }
+    }
+
+    return buff.toString();
+  }
+
+  /**
+   * Remove todos os caracteres que não compõe os primeiros 128 caracteres da tabela UTF-8 pelo texto passado.
+   *
+   * @param text Texto a ser tratado.
+   * @return Texto sem os caracteres fora dos primeiros caracteres da tabela UTF-8.
+   * @throws RFWException
+   */
+  public static String removeNonUTF8BaseCaracters(String text) throws RFWException {
+    return replaceNonUTF8BaseCaracters(text, "");
+  }
+
+  /**
+   * Substitui todos os caracteres que não compõe os primeiros 128 caracteres da tabela UTF-8 pelo texto passado.
+   *
+   * @param text Texto a ser tratado.
+   * @param replacement Valor que substituirá os caracteres removidos
+   * @return Texto tratado.
+   * @throws RFWException
+   */
+  public static String replaceNonUTF8BaseCaracters(String text, String replacement) throws RFWException {
+    return text.replaceAll("[^\\u0000-\\u007E]", replacement);
+  }
+
+  /**
+   * Escreve uma String de trás para frente.
+   *
+   * @param content - Conteúdo para ser invertido.
+   * @return String invertida
+   */
+  public static String invert(String content) {
+    return new StringBuilder(content).reverse().toString();
   }
 }

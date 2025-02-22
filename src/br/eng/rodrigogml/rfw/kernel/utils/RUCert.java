@@ -9,11 +9,18 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
@@ -22,7 +29,9 @@ import javax.net.ssl.TrustManagerFactory;
 
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
+import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 import br.eng.rodrigogml.rfw.kernel.interfaces.RFWCertificate;
+import br.eng.rodrigogml.rfw.kernel.logger.RFWLogger;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 
 /**
@@ -271,6 +280,45 @@ public class RUCert {
   }
 
   /**
+   * Cria um TrustManager para ser usado em conexões SSL a partir de cadeias de certificados carregados de um arquivo criado pelo keytool (KeyStore).<Br>
+   * Melhor explicação de como usar o keytool na documentação do BISERP.
+   *
+   * @param in arquivo com uma ou mais cadeias de certificados para serem confiados.
+   * @param pass senha do arquivo para importação dos certificados.
+   * @return
+   * @throws RFWException
+   */
+  public static TrustManager[] createTrustManager(final InputStream in, final String pass) throws RFWException {
+    try {
+      // Cria um novo KeyStore com o tipo de algorítimo JKS
+      KeyStore truststore = KeyStore.getInstance("JKS");
+      truststore.load(in, pass.toCharArray());
+      try {
+        // Uma vez que já foi lido, forçamos seu fechamento para garantir que não teremos vazamento de recurso, mas se falhar não ligamos, logamos mas continuamos o método.
+        in.close();
+      } catch (Exception e) {
+        RFWLogger.logException(e);
+      }
+
+      return createTrustManager(truststore);
+      // // Cria o gerenciador de confiabilidade de certificados passando a cadeia de certificados lida
+      // TrustManagerFactory trustmanagerfactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+      // trustmanagerfactory.init(truststore);
+      // TrustManager[] trustmanagers = trustmanagerfactory.getTrustManagers();
+      //
+      // return trustmanagers;
+    } catch (KeyStoreException e) {
+      throw new RFWCriticalException("BISERP_000082", e);
+    } catch (NoSuchAlgorithmException e) {
+      throw new RFWCriticalException("BISERP_000082", e);
+    } catch (CertificateException e) {
+      throw new RFWCriticalException("BISERP_000083", e);
+    } catch (IOException e) {
+      throw new RFWValidationException("BISERP_000081", e);
+    }
+  }
+
+  /**
    * Carrega o {@link RFWCertificate} em um KeyStore baseando-se nas configurações padrão para cada tipo de certificado suportado.
    *
    * @param certificate Objeto com as definições do certificado.
@@ -320,5 +368,233 @@ public class RUCert {
     }
 
     throw new RFWCriticalException("Nenhuma chave privada encontrada no certificado!");
+  }
+
+  /**
+   * Este método retorna uma string com as informações coletadas do Certificado montadas em um Array BiDimensional String[x][y].<br>
+   * Onde x tem tamanho indefinido de acordo com a quantidade de parametros encontratos no certificado; e y vai de 0 à 1, sendo 0 o título do atributo e 1 o valor do atributo.
+   *
+   * @return
+   * @throws RFWException
+   */
+  public static String[][] getCertificateInfoArray(Certificate certificate) throws RFWException {
+    String[][] ret = null;
+    if (certificate instanceof X509Certificate) {
+      X509Certificate x509 = (X509Certificate) certificate;
+
+      final ArrayList<String> topic = new ArrayList<>();
+      final ArrayList<String> value = new ArrayList<>();
+
+      topic.add("Owner");
+      value.add(x509.getSubjectDN().getName());
+
+      topic.add("Issuer");
+      value.add(x509.getIssuerDN().getName());
+
+      topic.add("Serial Number");
+      value.add(x509.getSerialNumber().toString());
+
+      topic.add("Valid From");
+      value.add(SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM, SimpleDateFormat.MEDIUM).format(x509.getNotBefore()));
+
+      topic.add("Valid To");
+      value.add(SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM, SimpleDateFormat.MEDIUM).format(x509.getNotAfter()));
+
+      topic.add("Certificate MD5 Fingerprint");
+      value.add(RUCert.getMD5FingerPrintFromCertificate(certificate));
+
+      topic.add("Certificate SHA1 Fingerprint");
+      value.add(RUCert.getSHA1FingerPrintFromCertificate(certificate));
+
+      topic.add("Signature Algorithm Name");
+      value.add(x509.getSigAlgName());
+
+      topic.add("Version");
+      value.add("" + x509.getVersion());
+
+      ret = new String[topic.size()][2];
+      for (int i = 0; i < topic.size(); i++) {
+        ret[i][0] = topic.get(i);
+        ret[i][1] = value.get(i);
+      }
+
+    }
+    return ret;
+  }
+
+  /**
+   * Este método retorna o fingerprint MD5 do certificado.
+   *
+   * @param certificate instancia do certificado.
+   * @return retorna o fingerprint do certificado, Ex: '1A:DE:60:21:DE:B1:BF:C3:D1:AD:11:F1:21:22:D7:9E'
+   * @throws RFWException Lançado caso o certificado não possua algorítimo MD5, ou ocorra algum erro ao decodificar o certificado.
+   */
+  public static String getMD5FingerPrintFromCertificate(Certificate certificate) throws RFWException {
+    /*
+     * Este código foi criado com base no código fonte da ferramenta keytool fornecida junto com o java. Não sei explicar exatamente seu funcionamento nem hoje, que estou implementando, não me pergunte no futuro! Link do SourceCode usado de Base: http://www.docjar.com/html/api/sun/security/tools/KeyTool.java.html
+     */
+    try {
+      byte[] digest = MessageDigest.getInstance("MD5").digest(certificate.getEncoded());
+      StringBuilder buf = new StringBuilder();
+      int len = digest.length;
+      char[] hexChars = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+      for (int i = 0; i < len; i++) {
+        int high = ((digest[i] & 0xf0) >> 4);
+        int low = (digest[i] & 0x0f);
+        buf.append(hexChars[high]);
+        buf.append(hexChars[low]);
+        if (i < len - 1) {
+          buf.append(":");
+        }
+      }
+      return buf.toString();
+    } catch (NoSuchAlgorithmException e) {
+      throw new RFWValidationException("BISERP_000219", e);
+    } catch (CertificateEncodingException e) {
+      // Lançado como erro crítico porque não sei quando esse erro ocorrerá, a medida que for acontecendo vamos melhorando o tratamento do erro
+      throw new RFWCriticalException("BISERP_000220", e);
+    }
+  }
+
+  /**
+   * Este método retorna o fingerprint SHA1 do certificado.
+   *
+   * @param certificate instancia do certificado.
+   * @return retorna o fingerprint do certificado, Ex: '72:3A:D9:2E:1A:DE:60:21:DE:B1:BF:C3:D1:AD:11:F1:21:22:D7:9E'
+   * @throws RFWException Lançado caso o certificado não possua algorítimo SHA1, ou ocorra algum erro ao decodificar o certificado.
+   */
+  public static String getSHA1FingerPrintFromCertificate(Certificate certificate) throws RFWException {
+    /*
+     * Este código foi criado com base no código fonte da ferramenta keytool fornecida junto com o java. Não sei explicar exatamente seu funcionamento nem hoje, que estou implementando, não me pergunte no futuro! Link do SourceCode usado de Base: http://www.docjar.com/html/api/sun/security/tools/KeyTool.java.html
+     */
+    try {
+      byte[] digest = MessageDigest.getInstance("SHA1").digest(certificate.getEncoded());
+      StringBuilder buf = new StringBuilder();
+      int len = digest.length;
+      char[] hexChars = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+      for (int i = 0; i < len; i++) {
+        int high = ((digest[i] & 0xf0) >> 4);
+        int low = (digest[i] & 0x0f);
+        buf.append(hexChars[high]);
+        buf.append(hexChars[low]);
+        if (i < len - 1) {
+          buf.append(":");
+        }
+      }
+      return buf.toString();
+    } catch (NoSuchAlgorithmException e) {
+      throw new RFWValidationException("BISERP_000219", e);
+    } catch (CertificateEncodingException e) {
+      // Lançado como erro crítico porque não sei quando esse erro ocorrerá, a medida que for acontecendo vamos melhorando o tratamento do erro
+      throw new RFWCriticalException("BISERP_000220", e);
+    }
+  }
+
+  /**
+   * Este método retorna a data de início de vigência (validade) do certificado.
+   *
+   * @return
+   * @throws RFWException
+   */
+  public static Date getCertificateValidityStart(Certificate certificate) throws RFWException {
+    Date dt = null;
+    if (certificate instanceof X509Certificate) {
+      X509Certificate x509 = (X509Certificate) certificate;
+      dt = x509.getNotBefore();
+    }
+    if (dt == null) {
+      throw new RFWValidationException("BISERP_000246");
+    }
+    return dt;
+  }
+
+  /**
+   * Este método retorna a data de fim de vigência (validade) do certificado.
+   *
+   * @return
+   * @throws RFWException
+   */
+  public static Date getCertificateValidityEnd(Certificate certificate) throws RFWException {
+    Date dt = null;
+    if (certificate instanceof X509Certificate) {
+      X509Certificate x509 = (X509Certificate) certificate;
+      dt = x509.getNotAfter();
+    }
+    if (dt == null) {
+      throw new RFWValidationException("BISERP_000246");
+    }
+    return dt;
+  }
+
+  /**
+   * Este método retorna uma string com as informações coletadas do Certificado.
+   *
+   * @return
+   * @throws RFWException
+   */
+  public static String getCertificateInfo(Certificate certificate) throws RFWException {
+    StringBuilder buff = new StringBuilder();
+    if (certificate instanceof X509Certificate) {
+      X509Certificate x509 = (X509Certificate) certificate;
+
+      final String[] subject = x509.getSubjectDN().getName().split(",");
+      buff.append("Owner: ").append(subject[0]).append('\n');
+      for (int i = 1; i < subject.length; i++) {
+        buff.append("      ").append(subject[i]).append('\n');
+      }
+      final String[] issuerDN = x509.getIssuerDN().getName().split(",");
+      buff.append("Issuer: ").append(issuerDN[0]).append('\n');
+      for (int i = 1; i < issuerDN.length; i++) {
+        buff.append("      ").append(issuerDN[i]).append('\n');
+      }
+      buff.append("Serial Number: ").append(x509.getSerialNumber()).append('\n');
+      buff.append("Valid from: ").append(x509.getNotBefore()).append(" until: ").append(x509.getNotAfter()).append('\n');
+      buff.append("Certificate fingerprints: \n");
+      try {
+        buff.append("\tMD5:").append(RUCert.getMD5FingerPrintFromCertificate(certificate)).append('\n');
+      } catch (Exception e) {
+        // Só não escreve se não tiver fingerprint md5
+      }
+      try {
+        buff.append("\tSHA1:").append(RUCert.getSHA1FingerPrintFromCertificate(certificate)).append('\n');
+      } catch (Exception e) {
+        // Só não escreve se não tiver fingerprint sha1
+      }
+      buff.append("\tSignature algorithm name: ").append(x509.getSigAlgName()).append('\n');
+      buff.append("\tVersion: ").append(x509.getVersion()).append('\n');
+
+      // x509.getIssuerX500Principal();
+      // x509.getKeyUsage();
+      // x509.getNonCriticalExtensionOIDs();
+      // x509.getSigAlgOID();
+      // x509.getSubjectAlternativeNames();
+      // x509.getSubjectX500Principal();
+      // x509.getType();
+      // x509.getVersion();
+    }
+    return buff.toString();
+  }
+
+  /**
+   * Procura pelos Alias de chaves privadas dentro de um certificado.
+   *
+   * @param keyStore Certificado já carregado em um KeyStore.
+   * @return Lista com os alias de chaves privadas encontradas, ou uma lista vazia se nenhuma chave for encontrada.
+   * @throws RFWException Lançado caso não seja possível recuperar os alias ou abrir o KeyStore.
+   */
+  public static List<String> searchPrivateKeyAlias(KeyStore keyStore) throws RFWException {
+    LinkedList<String> list = new LinkedList<String>();
+    try {
+      Enumeration<String> aliases = keyStore.aliases();
+      while (aliases.hasMoreElements()) {
+        String alias = aliases.nextElement();
+        if (keyStore.isKeyEntry(alias)) {
+          list.add(alias);
+        }
+      }
+    } catch (Exception e) {
+      throw new RFWCriticalException("Falha ao procurar por chaves privadas no Certificado!", e);
+    }
+    return list;
   }
 }

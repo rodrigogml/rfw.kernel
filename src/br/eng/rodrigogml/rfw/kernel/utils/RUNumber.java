@@ -122,18 +122,6 @@ public class RUNumber {
   }
 
   /**
-   * Extrai a parte inteira e a parte decimal de um BigDecimal passado.
-   *
-   * @param value BigDecimal a ser dividido entre as duas partes
-   * @return Array com as duas partes. Index 0 = Parte inteira; Index 1 = parte Fracionária
-   */
-  public static BigDecimal[] extractIntegerAndFractionPart(BigDecimal value) {
-    final BigDecimal fraction = value.remainder(BigDecimal.ONE);
-    BigDecimal integer = value.subtract(fraction);
-    return new BigDecimal[] { integer, fraction };
-  }
-
-  /**
    * Este método abstrai os cálculos que temos de fazer para gerar um número inteiro aleatório. Simplificando o código com uma chamada onde simplismente passamos os valores iniciais e final.<br>
    * <B>ATENÇÃO: </b> os valores passados são inclusivos, isto é, os valores passados podem ser retornados como resultado da função.
    *

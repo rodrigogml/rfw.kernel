@@ -1,16 +1,24 @@
 package br.eng.rodrigogml.rfw.kernel.utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.LinkedList;
 
 import br.eng.rodrigogml.rfw.kernel.RFW;
 import br.eng.rodrigogml.rfw.kernel.dataformatters.LocaleConverter;
@@ -573,4 +581,301 @@ public class RUFile {
     final String name = new File(file).getName();
     return name.substring(0, name.lastIndexOf('.'));
   }
+
+  public static boolean isDirectory(String path) {
+    return new File(path).isDirectory();
+  }
+
+  public static boolean isDirectory(File path) {
+    return path.isDirectory();
+  }
+
+  /**
+   * Retorna os arquivos de um determinado diretório que tenham a data de criação maiores ou iguais a uma determinada data.
+   *
+   * @param path Caminho/Diretório dos arquivos
+   * @param timemillis Data de criação inicial em milisegundos (Equivalente ao System.currentTimemillis)
+   * @return Arquivos criados depois da data definida
+   * @throws RFWException
+   */
+  public static File[] getFilesNewerOrEqualThan(String path, long timemillis) throws RFWException {
+    final File[] files = getFilesFromDirectory(path);
+
+    final LinkedList<File> newerFiles = new LinkedList<>();
+    try {
+      for (File file : files) {
+        BasicFileAttributes attr = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
+        if (attr.creationTime().toMillis() >= timemillis) {
+          newerFiles.add(file);
+        }
+      }
+    } catch (IOException e) {
+      throw new RFWCriticalException("BISERP_000443");
+    }
+    return newerFiles.toArray(new File[0]);
+  }
+
+  public static String[] getDirectoryFromDirectory(String path) {
+    File[] listOfFiles = getFilesFromDirectory(path);
+
+    ArrayList<String> directories = new ArrayList<>(listOfFiles.length);
+
+    for (int i = 0; i < listOfFiles.length; i++) {
+      if (listOfFiles[i].isDirectory()) {
+        directories.add(listOfFiles[i].getAbsolutePath());
+      }
+    }
+
+    return directories.toArray(new String[0]);
+  }
+
+  public static String readFileContentToString(InputStream in) throws RFWException {
+    return new String(readFileContent(in));
+  }
+
+  public static byte[] readFileContent(InputStream in) throws RFWException {
+    try {
+      ByteArrayOutputStream out = new ByteArrayOutputStream();
+      byte[] tmpbytes = new byte[4096];
+      int c = 0;
+      while ((c = in.read(tmpbytes)) > 0) {
+        out.write(tmpbytes, 0, c);
+      }
+      out.flush();
+      return out.toByteArray();
+    } catch (IOException e) {
+      throw new RFWValidationException("BISERP_000062");
+    } finally {
+      if (in != null) {
+        try {
+          in.close();
+        } catch (IOException e) {
+        }
+      }
+    }
+  }
+
+  public static String readInputStreamToString(InputStream is) throws RFWException {
+    return new String(readInputStreamToByteArray(is));
+  }
+
+  public static String readInputStreamToString(InputStream is, String charset) throws RFWException {
+    try {
+      return new String(readInputStreamToByteArray(is), charset);
+    } catch (UnsupportedEncodingException e) {
+      throw new RFWCriticalException("BISERP_000332");
+    }
+  }
+
+  public static byte[] readInputStreamToByteArray(InputStream is) throws RFWException {
+    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+    int nRead;
+    byte[] data = new byte[16384];
+
+    try {
+      while ((nRead = is.read(data, 0, data.length)) != -1) {
+        buffer.write(data, 0, nRead);
+      }
+      buffer.flush();
+      buffer.close();
+      return buffer.toByteArray();
+    } catch (IOException e) {
+      throw new RFWValidationException("BISERP_000071", new String[] { e.getMessage() });
+    }
+  }
+
+  public static boolean renameFile(String original, String destination) {
+    return renameFile(new File(original), new File(destination));
+  }
+
+  public static boolean renameFile(File original, File destination) {
+    return original.renameTo(destination);
+  }
+
+  public static boolean deleteFile(String filename) {
+    return deleteFile(new File(filename));
+  }
+
+  public static boolean deleteFile(File file) {
+    if (file.exists() && file.isFile()) {
+      return file.delete();
+    }
+    return false;
+  }
+
+  /**
+   * Retorna a data e hora de criação de um arquivo.
+   *
+   * @param fileName Caminho completo ou relativo à aplicação que leve ao arquivo.
+   * @return Objeto Date criado com o timezone padrão do sistema, que deve equivaler como do arquivo.
+   * @throws RFWException
+   */
+  public static Date getCreationDate(String fileName) throws RFWException {
+    // Se o arquivo não existir lança crítico, isso deve ser validado adequadamente fora da classe utilitária
+    if (!fileExists(fileName)) throw new RFWCriticalException("BISERP_000444", new String[] { fileName });
+
+    Path path = new File(fileName).toPath();
+    BasicFileAttributes attr;
+    try {
+      attr = Files.readAttributes(path, BasicFileAttributes.class);
+    } catch (IOException e) {
+      throw new RFWCriticalException("BISERP_000443");
+    }
+    return new Date(attr.creationTime().toMillis());
+  }
+
+  /**
+   * Retorna a data e hora de criação de um arquivo no formato LocalDateTime.
+   *
+   * @param fileName Caminho completo ou relativo à aplicação que leva ao arquivo.
+   * @return Objeto LocalDateTime representando a data e hora de criação do arquivo, usando o timezone padrão do sistema.
+   * @throws RFWException se o arquivo não for encontrado ou ocorrer um erro ao ler os atributos do arquivo.
+   */
+  public static LocalDateTime getCreationLocalDateTime(String fileName) throws RFWException {
+    // Se o arquivo não existir lança crítico, isso deve ser validado adequadamente fora da classe utilitária
+    if (!fileExists(fileName)) throw new RFWCriticalException("BISERP_000444", new String[] { fileName });
+
+    Path path = new File(fileName).toPath();
+    BasicFileAttributes attr;
+    try {
+      attr = Files.readAttributes(path, BasicFileAttributes.class);
+    } catch (IOException e) {
+      throw new RFWCriticalException("BISERP_000443");
+    }
+
+    // Converte o FileTime para LocalDateTime utilizando o timezone padrão do sistema
+    return LocalDateTime.ofInstant(attr.creationTime().toInstant(), ZoneOffset.UTC);
+  }
+
+  /**
+   * Retorna a data e hora do último acesso ao arquivo.
+   *
+   * @param fileName Caminho completo ou relativo à aplicação que leve ao arquivo.
+   * @return Objeto Date criado com o timezone padrão do sistema, que deve equivaler como do arquivo.
+   * @throws RFWException
+   */
+  public static Date getLastAccessTime(String fileName) throws RFWException {
+    // Se o arquivo não existir lança crítico, isso deve ser validado adequadamente fora da classe utilitária
+    if (!fileExists(fileName)) throw new RFWCriticalException("BISERP_000444", new String[] { fileName });
+
+    Path path = new File(fileName).toPath();
+    BasicFileAttributes attr;
+    try {
+      attr = Files.readAttributes(path, BasicFileAttributes.class);
+    } catch (IOException e) {
+      throw new RFWCriticalException("BISERP_000443");
+    }
+    return new Date(attr.lastAccessTime().toMillis());
+  }
+
+  /**
+   * Retorna a data e hora da última modificação do arquivo.
+   *
+   * @param fileName Caminho completo ou relativo à aplicação que leve ao arquivo.
+   * @return Objeto Date criado com o timezone padrão do sistema, que deve equivaler como do arquivo.
+   * @throws RFWException
+   */
+  public static Date getLastModifiedTime(String fileName) throws RFWException {
+    // Se o arquivo não existir lança crítico, isso deve ser validado adequadamente fora da classe utilitária
+    if (!fileExists(fileName)) throw new RFWCriticalException("BISERP_000444", new String[] { fileName });
+
+    Path path = new File(fileName).toPath();
+    BasicFileAttributes attr;
+    try {
+      attr = Files.readAttributes(path, BasicFileAttributes.class);
+    } catch (IOException e) {
+      throw new RFWCriticalException("BISERP_000443");
+    }
+    return new Date(attr.lastModifiedTime().toMillis());
+  }
+
+  /**
+   * Retorna a data e hora da última modificação de um arquivo no formato LocalDateTime.
+   *
+   * @param fileName Caminho completo ou relativo à aplicação que leva ao arquivo.
+   * @return Objeto LocalDateTime representando a data e hora da última modificação do arquivo, sem considerar o fuso horário.
+   * @throws RFWException se o arquivo não for encontrado ou ocorrer um erro ao ler os atributos do arquivo.
+   */
+  public static LocalDateTime getLastModifiedLocalDateTime(String fileName) throws RFWException {
+    // Se o arquivo não existir lança crítico, isso deve ser validado adequadamente fora da classe utilitária
+    if (!fileExists(fileName)) throw new RFWCriticalException("BISERP_000444", new String[] { fileName });
+
+    Path path = new File(fileName).toPath();
+    BasicFileAttributes attr;
+    try {
+      attr = Files.readAttributes(path, BasicFileAttributes.class);
+    } catch (IOException e) {
+      throw new RFWCriticalException("BISERP_000443");
+    }
+
+    // Converte FileTime para LocalDateTime sem considerar o fuso horário
+    return LocalDateTime.ofInstant(attr.lastModifiedTime().toInstant(), ZoneOffset.UTC);
+  }
+
+  /**
+   * Retorna se o objeto do caminho passado é um Symbolic Link.
+   *
+   * @param fileName Caminho completo ou relativo à aplicação que leve ao arquivo.
+   * @return Boolean indicando 'true' caso o objeto seja um SymLink, 'false' não seja.
+   * @throws RFWException
+   */
+  public static boolean isSymbolicLink(String fileName) throws RFWException {
+    // Se o arquivo não existir lança crítico, isso deve ser validado adequadamente fora da classe utilitária
+    if (!fileExists(fileName)) throw new RFWCriticalException("BISERP_000444", new String[] { fileName });
+
+    Path path = new File(fileName).toPath();
+    BasicFileAttributes attr;
+    try {
+      attr = Files.readAttributes(path, BasicFileAttributes.class);
+    } catch (IOException e) {
+      throw new RFWCriticalException("BISERP_000443");
+    }
+    return attr.isSymbolicLink();
+  }
+
+  /**
+   * Este método verifica a existência do caminho e, caso não exista ainda, o cria.<br>
+   * <b>Este método aceita o caminho do diretório sem o nome do arquivo. Caso tenha o caminho com o nome do arquivo utilize o {@link #createPathOfFile(String)}</b>
+   *
+   * @param pathName Caminho para o diretório a ser criado.
+   * @throws RFWException
+   */
+  public static void createPath(String pathName) throws RFWException {
+    File file = new File(pathName);
+    file.mkdirs(); // Força criar os diretórios caso não existam
+  }
+
+  /**
+   * Este método verifica a existência dos diretórios do caminho ddo arquivo passado, caso não exista ainda, o cria.<br>
+   * <b>Este método aceita o caminho completo incluindo o nome do arquivo, e garante que sua pasta seja criada. Caso tenha apenas os nomes dos diretórios utilize o {@link #createPath(String)}</b>
+   *
+   * @param filePath Caminho completo do arquivo, cujo diretório deve ser criado.
+   * @throws RFWException
+   */
+  public static void createPathOfFile(String filePath) throws RFWException {
+    File file = new File(filePath);
+    file.mkdirs(); // Força criar os diretórios caso não existam
+  }
+
+  /**
+   * Extrai o nome do arquivo de um caminho completo recebido.
+   *
+   * @param file Caminho com o nome do arquivo
+   * @return
+   */
+  public static String extractFileFullName(String file) {
+    File f = new File(file);
+    return f.getName();
+  }
+
+  /**
+   * Extrai o caminho (diretório) de um caminho completo recebido. NÃO RETORNA O ÚLTIMO SEPARADOR! Nem mesmo quando está na raiz: Windows = "c:", no Linux = "".
+   *
+   * @param file Caminho com o nome do arquivo
+   * @return
+   */
+  public static String extractFullPath(String file) {
+    return file.substring(0, file.lastIndexOf(File.separatorChar));
+  }
+
 }

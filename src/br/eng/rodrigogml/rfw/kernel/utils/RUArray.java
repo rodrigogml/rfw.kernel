@@ -26,19 +26,47 @@ public class RUArray {
   }
 
   /**
-   * Concatena arrays do mesmo tipo, criando um novo array com a soma dos tamanhos dos Arrays.
+   * Concatena dois arrays de bytes em um único array.
    *
-   * @param first Primeiro Array que será clonado e redimensionado. ESTE OBJETO NÂO PODE SER NULO.
-   * @param rest Lista de Arrays que devem ser concatenados ao clone do primeiro.
-   * @return Array redimensionado com todos os objetos.
-   * @throws RFWException
+   * @param first Primeiro array de bytes. **Não pode ser nulo**.
+   * @param rest Segundo array de bytes. **Pode ser nulo ou vazio**.
+   * @return Um novo array contendo todos os elementos de `first` seguido pelos elementos de `rest`.
+   * @throws IllegalArgumentException Se `first` for nulo.
+   */
+  public static byte[] concatAll(byte[] first, byte[] rest) {
+    if (first == null) {
+      throw new IllegalArgumentException("O primeiro array não pode ser nulo.");
+    }
+
+    if (rest == null || rest.length == 0) {
+      return Arrays.copyOf(first, first.length);
+    }
+
+    byte[] result = new byte[first.length + rest.length];
+
+    System.arraycopy(first, 0, result, 0, first.length);
+    System.arraycopy(rest, 0, result, first.length, rest.length);
+
+    return result;
+  }
+
+  /**
+   * Concatena múltiplos arrays do mesmo tipo em um único array, preservando a ordem dos elementos.
+   *
+   * @param first Primeiro array a ser clonado e expandido. **Este parâmetro não pode ser nulo.**
+   * @param rest Arrays adicionais a serem concatenados ao primeiro. **Podem ser nulos ou vazios.**
+   * @param <T> Tipo dos elementos dos arrays.
+   * @return Novo array contendo todos os elementos de `first` seguido pelos elementos de `rest`.
+   * @throws RFWException Se `first` for nulo.
    */
   @SuppressWarnings("unchecked")
   public static <T> T[] concatAll(T[] first, T[]... rest) throws RFWException {
     PreProcess.requiredNonNullCritical(first, "O primeiro Array não pode ser nulo.");
     int totalLength = first.length;
     for (T[] array : rest) {
-      if (array != null) totalLength += array.length;
+      if (array != null) {
+        totalLength += array.length;
+      }
     }
     T[] result = Arrays.copyOf(first, totalLength);
     int offset = first.length;

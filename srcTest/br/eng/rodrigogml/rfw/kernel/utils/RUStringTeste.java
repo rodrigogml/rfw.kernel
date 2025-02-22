@@ -47,5 +47,4 @@ public class RUStringTeste {
     assertEquals("Deve evitar substituições infinitas.", "!", replaceAllRecursively("LoLoLoLoLoopopopopop!", "Loop", "", true, true));
     assertThrows(IllegalArgumentException.class, () -> replaceAllRecursively("Olá Teste!", "", "Mundo", true, true));
   }
-
 }
