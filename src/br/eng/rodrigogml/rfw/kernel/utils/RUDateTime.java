@@ -4,14 +4,16 @@ import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import br.eng.rodrigogml.rfw.kernel.RFW;
+import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
+import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 
 /**
  * Description: Classe utilitária para facilitar manipulação de datas e horários.<br>
@@ -41,8 +43,8 @@ public class RUDateTime {
    * @throws NullPointerException Se {@code date1} ou {@code date2} forem nulos.
    */
   public static int compareDateWithoutTime(Date date1, Date date2) {
-    LocalDate localDate1 = date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    LocalDate localDate2 = date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    LocalDate localDate1 = date1.toInstant().atZone(RFW.getZoneId()).toLocalDate();
+    LocalDate localDate2 = date2.toInstant().atZone(RFW.getZoneId()).toLocalDate();
     return localDate1.compareTo(localDate2);
   }
 
@@ -60,19 +62,21 @@ public class RUDateTime {
   }
 
   /**
-   * Este método recebe uma data e força a definição da hora = 00, minuto = 00 e segundos = 00 e milisegundos = 000.
+   * Ajusta uma data para ter o horário zerado: 00:00:00.000.
    *
-   * @param date Data a ter o horário modificado.
-   * @return Novo objeto com a data recebida como parametro, mas com o horário 00:00:00'000
+   * @param date Data a ser ajustada. Não pode ser nula.
+   * @return Nova instância de {@link Date} com a mesma data informada, mas com o horário definido como 00:00:00.000.
+   * @throws RFWException
    */
-  public static Date setTimeTo000000(Date date) {
-    final Calendar gc = GregorianCalendar.getInstance();
-    gc.setTime(date);
-    gc.set(Calendar.HOUR_OF_DAY, 00);
-    gc.set(Calendar.MINUTE, 00);
-    gc.set(Calendar.SECOND, 00);
-    gc.set(Calendar.MILLISECOND, 000);
-    return gc.getTime();
+  public static Date setTimeTo000000(Date date) throws RFWException {
+    PreProcess.requiredNonNull(date);
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(date);
+    calendar.set(Calendar.HOUR_OF_DAY, 0);
+    calendar.set(Calendar.MINUTE, 0);
+    calendar.set(Calendar.SECOND, 0);
+    calendar.set(Calendar.MILLISECOND, 0);
+    return calendar.getTime();
   }
 
   /**
@@ -304,7 +308,7 @@ public class RUDateTime {
    * @return Número de meses completos entre as duas datas.
    * @throws NullPointerException Se {@code initialDate} ou {@code finalDate} forem nulos.
    */
-  public static long calcDiferenceInMonths(LocalDate initialDate, LocalDate finalDate) {
+  public static long calcDifferenceInMonths(LocalDate initialDate, LocalDate finalDate) {
     return Period.between(initialDate.withDayOfMonth(1), finalDate.withDayOfMonth(1)).toTotalMonths();
   }
 
@@ -319,7 +323,7 @@ public class RUDateTime {
    * @return Total de dias completos entre a data inicial e a final.
    * @throws NullPointerException Se {@code initialDate} ou {@code finalDate} forem nulos.
    */
-  public static long calcDiferenceInDays(LocalDate initialDate, LocalDate finalDate) {
+  public static long calcDifferenceInDays(LocalDate initialDate, LocalDate finalDate) {
     return ChronoUnit.DAYS.between(initialDate, finalDate);
   }
 
@@ -334,7 +338,7 @@ public class RUDateTime {
    * @return Total de dias completos entre as datas.
    * @throws NullPointerException Se {@code initialDate} ou {@code finalDate} forem nulos.
    */
-  public static long calcDiferenceInDays(LocalDateTime initialDate, LocalDateTime finalDate) {
+  public static long calcDifferenceInDays(LocalDateTime initialDate, LocalDateTime finalDate) {
     return ChronoUnit.DAYS.between(initialDate, finalDate);
   }
 
@@ -349,8 +353,8 @@ public class RUDateTime {
    * @return Diferença entre as datas em dias.
    * @throws NullPointerException Se {@code initialDate} ou {@code finalDate} forem nulos.
    */
-  public static double calcDiferenceInDays(Date initialDate, Date finalDate) {
-    return calcDiferenceInDays(initialDate.getTime(), finalDate.getTime());
+  public static double calcDifferenceInDays(Date initialDate, Date finalDate) {
+    return calcDifferenceInDays(initialDate.getTime(), finalDate.getTime());
   }
 
   /**
@@ -363,7 +367,7 @@ public class RUDateTime {
    * @param finalDate Timestamp final (epoch time).
    * @return Diferença entre as datas em dias.
    */
-  public static double calcDiferenceInDays(long initialDate, long finalDate) {
+  public static double calcDifferenceInDays(long initialDate, long finalDate) {
     return (finalDate - initialDate) / 86400000.0; // 1 dia = 86.400.000ms
   }
 
@@ -378,8 +382,8 @@ public class RUDateTime {
    * @return Diferença entre as datas em horas.
    * @throws NullPointerException Se {@code initialDate} ou {@code finalDate} forem nulos.
    */
-  public static double calcDiferenceInHours(Date initialDate, Date finalDate) {
-    return calcDiferenceInHours(initialDate.getTime(), finalDate.getTime());
+  public static double calcDifferenceInHours(Date initialDate, Date finalDate) {
+    return calcDifferenceInHours(initialDate.getTime(), finalDate.getTime());
   }
 
   /**
@@ -392,7 +396,7 @@ public class RUDateTime {
    * @param finalDate Timestamp final (epoch time).
    * @return Diferença entre as datas em horas.
    */
-  public static double calcDiferenceInHours(long initialDate, long finalDate) {
+  public static double calcDifferenceInHours(long initialDate, long finalDate) {
     return (finalDate - initialDate) / 3600000.0; // 1 hora = 3.600.000ms
   }
 
@@ -407,8 +411,8 @@ public class RUDateTime {
    * @return Diferença entre as datas em minutos.
    * @throws NullPointerException Se {@code initialDate} ou {@code finalDate} forem nulos.
    */
-  public static double calcDiferenceInMinutes(Date initialDate, Date finalDate) {
-    return calcDiferenceInMinutes(initialDate.getTime(), finalDate.getTime());
+  public static double calcDifferenceInMinutes(Date initialDate, Date finalDate) {
+    return calcDifferenceInMinutes(initialDate.getTime(), finalDate.getTime());
   }
 
   /**
@@ -421,7 +425,7 @@ public class RUDateTime {
    * @param finalDate Timestamp final (epoch time).
    * @return Diferença entre os timestamps em minutos.
    */
-  public static double calcDiferenceInMinutes(long initialDate, long finalDate) {
+  public static double calcDifferenceInMinutes(long initialDate, long finalDate) {
     return (finalDate - initialDate) / 60000.0; // 1 minuto = 60.000ms
   }
 
@@ -553,6 +557,139 @@ public class RUDateTime {
     LocalDate end = period1End.isBefore(period2End) ? period1End : period2End;
 
     return ChronoUnit.DAYS.between(start, end.plusDays(1));
+  }
+
+  /**
+   * Adiciona ou subtrai um período específico a uma data fornecida.
+   *
+   * @param baseDate Data base para a operação.
+   * @param period Tipo do período a ser adicionado (Calendar.DAY_OF_MONTH, Calendar.MONTH, etc.).
+   * @param amount Quantidade do período a ser somado ou subtraído (valores negativos subtraem).
+   * @return Nova data resultante da operação.
+   * @throws IllegalArgumentException Se a data fornecida for nula.
+   */
+  public static Date dateAdd(Date baseDate, int period, int amount) {
+    if (baseDate == null) {
+      throw new IllegalArgumentException("A data base não pode ser nula.");
+    }
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(baseDate);
+    calendar.add(period, amount);
+    return calendar.getTime();
+  }
+
+  /**
+   * Calcula a diferença entre duas datas em dias. Retorna um valor negativo se a data inicial for posterior à data final.
+   *
+   * @param initialDate Data inicial
+   * @param finalDate Data final
+   * @return Diferença de dias entre as datas (pode ser negativa se initialDate > finalDate)
+   */
+  public static double dateDifferenceInDays(Date initialDate, Date finalDate) {
+    return dateDifferenceInDays(initialDate.getTime(), finalDate.getTime());
+  }
+
+  /**
+   * Calcula a diferença entre dois timestamps em dias. Retorna um valor negativo se o timestamp inicial for posterior ao final.
+   *
+   * @param initialTimestamp Timestamp inicial em milissegundos
+   * @param finalTimestamp Timestamp final em milissegundos
+   * @return Diferença de dias entre os timestamps (pode ser negativa se initialTimestamp > finalTimestamp)
+   */
+  public static double dateDifferenceInDays(long initialTimestamp, long finalTimestamp) {
+    return (finalTimestamp - initialTimestamp) / 86_400_000.0; // 1 dia = 86.400.000ms
+  }
+
+  /**
+   * Calcula a diferença entre duas datas em horas. Retorna um valor negativo caso a data inicial seja posterior à data final. Essa referência negativa pode ser útil para validar a ordem cronológica dos eventos.
+   *
+   * @param initialDate Data inicial.
+   * @param finalDate Data final.
+   * @return Diferença entre as datas em horas.
+   */
+  public static double dateDifferenceInHours(Date initialDate, Date finalDate) {
+    return dateDifferenceInHours(initialDate.getTime(), finalDate.getTime());
+  }
+
+  /**
+   * Calcula a diferença entre duas datas em horas a partir dos timestamps em milissegundos. Retorna um valor negativo caso a data inicial seja posterior à data final. Essa referência negativa pode ser útil para validar a ordem cronológica dos eventos.
+   *
+   * @param initialTimestamp Timestamp da data inicial em milissegundos.
+   * @param finalTimestamp Timestamp da data final em milissegundos.
+   * @return Diferença entre os timestamps em horas.
+   */
+  public static double dateDifferenceInHours(long initialTimestamp, long finalTimestamp) {
+    return (finalTimestamp - initialTimestamp) / 3_600_000d; // 1 hora = 3.600.000 ms
+  }
+
+  /**
+   * Calcula a diferença entre duas datas em minutos. Retorna um valor negativo caso a data inicial seja posterior à data final. Essa referência negativa pode ser útil para validar a ordem cronológica dos eventos.
+   *
+   * @param initialDate Data inicial.
+   * @param finalDate Data final.
+   * @return Diferença entre as datas em minutos.
+   */
+  public static double dateDifferenceInMinutes(Date initialDate, Date finalDate) {
+    return dateDifferenceInMinutes(initialDate.getTime(), finalDate.getTime());
+  }
+
+  /**
+   * Calcula a diferença entre duas datas em minutos a partir dos timestamps em milissegundos. Retorna um valor negativo caso a data inicial seja posterior à data final. Essa referência negativa pode ser útil para validar a ordem cronológica dos eventos.
+   *
+   * @param initialTimestamp Timestamp da data inicial em milissegundos.
+   * @param finalTimestamp Timestamp da data final em milissegundos.
+   * @return Diferença entre os timestamps em minutos.
+   */
+  public static double dateDifferenceInMinutes(long initialTimestamp, long finalTimestamp) {
+    return (finalTimestamp - initialTimestamp) / 60_000d; // 1 minuto = 60.000 ms
+  }
+
+  /**
+   * Gera o sufixo do nome do arquivo baseado no período de datas fornecido.<br>
+   * <ul>
+   * <li>Se o período corresponde a um mês completo: "Mês-Ano" (exemplo: "Agosto-2017")</li>
+   * <li>Caso contrário: "ddMMyyyy_ddMMyyyy" ou "ddMMyyyy" se a data de início e fim forem iguais</li>
+   * </ul>
+   * <Br>
+   * <Br>
+   * Faz o mesmo que o método {@link #getNameByDate(Date, Date, Locale)}, passando o valor de {@link RFW#getLocale()}.
+   *
+   * @param startDate Data de início do período.
+   * @param endDate Data de fim do período.
+   * @return Sufixo gerado de acordo com as regras descritas.
+   */
+  public static String getNameByDate(Date startDate, Date endDate) {
+    return getNameByDate(startDate, endDate, RFW.getLocale());
+  }
+
+  /**
+   * Gera o sufixo do nome do arquivo baseado no período de datas fornecido.<br>
+   * <ul>
+   * <li>Se o período corresponde a um mês completo: "Mês-Ano" (exemplo: "Agosto-2017")</li>
+   * <li>Caso contrário: "ddMMyyyy_ddMMyyyy" ou "ddMMyyyy" se a data de início e fim forem iguais</li>
+   * </ul>
+   *
+   * @param startDate Data de início do período.
+   * @param endDate Data de fim do período.
+   * @return Sufixo gerado de acordo com as regras descritas.
+   */
+  public static String getNameByDate(Date startDate, Date endDate, Locale locale) {
+    if (startDate == null || endDate == null) {
+      throw new IllegalArgumentException("As datas não podem ser nulas.");
+    }
+
+    if (RUDateTime.isFirstDayOfMonth(startDate) &&
+        RUDateTime.isLastDayOfMonth(endDate) &&
+        RUDateTime.getMonth(startDate) == RUDateTime.getMonth(endDate) &&
+        RUDateTime.getYear(startDate) == RUDateTime.getYear(endDate)) {
+
+      return RUDateTime.getMonthName(locale, RUDateTime.getMonth(startDate)) + "-" + RUDateTime.getYear(startDate);
+    }
+
+    String startFormatted = RUTypes.formatToddMMyyyy(startDate);
+    String endFormatted = RUTypes.formatToddMMyyyy(endDate);
+
+    return startFormatted.equals(endFormatted) ? startFormatted : startFormatted + '_' + endFormatted;
   }
 
 }

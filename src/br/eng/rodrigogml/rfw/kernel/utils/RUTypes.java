@@ -326,7 +326,21 @@ public class RUTypes {
    * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
    */
   public static Date parseDate(String date) throws RFWException {
-    return parseDate(date, ZoneId.systemDefault());
+    return parseDate(date, RFW.getZoneId());
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para realizar o parse de uma Date e já tratar a exception.
+   *
+   * @param value
+   * @return
+   */
+  public static Date parseDate(String pattern, String value) throws RFWException {
+    try {
+      return new SimpleDateFormat(pattern).parse(value);
+    } catch (ParseException e) {
+      throw new RFWCriticalException("BISERP_000465", e);
+    }
   }
 
   /**
@@ -428,7 +442,7 @@ public class RUTypes {
    * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
    */
   public static LocalDate parseLocalDate(String date) throws RFWException {
-    return parseLocalDate(date, ZoneId.systemDefault());
+    return parseLocalDate(date, RFW.getZoneId());
   }
 
   /**
