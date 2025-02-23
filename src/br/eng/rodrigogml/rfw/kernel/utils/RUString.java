@@ -12,8 +12,12 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import br.eng.rodrigogml.rfw.kernel.RFW;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
@@ -894,11 +898,12 @@ public class RUString {
    * @param distinctAccents {@code true} diferencia acentos, {@code false} ignora acentos.
    * @param distinctCase {@code true} diferencia maiúsculas de minúsculas, {@code false} ignora diferenciação de case.
    * @return Texto processado com todas as substituições aplicadas recursivamente.
+   * @throws RFWException
    * @throws StackOverflowError Se a substituição entrar em um ciclo infinito.
    */
-  public static String replaceAllRecursively(String text, String oldValue, String newValue, boolean distinctAccents, boolean distinctCase) {
+  public static String replaceAllRecursively(String text, String oldValue, String newValue, boolean distinctAccents, boolean distinctCase) throws RFWException {
     if (oldValue.isEmpty()) throw new IllegalArgumentException("Old value must have content.");
-    if (oldValue.equals(newValue)) return text; // Evita loop infinito
+    if (newValue.indexOf(oldValue) > -1) throw new RFWCriticalException("O valor substituto: '${0}' inclui o valor a ser substituído: '${1}' isso resulta resulta em substituições infinitas!", new String[] { newValue, oldValue }); // Evita loop infinito
 
     String previousText;
     do {
@@ -1239,4 +1244,295 @@ public class RUString {
   public static String invert(String content) {
     return new StringBuilder(content).reverse().toString();
   }
+
+  /**
+   * Remove zeros à esquerda no início da String.
+   * <p>
+   * Casos de uso:
+   * <ul>
+   * <li>null -> null</li>
+   * <li>"0001234" -> "1234"</li>
+   * <li>"00012340000" -> "12340000"</li>
+   * <li>" 00012340000" -> " 00012340000" (Mantém espaços iniciais)</li>
+   * <li>"000000000000000000" -> "" (Retorna String vazia e não null)</li>
+   * </ul>
+   *
+   * @param input Texto a ser processado.
+   * @return A mesma String sem zeros iniciais ou String vazia se for composta apenas por zeros.
+   */
+  public static String removeLeadingZeros(String input) {
+    if (input == null) return null;
+    int length = input.length();
+    int i = 0;
+    while (i < length && input.charAt(i) == '0') {
+      i++;
+    }
+    return input.substring(i);
+  }
+
+  /**
+   * Recupera a parte direita de uma string.
+   *
+   * @param value String original
+   * @param length Tamanho da parte desejada.
+   * @return Retorna uma string contendo a parte direita da string original com o tamanho especificado. Se o tamanho solicitado for maior ou igual ao da string original, retorna a própria string original. Se a string original for nula, retorna null. Se o tamanho solicitado for menor ou igual a zero, retorna uma string vazia.
+   */
+  public static String right(String value, int length) {
+    if (value == null) {
+      return null;
+    }
+    int strLength = value.length();
+    return length >= strLength ? value : (length <= 0 ? "" : value.substring(strLength - length));
+  }
+
+  /**
+   * Recupera a parte esquerda de uma string.
+   *
+   * @param value String original
+   * @param length Tamanho da parte desejada.
+   * @return Retorna uma string contendo a parte esquerda da string original com o tamanho especificado. Se o tamanho solicitado for maior ou igual ao da string original, retorna a própria string original. Se a string original for nula, retorna null. Se o tamanho solicitado for menor ou igual a zero, retorna uma string vazia.
+   */
+  public static String left(String value, int length) {
+    if (value == null) {
+      return null;
+    }
+    return length >= value.length() ? value : (length <= 0 ? "" : value.substring(0, length));
+  }
+
+  /**
+   * Separa os campos de uma linha de arquivo CSV, considerando aspas e caracteres de escape.
+   *
+   * @param line linha do arquivo a ser processada.
+   * @return Array de strings contendo os valores separados.
+   * @throws RFWException em caso de erro no processamento da linha.
+   */
+  public static String[] parseCSVLine(String line) throws RFWException {
+    return parseCSVLine(line, ',', '"');
+  }
+
+  /**
+   * Separa os campos de uma linha de arquivo CSV, considerando aspas e caracteres de escape.
+   *
+   * O separador define o caractere delimitador entre os campos e as aspas determinam quais trechos devem ser tratados como um único valor, mesmo contendo o separador interno.
+   *
+   * Regras:
+   * <li>Valores entre aspas ignoram separadores internos.
+   * <li>Aspas duplas dentro de um campo são representadas por aspas duplas consecutivas.
+   * <li>Caracteres de quebra de linha (\r ou \n) são mantidos e não são considerados como outro registro, pois este método já espera receber uma única linha do CSV.
+   *
+   * @param line linha do arquivo a ser processada.
+   * @param separator caractere delimitador entre os campos (exemplo: ',', '|', '\t').
+   * @param quote aspas utilizadas para envolver valores com separadores internos.
+   * @return Array de strings contendo os valores separados.
+   * @throws RFWException em caso de erro no processamento da linha.
+   */
+  public static String[] parseCSVLine(String line, char separator, char quote) throws RFWException {
+    if (line == null || line.isEmpty()) {
+      return new String[0];
+    }
+
+    List<String> result = new ArrayList<>();
+    StringBuilder currentField = new StringBuilder();
+    boolean inQuotes = false;
+
+    for (int i = 0; i < line.length(); i++) {
+      char ch = line.charAt(i);
+
+      if (inQuotes) {
+        if (ch == quote) {
+          if (i + 1 < line.length() && line.charAt(i + 1) == quote) {
+            // Aspas duplas dentro de um campo são escapadas com aspas duplas consecutivas
+            currentField.append(quote);
+            i++; // Pular a próxima aspa duplicada
+          } else {
+            inQuotes = false; // Fechar citação
+          }
+        } else {
+          currentField.append(ch);
+        }
+      } else {
+        if (ch == quote) {
+          inQuotes = true;
+        } else if (ch == separator) {
+          result.add(currentField.toString());
+          currentField.setLength(0);
+        } else { // if (ch != '\r' && ch != '\n') {
+          currentField.append(ch);
+        }
+      }
+    }
+
+    // Adiciona o último campo
+    result.add(currentField.toString());
+
+    return result.toArray(new String[0]);
+  }
+
+  /**
+   * Extrai valores numéricos do texto. Aceita que os milhares dos números estejam separados por pontos e os decimais por vírgula ou vice-versa.<br>
+   * Este método considera apenas valores que contenham um separador decimal.<br>
+   *
+   * @param text Texto de entrada do qual os números decimais serão extraídos.
+   * @param groupId Índice do grupo da expressão regular a ser retornado.
+   * @param useCommaToDecimal Define se a vírgula deve ser usada como separador decimal (true) ou o ponto (false).
+   * @return O número decimal extraído do texto ou null caso nenhum número válido seja encontrado.
+   * @throws RFWException Se ocorrer erro na extração.
+   */
+  public static String extractDecimalValues(String text, int groupId, boolean useCommaToDecimal) throws RFWException {
+    if (text == null || text.isEmpty()) {
+      return null;
+    }
+
+    String decimalSeparator = useCommaToDecimal ? "," : "\\.";
+    String thousandSeparator = useCommaToDecimal ? "\\." : ",";
+
+    String regex = "(?:^|[^0-9" + decimalSeparator + "])([0-9]{1,3}(?:[" + thousandSeparator + "]?[0-9]{3})*[" + decimalSeparator + "][0-9]+)(?:$|[^0-9" + decimalSeparator + "])";
+    return extract(text, regex, groupId);
+  }
+
+  /**
+   * Extrai o conteúdo de uma String que seja compatível com uma expressão regular.<br>
+   * O conteúdo retornado é o conteúdo dentro do primeiro grupo encontrado.<br>
+   *
+   * @param text Texto de onde o valor deverá ser extraído.
+   * @param regExp Expressão regular que define o bloco a ser recuperado.
+   * @return Conteúdo que combina com a expressão regular, extraído do texto principal, ou null caso o conteúdo não seja encontrado.
+   * @throws RFWException Se ocorrer erro na compilação da expressão regular.
+   */
+  public static String extract(String text, String regExp) throws RFWException {
+    return extract(text, regExp, 1);
+  }
+
+  /**
+   * Extrai o conteúdo de uma String que seja compatível com uma expressão regular.<br>
+   * O conteúdo retornado é o conteúdo dentro do grupo definido pelo índice informado.<br>
+   *
+   * @param text Texto de onde o valor deverá ser extraído.
+   * @param regExp Expressão regular que define o bloco a ser recuperado.
+   * @param groupId Índice do grupo a ser retornado.
+   * @return Conteúdo que combina com a expressão regular, extraído do texto principal, ou null caso o conteúdo não seja encontrado.
+   * @throws RFWException Se ocorrer erro na compilação da expressão regular.
+   */
+  public static String extract(String text, String regExp, int groupId) throws RFWException {
+    if (text == null || regExp == null) {
+      return null;
+    }
+
+    Pattern pattern = Pattern.compile(regExp);
+    Matcher matcher = pattern.matcher(text);
+    return matcher.find() ? matcher.group(groupId) : null;
+  }
+
+  /**
+   * Procura e extrai uma data no formato dd/MM/yyyy dentro de uma String.<br>
+   * <b>Atenção:</b> Este método não valida a data, apenas busca uma ocorrência no formato e a retorna.<br>
+   * O método verifica a consistência dos dias em meses de 30, 31 e 29 dias. Para anos iniciados com 21xx, será necessário atualizar o método.
+   *
+   * @param text Texto de entrada onde a data será procurada.
+   * @param groupId Índice do grupo da expressão regular a ser retornado.
+   * @return A data encontrada ou null caso não seja encontrada nenhuma.
+   * @throws RFWException
+   */
+  public static String extractDateDDMMYYYY(String text, int groupId) throws RFWException {
+    if (text == null || text.isEmpty()) {
+      return null;
+    }
+
+    String regExp = "((?:(?:0[1-9]|1[0-9]|2[0-9]|3[0-1])/(?:01|03|05|07|08|10|12)/(19|20)[0-9]{2})|(?:(?:0[1-9]|1[0-9]|2[0-9]|30)/(?:04|06|09|11)/(19|20)[0-9]{2})|(?:(?:0[1-9]|1[0-9]|2[0-9])/(?:02)/(19|20)[0-9]{2}))";
+    return extract(text, regExp, groupId);
+  }
+
+  /**
+   * Procura e extrai uma data no formato MM/yyyy dentro de uma String.<br>
+   * <b>Atenção:</b> Este método não valida a data, apenas busca uma ocorrência no formato e a retorna.<br>
+   * O método valida anos iniciados com 19xx ou 20xx.
+   *
+   * @param text Texto de entrada onde a data será procurada.
+   * @param groupId Índice do grupo da expressão regular a ser retornado.
+   * @return A data encontrada ou null caso não seja encontrada nenhuma.
+   * @throws RFWException
+   */
+  public static String extractDateMMYYYY(String text, int groupId) throws RFWException {
+    if (text == null || text.isEmpty()) {
+      return null;
+    }
+
+    String regExp = "(?:^|[^/])((?:0[0-9]|1[0-2])/(?:(19|20)[0-9]{2}))(?:$|[^/])";
+    return extract(text, regExp, groupId);
+  }
+
+  /**
+   * Procura e extrai uma hora no formato hh:mm:ss dentro de uma String.<br>
+   * <b>Atenção:</b> Este método não valida o horário, apenas busca uma ocorrência no formato e a retorna.<br>
+   * Verifica se o formato está dentro dos limites válidos para horas, minutos e segundos.
+   *
+   * @param text Texto de entrada onde a hora será procurada.
+   * @param groupId Índice do grupo da expressão regular a ser retornado.
+   * @return A hora encontrada ou null caso não seja encontrada nenhuma.
+   * @throws RFWException
+   */
+  public static String extractTimeHHMMSS(String text, int groupId) throws RFWException {
+    if (text == null || text.isEmpty()) {
+      return null;
+    }
+
+    String regExp = "((?:[01][0-9]|2[0-3])\\:(?:[0-5][0-9])\\:(?:[0-5][0-9]))";
+    return extract(text, regExp, groupId);
+  }
+
+  /**
+   * Procura e extrai uma sequência de números com a quantidade exata de dígitos.<br>
+   * Verifica se a sequência está isolada (não inserida em outra sequência de números).
+   *
+   * @param text Texto de entrada onde a sequência de números será procurada.
+   * @param digitsCount Número de dígitos esperados na sequência.
+   * @param groupId Índice do grupo da expressão regular a ser retornado.
+   * @return A sequência encontrada ou null caso não seja encontrada nenhuma.
+   * @throws RFWException
+   */
+  public static String extractCodes(String text, int digitsCount, int groupId) throws RFWException {
+    if (text == null || text.isEmpty()) {
+      return null;
+    }
+
+    String regExp = "(?:^|[ ])([0-9]{" + digitsCount + "})(?:$|[ ])";
+    return extract(text, regExp, groupId);
+  }
+
+  /**
+   * Procura e extrai um número de CNPJ de um texto, no formato pontuado ou não.<br>
+   * <b>Atenção:</b> Este método não valida o CNPJ, apenas encontra uma ocorrência no formato e a retorna.
+   *
+   * @param text Texto de entrada onde o CNPJ será procurado.
+   * @param groupId Índice do grupo da expressão regular a ser retornado.
+   * @return O CNPJ encontrado ou null caso não seja encontrado nenhum.
+   * @throws RFWException
+   */
+  public static String extractCNPJ(String text, int groupId) throws RFWException {
+    if (text == null || text.isEmpty()) {
+      return null;
+    }
+
+    String regExp = "(?:^|[^\\d])([0-9]{2}\\.?[0-9]{3}\\.?[0-9]{3}/?[0-9]{4}\\-?[0-9]{2})(?:$|[^\\d])";
+    return extract(text, regExp, groupId);
+  }
+
+  /**
+   * Procura e extrai um código numérico de serviço/consumo de um texto.<br>
+   * <b>Atenção:</b> Este método não valida o código, apenas encontra uma ocorrência no formato e a retorna.
+   *
+   * @param text Texto de entrada onde o código será procurado.
+   * @param groupId Índice do grupo da expressão regular a ser retornado.
+   * @return O código encontrado ou null caso não seja encontrado nenhum.
+   * @throws RFWException
+   */
+  public static String extractServiceNumericCode(String text, int groupId) throws RFWException {
+    if (text == null || text.isEmpty()) {
+      return null;
+    }
+
+    String regExp = "(?:^|[^0-9])((?:[0-9]{10}[ \\.-]?[0-9][ \\.-]?){4})(?:$|[^0-9])";
+    return extract(text, regExp, groupId);
+  }
+
 }

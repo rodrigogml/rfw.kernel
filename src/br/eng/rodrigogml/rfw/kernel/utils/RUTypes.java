@@ -24,6 +24,7 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
  * <li><b>parse</b> - Indica métodos que estraem o tipo a partir de uma String, podendo ou não conter o Locale do usuário para uma correta interpretação dos dados.
  * <li><b>format</b> - Faz o inverso do método 'parse'. Converte o valor de um tipo de dado em uma string formata para leitura do usuário, podendo considerar o Locale ou não.
  * <li><b>to</b> - Métodos que convertem de forma 'segura' (prevendo nulo e outras condições) um tipo em outro tipo compatível.
+ * <li><b>gen</b> - Métodos para geração de objetos do Java com conteúdo aleatório.
  *
  * @author Rodrigo Leitão
  * @since (21 de fev. de 2025)
