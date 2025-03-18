@@ -129,6 +129,24 @@ public class RUDVTeste {
       "02889422140", "28502042870", "15469264870", "03675122191", "05266878820"
   };
 
+  private static final String[] VALID_IE_MG = {
+      "4603791450091" // Esta IE de MG é do CNPJ: 07.599.349/0001-30, confirmada na SEFAZ e dava erro no código atual de validação de IE de MG. Foi colocada aqui apra garantir que o novo código, quando corrigido a valida.
+  };
+
+  /**
+   * Testa se {@code validateCNPJ} aceita corretamente CNPJs válidos.
+   */
+  @Test
+  public void t00_validateIE_validValues() {
+    for (String cnpj : VALID_IE_MG) {
+      try {
+        RUDV.validateIE(cnpj);
+      } catch (Exception e) {
+        fail("Falha ao validar um CNPJ válido: " + cnpj + " - Exceção: " + e.getMessage());
+      }
+    }
+  }
+
   /**
    * Testa se {@code validateCNPJ} aceita corretamente CNPJs válidos.
    */
