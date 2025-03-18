@@ -676,37 +676,39 @@ public class RUDV {
       throw new RFWValidationException("BISERP_100040");
     }
 
-    // Inserir "0" após o código do município para normalizar o formato
-    StringBuilder str = new StringBuilder();
-    for (int i = 0; i < 11; i++) { // Apenas os primeiros 11 dígitos (sem os dígitos verificadores)
-      if (i == 3) str.append("0"); // Adiciona o zero após o código do município
-      str.append(ie.charAt(i));
-    }
+    // TODO o Código de validação a seguir precisa ser revisto, pois ele não validou a IE 460037914500, que é confirmada pelo sintegra a IE válida do CNPJ: 07.599.349/0001-30 Agroindustria Quinta Sao Jose Ltda
 
-    // Cálculo do primeiro dígito verificador
-    int soma = 0;
-    for (int i = 0; i < str.length(); i++) {
-      int num = Character.getNumericValue(str.charAt(i));
-      int produto = num * (i % 2 == 0 ? 1 : 2); // Alterna entre multiplicadores 1 e 2
-      soma += (produto >= 10) ? (produto / 10) + (produto % 10) : produto; // Soma os dígitos do produto
-    }
-
-    int d1 = (10 - (soma % 10)) % 10; // Obtém o primeiro dígito verificador
-
-    // Cálculo do segundo dígito verificador
-    soma = d1 * 2;
-    int peso = 3;
-    for (int i = 0; i < 11; i++) {
-      soma += Character.getNumericValue(ie.charAt(i)) * peso;
-      peso = (peso == 3) ? 11 : peso - 1;
-    }
-
-    int d2 = (11 - (soma % 11)) % 10; // Obtém o segundo dígito verificador
-
-    // Validação dos dígitos verificadores
-    if (Character.getNumericValue(ie.charAt(11)) != d1 || Character.getNumericValue(ie.charAt(12)) != d2) {
-      throw new RFWValidationException("BISERP_100041");
-    }
+    // // Inserir "0" após o código do município para normalizar o formato
+    // StringBuilder str = new StringBuilder();
+    // for (int i = 0; i < 11; i++) { // Apenas os primeiros 11 dígitos (sem os dígitos verificadores)
+    // if (i == 3) str.append("0"); // Adiciona o zero após o código do município
+    // str.append(ie.charAt(i));
+    // }
+    //
+    // // Cálculo do primeiro dígito verificador
+    // int soma = 0;
+    // for (int i = 0; i < str.length(); i++) {
+    // int num = Character.getNumericValue(str.charAt(i));
+    // int produto = num * (i % 2 == 0 ? 1 : 2); // Alterna entre multiplicadores 1 e 2
+    // soma += (produto >= 10) ? (produto / 10) + (produto % 10) : produto; // Soma os dígitos do produto
+    // }
+    //
+    // int d1 = (10 - (soma % 10)) % 10; // Obtém o primeiro dígito verificador
+    //
+    // // Cálculo do segundo dígito verificador
+    // soma = d1 * 2;
+    // int peso = 3;
+    // for (int i = 0; i < 11; i++) {
+    // soma += Character.getNumericValue(ie.charAt(i)) * peso;
+    // peso = (peso == 3) ? 11 : peso - 1;
+    // }
+    //
+    // int d2 = (11 - (soma % 11)) % 10; // Obtém o segundo dígito verificador
+    //
+    // // Validação dos dígitos verificadores
+    // if (Character.getNumericValue(ie.charAt(11)) != d1 || Character.getNumericValue(ie.charAt(12)) != d2) {
+    // throw new RFWValidationException("BISERP_100041");
+    // }
   }
 
   /**
