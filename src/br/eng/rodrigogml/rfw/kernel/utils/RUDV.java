@@ -1421,4 +1421,16 @@ public class RUDV {
     if (mod >= 10) mod = 0;
     return "" + mod;
   }
+
+  /**
+   * Valida se o endereço de e-mail tem uma sintaxe válida.
+   *
+   * @param email endereço de email.
+   * @throws RFWException
+   */
+  public static void validateEmailAddress(String email) throws RFWException {
+    if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
+      throw new RFWValidationException("RFW_000059");
+    }
+  }
 }
