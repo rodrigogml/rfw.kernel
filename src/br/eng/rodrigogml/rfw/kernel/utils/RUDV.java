@@ -1430,7 +1430,7 @@ public class RUDV {
    */
   public static void validateEmailAddress(String email) throws RFWException {
     if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
-      throw new RFWValidationException("RFW_000059");
+      throw new RFWValidationException("RFW_000062");
     }
   }
 }
