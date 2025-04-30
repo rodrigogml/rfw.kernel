@@ -114,7 +114,6 @@ public class RFWValidator {
    * @param vo Entidade a ser validado.
    * @throws RFWException Lançado em caso de validação ou problemas durante a execução das validações.
    */
-  @SuppressWarnings("deprecation")
   public void validatePersist(Class<? extends RFWVO> voClass, RFWVO vo) throws RFWException {
     if (vo != null && !vo.getClass().isAssignableFrom(voClass)) throw new RFWCriticalException("Objecto diferente da classe passada no BISValidator! O objeto passado para validação é do tipo '" + vo.getClass().getCanonicalName() + "' enquanto que a classe passada é do tipo '" + voClass.getCanonicalName() + "'.");
     // validatePersist(voClass, vo, vo.getClass().getSimpleName().toLowerCase(), (vo.getId() == null ? VALIDATION.INSERT : VALIDATION.UPDATE), null, vo, null, new ArrayList<RFWVO>(), null);
@@ -130,7 +129,6 @@ public class RFWValidator {
    * @param forceRequiredFields Lista com os campos que devem ser verificamos como "required = true", independente do que estiver definido no @BISMetaAnnotation do campo. Passar nulo caso não queira forçar nenhuma validação de obrigatoriedade.
    * @throws RFWException Lançado em caso de validação ou problemas durante a execução das validações.
    */
-  @SuppressWarnings("deprecation")
   public void validatePersist(Class<? extends RFWVO> voClass, RFWVO vo, String[] forceRequiredFields) throws RFWException {
     if (vo != null && !vo.getClass().isAssignableFrom(voClass)) throw new RFWCriticalException("Objecto diferente da classe passada no BISValidator! O objeto passado para validação é do tipo '" + vo.getClass().getCanonicalName() + "' enquanto que a classe passada é do tipo '" + voClass.getCanonicalName() + "'.");
     // validatePersist(voClass, vo, vo.getClass().getSimpleName().toLowerCase(), (vo.getId() == null ? VALIDATION.INSERT : VALIDATION.UPDATE), null, vo, null, new ArrayList<RFWVO>(), forceRequiredFields);
@@ -153,7 +151,6 @@ public class RFWValidator {
    * @param forceRequiredFields Lista com os campos que devem ser verificamos como "required = true", independente do que estiver definido no @BISMetaAnnotation do campo. Passar nulo caso não queira forçar nenhuma validação de obrigatoriedade.
    * @throws RFWException Lançado em caso de validação ou problemas durante a execução das validações.
    */
-  @SuppressWarnings("deprecation")
   private void validatePersist(Class<? extends RFWVO> voClass, RFWVO vo, String basepath, VALIDATION validation, RFWVO parentvo, RFWVO rootvo, String rootpath, List<RFWVO> newVOs, String[] forceRequiredFields) throws RFWException {
     ArrayList<RFWValidationException> vallist = new ArrayList<>();
 
@@ -581,7 +578,7 @@ public class RFWValidator {
    * @param forceRequired
    * @param forceRequiredFields
    */
-  @SuppressWarnings({ "unchecked", "rawtypes", "deprecation" })
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   private void validateRelationshipField(Class<? extends RFWVO> voClass, RFWVO vo, Field field, String basepath, VALIDATION validation, RFWVO rootvo, String rootpath, List<RFWVO> newVOs, boolean forceRequired, String[] forceRequiredFields) throws RFWException {
     // Recuperamos a anotação se suas definições
     final RFWMetaRelationshipField ann = field.getAnnotation(RFWMetaRelationshipField.class);
