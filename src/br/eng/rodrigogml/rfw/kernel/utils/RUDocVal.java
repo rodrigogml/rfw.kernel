@@ -8,15 +8,16 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 
 /**
- * Description: Classe com métodos utilitários calcular DV (dígitos verificadores) de documentos, e validar documentos.<br>
+ * Description: Classe com métodos utilitários de validação de documentos e cálculos de Digitos Verificadores (DVs).<br>
  * Os métodos dessa classe são organizados de acordo com seu prefixo da seguinte forma: <br>
  * <li><b>validate</b> - faz a validação de um número de documento. Deve receber o número do documento completo, incluindo o DV, e lançar exception caso não seja um documento válido. Normalmente este método é 'void'.
+ * <li><b>isValid</b> - valida o conteúdo mas retorna apenas um true/false impedindo qualquer exception de sair. Em geral encapsula o mesmo método com o prefixo validate e trata a exception.
  * <li><b>calcDV</b> - Faz o cálculo do Dígito verificador de acordo com os documento passado. Veja a documentação de cada método para saber como passar os valores com ou sem o DV.
  *
  * @author Rodrigo Leitão
  * @since (21 de fev. de 2025)
  */
-public class RUDV {
+public class RUDocVal {
 
   /**
    * Valida um número de CNPJ (Cadastro Nacional de Pessoa Jurídica).
@@ -1432,5 +1433,97 @@ public class RUDV {
     if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
       throw new RFWValidationException("RFW_000062");
     }
+  }
+
+  /**
+   * Valida se o código de barras GTIN é válido. Funciona para GTIN8, GTIN12, GTIN13 e GTIN14.<br>
+   * Caso o valor passado seja nulo, resultará em NullPointerException para evitar que erros de programação em passar o valor sejam acobertados por uma "prevenção" interna do método.
+   *
+   * @param fullCodeBar Código de Barra completo, incluindo o dívido verificador
+   * @return boolean indicando se o conteúdo recebido é um código de barras GTIN válido.
+   */
+  public static boolean isValidGTINCodeBar(String fullCodeBar) {
+    try {
+      validateGTINCodeBar(fullCodeBar);
+      return true;
+    } catch (RFWException e) {
+      return false;
+    }
+  }
+
+  /**
+   * Valida se o código de barras GTIN é válido. Funciona para GTIN8, GTIN12, GTIN13 e GTIN14.<br>
+   * Caso o valor passado seja nulo, resultará em NullPointerException para evitar que erros de programação em passar o valor sejam acobertados por uma "prevenção" interna do método.
+   *
+   * @param fullCodeBar Código de Barra completo, incluindo o dívido verificador
+   * @throws RFWException Lançado se o conteúdo não for um código de barras GTIN válido.
+   */
+  public static void validateGTINCodeBar(String fullCodeBar) throws RFWException {
+    if (fullCodeBar != null && (fullCodeBar.length() == 8 || fullCodeBar.length() == 12 || fullCodeBar.length() == 13 || fullCodeBar.length() == 14)) {
+      if (fullCodeBar.matches("[0-9]*")) {
+        int impSum = 0;
+        // PS: Nas iterações não consideramos o último número apra os cálculos poide deve ser o DV
+        for (int i = fullCodeBar.length() - 2; i >= 0; i -= 2) { // itera os números nas posições impares
+          impSum += Integer.parseInt(fullCodeBar.substring(i, i + 1));
+        }
+        impSum *= 3; // Multiplicamos o resultado por 3
+        for (int i = fullCodeBar.length() - 3; i >= 0; i -= 2) { // soma os números nas porições pares
+          impSum += Integer.parseInt(fullCodeBar.substring(i, i + 1));
+        }
+        // Verificamos o número que "falta" para chegar no próximo múltiplo de 10
+        int dv = (10 - (impSum % 10)) % 10; // <- O segundo módulo garante que quando o resultado do primeiro módulo der 0, o DV não resulta em 10, e sim em 0 como deve ser.
+
+        // Verificamos se é válido
+        if (!fullCodeBar.substring(fullCodeBar.length() - 1, fullCodeBar.length()).equals("" + dv)) {
+          throw new RFWValidationException("RFW_000063");
+
+        }
+      }
+    } else {
+      throw new RFWValidationException("RFW_000063");
+    }
+  }
+
+  /**
+   * Calcula o Dígito Verificador (DV) da Chave de Acesso da NF-e versão 4.00 utilizando o algoritmo do Módulo 11, conforme especificado no Manual da NF-e.
+   *
+   * @param keyPrefix String contendo os 43 primeiros dígitos da chave de acesso.
+   * @return String contendo o dígito verificador calculado.
+   * @throws RFWException Se a entrada for nula, vazia ou não conter exatamente 43 dígitos numéricos.
+   */
+  public static String calcDVDANFeV400(String keyPrefix) throws RFWException {
+    // Remover caracteres não numéricos
+    keyPrefix = RUString.removeNonDigits(keyPrefix);
+
+    // Validar se a chave possui exatamente 43 dígitos
+    if (keyPrefix == null || keyPrefix.length() != 43 || !keyPrefix.matches("[0-9]+")) {
+      throw new RFWValidationException("RFW_000047", new String[] { keyPrefix });
+    }
+
+    // Pesos definidos no manual da NF-e (sequência cíclica de 2 a 9)
+    int[] weights = { 2, 3, 4, 5, 6, 7, 8, 9 };
+
+    long sum = 0;
+    int weightIndex = 0;
+
+    // Percorrer os dígitos da direita para a esquerda
+    for (int i = 42; i >= 0; i--) {
+      int digit = Character.getNumericValue(keyPrefix.charAt(i));
+      sum += digit * weights[weightIndex];
+
+      // Incrementar o índice do peso e reiniciar quando atingir o final do array
+      weightIndex = (weightIndex + 1) % weights.length;
+    }
+
+    // Aplicar a regra do Módulo 11
+    long remainder = sum % 11;
+    long checkDigit = 11 - remainder;
+
+    // Se o resultado for 0 ou 1, o dígito verificador deve ser 0
+    if (checkDigit >= 10) {
+      checkDigit = 0;
+    }
+
+    return String.valueOf(checkDigit);
   }
 }

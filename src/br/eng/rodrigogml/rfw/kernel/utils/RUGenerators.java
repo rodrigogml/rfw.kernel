@@ -71,4 +71,20 @@ public class RUGenerators {
     return buf.toString();
   }
 
+  /**
+   * Este método cria uma sequência numérica aleatória.
+   *
+   * @param length Tamanho/Quantida de Dígitos da sequência
+   */
+  public static String generateNumericSequence(int length) {
+    String seq = "";
+    while (seq.length() != length) {
+      seq += ("" + Math.random()).replaceAll("\\.", "");
+      if (seq.length() > length) {
+        // Obtem os dígitos mais a direita pois eles se alteram mais do que os primeiros gerados pelo Math.random()
+        seq = seq.substring(seq.length() - length, seq.length());
+      }
+    }
+    return seq;
+  }
 }

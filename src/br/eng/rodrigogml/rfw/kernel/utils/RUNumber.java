@@ -14,7 +14,9 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
  * @author Rodrigo Leitão
  * @since 3.1.0 (NOV / 2009)
  * @version 4.1.0 (23/06/2011) - rodrigogml - Trocou o nome, antes NumberUtils, para ficar no padrão do Framework.
+ * @deprecated Migrar os métodos dessa classe para a {@link RUTypes}
  */
+@Deprecated
 public class RUNumber {
 
   /**
@@ -37,7 +39,7 @@ public class RUNumber {
    * @param decimals número de casas máximo
    * @return
    */
-  public static Double roundfloor(double value, int decimals) {
+  public static Double roundFloor(double value, int decimals) {
     double factor = Math.pow(10, decimals);
     double result = Math.floor(value * factor) / factor;
     return result;
@@ -50,7 +52,7 @@ public class RUNumber {
    * @param decimals número de casas máximo
    * @return
    */
-  public static Double roundceil(double value, int decimals) {
+  public static Double roundCeil(double value, int decimals) {
     double factor = Math.pow(10, decimals);
     double result = Math.ceil(value * factor) / factor;
     return result;
@@ -76,7 +78,7 @@ public class RUNumber {
    * @param decimals número de casas máximo
    * @return
    */
-  public static Float roundfloor(float value, int decimals) {
+  public static Float roundFloor(float value, int decimals) {
     double factor = Math.pow(10, decimals);
     float result = (float) (Math.floor(value * factor) / factor);
     return result;
@@ -89,7 +91,7 @@ public class RUNumber {
    * @param decimals número de casas máximo
    * @return
    */
-  public static Float roundceil(float value, int decimals) {
+  public static Float roundCeil(float value, int decimals) {
     double factor = Math.pow(10, decimals);
     float result = (float) (Math.ceil(value * factor) / factor);
     return result;
@@ -208,23 +210,6 @@ public class RUNumber {
       data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i + 1), 16));
     }
     return data;
-  }
-
-  /**
-   * Este método cria uma sequência numérica aleatória.
-   *
-   * @param length Tamanho/Quantida de Dígitos da sequência
-   */
-  public static String generateNumericSequence(int length) {
-    String seq = "";
-    while (seq.length() != length) {
-      seq += ("" + Math.random()).replaceAll("\\.", "");
-      if (seq.length() > length) {
-        // Obtem os dígitos mais a direita pois eles se alteram mais do que os primeiros gerados pelo Math.random()
-        seq = seq.substring(seq.length() - length, seq.length());
-      }
-    }
-    return seq;
   }
 
   /**

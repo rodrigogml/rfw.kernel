@@ -9,55 +9,12 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
  *
  * @author Rodrigo Leitão
  * @since 4.0.0 (28/01/2011)
- * @deprecated Esta classe está migrando para a {@link RUDV}
+ * @deprecated Esta classe está migrando para a {@link RUDocVal}
  */
 @Deprecated
 public class RUDVCalc {
 
   private RUDVCalc() {
-  }
-
-  /**
-   * Calcula o Dígito Verificador (DV) da Chave de Acesso da NF-e versão 4.00 utilizando o algoritmo do Módulo 11, conforme especificado no Manual da NF-e.
-   *
-   * @param keyPrefix String contendo os 43 primeiros dígitos da chave de acesso.
-   * @return String contendo o dígito verificador calculado.
-   * @throws RFWException Se a entrada for nula, vazia ou não conter exatamente 43 dígitos numéricos.
-   */
-  public static String calcDVDANFeV400(String keyPrefix) throws RFWException {
-    // Remover caracteres não numéricos
-    keyPrefix = RUString.removeNonDigits(keyPrefix);
-
-    // Validar se a chave possui exatamente 43 dígitos
-    if (keyPrefix == null || keyPrefix.length() != 43 || !keyPrefix.matches("[0-9]+")) {
-      throw new RFWValidationException("RFW_000047", new String[] { keyPrefix });
-    }
-
-    // Pesos definidos no manual da NF-e (sequência cíclica de 2 a 9)
-    int[] weights = { 2, 3, 4, 5, 6, 7, 8, 9 };
-
-    long sum = 0;
-    int weightIndex = 0;
-
-    // Percorrer os dígitos da direita para a esquerda
-    for (int i = 42; i >= 0; i--) {
-      int digit = Character.getNumericValue(keyPrefix.charAt(i));
-      sum += digit * weights[weightIndex];
-
-      // Incrementar o índice do peso e reiniciar quando atingir o final do array
-      weightIndex = (weightIndex + 1) % weights.length;
-    }
-
-    // Aplicar a regra do Módulo 11
-    long remainder = sum % 11;
-    long checkDigit = 11 - remainder;
-
-    // Se o resultado for 0 ou 1, o dígito verificador deve ser 0
-    if (checkDigit >= 10) {
-      checkDigit = 0;
-    }
-
-    return String.valueOf(checkDigit);
   }
 
   /**

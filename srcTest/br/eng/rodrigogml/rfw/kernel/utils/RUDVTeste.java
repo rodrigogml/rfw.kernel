@@ -1,11 +1,11 @@
 package br.eng.rodrigogml.rfw.kernel.utils;
 
-import static br.eng.rodrigogml.rfw.kernel.utils.RUDV.calcDVCNPJ;
-import static br.eng.rodrigogml.rfw.kernel.utils.RUDV.calcDVCPF;
-import static br.eng.rodrigogml.rfw.kernel.utils.RUDV.validateCNPJ;
-import static br.eng.rodrigogml.rfw.kernel.utils.RUDV.validateCPF;
-import static br.eng.rodrigogml.rfw.kernel.utils.RUDV.validateCPFOrCNPJ;
-import static br.eng.rodrigogml.rfw.kernel.utils.RUDV.validateUF;
+import static br.eng.rodrigogml.rfw.kernel.utils.RUDocVal.calcDVCNPJ;
+import static br.eng.rodrigogml.rfw.kernel.utils.RUDocVal.calcDVCPF;
+import static br.eng.rodrigogml.rfw.kernel.utils.RUDocVal.validateCNPJ;
+import static br.eng.rodrigogml.rfw.kernel.utils.RUDocVal.validateCPF;
+import static br.eng.rodrigogml.rfw.kernel.utils.RUDocVal.validateCPFOrCNPJ;
+import static br.eng.rodrigogml.rfw.kernel.utils.RUDocVal.validateUF;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThrows;
@@ -19,7 +19,7 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 
 /**
- * Description: Classe de teste dos métodos de {@link RUDV}.<br>
+ * Description: Classe de teste dos métodos de {@link RUDocVal}.<br>
  *
  * @author Rodrigo Leitão
  * @since (21 de fev. de 2025)
@@ -140,7 +140,7 @@ public class RUDVTeste {
   public void t00_validateIE_validValues() {
     for (String cnpj : VALID_IE_MG) {
       try {
-        RUDV.validateIE(cnpj);
+        RUDocVal.validateIE(cnpj);
       } catch (Exception e) {
         fail("Falha ao validar um CNPJ válido: " + cnpj + " - Exceção: " + e.getMessage());
       }

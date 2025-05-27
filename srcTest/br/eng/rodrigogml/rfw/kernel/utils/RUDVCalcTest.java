@@ -11,7 +11,7 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 
 /**
- * Classe de testes para {@link RUDVCalc}. Testa exaustivamente o método {@link RUDVCalc#calcDVDANFeV400(String)} com diversas entradas válidas e inválidas.
+ * Classe de testes para {@link RUDocVal}. Testa exaustivamente o método {@link RUDocVal#calcDVDANFeV400(String)} com diversas entradas válidas e inválidas.
  *
  * @author Rodrigo GML
  * @since 1.0.0 (9 de fev. de 2025)
@@ -79,7 +79,7 @@ public class RUDVCalcTest {
     for (String[] testCase : testCases) {
       String accessKey = testCase[0];
       String expectedDV = testCase[1];
-      assertEquals("Erro ao calcular o DV para a chave: " + accessKey, expectedDV, RUDVCalc.calcDVDANFeV400(accessKey));
+      assertEquals("Erro ao calcular o DV para a chave: " + accessKey, expectedDV, RUDocVal.calcDVDANFeV400(accessKey));
     }
   }
 
@@ -99,7 +99,7 @@ public class RUDVCalcTest {
 
     for (String invalid : invalidInputs) {
       assertThrows("Entrada inválida deveria lançar exceção: " + invalid,
-          RFWValidationException.class, () -> RUDVCalc.calcDVDANFeV400(invalid));
+          RFWValidationException.class, () -> RUDocVal.calcDVDANFeV400(invalid));
     }
   }
 

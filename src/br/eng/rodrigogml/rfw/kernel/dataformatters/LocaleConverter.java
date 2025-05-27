@@ -548,9 +548,9 @@ public class LocaleConverter {
             if (ROUNDPOLICY.BESTROUND.equals(roundpolicy)) {
               parsedvalue = RUNumber.round(parsedvalue, decimals);
             } else if (ROUNDPOLICY.ROUNDCEIL.equals(roundpolicy)) {
-              parsedvalue = RUNumber.roundceil(parsedvalue, decimals);
+              parsedvalue = RUNumber.roundCeil(parsedvalue, decimals);
             } else if (ROUNDPOLICY.ROUNDFLOOR.equals(roundpolicy)) {
-              parsedvalue = RUNumber.roundfloor(parsedvalue, decimals);
+              parsedvalue = RUNumber.roundFloor(parsedvalue, decimals);
             } else if (ROUNDPOLICY.NONE.equals(roundpolicy)) {
               // Não faz nada deixa o número sem arredondamento
             }
@@ -602,9 +602,9 @@ public class LocaleConverter {
           if (ROUNDPOLICY.BESTROUND.equals(roundpolicy)) {
             parsedvalue = RUNumber.round(parsedvalue, decimals);
           } else if (ROUNDPOLICY.ROUNDCEIL.equals(roundpolicy)) {
-            parsedvalue = RUNumber.roundceil(parsedvalue, decimals);
+            parsedvalue = RUNumber.roundCeil(parsedvalue, decimals);
           } else if (ROUNDPOLICY.ROUNDFLOOR.equals(roundpolicy)) {
-            parsedvalue = RUNumber.roundfloor(parsedvalue, decimals);
+            parsedvalue = RUNumber.roundFloor(parsedvalue, decimals);
           } else if (ROUNDPOLICY.NONE.equals(roundpolicy)) {
             // Não faz nada deixa o número sem arredondamento
           }

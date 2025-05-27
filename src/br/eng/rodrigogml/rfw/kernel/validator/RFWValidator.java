@@ -55,7 +55,7 @@ import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaStringPhoneField;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaUniqueConstraint;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaUsedBy;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaUsedByArray;
-import br.eng.rodrigogml.rfw.kernel.utils.RUDV;
+import br.eng.rodrigogml.rfw.kernel.utils.RUDocVal;
 import br.eng.rodrigogml.rfw.kernel.utils.RUMail;
 import br.eng.rodrigogml.rfw.kernel.utils.RUReflex;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWMO;
@@ -890,7 +890,7 @@ public class RFWValidator {
     }
     // Valida o dado se preenchido
     if (value != null) {
-      RUDV.validateCNPJ(value);
+      RUDocVal.validateCNPJ(value);
     }
   }
 
@@ -926,7 +926,7 @@ public class RFWValidator {
     }
     // Valida o dado se preenchido
     if (value != null) {
-      RUDV.validateCPF(value);
+      RUDocVal.validateCPF(value);
     }
   }
 
@@ -962,7 +962,7 @@ public class RFWValidator {
     }
     // Valida o dado se preenchido
     if (value != null) {
-      RUDV.validateCPFOrCNPJ(value);
+      RUDocVal.validateCPFOrCNPJ(value);
     }
   }
 
@@ -1044,21 +1044,21 @@ public class RFWValidator {
     if (value != null) {
       // Verificase temos uma UF Definida
       if (!"".equals(ann.uf())) {
-        RUDV.validateIE(value, ann.uf());
+        RUDocVal.validateIE(value, ann.uf());
       } else if (!"".equals(ann.uffield())) {
         // Verifica se conseguimos um valor pela UF Atribuida
         final Object uf = RUReflex.getPropertyValue(vo, ann.uffield());
         if (uf != null) {
           if (uf instanceof String) {
-            RUDV.validateIE(value, (String) uf);
+            RUDocVal.validateIE(value, (String) uf);
           } else {
             throw new RFWCriticalException("O tipo do campo indicado como sendo a UF na BISMetaIEField no campo '${0}' da classe '${1}' não é suportado!");
           }
         } else {
-          RUDV.validateIE(value);
+          RUDocVal.validateIE(value);
         }
       } else {
-        RUDV.validateIE(value);
+        RUDocVal.validateIE(value);
       }
     }
   }

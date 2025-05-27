@@ -9,7 +9,7 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
  * @author Rodrigo Leitão
  * @since 3.1.0 (NOV / 2009)
  * @version 4.1.0 (24/06/2011) - rodrigogml - Nome alterado de DocumentValidationUtils para ficar no padrão do Framework.
- * @deprecated O conteúdo desta classe deve migrar para {@link RUDV}
+ * @deprecated O conteúdo desta classe deve migrar para {@link RUDocVal}
  */
 @Deprecated
 public class RUDocValidation {
