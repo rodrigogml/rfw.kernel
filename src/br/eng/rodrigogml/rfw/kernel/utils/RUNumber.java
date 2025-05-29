@@ -1,8 +1,6 @@
 package br.eng.rodrigogml.rfw.kernel.utils;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
@@ -104,10 +102,11 @@ public class RUNumber {
    *
    * @param number
    * @return
+   * @deprecated Este método tem um equivalente em {@link RUTypes#formatDecimalWithoutTrailingZeros(BigDecimal, Locale, int)}.
    */
+  @Deprecated
   public static String removeNonSignificantZeros(BigDecimal number, Locale locale) {
-    DecimalFormat df = new DecimalFormat("0.##", new DecimalFormatSymbols(locale));
-    return df.format(number);
+    return RUTypes.formatDecimalWithoutTrailingZeros(number, locale, 2);
   }
 
   /**
@@ -116,11 +115,12 @@ public class RUNumber {
    *
    * @param number
    * @return
+   * @deprecated Este método tem um equivalente em {@link RUTypes#formatDecimalWithoutTrailingZeros(BigDecimal, Locale, int)}.
    */
+  @Deprecated
   public static String removeNonSignificantZeros(BigDecimal number, Locale locale, int maxdecimals) {
     String pattern = RUString.completeUntilLengthRight("#", "0.", maxdecimals + 2);
-    DecimalFormat df = new DecimalFormat(pattern, new DecimalFormatSymbols(locale));
-    return df.format(number);
+    return RUTypes.formatDecimalWithoutTrailingZeros(number, locale, 2);
   }
 
   /**

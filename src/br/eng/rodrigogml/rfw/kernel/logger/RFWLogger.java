@@ -173,6 +173,63 @@ public final class RFWLogger {
   }
 
   /**
+   * Método usado para Fazer o Log do Stack de onde for chamado. Esse tipo de log é registrado como o label "DEBUG".<br>
+   * Mesmo que o método {@link #logStack(String, int, String...) utilizando <code>Integer.MAX_VALUE</code> como parâmetro do tamanho da Pilha.
+   *
+   * @param msg mensagem adicional.
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags são utilizadas para ajudar a filtrar vários eventos de uma mesma natureza, não jogue informações que só aparecerão em um único evento por vez nas tags. Cria um log de debug ou info para isso.
+   */
+  public synchronized final static void logStack(String msg, String... tags) {
+    impl.logDebug(msg + "\r\n<STACK>\r\n" + getInvoker(Integer.MAX_VALUE) + "</STACK>\r\n", tags);
+  }
+
+  /**
+   * Método usado para Fazer o Log do Stack de onde for chamado. Esse tipo de log é registrado como o label "DEBUG".<br>
+   * Mesmo que o método {@link #logStack(String, String...)} utilizando <code>Integer.MAX_VALUE</code> como parâmetro do tamanho da Pilha.
+   *
+   * @param msg mensagem adicional.
+   * @param stacksize Tamanho da pilha a ser logada.
+   */
+  public synchronized final static void logStack(String msg) {
+    impl.logDebug(msg + "\r\n<STACK>\r\n" + getInvoker(Integer.MAX_VALUE) + "</STACK>\r\n");
+  }
+
+  /**
+   * Método usado para Fazer o Log do Stack de onde for chamado. Esse tipo de log é registrado como o label "DEBUG".
+   *
+   * @param msg mensagem adicional.
+   * @param stacksize Tamanho da pilha a ser logada.
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags são utilizadas para ajudar a filtrar vários eventos de uma mesma natureza, não jogue informações que só aparecerão em um único evento por vez nas tags. Cria um log de debug ou info para isso.
+   */
+  public synchronized final static void logStack(String msg, int stacksize, String... tags) {
+    impl.logDebug(msg + "\r\n<STACK>\r\n" + getInvoker(stacksize) + "</STACK>\r\n", tags);
+  }
+
+  /**
+   * Método usado para Fazer o Log do Stack de onde for chamado. Esse tipo de log é registrado como o label "DEBUG".
+   *
+   * @param msg mensagem adicional.
+   * @param stacksize Tamanho da pilha a ser logada.
+   */
+  public synchronized final static void logStack(String msg, int stacksize) {
+    impl.logDebug(msg + "\r\n<STACK>\r\n" + getInvoker(stacksize) + "</STACK>\r\n");
+  }
+
+  /**
+   * Este método retorna quem foi que chamou a classe RFWLogger, para registrar de maneira fácil onde no código foi registrado cada evento.
+   */
+  private static final String getInvoker(int stacksize) {
+    StringBuilder buff = new StringBuilder();
+    StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+    for (int i = 3; i < stacktrace.length && i - 3 < stacksize; i++) {
+      if (!RFWLogger.class.getCanonicalName().equals(stacktrace[i].getClassName())) {
+        buff.append('\t').append(stacktrace[i].getClassName()).append(".").append(stacktrace[i].getMethodName()).append("(").append(stacktrace[i].getFileName()).append(":").append(stacktrace[i].getLineNumber()).append(")").append("\r\n");
+      }
+    }
+    return buff.toString();
+  }
+
+  /**
    * Converte uma exception em um formato de texto para ser anexado ao LOG.
    */
   public static final String convertExceptionToString(Throwable e) {

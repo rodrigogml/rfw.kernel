@@ -1,6 +1,7 @@
 package br.eng.rodrigogml.rfw.kernel.utils;
 
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Description: Classe utilitária com métodos de geração de dados.<br>
@@ -86,5 +87,17 @@ public class RUGenerators {
       }
     }
     return seq;
+  }
+
+  /**
+   * Este método abstrai os cálculos que temos de fazer para gerar um número inteiro aleatório. Simplificando o código com uma chamada onde simplismente passamos os valores iniciais e final.<br>
+   * <B>ATENÇÃO: </b> os valores passados são inclusivos, isto é, os valores passados podem ser retornados como resultado da função.
+   *
+   * @param min Menor número gerado (inclusivo)
+   * @param max Maior número gerado (inclusivo)
+   * @return número aleatório entre os valores min e max, inclusive.
+   */
+  public static int generateInt(int min, int max) {
+    return ThreadLocalRandom.current().nextInt(min, max + 1);
   }
 }

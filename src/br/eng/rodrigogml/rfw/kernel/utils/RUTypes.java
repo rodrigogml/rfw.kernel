@@ -1,6 +1,9 @@
 package br.eng.rodrigogml.rfw.kernel.utils;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -10,6 +13,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -627,4 +631,21 @@ public class RUTypes {
     return stamp.toLocalDateTime();
   }
 
+  /**
+   * Formata um número decimal para String com o número de casas decimais especificado, usando o Locale informado.
+   *
+   * @param number Número a ser formatado
+   * @param locale Localização usada para formatação
+   * @param maxDecimals Número máximo de casas decimais
+   * @return Representação em String formatada do número
+   */
+  public static String formatDecimalWithoutTrailingZeros(BigDecimal number, Locale locale, int maxDecimals) {
+    if (number == null) {
+      return "";
+    }
+    number = number.stripTrailingZeros();
+    String pattern = RUString.completeUntilLengthRight("#", "0.", maxDecimals + 2);
+    DecimalFormat df = new DecimalFormat(pattern, new DecimalFormatSymbols(locale));
+    return df.format(number);
+  }
 }
