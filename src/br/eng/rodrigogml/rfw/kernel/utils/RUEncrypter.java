@@ -118,8 +118,7 @@ public class RUEncrypter {
       // Decode using utf-16
       return new String(utf16, "UTF16");
     } catch (Exception e) {
-      throw new RFWCriticalException("Falha ao descriptografar o conteúdo. Provavelmente chave errada!", e);
+      throw new RFWCriticalException("RFW_ERR_900007", e);
     }
   }
-
 }
