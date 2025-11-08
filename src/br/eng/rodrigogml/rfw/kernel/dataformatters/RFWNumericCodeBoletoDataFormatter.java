@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
-import br.eng.rodrigogml.rfw.kernel.utils.RUDocVal;
+import br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation;
 import br.eng.rodrigogml.rfw.kernel.utils.RUString;
 
 /**
@@ -52,7 +52,7 @@ public class RFWNumericCodeBoletoDataFormatter implements RFWDataFormatter<Strin
       try {
         // Valida o CPF
         String v = value.toString().replaceAll("[^0-9]", "");
-        RUDocVal.validateCPF(v);
+        RUValueValidation.validateCPF(v);
       } catch (RFWValidationException e) {
         throw new RFWValidationException("RFW_ERR_300053", e);
       }

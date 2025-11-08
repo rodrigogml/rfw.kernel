@@ -9,7 +9,7 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
  *
  * @author Rodrigo Leitão
  * @since 4.0.0 (28/01/2011)
- * @deprecated Esta classe está migrando para a {@link RUDocVal}
+ * @deprecated Esta classe está migrando para a {@link RUValueValidation}
  */
 @Deprecated
 public class RUDVCalc {

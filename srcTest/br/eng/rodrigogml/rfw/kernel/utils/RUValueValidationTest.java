@@ -1,11 +1,13 @@
 package br.eng.rodrigogml.rfw.kernel.utils;
 
-import static br.eng.rodrigogml.rfw.kernel.utils.RUDocVal.calcDVCNPJ;
-import static br.eng.rodrigogml.rfw.kernel.utils.RUDocVal.calcDVCPF;
-import static br.eng.rodrigogml.rfw.kernel.utils.RUDocVal.validateCNPJ;
-import static br.eng.rodrigogml.rfw.kernel.utils.RUDocVal.validateCPF;
-import static br.eng.rodrigogml.rfw.kernel.utils.RUDocVal.validateCPFOrCNPJ;
-import static br.eng.rodrigogml.rfw.kernel.utils.RUDocVal.validateUF;
+import static br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation.calcDVCNPJ;
+import static br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation.calcDVCPF;
+import static br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation.validateCNPJ;
+import static br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation.validateCPF;
+import static br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation.validateCPFOrCNPJ;
+import static br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation.validateIPv4Address;
+import static br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation.validateTcpPort;
+import static br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation.validateUF;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThrows;
@@ -19,19 +21,13 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 
 /**
- * Description: Classe de teste dos métodos de {@link RUDocVal}.<br>
+ * Description: Classe de teste dos métodos de {@link RUValueValidation}.<br>
  *
  * @author Rodrigo Leitão
  * @since (21 de fev. de 2025)
  */
-/**
- *
- */
-/**
- *
- */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class RUDVTeste {
+public class RUValueValidationTest {
 
   // 100 CNPJs válidos
   private static final String[] VALID_CNPJs = {
@@ -140,7 +136,7 @@ public class RUDVTeste {
   public void t00_validateIE_validValues() {
     for (String cnpj : VALID_IE_MG) {
       try {
-        RUDocVal.validateIE(cnpj);
+        RUValueValidation.validateIE(cnpj);
       } catch (Exception e) {
         fail("Falha ao validar um CNPJ válido: " + cnpj + " - Exceção: " + e.getMessage());
       }
@@ -323,4 +319,165 @@ public class RUDVTeste {
 
     assertThrows(RFWValidationException.class, () -> validateUF(null)); // Testa UF nula
   }
+
+  // NOVOS MÉTODOS PARA ADICIONAR EM RUTypesTeste
+
+  /**
+   * Testa endereços IPv4 válidos.
+   */
+  @Test
+  public void t40_validateIPv4AddressValid() {
+    // Válidos básicos
+    assertValidIPv4("0.0.0.0");
+    assertValidIPv4("127.0.0.1");
+    assertValidIPv4("192.168.0.1");
+    assertValidIPv4("10.0.0.1");
+    assertValidIPv4("255.255.255.255");
+    assertValidIPv4("1.2.3.4");
+
+    // Com espaços nas extremidades
+    assertValidIPv4("  8.8.8.8  ");
+  }
+
+  /**
+   * Testa endereço IPv4 nulo, que agora deve lançar RFW_ERR_900003.
+   */
+  @Test
+  public void t42_validateIPv4AddressNull() {
+    try {
+      validateIPv4Address(null);
+      fail("Era esperada RFWValidationException para IP nulo");
+    } catch (RFWValidationException e) {
+      assertEquals("Código de erro inesperado para IP nulo", "RFW_ERR_900000", e.getExceptionCode());
+    } catch (RFWException e) {
+      fail("Era esperada RFWValidationException, mas foi lançada: " + e.getClass().getSimpleName());
+    }
+  }
+
+  /**
+   * Testa endereços IPv4 inválidos (formato ou faixa inválidos).
+   */
+  @Test
+  public void t41_validateIPv4AddressInvalid() {
+    // Formatos inválidos
+    assertInvalidIPv4("");
+    assertInvalidIPv4("   ");
+    assertInvalidIPv4("a.b.c.d");
+    assertInvalidIPv4("1.2.3");
+    assertInvalidIPv4("1.2.3.4.5");
+    assertInvalidIPv4("1..2.3");
+    assertInvalidIPv4(".1.2.3");
+    assertInvalidIPv4("1.2.3.");
+    assertInvalidIPv4("1.2.3.4.");
+    assertInvalidIPv4("1.2.3.4. ");
+    assertInvalidIPv4(" 1.2.3.4.5");
+
+    // Faixa inválida
+    assertInvalidIPv4("256.0.0.1");
+    assertInvalidIPv4("300.1.1.1");
+    assertInvalidIPv4("-1.1.1.1");
+    assertInvalidIPv4("1.2.3.256");
+    assertInvalidIPv4("999.999.999.999");
+
+    // Zeros à esquerda (não permitidos pelo regex)
+    assertInvalidIPv4("01.2.3.4");
+    assertInvalidIPv4("1.02.3.4");
+    assertInvalidIPv4("1.2.003.4");
+  }
+
+  /**
+   * Testa portas TCP/IP válidas.
+   */
+  @Test
+  public void t50_validateTcpPortValid() {
+    assertValidTcpPort("1"); // menor porta válida
+    assertValidTcpPort("80"); // HTTP
+    assertValidTcpPort("443"); // HTTPS
+    assertValidTcpPort("65535"); // maior porta válida
+    assertValidTcpPort("00080"); // com zeros à esquerda
+    assertValidTcpPort(" 8080 "); // com espaços nas extremidades
+  }
+
+  /**
+   * Testa porta TCP/IP nula, deve lançar RFW_ERR_900002.
+   */
+  @Test
+  public void t51_validateTcpPortNull() {
+    assertTcpPortFailureWithCode(null, "RFW_ERR_900002");
+  }
+
+  /**
+   * Testa portas TCP/IP com formato inválido (não numérico ou formato inadequado), deve lançar RFW_ERR_900003.
+   */
+  @Test
+  public void t52_validateTcpPortInvalidFormat() {
+    assertTcpPortFailureWithCode("", "RFW_ERR_900003");
+    assertTcpPortFailureWithCode("   ", "RFW_ERR_900003");
+    assertTcpPortFailureWithCode("abc", "RFW_ERR_900003");
+    assertTcpPortFailureWithCode("1.2", "RFW_ERR_900003");
+    assertTcpPortFailureWithCode("-1", "RFW_ERR_900003");
+    assertTcpPortFailureWithCode("+1", "RFW_ERR_900003");
+  }
+
+  /**
+   * Testa portas TCP/IP fora da faixa [1, 65535], deve lançar RFW_ERR_900003.
+   */
+  @Test
+  public void t53_validateTcpPortOutOfRange() {
+    assertTcpPortFailureWithCode("0", "RFW_ERR_900003");
+    assertTcpPortFailureWithCode("65536", "RFW_ERR_900003");
+    assertTcpPortFailureWithCode("70000", "RFW_ERR_900003");
+  }
+
+  /**
+   * Helper: garante que o IP informado é considerado válido (não lança exceção).
+   */
+  private void assertValidIPv4(String ip) {
+    try {
+      validateIPv4Address(ip);
+    } catch (RFWException e) {
+      fail("Não era esperada exceção para IP válido: " + ip + " -> " + e.getClass().getSimpleName());
+    }
+  }
+
+  /**
+   * Helper: garante que o IP informado é inválido e gera RFW_ERR_200306.
+   */
+  private void assertInvalidIPv4(String ip) {
+    try {
+      validateIPv4Address(ip);
+      fail("Era esperada RFWValidationException para IP inválido: " + ip);
+    } catch (RFWValidationException e) {
+      // Verifica o código da mensagem
+      assertEquals("RFW_ERR_900001", e.getExceptionCode());
+    } catch (RFWException e) {
+      fail("Era esperada RFWValidationException, mas foi lançada: " + e.getClass().getSimpleName());
+    }
+  }
+
+  /**
+   * Helper: garante que a porta é válida (não lança exceção).
+   */
+  private void assertValidTcpPort(String port) {
+    try {
+      validateTcpPort(port);
+    } catch (RFWException e) {
+      fail("Não era esperada exceção para porta válida: " + port + " -> " + e.getClass().getSimpleName());
+    }
+  }
+
+  /**
+   * Helper: garante que a porta é inválida e lança RFWValidationException com o código informado.
+   */
+  private void assertTcpPortFailureWithCode(String port, String expectedCode) {
+    try {
+      validateTcpPort(port);
+      fail("Era esperada RFWValidationException para porta inválida: " + port);
+    } catch (RFWValidationException e) {
+      assertEquals("Código de erro inesperado para porta inválida: " + port, expectedCode, e.getExceptionCode());
+    } catch (RFWException e) {
+      fail("Era esperada RFWValidationException, mas foi lançada: " + e.getClass().getSimpleName());
+    }
+  }
+
 }

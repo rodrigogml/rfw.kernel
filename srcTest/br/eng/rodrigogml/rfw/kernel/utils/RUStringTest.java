@@ -34,7 +34,7 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
  * @since (21 de fev. de 2025)
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class RUStringTeste {
+public class RUStringTest {
 
   /**
    * Testa o método {@code replaceAll}, garantindo que as substituições ocorram corretamente.

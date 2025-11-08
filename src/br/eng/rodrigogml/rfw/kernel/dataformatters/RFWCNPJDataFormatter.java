@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
-import br.eng.rodrigogml.rfw.kernel.utils.RUDocVal;
+import br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation;
 import br.eng.rodrigogml.rfw.kernel.utils.RUString;
 
 /**
@@ -49,7 +49,7 @@ public class RFWCNPJDataFormatter implements RFWDataFormatter<String, String> {
       try {
         // Valida o CNPJ
         value = value.toString().replaceAll("[^0-9]", "");
-        RUDocVal.validateCNPJ(value.toString());
+        RUValueValidation.validateCNPJ(value.toString());
       } catch (RFWValidationException e) {
         throw new RFWValidationException("RFW_ERR_300049");
       }

@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
-import br.eng.rodrigogml.rfw.kernel.utils.RUDocVal;
+import br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation;
 import br.eng.rodrigogml.rfw.kernel.utils.RUString;
 
 /**
@@ -55,11 +55,11 @@ public class RFWCPFOrCNPJDataFormatter implements RFWDataFormatter<String, Strin
       String v = RUString.removeNonDigits((String) value);
       try {
         // Valida como CPF
-        RUDocVal.validateCPF(v);
+        RUValueValidation.validateCPF(v);
       } catch (RFWValidationException e) {
         try {
           // Valida como CNPJ
-          RUDocVal.validateCNPJ(v.toString());
+          RUValueValidation.validateCNPJ(v.toString());
         } catch (RFWValidationException e1) {
           throw new RFWValidationException("RFW_000012", new String[] { "" + value });
         }

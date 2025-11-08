@@ -1,5 +1,10 @@
 package br.eng.rodrigogml.rfw.kernel.dataformatters;
 
+import java.util.Locale;
+
+import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
+import br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation;
+
 /**
  * Description: Classe para formatar e validar uma porta de conexão TCP/IP.<BR>
  * Basicamente permite os valores entre 1 e 65535. (Mais info em: http://pt.wikipedia.org/wiki/Anexo:Lista_de_portas_de_protocolos)
@@ -20,6 +25,11 @@ public class RFWTCPIPPortDataFormatter extends RFWIntegerDataFormatter {
       RFWTCPIPPortDataFormatter.instance = new RFWTCPIPPortDataFormatter();
     }
     return RFWTCPIPPortDataFormatter.instance;
+  }
+
+  @Override
+  public void validate(Object value, Locale locale) throws RFWException {
+    RUValueValidation.validateTcpPort((String) value);
   }
 
 }

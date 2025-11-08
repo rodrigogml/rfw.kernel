@@ -648,4 +648,195 @@ public class RUTypes {
     DecimalFormat df = new DecimalFormat(pattern, new DecimalFormatSymbols(locale));
     return df.format(number);
   }
+
+  /**
+   * Converte de forma segura um valor genérico para {@link Integer}.<br>
+   * <p>
+   * Regras de conversão:
+   * <ul>
+   * <li>Se o valor for {@code null}, retorna {@code null}.</li>
+   * <li>Se o valor já for {@link Integer}, é retornado diretamente.</li>
+   * <li>Se o valor for {@link Number}, delega para {@link #toInteger(Number)}.</li>
+   * <li>Se o valor for {@link String}, delega para {@link #toInteger(String)}.</li>
+   * <li>Se o valor for {@link Boolean}, retorna {@code 1} para {@code true} e {@code 0} para {@code false}.</li>
+   * </ul>
+   * <p>
+   * Caso o tipo não seja suportado, uma {@link RFWValidationException} é lançada.<br>
+   * Em situações de falha interna de conversão (por exemplo, falha em parsers de baixo nível), uma {@link RFWCriticalException} poderá ser propagada pelos métodos delegados.
+   *
+   * @param value Valor de entrada a ser convertido.
+   * @return Valor convertido em {@link Integer} ou {@code null} caso o valor de entrada seja {@code null} ou {@link String} vazia.
+   * @throws RFWException Em caso de erro de validação ou falha crítica de conversão.
+   */
+  public static Integer toInteger(Object value) throws RFWException {
+    // Trata nulo imediatamente
+    if (value == null) {
+      return null;
+    }
+
+    // Já é Integer, apenas retorna
+    if (value instanceof Integer) {
+      return (Integer) value;
+    }
+
+    // Converte Number por sobrecarga
+    if (value instanceof Number) {
+      return toInteger((Number) value);
+    }
+
+    // Converte String por sobrecarga
+    if (value instanceof String) {
+      return toInteger((String) value);
+    }
+
+    // Convenção simples para booleano: true = 1, false = 0
+    if (value instanceof Boolean) {
+      return ((Boolean) value) ? 1 : 0;
+    }
+
+    // Tipo não suportado
+    throw new RFWValidationException("Tipo '${0}' não suportado para conversão em Integer.",
+        new String[] { value.getClass().getName() });
+  }
+
+  /**
+   * Converte de forma segura um {@link String} para {@link Integer}.<br>
+   * <p>
+   * Regras de conversão:
+   * <ul>
+   * <li>Se o valor for {@code null} ou vazio (apenas espaços), retorna {@code null}.</li>
+   * <li>O formato aceito é opcionalmente sinalizado (+/-) seguido apenas de dígitos.</li>
+   * <li>Se o formato não for suportado, lança {@link RFWValidationException}.</li>
+   * <li>Se ocorrer falha interna no parser (por exemplo, estouro não tratado), lança {@link RFWCriticalException}.</li>
+   * <li>Se o valor estiver fora do intervalo de {@link Integer}, lança {@link RFWValidationException}.</li>
+   * </ul>
+   *
+   * @param value Valor textual a ser convertido.
+   * @return Valor convertido em {@link Integer} ou {@code null} caso o valor de entrada seja {@code null} ou vazio.
+   * @throws RFWException Em caso de erro de validação ou falha crítica de conversão.
+   */
+  public static Integer toInteger(String value) throws RFWException {
+    // Trata nulo ou vazio como nulo
+    if (value == null) {
+      return null;
+    }
+
+    String trimmed = value.trim();
+    if (trimmed.isEmpty()) {
+      return null;
+    }
+
+    // Valida formato aceito: sinal opcional seguido de dígitos
+    if (!trimmed.matches("[+-]?[0-9]+")) {
+      throw new RFWValidationException("Formato de número inteiro não suportado. Valor: '${0}'",
+          new String[] { value });
+    }
+
+    try {
+      // Usa Long para detectar facilmente estouro de faixa do int
+      long longValue = Long.parseLong(trimmed);
+
+      // Validação de faixa do tipo Integer
+      if (longValue < Integer.MIN_VALUE || longValue > Integer.MAX_VALUE) {
+        throw new RFWValidationException("Valor fora do intervalo suportado para Integer. Valor: '${0}'",
+            new String[] { value });
+      }
+
+      return (int) longValue;
+    } catch (NumberFormatException e) {
+      // Falha interna de conversão numérica
+      throw new RFWCriticalException("Falha ao converter valor para Integer. Valor '${0}'.",
+          new String[] { value }, e);
+    }
+  }
+
+  /**
+   * Converte de forma segura um {@link Number} para {@link Integer}.<br>
+   * <p>
+   * Regras de conversão:
+   * <ul>
+   * <li>Se o valor for {@code null}, retorna {@code null}.</li>
+   * <li>Se o valor já for {@link Integer}, é retornado diretamente.</li>
+   * <li>Para tipos integrais ({@link Long}, {@link Short}, {@link Byte}), é feita validação de faixa.</li>
+   * <li>Para {@link BigDecimal}, é exigido que o valor seja inteiro (sem casas decimais) e dentro da faixa de {@link Integer}.</li>
+   * <li>Para {@link Double} e {@link Float}, é exigido que o valor não seja NaN/Infinito, seja inteiro (sem parte fracionária) e esteja na faixa de {@link Integer}.</li>
+   * </ul>
+   * <p>
+   * Situações em que o valor não puder ser representado como inteiro sem perda de precisão ou estiver fora da faixa geram {@link RFWValidationException}.
+   *
+   * @param value Valor numérico a ser convertido.
+   * @return Valor convertido em {@link Integer} ou {@code null} caso o valor de entrada seja {@code null}.
+   * @throws RFWException Em caso de erro de validação ou falha crítica de conversão interna.
+   */
+  public static Integer toInteger(Number value) throws RFWException {
+    // Trata nulo
+    if (value == null) {
+      return null;
+    }
+
+    // Já é Integer
+    if (value instanceof Integer) {
+      return (Integer) value;
+    }
+
+    // Tipos integrais simples (Long, Short, Byte)
+    if (value instanceof Long || value instanceof Short || value instanceof Byte) {
+      long longValue = value.longValue();
+      if (longValue < Integer.MIN_VALUE || longValue > Integer.MAX_VALUE) {
+        throw new RFWValidationException("Valor fora do intervalo suportado para Integer. Valor: '${0}'",
+            new String[] { String.valueOf(value) });
+      }
+      return (int) longValue;
+    }
+
+    // BigDecimal: exige valor inteiro exato e dentro da faixa
+    if (value instanceof BigDecimal) {
+      BigDecimal bd = ((BigDecimal) value).stripTrailingZeros();
+      try {
+        long longValue = bd.longValueExact();
+        if (longValue < Integer.MIN_VALUE || longValue > Integer.MAX_VALUE) {
+          throw new RFWValidationException("Valor fora do intervalo suportado para Integer. Valor: '${0}'",
+              new String[] { bd.toPlainString() });
+        }
+        return (int) longValue;
+      } catch (ArithmeticException e) {
+        // Tem parte fracionária ou está fora da faixa de long
+        throw new RFWValidationException("Valor decimal não pode ser convertido para Integer sem perda de precisão. Valor: '${0}'",
+            new String[] { bd.toPlainString() });
+      }
+    }
+
+    // Double/Float: verifica NaN, infinito, parte fracionária e faixa
+    if (value instanceof Double || value instanceof Float) {
+      double d = value.doubleValue();
+
+      // NaN ou infinito não são valores válidos
+      if (Double.isNaN(d) || Double.isInfinite(d)) {
+        throw new RFWValidationException("Valor numérico inválido para conversão em Integer. Valor: '${0}'",
+            new String[] { String.valueOf(value) });
+      }
+
+      // Verifica faixa de Integer
+      if (d < Integer.MIN_VALUE || d > Integer.MAX_VALUE) {
+        throw new RFWValidationException("Valor fora do intervalo suportado para Integer. Valor: '${0}'",
+            new String[] { String.valueOf(value) });
+      }
+
+      // Exige que seja inteiro (sem casas decimais)
+      if (Math.rint(d) != d) {
+        throw new RFWValidationException("Valor decimal não pode ser convertido para Integer sem perda de precisão. Valor: '${0}'",
+            new String[] { String.valueOf(value) });
+      }
+
+      return (int) d;
+    }
+
+    // Qualquer outro subtipo de Number: tenta via long com validação de faixa
+    long longValue = value.longValue();
+    if (longValue < Integer.MIN_VALUE || longValue > Integer.MAX_VALUE) {
+      throw new RFWValidationException("Valor fora do intervalo suportado para Integer. Valor: '${0}'",
+          new String[] { String.valueOf(value) });
+    }
+    return (int) longValue;
+  }
 }

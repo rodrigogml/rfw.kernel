@@ -8,16 +8,94 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 
 /**
- * Description: Classe com métodos utilitários de validação de documentos e cálculos de Digitos Verificadores (DVs).<br>
+ * Description: Classe com métodos utilitários de validação de valores (documentos, emails, números, padrões, etc.) e cálculos de Digitos Verificadores (DVs).<br>
  * Os métodos dessa classe são organizados de acordo com seu prefixo da seguinte forma: <br>
- * <li><b>validate</b> - faz a validação de um número de documento. Deve receber o número do documento completo, incluindo o DV, e lançar exception caso não seja um documento válido. Normalmente este método é 'void'.
+ * <li><b>validate</b> - faz a validação de um valor. Deve receber o valor completo, incluindo o DV, e lançar exception caso não seja um valor válido. Normalmente este método é 'void'.
  * <li><b>isValid</b> - valida o conteúdo mas retorna apenas um true/false impedindo qualquer exception de sair. Em geral encapsula o mesmo método com o prefixo validate e trata a exception.
  * <li><b>calcDV</b> - Faz o cálculo do Dígito verificador de acordo com os documento passado. Veja a documentação de cada método para saber como passar os valores com ou sem o DV.
  *
  * @author Rodrigo Leitão
  * @since (21 de fev. de 2025)
  */
-public class RUDocVal {
+public class RUValueValidation {
+
+  /**
+   * Valida se o valor informado representa uma porta TCP/IP válida.<br>
+   * <p>
+   * Regras:
+   * <ul>
+   * <li>O valor não pode ser {@code null} — nesse caso lança {@link RFWValidationException} com código {@code RFW_ERR_900002}.</li>
+   * <li>O valor deve representar um número inteiro entre {@code 1} e {@code 65535} — caso contrário lança {@link RFWValidationException} com código {@code RFW_ERR_900003}.</li>
+   * <li>Valores numéricos fora da faixa ou com formato incorreto (ex: letras, decimais, sinais) são inválidos.</li>
+   * </ul>
+   *
+   * @param port Valor da porta em formato {@link String}.
+   * @throws RFWException Quando o valor é nulo ou não representa uma porta válida.
+   */
+  public static void validateTcpPort(String port) throws RFWException {
+    // Porta nula -> erro obrigatório
+    if (port == null) {
+      throw new RFWValidationException("RFW_ERR_900002");
+    }
+
+    String trimmed = port.trim();
+
+    // Deve conter apenas dígitos
+    if (!trimmed.matches("^[0-9]{1,5}$")) {
+      throw new RFWValidationException("RFW_ERR_900003", new String[] { port });
+    }
+
+    try {
+      int value = Integer.parseInt(trimmed);
+      if (value < 1 || value > 65535) {
+        throw new RFWValidationException("RFW_ERR_900003", new String[] { port });
+      }
+    } catch (NumberFormatException e) {
+      throw new RFWValidationException("RFW_ERR_900003", new String[] { port });
+    }
+  }
+
+  /**
+   * Valida um endereço IPv4 no formato textual.<br>
+   * <p>
+   * Regras:
+   * <ul>
+   * <li>Se {@code ip} for {@code null}, é lançado exceção de valor nulo código {@code RFW_ERR_900000}.</li>
+   * <li>Formato obrigatório: {@code "x.x.x.x"} com quatro octetos decimais.</li>
+   * <li>Cada octeto deve estar entre {@code 0} e {@code 255}.</li>
+   * <li>Não são permitidos zeros à esquerda, exceto o valor {@code "0"} isolado.</li>
+   * </ul>
+   * Em caso de valor inválido, é lançada {@link RFWValidationException} com o código {@code RFW_ERR_900001}.
+   *
+   * @param ip Endereço IPv4 em formato textual.
+   * @throws RFWException Quando o valor não representa um IPv4 válido.
+   */
+  public static void validateIPv4Address(String ip) throws RFWException {
+    // Se o valor for nulo, nenhuma validação é realizada conforme regra informada.
+    if (ip == null) {
+      throw new RFWValidationException("RFW_ERR_900000");
+    }
+
+    String value = ip.trim(); // Remove espaços em branco nas extremidades para evitar falsos negativos.
+
+    // Padrão para um octeto IPv4:
+    // - "0"
+    // - 1 a 9
+    // - 10 a 99
+    // - 100 a 199
+    // - 200 a 249
+    // - 250 a 255
+    // Sem zeros à esquerda (exceto o "0" isolado).
+    String octetPattern = "(0|[1-9][0-9]?|1[0-9]{2}|2[0-4][0-9]|25[0-5])";
+
+    // IPv4 completo: quatro octetos separados por ponto.
+    String ipv4Regex = "^" + octetPattern + "(\\." + octetPattern + "){3}$";
+
+    // Caso não atenda ao padrão, lança erro de validação.
+    if (!value.matches(ipv4Regex)) {
+      throw new RFWValidationException("RFW_ERR_900001", new String[] { ip });
+    }
+  }
 
   /**
    * Valida um número de CNPJ (Cadastro Nacional de Pessoa Jurídica).

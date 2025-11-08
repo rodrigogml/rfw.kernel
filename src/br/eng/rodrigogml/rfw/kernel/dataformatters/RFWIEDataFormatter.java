@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
-import br.eng.rodrigogml.rfw.kernel.utils.RUDocVal;
+import br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation;
 
 /**
  * Description: Classe que formata e valida um número de IE (Inscrição Estadual) de forma genérica. Isto é, tenta dar formato e validar a IE para qualquer estado nacional.<br>
@@ -52,7 +52,7 @@ public class RFWIEDataFormatter implements RFWDataFormatter<String, String> {
       try {
         // Valida o IE
         value = value.toString().replaceAll("[^0-9]", "");
-        RUDocVal.validateIE(value.toString());
+        RUValueValidation.validateIE(value.toString());
       } catch (RFWValidationException e) {
         throw new RFWValidationException("RFW_ERR_300052");
       }

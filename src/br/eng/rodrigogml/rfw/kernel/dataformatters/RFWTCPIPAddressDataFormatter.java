@@ -4,6 +4,8 @@ import java.util.Locale;
 
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
+import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
+import br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation;
 
 /**
  * Description: Data formatter para IPs IPv4.<BR>
@@ -42,11 +44,11 @@ public class RFWTCPIPAddressDataFormatter implements RFWDataFormatter<String, Ob
   @Override
   public void validate(Object value, Locale locale) throws RFWException {
     // Contrata o valor contra uma expressão regular que verifica digito por digito do IP
-    if (value != null && !"".equals(value)) {
-      String patter255 = "(([0])|([1][0-9]{0,2})|([2](([0-4]?[0-9])|([5][0-5]))?)|([3-9][0-9]?)){1,}"; // Patter que aceita os números de 0 à 255 sem zeros não significativos em cada bloco. Aceita os blocos com 0 e 255 pois não há como ter certeza que são inválidos sem conhecer a mascara de rede. Por exemplo, em uma mascara 255.255.128.0 o último bloco pode conter o valor 0 ou
-                                                                                                       // 255 e ser
-      // completamente válido.
-      if (!value.toString().matches(patter255 + "\\." + patter255 + "\\." + patter255 + "\\." + patter255)) {
+    value = PreProcess.processStringToNull((String) value);
+    if (value != null) {
+      try {
+        RUValueValidation.validateIPv4Address((String) value);
+      } catch (RFWException e) {
         throw new RFWValidationException("RFW_ERR_200306");
       }
     }
