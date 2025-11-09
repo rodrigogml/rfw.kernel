@@ -194,10 +194,7 @@ public class RUTypes {
     long s = TimeUnit.MILLISECONDS.toSeconds(millis) % 60;
     long ms = millis % 1000;
 
-    return (h > 0 ? String.format("%02d:", h) : "") +
-        (h > 0 || m > 0 ? String.format("%02d:", m) : "") +
-        String.format("%02d'", s) +
-        String.format("%03d\"", ms);
+    return (h > 0 ? String.format("%02d:", h) : "") + (h > 0 || m > 0 ? String.format("%02d:", m) : "") + String.format("%02d'", s) + String.format("%03d\"", ms);
   }
 
   /**
@@ -695,8 +692,7 @@ public class RUTypes {
     }
 
     // Tipo não suportado
-    throw new RFWValidationException("Tipo '${0}' não suportado para conversão em Integer.",
-        new String[] { value.getClass().getName() });
+    throw new RFWValidationException("Tipo '${0}' não suportado para conversão em Integer.", new String[] { value.getClass().getName() });
   }
 
   /**
@@ -728,8 +724,7 @@ public class RUTypes {
 
     // Valida formato aceito: sinal opcional seguido de dígitos
     if (!trimmed.matches("[+-]?[0-9]+")) {
-      throw new RFWValidationException("Formato de número inteiro não suportado. Valor: '${0}'",
-          new String[] { value });
+      throw new RFWValidationException("Formato de número inteiro não suportado. Valor: '${0}'", new String[] { value });
     }
 
     try {
@@ -738,15 +733,13 @@ public class RUTypes {
 
       // Validação de faixa do tipo Integer
       if (longValue < Integer.MIN_VALUE || longValue > Integer.MAX_VALUE) {
-        throw new RFWValidationException("Valor fora do intervalo suportado para Integer. Valor: '${0}'",
-            new String[] { value });
+        throw new RFWValidationException("Valor fora do intervalo suportado para Integer. Valor: '${0}'", new String[] { value });
       }
 
       return (int) longValue;
     } catch (NumberFormatException e) {
       // Falha interna de conversão numérica
-      throw new RFWCriticalException("Falha ao converter valor para Integer. Valor '${0}'.",
-          new String[] { value }, e);
+      throw new RFWCriticalException("Falha ao converter valor para Integer. Valor '${0}'.", new String[] { value }, e);
     }
   }
 
@@ -783,8 +776,7 @@ public class RUTypes {
     if (value instanceof Long || value instanceof Short || value instanceof Byte) {
       long longValue = value.longValue();
       if (longValue < Integer.MIN_VALUE || longValue > Integer.MAX_VALUE) {
-        throw new RFWValidationException("Valor fora do intervalo suportado para Integer. Valor: '${0}'",
-            new String[] { String.valueOf(value) });
+        throw new RFWValidationException("Valor fora do intervalo suportado para Integer. Valor: '${0}'", new String[] { String.valueOf(value) });
       }
       return (int) longValue;
     }
@@ -795,14 +787,12 @@ public class RUTypes {
       try {
         long longValue = bd.longValueExact();
         if (longValue < Integer.MIN_VALUE || longValue > Integer.MAX_VALUE) {
-          throw new RFWValidationException("Valor fora do intervalo suportado para Integer. Valor: '${0}'",
-              new String[] { bd.toPlainString() });
+          throw new RFWValidationException("Valor fora do intervalo suportado para Integer. Valor: '${0}'", new String[] { bd.toPlainString() });
         }
         return (int) longValue;
       } catch (ArithmeticException e) {
         // Tem parte fracionária ou está fora da faixa de long
-        throw new RFWValidationException("Valor decimal não pode ser convertido para Integer sem perda de precisão. Valor: '${0}'",
-            new String[] { bd.toPlainString() });
+        throw new RFWValidationException("Valor decimal não pode ser convertido para Integer sem perda de precisão. Valor: '${0}'", new String[] { bd.toPlainString() });
       }
     }
 
@@ -812,20 +802,17 @@ public class RUTypes {
 
       // NaN ou infinito não são valores válidos
       if (Double.isNaN(d) || Double.isInfinite(d)) {
-        throw new RFWValidationException("Valor numérico inválido para conversão em Integer. Valor: '${0}'",
-            new String[] { String.valueOf(value) });
+        throw new RFWValidationException("Valor numérico inválido para conversão em Integer. Valor: '${0}'", new String[] { String.valueOf(value) });
       }
 
       // Verifica faixa de Integer
       if (d < Integer.MIN_VALUE || d > Integer.MAX_VALUE) {
-        throw new RFWValidationException("Valor fora do intervalo suportado para Integer. Valor: '${0}'",
-            new String[] { String.valueOf(value) });
+        throw new RFWValidationException("Valor fora do intervalo suportado para Integer. Valor: '${0}'", new String[] { String.valueOf(value) });
       }
 
       // Exige que seja inteiro (sem casas decimais)
       if (Math.rint(d) != d) {
-        throw new RFWValidationException("Valor decimal não pode ser convertido para Integer sem perda de precisão. Valor: '${0}'",
-            new String[] { String.valueOf(value) });
+        throw new RFWValidationException("Valor decimal não pode ser convertido para Integer sem perda de precisão. Valor: '${0}'", new String[] { String.valueOf(value) });
       }
 
       return (int) d;
@@ -834,9 +821,102 @@ public class RUTypes {
     // Qualquer outro subtipo de Number: tenta via long com validação de faixa
     long longValue = value.longValue();
     if (longValue < Integer.MIN_VALUE || longValue > Integer.MAX_VALUE) {
-      throw new RFWValidationException("Valor fora do intervalo suportado para Integer. Valor: '${0}'",
-          new String[] { String.valueOf(value) });
+      throw new RFWValidationException("Valor fora do intervalo suportado para Integer. Valor: '${0}'", new String[] { String.valueOf(value) });
     }
     return (int) longValue;
   }
+
+  /**
+   * Converte uma {@link String} para {@link Long} de forma segura.<br>
+   * <br>
+   * Regras:
+   * <ul>
+   * <li>Se o valor for {@code null}, vazio ou em branco, retorna {@code null}.</li>
+   * <li>Se o valor não for um número inteiro válido, lança {@link RFWValidationException}.</li>
+   * <li>Se ocorrer falha interna no parser numérico, lança {@link RFWCriticalException}.</li>
+   * </ul>
+   *
+   * @param value Valor textual a ser convertido.
+   * @return {@link Long} correspondente ou {@code null}.
+   * @throws RFWException Se o valor não for válido.
+   */
+  public static Long toLong(String value) throws RFWException {
+    if (value == null || value.trim().isEmpty()) return null;
+    try {
+      return Long.valueOf(value.trim());
+    } catch (NumberFormatException e) {
+      throw new RFWValidationException("Valor inválido para conversão em Long: '${0}'", new String[] { value });
+    } catch (Exception e) {
+      throw new RFWCriticalException("Falha inesperada ao converter valor '${0}' para Long.", new String[] { value }, e);
+    }
+  }
+
+  /**
+   * Converte um {@link Number} para {@link Long} de forma segura.<br>
+   * <br>
+   * Regras:
+   * <ul>
+   * <li>Se o valor for {@code null}, retorna {@code null}.</li>
+   * <li>Se o valor for {@link Long}, retorna diretamente.</li>
+   * <li>Se o valor for {@link BigDecimal}, deve ser inteiro exato e dentro da faixa de {@link Long}.</li>
+   * <li>Se o valor for {@link Double} ou {@link Float}, deve representar número inteiro exato.</li>
+   * <li>Outros tipos numéricos (Integer, Short, Byte) são convertidos diretamente.</li>
+   * </ul>
+   *
+   * @param value Valor numérico a ser convertido.
+   * @return {@link Long} correspondente ou {@code null}.
+   * @throws RFWException Se o valor for inválido ou fora da faixa de {@link Long}.
+   */
+  public static Long toLong(Number value) throws RFWException {
+    if (value == null) return null;
+
+    if (value instanceof Long) return (Long) value;
+    if (value instanceof Integer || value instanceof Short || value instanceof Byte) return value.longValue();
+
+    if (value instanceof BigDecimal) {
+      BigDecimal bd = ((BigDecimal) value).stripTrailingZeros();
+      try {
+        return bd.longValueExact();
+      } catch (ArithmeticException e) {
+        throw new RFWValidationException("Valor decimal não é inteiro ou está fora da faixa de Long: '${0}'", new String[] { value.toString() });
+      }
+    }
+
+    if (value instanceof Double || value instanceof Float) {
+      double d = value.doubleValue();
+      if (Double.isNaN(d) || Double.isInfinite(d)) throw new RFWValidationException("Valor inválido (NaN ou Infinito) para Long: '${0}'", new String[] { value.toString() });
+      if (d % 1 != 0) throw new RFWValidationException("Valor não inteiro para conversão em Long: '${0}'", new String[] { value.toString() });
+      if (d < Long.MIN_VALUE || d > Long.MAX_VALUE) throw new RFWValidationException("Valor fora da faixa de Long: '${0}'", new String[] { value.toString() });
+      return (long) d;
+    }
+
+    throw new RFWValidationException("Tipo numérico não suportado para conversão em Long: '${0}'", new String[] { value.getClass().getName() });
+  }
+
+  /**
+   * Converte um {@link Object} para {@link Long} de forma segura.<br>
+   * <br>
+   * Regras:
+   * <ul>
+   * <li>Se o valor for {@code null}, retorna {@code null}.</li>
+   * <li>Se for instância de {@link Number}, usa {@link #toLong(Number)}.</li>
+   * <li>Se for {@link String}, usa {@link #toLong(String)}.</li>
+   * <li>Se for {@link Boolean}, retorna {@code 1L} para {@code true} e {@code 0L} para {@code false}.</li>
+   * <li>Qualquer outro tipo lança {@link RFWValidationException}.</li>
+   * </ul>
+   *
+   * @param value Objeto genérico a ser convertido.
+   * @return {@link Long} correspondente ou {@code null}.
+   * @throws RFWException Se o tipo não for suportado ou o valor for inválido.
+   */
+  public static Long toLong(Object value) throws RFWException {
+    if (value == null) return null;
+
+    if (value instanceof Number) return toLong((Number) value);
+    if (value instanceof String) return toLong((String) value);
+    if (value instanceof Boolean) return ((Boolean) value) ? 1L : 0L;
+
+    throw new RFWValidationException("Tipo não suportado para conversão em Long: '${0}'", new String[] { value.getClass().getName() });
+  }
+
 }

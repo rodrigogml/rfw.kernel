@@ -3,6 +3,7 @@ package br.eng.rodrigogml.rfw.kernel.utils;
 import static br.eng.rodrigogml.rfw.kernel.utils.RUTypes.formatMillis;
 import static br.eng.rodrigogml.rfw.kernel.utils.RUTypes.formatMillisToHuman;
 import static br.eng.rodrigogml.rfw.kernel.utils.RUTypes.toInteger;
+import static br.eng.rodrigogml.rfw.kernel.utils.RUTypes.toLong;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
@@ -69,10 +70,8 @@ public class RUTypesTest {
     assertEquals("Valor com sinal positivo explícito", Integer.valueOf(789), toInteger("+789"));
     assertEquals("Valor com zeros à esquerda", Integer.valueOf(7), toInteger("0007"));
 
-    assertEquals("Limite superior de Integer", Integer.valueOf(Integer.MAX_VALUE),
-        toInteger(String.valueOf(Integer.MAX_VALUE)));
-    assertEquals("Limite inferior de Integer", Integer.valueOf(Integer.MIN_VALUE),
-        toInteger(String.valueOf(Integer.MIN_VALUE)));
+    assertEquals("Limite superior de Integer", Integer.valueOf(Integer.MAX_VALUE), toInteger(String.valueOf(Integer.MAX_VALUE)));
+    assertEquals("Limite inferior de Integer", Integer.valueOf(Integer.MIN_VALUE), toInteger(String.valueOf(Integer.MIN_VALUE)));
   }
 
   /**
@@ -197,14 +196,11 @@ public class RUTypesTest {
   public void t30_toIntegerObjectNullAndDelegates() throws RFWException {
     assertNull("null deve resultar em null", toInteger((Object) null));
 
-    assertEquals("Integer via Object deve ser convertido corretamente",
-        Integer.valueOf(10), toInteger((Object) Integer.valueOf(10)));
+    assertEquals("Integer via Object deve ser convertido corretamente", Integer.valueOf(10), toInteger((Object) Integer.valueOf(10)));
 
-    assertEquals("Long via Object deve ser delegado para toInteger(Number)",
-        Integer.valueOf(20), toInteger((Object) Long.valueOf(20L)));
+    assertEquals("Long via Object deve ser delegado para toInteger(Number)", Integer.valueOf(20), toInteger((Object) Long.valueOf(20L)));
 
-    assertEquals("String via Object deve ser delegado para toInteger(String)",
-        Integer.valueOf(30), toInteger((Object) "30"));
+    assertEquals("String via Object deve ser delegado para toInteger(String)", Integer.valueOf(30), toInteger((Object) "30"));
   }
 
   /**
@@ -212,10 +208,8 @@ public class RUTypesTest {
    */
   @Test
   public void t31_toIntegerObjectBoolean() throws RFWException {
-    assertEquals("Boolean TRUE deve resultar em 1",
-        Integer.valueOf(1), toInteger(Boolean.TRUE));
-    assertEquals("Boolean FALSE deve resultar em 0",
-        Integer.valueOf(0), toInteger(Boolean.FALSE));
+    assertEquals("Boolean TRUE deve resultar em 1", Integer.valueOf(1), toInteger(Boolean.TRUE));
+    assertEquals("Boolean FALSE deve resultar em 0", Integer.valueOf(0), toInteger(Boolean.FALSE));
   }
 
   /**
@@ -250,6 +244,207 @@ public class RUTypesTest {
   private void assertToIntegerNumberValidationFailure(Number value) {
     try {
       toInteger(value);
+      fail("Era esperada RFWValidationException para o valor: " + value);
+    } catch (RFWValidationException e) {
+      // esperado
+    } catch (RFWException e) {
+      fail("Era esperada RFWValidationException, mas foi lançada: " + e.getClass().getSimpleName());
+    }
+  }
+
+  /**
+   * Testa o método {@code toLong(String)} para valores nulos e vazios.
+   */
+  @Test
+  public void t60_toLongStringNullAndEmpty() throws RFWException {
+    assertNull("null deve resultar em null", toLong((String) null));
+    assertNull("String vazia deve resultar em null", toLong(""));
+    assertNull("String em branco deve resultar em null", toLong("   "));
+  }
+
+  /**
+   * Testa o método {@code toLong(String)} para valores válidos, incluindo limites de {@link Long}.
+   */
+  @Test
+  public void t61_toLongStringValidValues() throws RFWException {
+    assertEquals("0 deve ser convertido corretamente", Long.valueOf(0L), toLong("0"));
+    assertEquals("Valor positivo simples", Long.valueOf(123L), toLong("123"));
+    assertEquals("Valor negativo simples", Long.valueOf(-456L), toLong("-456"));
+    assertEquals("Valor com sinal positivo explícito", Long.valueOf(789L), toLong("+789"));
+    assertEquals("Valor com zeros à esquerda", Long.valueOf(7L), toLong("0007"));
+    assertEquals("Limite superior de Long", Long.valueOf(Long.MAX_VALUE), toLong(String.valueOf(Long.MAX_VALUE)));
+    assertEquals("Limite inferior de Long", Long.valueOf(Long.MIN_VALUE), toLong(String.valueOf(Long.MIN_VALUE)));
+  }
+
+  /**
+   * Testa o método {@code toLong(String)} para formatos inválidos.
+   */
+  @Test
+  public void t62_toLongStringInvalidFormat() {
+    assertToLongStringValidationFailure("12.3");
+    assertToLongStringValidationFailure("abc");
+    assertToLongStringValidationFailure("1,000");
+    assertToLongStringValidationFailure("+");
+    assertToLongStringValidationFailure("-");
+    assertToLongStringValidationFailure("++1");
+  }
+
+  /**
+   * Testa o método {@code toLong(String)} para valores fora da faixa de {@link Long}.
+   */
+  @Test
+  public void t63_toLongStringOutOfRange() {
+    assertToLongStringValidationFailure("9223372036854775808"); // Long.MAX_VALUE + 1
+    assertToLongStringValidationFailure("-9223372036854775809"); // Long.MIN_VALUE - 1
+  }
+
+  /**
+   * Testa o método {@code toLong(Number)} para tipos integrais simples.
+   */
+  @Test
+  public void t70_toLongNumberIntegralTypes() throws RFWException {
+    assertNull("null Number deve resultar em null", toLong((Number) null));
+    assertEquals("Long deve ser retornado diretamente", Long.valueOf(10L), toLong(Long.valueOf(10L)));
+    assertEquals("Integer deve ser convertido corretamente", Long.valueOf(123L), toLong(Integer.valueOf(123)));
+    assertEquals("Short deve ser convertido corretamente", Long.valueOf(5L), toLong(Short.valueOf((short) 5)));
+    assertEquals("Byte deve ser convertido corretamente", Long.valueOf(-8L), toLong(Byte.valueOf((byte) -8)));
+  }
+
+  /**
+   * Testa o método {@code toLong(Number)} para {@link BigDecimal} inteiros.
+   */
+  @Test
+  public void t71_toLongNumberBigDecimalIntegral() throws RFWException {
+    assertEquals("BigDecimal inteiro simples", Long.valueOf(10L), toLong(new BigDecimal("10")));
+    assertEquals("BigDecimal com zeros à direita", Long.valueOf(10L), toLong(new BigDecimal("10.000")));
+    assertEquals("BigDecimal negativo inteiro", Long.valueOf(-5L), toLong(new BigDecimal("-5")));
+  }
+
+  /**
+   * Testa o método {@code toLong(Number)} para {@link BigDecimal} fracionários.
+   */
+  @Test
+  public void t72_toLongNumberBigDecimalFractional() {
+    assertToLongNumberValidationFailure(new BigDecimal("10.5"));
+    assertToLongNumberValidationFailure(new BigDecimal("-3.14159"));
+  }
+
+  /**
+   * Testa o método {@code toLong(Number)} para {@link BigDecimal} fora da faixa de {@link Long}.
+   */
+  @Test
+  public void t73_toLongNumberBigDecimalOutOfRange() {
+    assertToLongNumberValidationFailure(new BigDecimal("9223372036854775808"));
+    assertToLongNumberValidationFailure(new BigDecimal("-9223372036854775809"));
+  }
+
+  /**
+   * Testa o método {@code toLong(Number)} para {@link Double} e {@link Float} inteiros exatos.
+   */
+  @Test
+  public void t74_toLongNumberFloatingIntegral() throws RFWException {
+    assertEquals("Double inteiro exato", Long.valueOf(10L), toLong(Double.valueOf(10.0)));
+    assertEquals("Float inteiro exato negativo", Long.valueOf(-5L), toLong(Float.valueOf(-5.0f)));
+  }
+
+  /**
+   * Testa o método {@code toLong(Number)} para {@link Double} e {@link Float} fracionários.
+   */
+  @Test
+  public void t75_toLongNumberFloatingFractional() {
+    assertToLongNumberValidationFailure(Double.valueOf(10.5));
+    assertToLongNumberValidationFailure(Float.valueOf(3.14f));
+  }
+
+  /**
+   * Testa o método {@code toLong(Number)} para valores especiais de ponto flutuante.
+   */
+  @Test
+  public void t76_toLongNumberFloatingSpecials() {
+    assertToLongNumberValidationFailure(Double.valueOf(Double.NaN));
+    assertToLongNumberValidationFailure(Double.valueOf(Double.POSITIVE_INFINITY));
+    assertToLongNumberValidationFailure(Double.valueOf(Double.NEGATIVE_INFINITY));
+  }
+
+  /**
+   * Testa o método {@code toLong(Number)} para um tipo {@link Number} não suportado explicitamente.
+   */
+  @Test
+  public void t77_toLongNumberUnsupportedType() {
+    Number customNumber = new Number() {
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      public int intValue() {
+        return 0;
+      }
+
+      @Override
+      public long longValue() {
+        return 0L;
+      }
+
+      @Override
+      public float floatValue() {
+        return 0.0f;
+      }
+
+      @Override
+      public double doubleValue() {
+        return 0.0;
+      }
+    };
+    assertToLongNumberValidationFailure(customNumber);
+  }
+
+  /**
+   * Testa o método {@code toLong(Object)} para nulo e delegações para outros tipos.
+   */
+  @Test
+  public void t80_toLongObjectNullAndDelegates() throws RFWException {
+    assertNull("null deve resultar em null", toLong((Object) null));
+    assertEquals("Long via Object deve ser convertido corretamente", Long.valueOf(10L), toLong((Object) Long.valueOf(10L)));
+    assertEquals("Integer via Object deve ser delegado para toLong(Number)", Long.valueOf(20L), toLong((Object) Integer.valueOf(20)));
+    assertEquals("String via Object deve ser delegado para toLong(String)", Long.valueOf(30L), toLong((Object) "30"));
+  }
+
+  /**
+   * Testa o método {@code toLong(Object)} para valores booleanos.
+   */
+  @Test
+  public void t81_toLongObjectBoolean() throws RFWException {
+    assertEquals("Boolean TRUE deve resultar em 1L", Long.valueOf(1L), toLong(Boolean.TRUE));
+    assertEquals("Boolean FALSE deve resultar em 0L", Long.valueOf(0L), toLong(Boolean.FALSE));
+  }
+
+  /**
+   * Testa o método {@code toLong(Object)} para tipo não suportado.
+   */
+  @Test(expected = RFWValidationException.class)
+  public void t82_toLongObjectUnsupportedType() throws RFWException {
+    toLong(new java.util.Date());
+  }
+
+  /**
+   * Helper: valida que {@link RUTypes#toLong(String)} lança {@link RFWValidationException}.
+   */
+  private void assertToLongStringValidationFailure(String value) {
+    try {
+      toLong(value);
+      fail("Era esperada RFWValidationException para o valor: " + value);
+    } catch (RFWValidationException e) {
+      // esperado
+    } catch (RFWException e) {
+      fail("Era esperada RFWValidationException, mas foi lançada: " + e.getClass().getSimpleName());
+    }
+  }
+
+  /**
+   * Helper: valida que {@link RUTypes#toLong(Number)} lança {@link RFWValidationException}.
+   */
+  private void assertToLongNumberValidationFailure(Number value) {
+    try {
+      toLong(value);
       fail("Era esperada RFWValidationException para o valor: " + value);
     } catch (RFWValidationException e) {
       // esperado
