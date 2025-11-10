@@ -878,4 +878,51 @@ public class RUFile {
     return file.substring(0, file.lastIndexOf(File.separatorChar));
   }
 
+  /**
+   * Exclui todos os arquivos de um diretório cuja data de modificação seja anterior à data limite informada.
+   * <p>
+   * Este método não exclui subdiretórios nem seus conteúdos — apenas arquivos diretamente no diretório especificado. Se o caminho informado não existir, não for um diretório ou ocorrer erro de leitura, o método apenas retorna sem lançar exceções.
+   * </p>
+   *
+   * @param dirPath Caminho completo do diretório a ser analisado. Exemplo: {@code "C:\\Pastas\\LOG\\"}.
+   * @param limitDate Data limite — arquivos modificados antes desta data serão removidos.
+   */
+  public static void deleteFilesOlderThan(String dirPath, Date limitDate) {
+    if (dirPath == null || limitDate == null) return;
+    deleteFilesOlderThan(dirPath, limitDate.getTime());
+  }
+
+  /**
+   * Exclui todos os arquivos de um diretório cuja data de modificação (lastModified) seja anterior ao timestamp especificado.
+   * <p>
+   * Este método percorre todos os arquivos do diretório informado, ignorando subdiretórios, e tenta remover os arquivos mais antigos que o valor de {@code limitMillis}. Arquivos que não puderem ser apagados são ignorados silenciosamente.
+   * </p>
+   *
+   * @param dirPath Caminho completo do diretório a ser analisado. Exemplo: {@code "C:\\Pastas\\LOG\\"}.
+   * @param limitMillis Timestamp (em milissegundos desde epoch) que define a data limite de retenção.
+   */
+  public static void deleteFilesOlderThan(String dirPath, long limitMillis) {
+    if (dirPath == null || limitMillis <= 0) return;
+
+    File dir = new File(dirPath);
+    if (!dir.exists() || !dir.isDirectory()) return;
+
+    File[] files = dir.listFiles();
+    if (files == null || files.length == 0) return;
+
+    for (File file : files) {
+      if (file.isFile()) {
+        long lastModified = file.lastModified();
+        if (lastModified > 0 && lastModified < limitMillis) {
+          try {
+            if (!file.delete()) {
+              System.err.println("Não foi possível excluir o arquivo: " + file.getAbsolutePath());
+            }
+          } catch (SecurityException e) {
+            System.err.println("Erro ao tentar excluir arquivo: " + file.getAbsolutePath() + " - " + e.getMessage());
+          }
+        }
+      }
+    }
+  }
 }
