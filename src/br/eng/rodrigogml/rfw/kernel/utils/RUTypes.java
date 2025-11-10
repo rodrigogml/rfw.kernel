@@ -919,4 +919,46 @@ public class RUTypes {
     throw new RFWValidationException("Tipo não suportado para conversão em Long: '${0}'", new String[] { value.getClass().getName() });
   }
 
+  /**
+   * Formata um valor decimal para percentual com 2 casas decimais.
+   * <p>
+   * O valor recebido deve estar em formato decimal (ex: 1.0 = 100%, 0.5 = 50%, 0.1234 = 12,34%).<br>
+   * Caso o valor seja {@code null}, será retornado {@code "0%"}.
+   * </p>
+   *
+   * @param value Valor decimal a ser formatado.
+   * @return String representando o valor em formato percentual, com 2 casas decimais.
+   */
+  public static String formatToPercentage(Double value) {
+    return formatToPercentage(value, 1);
+  }
+
+  /**
+   * Formata um valor decimal para percentual com o número de casas decimais especificado.
+   * <p>
+   * O valor recebido deve estar em formato decimal (ex: 1.0 = 100%, 0.5 = 50%, 0.1234 = 12,34%).<br>
+   * Caso o valor seja {@code null}, será retornado {@code "0%"}.
+   * </p>
+   *
+   * @param value Valor decimal a ser formatado.
+   * @param decimals Quantidade de casas decimais desejadas na parte fracionária.
+   * @return String representando o valor em formato percentual conforme o número de casas solicitado.
+   */
+  public static String formatToPercentage(Double value, int decimals) {
+    double safeValue = (value == null ? 0.0 : value) * 100.0;
+
+    // Gera o padrão dinamicamente conforme as casas decimais desejadas
+    StringBuilder pattern = new StringBuilder("0");
+    if (decimals > 0) {
+      pattern.append(".");
+      for (int i = 0; i < decimals; i++)
+        pattern.append("0");
+    }
+    pattern.append("%");
+
+    DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
+    DecimalFormat df = new DecimalFormat(pattern.toString(), symbols);
+
+    return df.format(safeValue / 100.0);
+  }
 }
