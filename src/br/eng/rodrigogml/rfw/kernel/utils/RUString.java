@@ -166,6 +166,21 @@ public class RUString {
   }
 
   /**
+   * Converte o objeto que contém o valor da enumeração (a própria enumeração) em "chave".<br>
+   * O mesmo que o método <code>getEnumKey()</code>, exceto pelo acrescimo do valor da enumeração ao final.
+   *
+   * @param value enum desejado.
+   * @return String com da chave.
+   */
+  public static String getEnumContainer(Enum<?> value) {
+    String enumcontainer = null;
+    if (value != null) {
+      enumcontainer = value.getDeclaringClass().getCanonicalName();
+    }
+    return enumcontainer;
+  }
+
+  /**
    * Converte o valor da enumeração em "chave" que nada mais é do que sua qualificação completa de class + enumeração + objeto da enumeração. Útil para IDs e para unificação na internacionalizações de labels.
    *
    * @param value enum desejado.
@@ -1535,4 +1550,151 @@ public class RUString {
     return extract(text, regExp, groupId);
   }
 
+  /**
+   * Conta quantas vezes um caracter aparece numa string.
+   *
+   * @param value String original
+   * @param length tamanho da parte que se deseja.
+   * @return Retorna uma string do tamanho desejado contendo a parte esquerda da string. Retorna a string original caso o tamanho solicitado seja maior ou igual ao tamanho da original. Retorna null caso a string original seja nula.
+   */
+  public static int count(String value, char delim) {
+    int countChars = 0;
+    for (int i = 0; i < value.length(); i++) {
+      if (value.charAt(i) == delim) {
+        countChars++;
+      }
+    }
+    return countChars;
+  }
+
+  /**
+   * Conta quantas vezes um caracter aparece numa string.
+   *
+   * @param value String original
+   * @param length tamanho da parte que se deseja.
+   * @return Retorna uma string do tamanho desejado contendo a parte esquerda da string. Retorna a string original caso o tamanho solicitado seja maior ou igual ao tamanho da original. Retorna null caso a string original seja nula.
+   */
+  public static int count(StringBuilder value, char delim) {
+    int countChars = 0;
+    for (int i = 0; i < value.length(); i++) {
+      if (value.charAt(i) == delim) {
+        countChars++;
+      }
+    }
+    return countChars;
+  }
+
+  /**
+   * Conta quantas linhas existem em uma String. Em outras palavras conta quantas quebras de linha foram encontradas
+   *
+   * @param value Texto com as quebras de linhas para contar
+   * @return
+   */
+  public static int countLines(String value) {
+    return count(value, '\n');
+  }
+
+  /**
+   * Conta quantas linhas existem em uma String. Em outras palavras conta quantas quebras de linha foram encontradas
+   *
+   * @param value Texto com as quebras de linhas para contar
+   * @return
+   */
+  public static int countLines(StringBuilder value) {
+    return count(value, '\n');
+  }
+
+  /**
+   * Este método recebe um valor inteiro e o converte para letras no padrão de colunas do Excel.<br>
+   * <b>Por exemplo 1 -> A, 2 -> B, ..., 26 -> Z, 27 -> AA, 28 -> AB, ...</b>
+   *
+   * @param value valor numérico a ser convertido.
+   * @return Letras equivalendo o valor convertido.
+   */
+  public static String convertToExcelColumnLetters(long value) {
+    final StringBuilder buff = new StringBuilder();
+    value = value - 1; // Corrige valor de value para começar em 0, já que a definição do método diz que o primeiro valor é 1 e não 0.
+    while (value > -1) {
+      int mod = (int) (value % 26);
+      // Converte o valor para o char adequado
+      buff.insert(0, Character.toChars(mod + 65)[0]);
+      value = value / 26 - 1;
+    }
+    return buff.toString();
+  }
+
+  /**
+   * Este método obtem uma string e a converte em um pattern RegExp para realizar Matches em Strings.<br>
+   * O propósito deste método é auxiliar o desenvolvedor a aplicar as mesmas mascaras (do SQL) utilizadas atualmente nos campos de filtros que populam o RFWMO, em uma Expressão Regular que possa ser utilizada para filtrar lista de valores em String, sem consulta no banco de dados.<br>
+   * As máscaras são: % - para qualquer caracter em qualquer quantidade e _ para 1 único caracter qualquer.
+   *
+   * @param value Texto escrito pelo usuário com as mascaras escrita acima
+   * @return String com a expressão regular equivalente a ser usada em cada "String".matches() para saber se o valor é equivalente com o filtro do usuário.
+   */
+  public static String convertFieldMaskToRegExpPattern(String value) {
+    if (value != null) {
+      // Primeiro fazemos o Quota de toda a expressão para evitar problemas
+      value = "\\Q" + value + "\\E";
+      // Troca os filtros, lembrando que antes de cada filtros temos que encerrar e recomeçar o "quote" ou a expressão não vai considerar nem estes comandos
+      value = value.replaceAll("\\%", "\\\\E.*\\\\Q");
+      value = value.replaceAll("\\_", "\\\\E.\\\\Q");
+    }
+    return value;
+  }
+
+  /**
+   * Concatena Strings colocando ", " entre elas caso a primeira String seja diferente de null e de "".
+   *
+   * @param string1 Primeiro valor a ser concatenado
+   * @param string2 Segundo valor a ser concatenado
+   * @return Nunca retorna nulo, retorna o conteúdo de String1 e String2 separados por virgula caso ambos tenham valor válido. Sendo algum nulo ou vazio, retorna apena o valor do outro. Sendo ambos nulos ou vazios, retorna "".
+   */
+  public static String appendWithComma(String string1, String string2) {
+    string1 = PreProcess.processStringToNull(string1);
+    string2 = PreProcess.processStringToNull(string2);
+
+    if (string1 == null && string2 == null) {
+      return "";
+    }
+
+    if (string1 == null) return string2;
+    if (string2 == null) return string1;
+
+    return string1 + ", " + string2;
+  }
+
+  public static void validateEqualsString(String expected, String actual) throws RFWException {
+    int i = 0;
+    for (; i < expected.length(); i++) {
+      if (i >= actual.length()) {
+        throw new RFWValidationException("O valor do texto 'Atual' chegou ao fim na posição '${0}' quando era esperado o caracter '${1}'.", new String[] { "" + i, "" + expected.charAt(i) });
+      }
+      if (expected.charAt(i) != actual.charAt(i)) {
+        String part1 = expected.substring(Math.max(0, i - 5), Math.min(expected.length(), i + 5));
+        String part2 = actual.substring(Math.max(0, i - 5), Math.min(actual.length(), i + 5));
+        throw new RFWValidationException("O valor do texto está diferente na posição '${0}'. Esperavamos '${1}' e encontramos '${2}'.", new String[] { "" + i, part1, part2 });
+      }
+    }
+    if (actual.length() > expected.length()) {
+      String part2 = actual.substring(i, Math.min(actual.length(), i + 10));
+      throw new RFWValidationException("O texto esperado chegou ao fim na posição '${0}' mas o valor atual continua com o conteúdo '${1}...'.", new String[] { "" + i, part2 });
+    }
+  }
+
+  /**
+   * Realiza o substring na melhor maneira possível sem lançar qualquer exception ou retornar nulo.
+   *
+   * @param value Valor String para ser cortado. Se nulo, retorna "".
+   * @param startIndex Posição inicial para iniciar o corte. Se menor que 0, será ajutada para 0. Se maior que o tamanho da String força o retorno de "".
+   * @param finalIndex Posição final para finalizar o corte. Se maior que o tamanho da String, será ajutado para o tamanho máximo da String. Se finalIndex <= startIndex retorna "".
+   * @return Corte possível conforme parâmetros definidos.
+   */
+  public static String subString(String value, int startIndex, int finalIndex) {
+    if (value == null) return "";
+    if (startIndex < 0) startIndex = 0;
+    if (startIndex > value.length()) return "";
+    if (finalIndex > value.length()) finalIndex = value.length();
+    if (finalIndex - startIndex <= 0) return "";
+    return value.substring(startIndex, finalIndex);
+  }
 }
