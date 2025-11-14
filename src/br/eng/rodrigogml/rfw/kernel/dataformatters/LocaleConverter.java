@@ -12,8 +12,8 @@ import br.eng.rodrigogml.rfw.kernel.RFW;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
-import br.eng.rodrigogml.rfw.kernel.utils.RUNumber;
 import br.eng.rodrigogml.rfw.kernel.utils.RUString;
+import br.eng.rodrigogml.rfw.kernel.utils.RUTypes;
 
 /**
  * Description: Classe utilitária que converte os valores padroes do java no formato configurado de locale do usuário, e vice-versa.<br>
@@ -546,11 +546,11 @@ public class LocaleConverter {
           parsedvalue = new Double(newvalue);
           if (decimals != null) {
             if (ROUNDPOLICY.BESTROUND.equals(roundpolicy)) {
-              parsedvalue = RUNumber.round(parsedvalue, decimals);
+              parsedvalue = RUTypes.round(parsedvalue, decimals);
             } else if (ROUNDPOLICY.ROUNDCEIL.equals(roundpolicy)) {
-              parsedvalue = RUNumber.roundCeil(parsedvalue, decimals);
+              parsedvalue = RUTypes.roundCeil(parsedvalue, decimals);
             } else if (ROUNDPOLICY.ROUNDFLOOR.equals(roundpolicy)) {
-              parsedvalue = RUNumber.roundFloor(parsedvalue, decimals);
+              parsedvalue = RUTypes.roundFloor(parsedvalue, decimals);
             } else if (ROUNDPOLICY.NONE.equals(roundpolicy)) {
               // Não faz nada deixa o número sem arredondamento
             }
@@ -600,11 +600,11 @@ public class LocaleConverter {
         parsedvalue = new Float(newvalue);
         if (decimals != null) {
           if (ROUNDPOLICY.BESTROUND.equals(roundpolicy)) {
-            parsedvalue = RUNumber.round(parsedvalue, decimals);
+            parsedvalue = RUTypes.round(parsedvalue, decimals);
           } else if (ROUNDPOLICY.ROUNDCEIL.equals(roundpolicy)) {
-            parsedvalue = RUNumber.roundCeil(parsedvalue, decimals);
+            parsedvalue = RUTypes.roundCeil(parsedvalue, decimals);
           } else if (ROUNDPOLICY.ROUNDFLOOR.equals(roundpolicy)) {
-            parsedvalue = RUNumber.roundFloor(parsedvalue, decimals);
+            parsedvalue = RUTypes.roundFloor(parsedvalue, decimals);
           } else if (ROUNDPOLICY.NONE.equals(roundpolicy)) {
             // Não faz nada deixa o número sem arredondamento
           }

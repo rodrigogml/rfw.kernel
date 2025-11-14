@@ -961,4 +961,82 @@ public class RUTypes {
 
     return df.format(safeValue / 100.0);
   }
+
+  /**
+   * Este método arredonda <b>para o lado mais próximo</b> números decimais (double) com um número máximo de casas (decimals).
+   *
+   * @param value valor decimal a ser arredondado
+   * @param decimals número de casas máximo
+   * @return
+   */
+  public static Double round(double value, int decimals) {
+    double factor = Math.pow(10, decimals);
+    double result = Math.round(value * factor) / factor;
+    return result;
+  }
+
+  /**
+   * Este método arredonda <b>para baixo</b> números decimais (double) com um número máximo de casas (decimals).
+   *
+   * @param value valor decimal a ser arredondado
+   * @param decimals número de casas máximo
+   * @return
+   */
+  public static Double roundFloor(double value, int decimals) {
+    double factor = Math.pow(10, decimals);
+    double result = Math.floor(value * factor) / factor;
+    return result;
+  }
+
+  /**
+   * Este método arredonda <b>para cima</b> números decimais (double) com um número máximo de casas (decimals).
+   *
+   * @param value valor decimal a ser arredondado
+   * @param decimals número de casas máximo
+   * @return
+   */
+  public static Double roundCeil(double value, int decimals) {
+    double factor = Math.pow(10, decimals);
+    double result = Math.ceil(value * factor) / factor;
+    return result;
+  }
+
+  /**
+   * Este método arredonda <b>para o lado mais próximo</b> números decimais (float) com um número máximo de casas (decimals).
+   *
+   * @param value valor decimal a ser arredondado
+   * @param decimals número de casas máximo
+   * @return
+   */
+  public static Float round(float value, int decimals) {
+    double factor = Math.pow(10, decimals);
+    float result = (float) (Math.round(value * factor) / factor);
+    return result;
+  }
+
+  /**
+   * Este método arredonda <b>para baixo</b> números decimais (float) com um número máximo de casas (decimals).
+   *
+   * @param value valor decimal a ser arredondado
+   * @param decimals número de casas máximo
+   * @return
+   */
+  public static Float roundFloor(float value, int decimals) {
+    double factor = Math.pow(10, decimals);
+    float result = (float) (Math.floor(value * factor) / factor);
+    return result;
+  }
+
+  /**
+   * Este método arredonda <b>para cima</b> números decimais (float) com um número máximo de casas (decimals).
+   *
+   * @param value valor decimal a ser arredondado
+   * @param decimals número de casas máximo
+   * @return
+   */
+  public static Float roundCeil(float value, int decimals) {
+    double factor = Math.pow(10, decimals);
+    float result = (float) (Math.ceil(value * factor) / factor);
+    return result;
+  }
 }

@@ -1,7 +1,6 @@
 package br.eng.rodrigogml.rfw.kernel.utils;
 
 import java.math.BigDecimal;
-import java.util.Locale;
 
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
@@ -16,112 +15,6 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
  */
 @Deprecated
 public class RUNumber {
-
-  /**
-   * Este método arredonda <b>para o lado mais próximo</b> números decimais (double) com um número máximo de casas (decimals).
-   *
-   * @param value valor decimal a ser arredondado
-   * @param decimals número de casas máximo
-   * @return
-   */
-  public static Double round(double value, int decimals) {
-    double factor = Math.pow(10, decimals);
-    double result = Math.round(value * factor) / factor;
-    return result;
-  }
-
-  /**
-   * Este método arredonda <b>para baixo</b> números decimais (double) com um número máximo de casas (decimals).
-   *
-   * @param value valor decimal a ser arredondado
-   * @param decimals número de casas máximo
-   * @return
-   */
-  public static Double roundFloor(double value, int decimals) {
-    double factor = Math.pow(10, decimals);
-    double result = Math.floor(value * factor) / factor;
-    return result;
-  }
-
-  /**
-   * Este método arredonda <b>para cima</b> números decimais (double) com um número máximo de casas (decimals).
-   *
-   * @param value valor decimal a ser arredondado
-   * @param decimals número de casas máximo
-   * @return
-   */
-  public static Double roundCeil(double value, int decimals) {
-    double factor = Math.pow(10, decimals);
-    double result = Math.ceil(value * factor) / factor;
-    return result;
-  }
-
-  /**
-   * Este método arredonda <b>para o lado mais próximo</b> números decimais (float) com um número máximo de casas (decimals).
-   *
-   * @param value valor decimal a ser arredondado
-   * @param decimals número de casas máximo
-   * @return
-   */
-  public static Float round(float value, int decimals) {
-    double factor = Math.pow(10, decimals);
-    float result = (float) (Math.round(value * factor) / factor);
-    return result;
-  }
-
-  /**
-   * Este método arredonda <b>para baixo</b> números decimais (float) com um número máximo de casas (decimals).
-   *
-   * @param value valor decimal a ser arredondado
-   * @param decimals número de casas máximo
-   * @return
-   */
-  public static Float roundFloor(float value, int decimals) {
-    double factor = Math.pow(10, decimals);
-    float result = (float) (Math.floor(value * factor) / factor);
-    return result;
-  }
-
-  /**
-   * Este método arredonda <b>para cima</b> números decimais (float) com um número máximo de casas (decimals).
-   *
-   * @param value valor decimal a ser arredondado
-   * @param decimals número de casas máximo
-   * @return
-   */
-  public static Float roundCeil(float value, int decimals) {
-    double factor = Math.pow(10, decimals);
-    float result = (float) (Math.ceil(value * factor) / factor);
-    return result;
-  }
-
-  /**
-   * Remove os zeros não significativos (depois do ponto), formata o divisor de decimal de acordo com o Locale. Para garantir o uso do "." no resultado final utilize o Locale.ENGLISH.<br>
-   * Não coloca separados de milhares.<br>
-   * Deixa no Máximo 2 dígitos, isto é, depois da virgula remove os zeros não significativos e arredonda os dígitos se passarem de 2.
-   *
-   * @param number
-   * @return
-   * @deprecated Este método tem um equivalente em {@link RUTypes#formatDecimalWithoutTrailingZeros(BigDecimal, Locale, int)}.
-   */
-  @Deprecated
-  public static String removeNonSignificantZeros(BigDecimal number, Locale locale) {
-    return RUTypes.formatDecimalWithoutTrailingZeros(number, locale, 2);
-  }
-
-  /**
-   * Remove os zeros não significativos (depois do ponto), formata o divisor de decimal de acordo com o Locale. Para garantir o uso do "." no resultado final utilize o Locale.ENGLISH.<br>
-   * Não coloca separados de milhares.
-   *
-   * @param number
-   * @return
-   * @deprecated Este método tem um equivalente em {@link RUTypes#formatDecimalWithoutTrailingZeros(BigDecimal, Locale, int)}.
-   */
-  @Deprecated
-  public static String removeNonSignificantZeros(BigDecimal number, Locale locale, int maxdecimals) {
-    String pattern = RUString.completeUntilLengthRight("#", "0.", maxdecimals + 2);
-    return RUTypes.formatDecimalWithoutTrailingZeros(number, locale, 2);
-  }
 
   /**
    * Este método abstrai os cálculos que temos de fazer para gerar um número inteiro aleatório. Simplificando o código com uma chamada onde simplismente passamos os valores iniciais e final.<br>
