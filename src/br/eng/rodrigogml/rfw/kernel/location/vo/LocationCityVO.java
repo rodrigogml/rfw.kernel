@@ -44,7 +44,7 @@ public class LocationCityVO extends RFWVO {
    * Código telefônico do município.<br>
    * Para Cidades do Brasil, DDD tem 2 dígitos.
    */
-  @RFWMetaIntegerField(caption = "DDD", maxvalue = 99, minvalue = 10, required = false)
+  @RFWMetaIntegerField(caption = "DDD", maxValue = 99, minValue = 10, required = false)
   private Integer ddd = null;
 
   /**

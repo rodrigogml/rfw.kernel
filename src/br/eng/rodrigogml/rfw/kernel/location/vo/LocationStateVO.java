@@ -24,7 +24,7 @@ public class LocationStateVO extends RFWVO {
    * Sigla de duas letras do estado (UF), Sempre maiúsculas.<br>
    * Campo obrigatório para Estados Brasileiros. Normalmente únicos em cada país, mas podem se repetir em países diferentes.
    */
-  @RFWMetaStringField(caption = "UF", required = false, maxLength = 2, minlength = 2, pattern = "[A-Z] {2}", unique = false)
+  @RFWMetaStringField(caption = "UF", required = false, maxLength = 2, minLength = 2, pattern = "[A-Z] {2}", unique = false)
   private String acronym = null;
 
   /**

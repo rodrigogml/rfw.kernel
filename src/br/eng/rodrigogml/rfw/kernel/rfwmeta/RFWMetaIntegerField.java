@@ -39,11 +39,11 @@ public @interface RFWMetaIntegerField {
   /**
    * Define o valor máximo que pode ser definido no atributo.
    */
-  int maxvalue() default Integer.MAX_VALUE;
+  int maxValue() default Integer.MAX_VALUE;
 
   /**
    * Define o valor mínimo aceito no atributo.
    */
-  int minvalue() default Integer.MIN_VALUE;
+  int minValue() default Integer.MIN_VALUE;
 
 }

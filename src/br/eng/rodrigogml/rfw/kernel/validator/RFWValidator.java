@@ -320,8 +320,8 @@ public class RFWValidator {
     }
     if (value != null) {
       // Valida minlength
-      if (ann.minlength() >= 0) {
-        if (value.length() < ann.minlength()) throw new RFWValidationException("'${fieldname}' muito curto! O tamanho mínimo deve ser de ${0} caracteres.", new String[] { "" + ann.minlength(), "" + value }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+      if (ann.minLength() >= 0) {
+        if (value.length() < ann.minLength()) throw new RFWValidationException("'${fieldname}' muito curto! O tamanho mínimo deve ser de ${0} caracteres.", new String[] { "" + ann.minLength(), "" + value }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
       // Valida pattern
       if (!"".equals(ann.pattern())) {
@@ -1251,12 +1251,12 @@ public class RFWValidator {
     }
     if (value != null) {
       // Valida max value
-      if (ann.maxvalue() < value) {
-        throw new RFWValidationException("'${fieldname}' valor maior que o permitido! O maior valor aceito é ${0}.", new String[] { "" + ann.maxvalue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+      if (ann.maxValue() < value) {
+        throw new RFWValidationException("'${fieldname}' valor maior que o permitido! O maior valor aceito é ${0}.", new String[] { "" + ann.maxValue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
       // Valida minvalue
-      if (ann.minvalue() > value) {
-        throw new RFWValidationException("'${fieldname}' valor menor que o permitido! O menor valor aceito é ${0}.", new String[] { "" + ann.maxvalue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+      if (ann.minValue() > value) {
+        throw new RFWValidationException("'${fieldname}' valor menor que o permitido! O menor valor aceito é ${0}.", new String[] { "" + ann.maxValue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
     }
   }

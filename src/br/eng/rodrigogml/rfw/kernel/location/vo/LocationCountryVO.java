@@ -21,7 +21,7 @@ public class LocationCountryVO extends RFWVO {
   /**
    * Sigla de duas letras do país, sempre em maiúsculas, seguindo a ISO 3166-1 alfa-2.
    */
-  @RFWMetaStringField(caption = "Sigla ISO 3166-1", required = true, maxLength = 2, minlength = 2, pattern = "[A-Z]{2}", unique = true)
+  @RFWMetaStringField(caption = "Sigla ISO 3166-1", required = true, maxLength = 2, minLength = 2, pattern = "[A-Z]{2}", unique = true)
   private String acronym = null;
 
   /**

@@ -46,7 +46,7 @@ public @interface RFWMetaStringField {
   /**
    * Define o tamanho mínimo da String.
    */
-  int minlength() default -1;
+  int minLength() default -1;
 
   /**
    * Define o patter para validar o conteúdo do campo.
