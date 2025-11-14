@@ -164,6 +164,14 @@ public @interface RFWMetaRelationshipField {
   int minSize() default -1;
 
   /**
+   * Para relacionamentos dentro de uma {@link List} ou {@link HashMap} este atributo pode ser usado para validar a quantidade máxima que a coleção deve conter.<br>
+   * Lembrando que o atributo {@link #required()} simplesmente valida se não é nulo, não se a coleção está vazia.
+   *
+   * @return valor definido.
+   */
+  int maxSize() default Integer.MAX_VALUE;
+
+  /**
    * Define o nome do atributo do objeto destino que é utilizado para <b>colocar o objeto dentro da Hash</b>. Este atributo só é utilizado quando a coleção do mapeamento é uma Hash.<br>
    * ATENÇÃO, NÃO SUPORTA PROPRIEDADE ANINHADAS!!! O sistema falha se tentar utilizar propriedades aninhadas para a chave da Map, isso pq os sub-objetos ainda não terão sido montados quando precisamos colocar o objeto na Hash.
    *

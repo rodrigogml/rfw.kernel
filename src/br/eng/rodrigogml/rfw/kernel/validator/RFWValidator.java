@@ -55,9 +55,9 @@ import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaStringPhoneField;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaUniqueConstraint;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaUsedBy;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaUsedByArray;
-import br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation;
 import br.eng.rodrigogml.rfw.kernel.utils.RUMail;
 import br.eng.rodrigogml.rfw.kernel.utils.RUReflex;
+import br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWMO;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 
@@ -115,7 +115,8 @@ public class RFWValidator {
    * @throws RFWException Lançado em caso de validação ou problemas durante a execução das validações.
    */
   public void validatePersist(Class<? extends RFWVO> voClass, RFWVO vo) throws RFWException {
-    if (vo != null && !vo.getClass().isAssignableFrom(voClass)) throw new RFWCriticalException("Objecto diferente da classe passada no BISValidator! O objeto passado para validação é do tipo '" + vo.getClass().getCanonicalName() + "' enquanto que a classe passada é do tipo '" + voClass.getCanonicalName() + "'.");
+    if (vo != null && !vo.getClass().isAssignableFrom(voClass))
+      throw new RFWCriticalException("Objecto diferente da classe passada no BISValidator! O objeto passado para validação é do tipo '" + vo.getClass().getCanonicalName() + "' enquanto que a classe passada é do tipo '" + voClass.getCanonicalName() + "'.");
     // validatePersist(voClass, vo, vo.getClass().getSimpleName().toLowerCase(), (vo.getId() == null ? VALIDATION.INSERT : VALIDATION.UPDATE), null, vo, null, new ArrayList<RFWVO>(), null);
     // Em 12/8/21 foi removido o basePath com o nome inicial do VO. Isso pq os MetaObjects deixaram de ter o .val() e passaram a ter o mesmo padrão utilizado pelo BUReflex. Passar o nome do VO como base do caminho fazia com que os campos passados em forceRequiredFields e a associação dos objetos na tela deixassem de funcionar.
     validatePersist(voClass, vo, null, (vo.getId() == null || vo.isInsertWithID() ? VALIDATION.INSERT : VALIDATION.UPDATE), null, vo, null, new ArrayList<RFWVO>(), null);
@@ -130,7 +131,8 @@ public class RFWValidator {
    * @throws RFWException Lançado em caso de validação ou problemas durante a execução das validações.
    */
   public void validatePersist(Class<? extends RFWVO> voClass, RFWVO vo, String[] forceRequiredFields) throws RFWException {
-    if (vo != null && !vo.getClass().isAssignableFrom(voClass)) throw new RFWCriticalException("Objecto diferente da classe passada no BISValidator! O objeto passado para validação é do tipo '" + vo.getClass().getCanonicalName() + "' enquanto que a classe passada é do tipo '" + voClass.getCanonicalName() + "'.");
+    if (vo != null && !vo.getClass().isAssignableFrom(voClass))
+      throw new RFWCriticalException("Objecto diferente da classe passada no BISValidator! O objeto passado para validação é do tipo '" + vo.getClass().getCanonicalName() + "' enquanto que a classe passada é do tipo '" + voClass.getCanonicalName() + "'.");
     // validatePersist(voClass, vo, vo.getClass().getSimpleName().toLowerCase(), (vo.getId() == null ? VALIDATION.INSERT : VALIDATION.UPDATE), null, vo, null, new ArrayList<RFWVO>(), forceRequiredFields);
     // Em 12/8/21 foi removido o basePath com o nome inicial do VO. Isso pq os MetaObjects deixaram de ter o .val() e passaram a ter o mesmo padrão utilizado pelo BUReflex. Passar o nome do VO como base do caminho fazia com que os campos passados em forceRequiredFields e a associação dos objetos na tela deixassem de funcionar.
     validatePersist(voClass, vo, null, (vo.getId() == null || vo.isInsertWithID() ? VALIDATION.INSERT : VALIDATION.UPDATE), null, vo, null, new ArrayList<RFWVO>(), forceRequiredFields);
@@ -316,16 +318,19 @@ public class RFWValidator {
     if (ann.maxLength() <= 0) {
       throw new RFWCriticalException("RFWMetaStringField definido com maxlength = 0 na classe '${0}'.", new String[] { voClass.getCanonicalName() });
     } else if (value != null) {
-      if (value.length() > ann.maxLength()) throw new RFWValidationException("'${fieldname}' com tamanho excessivo! O tamanho máximo deve ser de ${0} caracteres.", new String[] { "" + ann.maxLength() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+      if (value.length() > ann.maxLength()) throw new RFWValidationException("'${fieldname}' com tamanho excessivo! O tamanho máximo deve ser de ${0} caracteres.", new String[] { "" + ann.maxLength() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+          new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
     }
     if (value != null) {
       // Valida minlength
       if (ann.minLength() >= 0) {
-        if (value.length() < ann.minLength()) throw new RFWValidationException("'${fieldname}' muito curto! O tamanho mínimo deve ser de ${0} caracteres.", new String[] { "" + ann.minLength(), "" + value }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        if (value.length() < ann.minLength()) throw new RFWValidationException("'${fieldname}' muito curto! O tamanho mínimo deve ser de ${0} caracteres.", new String[] { "" + ann.minLength(), "" + value }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
       // Valida pattern
       if (!"".equals(ann.pattern())) {
-        if (!value.matches(ann.pattern())) throw new RFWValidationException("O valor de '${fieldname}' não está em um padrão aceito!", new String[] { "" + ann.pattern(), "" + value }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        if (!value.matches(ann.pattern())) throw new RFWValidationException("O valor de '${fieldname}' não está em um padrão aceito!", new String[] { "" + ann.pattern(), "" + value }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
     }
   }
@@ -388,12 +393,14 @@ public class RFWValidator {
     if (ann.maxlength() <= 0) {
       throw new RFWCriticalException("RFWMetaStringField definido com maxlength = 0 na classe '${0}'.", new String[] { voClass.getCanonicalName() });
     } else if (value != null) {
-      if (value.length > ann.maxlength()) throw new RFWValidationException("'${fieldname}' com tamanho excessivo! O tamanho máximo deve ser de ${0} caracteres.", new String[] { "" + ann.maxlength() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+      if (value.length > ann.maxlength()) throw new RFWValidationException("'${fieldname}' com tamanho excessivo! O tamanho máximo deve ser de ${0} caracteres.", new String[] { "" + ann.maxlength() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+          new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
     }
     if (value != null) {
       // Valida minlength
       if (ann.minlength() >= 0) {
-        if (value.length < ann.minlength()) throw new RFWValidationException("'${fieldname}' muito curto! O tamanho mínimo deve ser de ${0} caracteres.", new String[] { "" + ann.minlength(), "" + value }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        if (value.length < ann.minlength()) throw new RFWValidationException("'${fieldname}' muito curto! O tamanho mínimo deve ser de ${0} caracteres.", new String[] { "" + ann.minlength(), "" + value }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
     }
   }
@@ -631,6 +638,9 @@ public class RFWValidator {
             if (ann.minSize() > -1 && list.size() < ann.minSize()) {
               throw new RFWValidationException("'${fieldname}' deve ter no mínimo '${0}' relacionamento(s).", new String[] { "" + ann.minSize() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { ann.caption() });
             }
+            if (list.size() > ann.maxSize()) {
+              throw new RFWValidationException("'${fieldname}' deve ter no máximo '${0}' relacionamento(s).", new String[] { "" + ann.maxSize() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { ann.caption() });
+            }
             // Valida os itens da lista
             for (Object listvo : list) {
               // valida se o objeto da lista não é nulo e se tem um ID
@@ -654,7 +664,8 @@ public class RFWValidator {
                   compareList.remove(assocVO); // Remove este objeto para não conincidir com ele mesmo, e para já ir diminuindo a lista de relacionamento, deixando cada for 1 item menor
                   for (Object dupVO : compareList) {
                     if (((RFWVO) dupVO).getId().equals(((RFWVO) assocVO).getId())) {
-                      throw new RFWValidationException("'${fieldname}' duplicado!. Não podem existir dois cadastros com o mesmo '${fieldname}'.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+                      throw new RFWValidationException("'${fieldname}' duplicado!. Não podem existir dois cadastros com o mesmo '${fieldname}'.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+                          new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
                     }
                   }
                   if (this.dataProvider != null) {
@@ -665,7 +676,8 @@ public class RFWValidator {
                     mo.notEqual("id", vo.getId());
                     List<Long> foundList = this.dataProvider.findIDs(voClass, mo, null);
                     if (foundList != null && foundList.size() > 0) {
-                      throw new RFWValidationException("'${fieldname}' duplicado. Não podem existir dois cadastros com o mesmo '${fieldname}'.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+                      throw new RFWValidationException("'${fieldname}' duplicado. Não podem existir dois cadastros com o mesmo '${fieldname}'.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+                          new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
                     }
                   }
                 }
@@ -677,7 +689,9 @@ public class RFWValidator {
             if (ann.minSize() > -1 && map.size() < ann.minSize()) {
               throw new RFWValidationException("'${fieldname}' deve ter no mínimo '${0}' relacionamento(s).", new String[] { "" + ann.minSize() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { ann.caption() });
             }
-            // Valida os itens da lista
+            if (map.size() > ann.maxSize()) {
+              throw new RFWValidationException("'${fieldname}' deve ter no máximo '${0}' relacionamento(s).", new String[] { "" + ann.maxSize() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { ann.caption() });
+            } // Valida os itens da lista
             for (Object listvo : map.values()) {
               // valida se o objeto da lista não é nulo e se tem um ID
               if (listvo == null || ((RFWVO) listvo).getId() == null) {
@@ -700,7 +714,8 @@ public class RFWValidator {
                   compareList.remove(assocVO); // Remove este objeto para não conincidir com ele mesmo, e para já ir diminuindo a lista de relacionamento, deixando cada for 1 item menor
                   for (Object dupVO : compareList) {
                     if (((RFWVO) dupVO).getId().equals(((RFWVO) assocVO).getId())) {
-                      throw new RFWValidationException("'${fieldname}' duplicado!. Não podem existir dois cadastros com o mesmo '${fieldname}'.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+                      throw new RFWValidationException("'${fieldname}' duplicado!. Não podem existir dois cadastros com o mesmo '${fieldname}'.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+                          new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
                     }
                   }
                   // Busca algum outro relacionamento com este mesmo objeto no banco de dados.
@@ -711,7 +726,8 @@ public class RFWValidator {
                     mo.notEqual("id", vo.getId());
                     List<Long> foundList = this.dataProvider.findIDs(voClass, mo, null);
                     if (foundList != null && foundList.size() > 0) {
-                      throw new RFWValidationException("'${fieldname}' duplicado. Não podem existir dois cadastros com o mesmo '${fieldname}'.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+                      throw new RFWValidationException("'${fieldname}' duplicado. Não podem existir dois cadastros com o mesmo '${fieldname}'.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+                          new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
                     }
                   }
                 }
@@ -731,6 +747,9 @@ public class RFWValidator {
             if (ann.minSize() > -1 && list.size() < ann.minSize()) {
               throw new RFWValidationException("'${fieldname}' deve ter no mínimo '${0}' relacionamento(s).", new String[] { "" + ann.minSize() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { ann.caption() });
             }
+            if (list.size() > ann.maxSize()) {
+              throw new RFWValidationException("'${fieldname}' deve ter no máximo '${0}' relacionamento(s).", new String[] { "" + ann.maxSize() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { ann.caption() });
+            }
             int count = 0;
             for (Iterator iterator = ((List) value).iterator(); iterator.hasNext();) {
               Object obj = iterator.next();
@@ -738,7 +757,8 @@ public class RFWValidator {
                 RFWVO childvo = (RFWVO) obj;
                 validatePersist(childvo.getClass(), childvo, createPath(basepath, field.getName(), "" + count), validation, vo, rootvo, createPath(rootpath, field.getName(), "" + count), newVOs, forceRequiredFields);
               } else {
-                throw new RFWCriticalException("O BISValidator não suporta a BISMetaRelationship '${3}' em uma List de '${0}'. Encontrada no atributo '${1}' da classe '${2}'.", new String[] { obj.getClass().getCanonicalName(), field.getName(), voClass.getCanonicalName(), ann.relationship().toString() });
+                throw new RFWCriticalException("O BISValidator não suporta a BISMetaRelationship '${3}' em uma List de '${0}'. Encontrada no atributo '${1}' da classe '${2}'.",
+                    new String[] { obj.getClass().getCanonicalName(), field.getName(), voClass.getCanonicalName(), ann.relationship().toString() });
               }
               count++;
             }
@@ -748,14 +768,17 @@ public class RFWValidator {
             if (ann.minSize() > -1 && map.size() < ann.minSize()) {
               throw new RFWValidationException("'${fieldname}' deve ter no mínimo '${0}' relacionamento(s).", new String[] { "" + ann.minSize() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { ann.caption() });
             }
-
+            if (map.size() > ann.maxSize()) {
+              throw new RFWValidationException("'${fieldname}' deve ter no máximo '${0}' relacionamento(s).", new String[] { "" + ann.maxSize() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { ann.caption() });
+            }
             int count = 0;
             for (Object obj : ((Map) value).values()) {
               if (obj instanceof RFWVO) {
                 RFWVO childvo = (RFWVO) obj;
                 validatePersist(childvo.getClass(), childvo, createPath(basepath, field.getName(), "" + count), validation, vo, rootvo, createPath(rootpath, field.getName(), "" + count), newVOs, forceRequiredFields);
               } else {
-                throw new RFWCriticalException("O BISValidator não suporta a BISMetaRelationship '${3}' em uma List de '${0}'. Encontrada no atributo '${1}' da classe '${2}'.", new String[] { obj.getClass().getCanonicalName(), field.getName(), voClass.getCanonicalName(), ann.relationship().toString() });
+                throw new RFWCriticalException("O BISValidator não suporta a BISMetaRelationship '${3}' em uma List de '${0}'. Encontrada no atributo '${1}' da classe '${2}'.",
+                    new String[] { obj.getClass().getCanonicalName(), field.getName(), voClass.getCanonicalName(), ann.relationship().toString() });
               }
               count++;
             }
@@ -822,6 +845,9 @@ public class RFWValidator {
             if (ann.minSize() > -1 && list.size() < ann.minSize()) {
               throw new RFWValidationException("'${fieldname}' deve ter no mínimo '${0}' relacionamento(s).", new String[] { "" + ann.minSize() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { ann.caption() });
             }
+            if (list.size() > ann.maxSize()) {
+              throw new RFWValidationException("'${fieldname}' deve ter no máximo '${0}' relacionamento(s).", new String[] { "" + ann.maxSize() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { ann.caption() });
+            }
             int count = 0;
             for (Iterator iterator = ((List) value).iterator(); iterator.hasNext();) {
               Object obj = iterator.next();
@@ -829,7 +855,8 @@ public class RFWValidator {
                 RFWVO childvo = (RFWVO) obj;
                 validatePersist(childvo.getClass(), childvo, createPath(basepath, field.getName(), "" + count), validation, vo, rootvo, createPath(rootpath, field.getName(), "" + count), newVOs, forceRequiredFields);
               } else {
-                throw new RFWCriticalException("O BISValidator não suporta a BISMetaRelationship '${3}' em uma List de '${0}'. Encontrada no atributo '${1}' da classe '${2}'.", new String[] { obj.getClass().getCanonicalName(), field.getName(), voClass.getCanonicalName(), ann.relationship().toString() });
+                throw new RFWCriticalException("O BISValidator não suporta a BISMetaRelationship '${3}' em uma List de '${0}'. Encontrada no atributo '${1}' da classe '${2}'.",
+                    new String[] { obj.getClass().getCanonicalName(), field.getName(), voClass.getCanonicalName(), ann.relationship().toString() });
               }
               count++;
             }
@@ -839,14 +866,17 @@ public class RFWValidator {
             if (ann.minSize() > -1 && map.size() < ann.minSize()) {
               throw new RFWValidationException("'${fieldname}' deve ter no mínimo '${0}' relacionamento(s).", new String[] { "" + ann.minSize() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { ann.caption() });
             }
-
+            if (map.size() > ann.maxSize()) {
+              throw new RFWValidationException("'${fieldname}' deve ter no máximo '${0}' relacionamento(s).", new String[] { "" + ann.maxSize() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { ann.caption() });
+            }
             int count = 0;
             for (Object obj : ((Map) value).values()) {
               if (obj instanceof RFWVO) {
                 RFWVO childvo = (RFWVO) obj;
                 validatePersist(childvo.getClass(), childvo, createPath(basepath, field.getName(), "" + count), validation, vo, rootvo, createPath(rootpath, field.getName(), "" + count), newVOs, forceRequiredFields);
               } else {
-                throw new RFWCriticalException("O BISValidator não suporta a BISMetaRelationship '${3}' em uma List de '${0}'. Encontrada no atributo '${1}' da classe '${2}'.", new String[] { obj.getClass().getCanonicalName(), field.getName(), voClass.getCanonicalName(), ann.relationship().toString() });
+                throw new RFWCriticalException("O BISValidator não suporta a BISMetaRelationship '${3}' em uma List de '${0}'. Encontrada no atributo '${1}' da classe '${2}'.",
+                    new String[] { obj.getClass().getCanonicalName(), field.getName(), voClass.getCanonicalName(), ann.relationship().toString() });
               }
               count++;
             }
@@ -994,7 +1024,8 @@ public class RFWValidator {
     }
     // Valida o tamanho máximo
     if (ann.maxLength() > 0 && value != null && value.length() > ann.maxLength()) {
-      throw new RFWValidationException("O valor '${0}' é muito grande. Deve ter no máximo '${1}' caracteres.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { value, "" + ann.maxLength(), getAttributeFullCaption(rootVO.getClass(), basepath, field.getName()) });
+      throw new RFWValidationException("O valor '${0}' é muito grande. Deve ter no máximo '${1}' caracteres.", createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+          new String[] { value, "" + ann.maxLength(), getAttributeFullCaption(rootVO.getClass(), basepath, field.getName()) });
     }
     // Valida unicidade
     if (ann.unique()) {
@@ -1168,11 +1199,13 @@ public class RFWValidator {
     if (value != null) {
       // Valida max value
       if (ann.maxValue() < value) {
-        throw new RFWValidationException("'${fieldname}' valor maior que o permitido! O maior valor aceito é ${0}.", new String[] { "" + ann.maxValue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        throw new RFWValidationException("'${fieldname}' valor maior que o permitido! O maior valor aceito é ${0}.", new String[] { "" + ann.maxValue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
       // Valida minvalue
       if (ann.minValue() > value) {
-        throw new RFWValidationException("'${fieldname}' valor menor que o permitido! O menor valor aceito é ${0}.", new String[] { "" + ann.minValue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        throw new RFWValidationException("'${fieldname}' valor menor que o permitido! O menor valor aceito é ${0}.", new String[] { "" + ann.minValue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
     }
   }
@@ -1210,11 +1243,13 @@ public class RFWValidator {
     if (value != null) {
       // Valida max value
       if (ann.maxValue() < value) {
-        throw new RFWValidationException("'${fieldname}' valor maior que o permitido! O maior valor aceito é ${0}.", new String[] { "" + ann.maxValue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        throw new RFWValidationException("'${fieldname}' valor maior que o permitido! O maior valor aceito é ${0}.", new String[] { "" + ann.maxValue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
       // Valida minvalue
       if (ann.minValue() > value) {
-        throw new RFWValidationException("'${fieldname}' valor menor que o permitido! O menor valor aceito é ${0}.", new String[] { "" + ann.minValue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        throw new RFWValidationException("'${fieldname}' valor menor que o permitido! O menor valor aceito é ${0}.", new String[] { "" + ann.minValue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
     }
   }
@@ -1252,11 +1287,13 @@ public class RFWValidator {
     if (value != null) {
       // Valida max value
       if (ann.maxValue() < value) {
-        throw new RFWValidationException("'${fieldname}' valor maior que o permitido! O maior valor aceito é ${0}.", new String[] { "" + ann.maxValue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        throw new RFWValidationException("'${fieldname}' valor maior que o permitido! O maior valor aceito é ${0}.", new String[] { "" + ann.maxValue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
       // Valida minvalue
       if (ann.minValue() > value) {
-        throw new RFWValidationException("'${fieldname}' valor menor que o permitido! O menor valor aceito é ${0}.", new String[] { "" + ann.maxValue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        throw new RFWValidationException("'${fieldname}' valor menor que o permitido! O menor valor aceito é ${0}.", new String[] { "" + ann.maxValue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
     }
   }
@@ -1294,11 +1331,13 @@ public class RFWValidator {
     if (value != null) {
       // Valida max value
       if (ann.maxvalue() < value) {
-        throw new RFWValidationException("'${fieldname}' valor maior que o permitido! O maior valor aceito é ${0}.", new String[] { "" + ann.maxvalue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        throw new RFWValidationException("'${fieldname}' valor maior que o permitido! O maior valor aceito é ${0}.", new String[] { "" + ann.maxvalue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
       // Valida minvalue
       if (ann.minvalue() > value) {
-        throw new RFWValidationException("'${fieldname}' valor menor que o permitido! O menor valor aceito é ${0}.", new String[] { "" + ann.maxvalue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        throw new RFWValidationException("'${fieldname}' valor menor que o permitido! O menor valor aceito é ${0}.", new String[] { "" + ann.maxvalue() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
     }
   }
@@ -1346,7 +1385,8 @@ public class RFWValidator {
         throw new RFWCriticalException("No campo '${0}' da classe '${1}', a definição de maxFloatValue tem mais casas do que a precisão definida pela propriedade scale!", new String[] { field.getName(), voClass.getCanonicalName() });
       }
       if (max != null && max.compareTo(value) < 0) {
-        throw new RFWValidationException("'${fieldname}' valor maior que o permitido! O maior valor aceito é ${0}.", new String[] { max.toString() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        throw new RFWValidationException("'${fieldname}' valor maior que o permitido! O maior valor aceito é ${0}.", new String[] { max.toString() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
 
       // MinValue
@@ -1357,7 +1397,8 @@ public class RFWValidator {
         throw new RFWCriticalException("No campo '${0}' da classe '${1}', a definição de minFloatValue tem mais casas do que a precisão definida pela propriedade scale!", new String[] { field.getName(), voClass.getCanonicalName() });
       }
       if (min != null && min.compareTo(value) > 0) {
-        throw new RFWValidationException("'${fieldname}' valor menor que o permitido! O menor valor aceito é ${0}.", new String[] { min.toString() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        throw new RFWValidationException("'${fieldname}' valor menor que o permitido! O menor valor aceito é ${0}.", new String[] { min.toString() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
       // Valida o Scale (Precisão) - Se definido
       if (value.scale() < minScale) {
@@ -1365,7 +1406,8 @@ public class RFWValidator {
       }
       // Valida o Scale Máximo (Precisão) - Se definido
       if (value.scale() > maxScale) {
-        throw new RFWValidationException("'${fieldname}' deve ter uma precisão máxima de ${0} casas decimais.", new String[] { "" + maxScale }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        throw new RFWValidationException("'${fieldname}' deve ter uma precisão máxima de ${0} casas decimais.", new String[] { "" + maxScale }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
       // Valida o valor absoluto - Mas permite o valor zero
       if (ann.absolute() && value.abs().compareTo(value) != 0 && value.compareTo(BigDecimal.ZERO) != 0) {
@@ -1417,7 +1459,8 @@ public class RFWValidator {
         throw new RFWCriticalException("No campo '${0}' da classe '${1}', a definição de maxFloatValue tem mais casas do que a precisão definida pela propriedade scale!", new String[] { field.getName(), voClass.getCanonicalName() });
       }
       if (max != null && max.compareTo(value) < 0) {
-        throw new RFWValidationException("'${fieldname}' valor maior que o permitido! O maior valor aceito é ${0}.", new String[] { max.toString() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        throw new RFWValidationException("'${fieldname}' valor maior que o permitido! O maior valor aceito é ${0}.", new String[] { max.toString() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
 
       // MinValue
@@ -1428,7 +1471,8 @@ public class RFWValidator {
         throw new RFWCriticalException("No campo '${0}' da classe '${1}', a definição de minFloatValue tem mais casas do que a precisão definida pela propriedade scale!", new String[] { field.getName(), voClass.getCanonicalName() });
       }
       if (min != null && min.compareTo(value) > 0) {
-        throw new RFWValidationException("'${fieldname}' valor menor que o permitido! O menor valor aceito é ${0}.", new String[] { min.toString() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        throw new RFWValidationException("'${fieldname}' valor menor que o permitido! O menor valor aceito é ${0}.", new String[] { min.toString() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
       // Valida o Scale (Precisão) - Se definido
       if (value.scale() < minScale) {
@@ -1436,7 +1480,8 @@ public class RFWValidator {
       }
       // Valida o Scale Máximo (Precisão) - Se definido
       if (value.scale() > maxScale) {
-        throw new RFWValidationException("'${fieldname}' deve ter uma precisão máxima de ${0} casas decimais.", new String[] { "" + maxScale }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        throw new RFWValidationException("'${fieldname}' deve ter uma precisão máxima de ${0} casas decimais.", new String[] { "" + maxScale }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
       // Valida o valor absoluto - Mas permite o valor zero
       if (ann.absolute() && value.abs().compareTo(value) != 0 && value.compareTo(BigDecimal.ZERO) != 0) {
@@ -1488,7 +1533,8 @@ public class RFWValidator {
         throw new RFWCriticalException("No campo '${0}' da classe '${1}', a definição de maxFloatValue tem mais casas do que a precisão definida pela propriedade scale!", new String[] { field.getName(), voClass.getCanonicalName() });
       }
       if (max != null && max.compareTo(value) < 0) {
-        throw new RFWValidationException("'${fieldname}' valor maior que o permitido! O maior valor aceito é ${0}.", new String[] { max.toString() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        throw new RFWValidationException("'${fieldname}' valor maior que o permitido! O maior valor aceito é ${0}.", new String[] { max.toString() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
 
       // MinValue
@@ -1499,7 +1545,8 @@ public class RFWValidator {
         throw new RFWCriticalException("No campo '${0}' da classe '${1}', a definição de minFloatValue tem mais casas do que a precisão definida pela propriedade scale!", new String[] { field.getName(), voClass.getCanonicalName() });
       }
       if (min != null && min.compareTo(value) > 0) {
-        throw new RFWValidationException("'${fieldname}' valor menor que o permitido! O menor valor aceito é ${0}.", new String[] { min.toString() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        throw new RFWValidationException("'${fieldname}' valor menor que o permitido! O menor valor aceito é ${0}.", new String[] { min.toString() }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
       // Valida o Scale (Precisão) - Se definido
       if (value.scale() < minScale) {
@@ -1507,7 +1554,8 @@ public class RFWValidator {
       }
       // Valida o Scale Máximo (Precisão) - Se definido
       if (value.scale() > maxScale) {
-        throw new RFWValidationException("'${fieldname}' deve ter uma precisão máxima de ${0} casas decimais.", new String[] { "" + maxScale }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+        throw new RFWValidationException("'${fieldname}' deve ter uma precisão máxima de ${0} casas decimais.", new String[] { "" + maxScale }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+            new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
       }
       // Valida o valor absoluto - Mas permite o valor zero
       if (ann.absolute() && value.abs().compareTo(value) != 0 && value.compareTo(BigDecimal.ZERO) != 0) {
@@ -1584,7 +1632,8 @@ public class RFWValidator {
           if (entry.getKey() instanceof String) {
             if (ann.maxLenghtKey() > 0 && entry.getKey() != null && ((String) entry.getKey()).length() > ann.maxLenghtKey()) {
               // Lançado como Critico pq o usuário provavelmente não define como chave, deve faltar limitador em algum ponto do sistema que valide a chave.
-              throw new RFWCriticalException("A chave '${2}' do Map no atributo '${0}' da classe '${1}' é maior do que o limite definido de '${3}'.", new String[] { createPath(basepath, field.getName(), null), rootvo.getClass().getCanonicalName(), entry.getKey().toString(), "" + ann.maxLenghtKey() });
+              throw new RFWCriticalException("A chave '${2}' do Map no atributo '${0}' da classe '${1}' é maior do que o limite definido de '${3}'.",
+                  new String[] { createPath(basepath, field.getName(), null), rootvo.getClass().getCanonicalName(), entry.getKey().toString(), "" + ann.maxLenghtKey() });
             }
           }
           if (entry.getValue() instanceof String) {
@@ -1710,7 +1759,8 @@ public class RFWValidator {
           throw new RFWCriticalException("Data inválida encontrada na BISMetaDateAnnotation da classe '${0}' no atributo '${1}'.", new String[] { voClass.getCanonicalName(), field.getName() }, e);
         }
         if (minDate.compareTo(value) < 0) {
-          throw new RFWValidationException("A Data de '${fieldname}' deve ser maior ou igual à '${0}'.", new String[] { SimpleDateFormat.getDateTimeInstance().format(minDate) }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+          throw new RFWValidationException("A Data de '${fieldname}' deve ser maior ou igual à '${0}'.", new String[] { SimpleDateFormat.getDateTimeInstance().format(minDate) }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+              new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
         }
       }
       // Valida data máxima
@@ -1722,7 +1772,8 @@ public class RFWValidator {
           throw new RFWCriticalException("Data inválida encontrada na BISMetaDateAnnotation da classe '${0}' no atributo '${1}'.", new String[] { voClass.getCanonicalName(), field.getName() }, e);
         }
         if (maxDate.compareTo(value) > 0) {
-          throw new RFWValidationException("A Data de '${fieldname}' deve ser menor ou igual à '${0}'.", new String[] { SimpleDateFormat.getDateTimeInstance().format(maxDate) }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+          throw new RFWValidationException("A Data de '${fieldname}' deve ser menor ou igual à '${0}'.", new String[] { SimpleDateFormat.getDateTimeInstance().format(maxDate) }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+              new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
         }
       }
     }
@@ -1741,7 +1792,8 @@ public class RFWValidator {
           throw new RFWCriticalException("Data inválida encontrada na BISMetaDateAnnotation da classe '${0}' no atributo '${1}'.", new String[] { voClass.getCanonicalName(), field.getName() }, e);
         }
         if (minDate.compareTo(value) < 0) {
-          throw new RFWValidationException("A Data de '${fieldname}' deve ser maior ou igual à '${0}'.", new String[] { SimpleDateFormat.getDateTimeInstance().format(minDate) }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+          throw new RFWValidationException("A Data de '${fieldname}' deve ser maior ou igual à '${0}'.", new String[] { SimpleDateFormat.getDateTimeInstance().format(minDate) }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+              new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
         }
       }
       // Valida data máxima
@@ -1753,7 +1805,8 @@ public class RFWValidator {
           throw new RFWCriticalException("Data inválida encontrada na BISMetaDateAnnotation da classe '${0}' no atributo '${1}'.", new String[] { voClass.getCanonicalName(), field.getName() }, e);
         }
         if (maxDate.compareTo(value) > 0) {
-          throw new RFWValidationException("A Data de '${fieldname}' deve ser menor ou igual à '${0}'.", new String[] { SimpleDateFormat.getDateTimeInstance().format(maxDate) }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+          throw new RFWValidationException("A Data de '${fieldname}' deve ser menor ou igual à '${0}'.", new String[] { SimpleDateFormat.getDateTimeInstance().format(maxDate) }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+              new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
         }
       }
     }
@@ -1772,7 +1825,8 @@ public class RFWValidator {
           throw new RFWCriticalException("Data inválida encontrada na BISMetaDateAnnotation da classe '${0}' no atributo '${1}'.", new String[] { voClass.getCanonicalName(), field.getName() }, e);
         }
         if (minDate.compareTo(value) < 0) {
-          throw new RFWValidationException("A Data de '${fieldname}' deve ser maior ou igual à '${0}'.", new String[] { SimpleDateFormat.getDateTimeInstance().format(minDate) }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+          throw new RFWValidationException("A Data de '${fieldname}' deve ser maior ou igual à '${0}'.", new String[] { SimpleDateFormat.getDateTimeInstance().format(minDate) }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+              new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
         }
       }
       // Valida data máxima
@@ -1784,7 +1838,8 @@ public class RFWValidator {
           throw new RFWCriticalException("Data inválida encontrada na BISMetaDateAnnotation da classe '${0}' no atributo '${1}'.", new String[] { voClass.getCanonicalName(), field.getName() }, e);
         }
         if (maxDate.compareTo(value) > 0) {
-          throw new RFWValidationException("A Data de '${fieldname}' deve ser menor ou igual à '${0}'.", new String[] { SimpleDateFormat.getDateTimeInstance().format(maxDate) }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+          throw new RFWValidationException("A Data de '${fieldname}' deve ser menor ou igual à '${0}'.", new String[] { SimpleDateFormat.getDateTimeInstance().format(maxDate) }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+              new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
         }
       }
     }
@@ -1803,7 +1858,8 @@ public class RFWValidator {
           throw new RFWCriticalException("Data inválida encontrada na BISMetaDateAnnotation da classe '${0}' no atributo '${1}'.", new String[] { voClass.getCanonicalName(), field.getName() }, e);
         }
         if (minDate.compareTo(value) < 0) {
-          throw new RFWValidationException("A Data de '${fieldname}' deve ser maior ou igual à '${0}'.", new String[] { SimpleDateFormat.getDateTimeInstance().format(minDate) }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+          throw new RFWValidationException("A Data de '${fieldname}' deve ser maior ou igual à '${0}'.", new String[] { SimpleDateFormat.getDateTimeInstance().format(minDate) }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+              new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
         }
       }
       // Valida data máxima
@@ -1815,7 +1871,8 @@ public class RFWValidator {
           throw new RFWCriticalException("Data inválida encontrada na BISMetaDateAnnotation da classe '${0}' no atributo '${1}'.", new String[] { voClass.getCanonicalName(), field.getName() }, e);
         }
         if (maxDate.compareTo(value) > 0) {
-          throw new RFWValidationException("A Data de '${fieldname}' deve ser menor ou igual à '${0}'.", new String[] { SimpleDateFormat.getDateTimeInstance().format(maxDate) }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(), new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
+          throw new RFWValidationException("A Data de '${fieldname}' deve ser menor ou igual à '${0}'.", new String[] { SimpleDateFormat.getDateTimeInstance().format(maxDate) }, createPath(basepath, field.getName(), null), voClass.getCanonicalName(),
+              new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()) });
         }
       }
     }
