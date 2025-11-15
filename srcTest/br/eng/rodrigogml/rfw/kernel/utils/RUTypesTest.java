@@ -9,6 +9,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.junit.FixMethodOrder;
@@ -453,4 +459,33 @@ public class RUTypesTest {
     }
   }
 
+  @Test
+  public void t01_formatAndParseDateMethods() throws RFWException {
+    ZoneId zoneSP = ZoneId.of("America/Sao_Paulo");
+    LocalDateTime ldt = LocalDateTime.of(2024, 2, 20, 15, 30, 0);
+
+    // ---- formatToyyyy_MM_dd_T_HH_mm_ssXXX(LocalDateTime, ZoneOffset) (UTC) ----
+    String formattedUtc = RUTypes.formatToyyyy_MM_dd_T_HH_mm_ssXXX(ldt, ZoneOffset.UTC);
+    assertEquals("2024-02-20T15:30:00Z", formattedUtc);
+
+    // ---- formatToyyyy_MM_dd_T_HH_mm_ssXXX(LocalDateTime, ZoneId) ----
+    String formattedSp = RUTypes.formatToyyyy_MM_dd_T_HH_mm_ssXXX(ldt, zoneSP);
+    ZonedDateTime zdtSp = ldt.atZone(zoneSP);
+    String expectedSp = zdtSp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"));
+    assertEquals(expectedSp, formattedSp);
+
+    // ---- parseLocalDateTime(String) - ISO local sem timezone ----
+    LocalDateTime parsedLocal = RUTypes.parseLocalDateTime("2024-02-20T15:30:00");
+    assertEquals(ldt, parsedLocal);
+
+    // ---- parseDate(String, ZoneId) - ISO com timezone ----
+    String withOffset = "2024-02-20T15:30:00-07:00";
+    Date parsedDate = RUTypes.parseDate(withOffset, zoneSP);
+
+    // Cálculo esperado com a API java.time
+    OffsetDateTime odt = OffsetDateTime.parse(withOffset);
+    Date expectedDate = Date.from(odt.atZoneSameInstant(zoneSP).toInstant());
+
+    assertEquals(expectedDate.toInstant(), parsedDate.toInstant());
+  }
 }

@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
@@ -34,6 +35,8 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
  * @since (21 de fev. de 2025)
  */
 public class RUTypes {
+
+  private static final DateTimeFormatter FORMATTER_yyyy_MM_dd_T_HH_mm_ssXXX = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
 
   /**
    * Classe utilitária exclusivamente estática
@@ -109,27 +112,6 @@ public class RUTypes {
    */
   public static String formatTodd_MM_yyyy_HH_mm_ss(LocalDateTime date) {
     return formatLocalDateTime(date, "dd/MM/yyyy HH:mm:ss");
-  }
-
-  /**
-   * Este método utiliza o SimpleDateFormat para formar o Date em um formato completo com o patern 'yyyy-MM-dd'T'HH:mm:ssXXX' (Padrão UTC utilizado no XML da NFe).
-   *
-   * @param date
-   * @return
-   */
-  public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(Date date) {
-    return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").format(date);
-  }
-
-  /**
-   * Este método utiliza o SimpleDateFormat para formar o Date em um formato completo com o patern 'yyyy-MM-dd'T'HH:mm:ssXXX' (Padrão UTC utilizado no XML da NFe).
-   *
-   * @param date
-   * @return
-   */
-  public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(LocalDateTime date, ZoneId zoneId) {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
-    return date.atZone(zoneId).format(formatter);
   }
 
   /**
@@ -1039,4 +1021,74 @@ public class RUTypes {
     float result = (float) (Math.ceil(value * factor) / factor);
     return result;
   }
+
+  /**
+   * Este método formata um {@link LocalDateTime} no padrão completo "yyyy-MM-dd'T'HH:mm:ssXXX", utilizando o {@link ZoneOffset} informado.
+   *
+   * @param dateTime Data/hora a ser formatada (não nula)
+   * @param offset Offset a ser utilizado (ex: {@link ZoneOffset#UTC})
+   * @return String com a data/hora formatada
+   */
+  public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(LocalDateTime dateTime, ZoneOffset offset) {
+    return dateTime.atOffset(offset).format(FORMATTER_yyyy_MM_dd_T_HH_mm_ssXXX);
+  }
+
+  /**
+   * Este método formata um {@link Date} no padrão completo {@code "yyyy-MM-dd'T'HH:mm:ssXXX"}, utilizando a zona padrão do sistema {@link RFW#getZoneId()}.
+   * <p>
+   * Observação: quando o offset resultante for UTC (deslocamento zero), o {@link DateTimeFormatter} do Java imprimirá {@code Z} ao final, em vez de {@code +00:00}, conforme a especificação ISO-8601.
+   * </p>
+   *
+   * @param date Data a ser formatada (pode ser nula)
+   * @return String com a data/hora formatada ou {@code null} se {@code date} for nulo.
+   */
+  public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(Date date) {
+    if (date == null) return null;
+    return date.toInstant().atZone(RFW.getZoneId()).format(FORMATTER_yyyy_MM_dd_T_HH_mm_ssXXX);
+  }
+
+  /**
+   * Este método formata um {@link Date} no padrão completo {@code "yyyy-MM-dd'T'HH:mm:ssXXX"}, utilizando a {@link ZoneId} informada.
+   * <p>
+   * Observação: quando o offset resultante for UTC (deslocamento zero), o {@link DateTimeFormatter} do Java imprimirá {@code Z} ao final, em vez de {@code +00:00}, conforme a especificação ISO-8601.
+   * </p>
+   *
+   * @param date Data a ser formatada (pode ser nula)
+   * @param zoneId Zona a ser utilizada na conversão (não nula)
+   * @return String com a data/hora formatada ou {@code null} se {@code date} for nulo.
+   */
+  public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(Date date, ZoneId zoneId) {
+    if (date == null) return null;
+    return date.toInstant().atZone(zoneId).format(FORMATTER_yyyy_MM_dd_T_HH_mm_ssXXX);
+  }
+
+  /**
+   * Este método formata um {@link LocalDateTime} no padrão completo {@code "yyyy-MM-dd'T'HH:mm:ssXXX"}, utilizando a zona padrão do sistema {@link RFW#getZoneId()}.
+   * <p>
+   * Observação: quando o offset resultante for UTC (deslocamento zero), o {@link DateTimeFormatter} do Java imprimirá {@code Z} ao final, em vez de {@code +00:00}, conforme a especificação ISO-8601.
+   * </p>
+   *
+   * @param dateTime Data/hora a ser formatada (pode ser nula)
+   * @return String com a data/hora formatada ou {@code null} se {@code dateTime} for nulo.
+   */
+  public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(LocalDateTime dateTime) {
+    if (dateTime == null) return null;
+    return dateTime.atZone(RFW.getZoneId()).format(FORMATTER_yyyy_MM_dd_T_HH_mm_ssXXX);
+  }
+
+  /**
+   * Este método formata um {@link LocalDateTime} no padrão completo {@code "yyyy-MM-dd'T'HH:mm:ssXXX"}, utilizando a {@link ZoneId} informada.
+   * <p>
+   * Observação: quando o offset resultante for UTC (deslocamento zero), o {@link DateTimeFormatter} do Java imprimirá {@code Z} ao final, em vez de {@code +00:00}, conforme a especificação ISO-8601.
+   * </p>
+   *
+   * @param dateTime Data/hora a ser formatada (pode ser nula)
+   * @param zoneId Zona a ser utilizada na conversão (não nula)
+   * @return String com a data/hora formatada ou {@code null} se {@code dateTime} for nulo.
+   */
+  public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(LocalDateTime dateTime, ZoneId zoneId) {
+    if (dateTime == null) return null;
+    return dateTime.atZone(zoneId).format(FORMATTER_yyyy_MM_dd_T_HH_mm_ssXXX);
+  }
+
 }

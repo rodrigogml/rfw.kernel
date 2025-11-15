@@ -217,9 +217,7 @@ public class RUValueValidation {
     if (uf == null || uf.length() != 2) throw new RFWValidationException("BISERP_000417");
 
     // Lista otimizada de UFs válidas para Java 1.8
-    final List<String> validUFs = Arrays.asList(
-        "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG",
-        "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SE", "SP", "TO");
+    final List<String> validUFs = Arrays.asList("AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SE", "SP", "TO");
 
     if (!validUFs.contains(uf.toUpperCase())) throw new RFWValidationException("BISERP_000417");
   }

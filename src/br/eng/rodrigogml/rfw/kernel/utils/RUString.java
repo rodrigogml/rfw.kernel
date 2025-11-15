@@ -899,6 +899,25 @@ public class RUString {
   }
 
   /**
+   * Calcula a Hash SHA1 de uma String.
+   *
+   * @param value Valor a ter a Hash calculada.
+   * @param charset Defineo charset do valor, usado para converter corretamente em bytes.
+   * @return Valor em Hexa calculado com o algorítimo de SHA1.
+   * @throws RFWException
+   */
+  public static String calcSHA1(String value, Charset charset) throws RFWException {
+    try {
+      MessageDigest cript = MessageDigest.getInstance("SHA-1");
+      cript.reset();
+      cript.update(value.getBytes(charset));
+      return toHex(cript.digest());
+    } catch (Exception e) {
+      throw new RFWCriticalException("BISERP_000307", e);
+    }
+  }
+
+  /**
    * Substitui o texto recursivamente até que o texto não sofra mais alterações.
    * <p>
    * O texto será processado do início ao fim quantas vezes forem necessárias até que nenhuma substituição ocorra.
