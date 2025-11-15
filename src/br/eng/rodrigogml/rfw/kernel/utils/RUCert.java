@@ -7,16 +7,21 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.Signature;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -359,8 +364,7 @@ public class RUCert {
       while (aliases.hasMoreElements()) {
         String alias = aliases.nextElement();
         if (keyStore.isKeyEntry(alias)) {
-          return (KeyStore.PrivateKeyEntry) keyStore.getEntry(
-              alias, new KeyStore.PasswordProtection(certificate.getCertificateFilePassword().toCharArray()));
+          return (KeyStore.PrivateKeyEntry) keyStore.getEntry(alias, new KeyStore.PasswordProtection(certificate.getCertificateFilePassword().toCharArray()));
         }
       }
     } catch (KeyStoreException | NoSuchAlgorithmException | java.security.UnrecoverableEntryException e) {
@@ -596,5 +600,65 @@ public class RUCert {
       throw new RFWCriticalException("Falha ao procurar por chaves privadas no Certificado!", e);
     }
     return list;
+  }
+
+  /**
+   * Assina um array de bytes utilizando o algoritmo SHA1withRSA, a partir de um {@link RFWCertificate}.
+   *
+   * <p>
+   * Este método é útil para cenários em que é necessário assinar um conteúdo textual ou binário que não está em formato XML, como por exemplo o payload do QR-Code v3 OFFLINE da NFC-e.
+   * </p>
+   *
+   * @param data Conteúdo a ser assinado, em bytes.
+   * @param certificate Certificado que contém a chave privada para assinatura.
+   * @return Array de bytes contendo a assinatura gerada.
+   * @throws RFWException Se ocorrer qualquer falha ao extrair a chave privada ou ao gerar a assinatura.
+   */
+  public static byte[] signBytesSHA1withRSA(byte[] data, RFWCertificate certificate) throws RFWException {
+    try {
+      KeyStore.PrivateKeyEntry keyEntry = extractPrivateKey(certificate);
+      PrivateKey privateKey = keyEntry.getPrivateKey();
+
+      Signature signature = Signature.getInstance("SHA1withRSA");
+      signature.initSign(privateKey);
+      signature.update(data);
+
+      return signature.sign();
+    } catch (RFWException e) {
+      throw e;
+    } catch (Exception e) {
+      throw new RFWCriticalException("Falha ao assinar dados com SHA1withRSA.", e);
+    }
+  }
+
+  /**
+   * Assina um texto utilizando o algoritmo SHA1withRSA e retorna o resultado em Base64.
+   *
+   * <p>
+   * Este método é uma conveniência para cenários como o QR-Code v3 OFFLINE da NFC-e, onde a especificação exige a assinatura digital (RSA-SHA1) em Base64 da string formada pelos parâmetros do QR-Code.
+   * </p>
+   *
+   * @param text Texto a ser assinado.
+   * @param charset Charset utilizado para converter o texto em bytes (ex.: UTF-8).
+   * @param certificate Certificado que contém a chave privada para assinatura.
+   * @return Assinatura digital em Base64 (sem quebras de linha).
+   * @throws RFWException Se ocorrer falha ao assinar o texto.
+   */
+  public static String signTextSHA1withRSA(String text, Charset charset, RFWCertificate certificate) throws RFWException {
+    byte[] data = text.getBytes(charset);
+    byte[] signed = signBytesSHA1withRSA(data, certificate);
+    return Base64.getEncoder().encodeToString(signed);
+  }
+
+  /**
+   * Versão conveniente de {@link #signTextSHA1withRSA(String, Charset, RFWCertificate)} usando UTF-8.
+   *
+   * @param text Texto a ser assinado.
+   * @param certificate Certificado que contém a chave privada para assinatura.
+   * @return Assinatura digital em Base64 (sem quebras de linha).
+   * @throws RFWException Se ocorrer falha ao assinar o texto.
+   */
+  public static String signTextSHA1withRSA(String text, RFWCertificate certificate) throws RFWException {
+    return signTextSHA1withRSA(text, StandardCharsets.UTF_8, certificate);
   }
 }

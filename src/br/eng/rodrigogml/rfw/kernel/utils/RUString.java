@@ -10,6 +10,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -862,60 +863,153 @@ public class RUString {
   }
 
   /**
-   * Calcula a Hash SHA1 de uma String.
+   * Calcula o hash SHA-1 de uma String usando UTF-8 e retorna o resultado em hexadecimal.
    *
-   * @param value Valor a ter a Hash calculada.
-   * @return Valor em Hexa calculado com o algorítimo de SHA1.
-   * @throws RFWException
+   * @param value Texto a ter o hash calculado.
+   * @return Hash SHA-1 em uma String hexadecimal (40 caracteres).
+   * @throws RFWException Em caso de falha no cálculo do hash.
    */
-  public static String calcSHA1(String value) throws RFWException {
+  public static String calcSHA1ToHex(String value) throws RFWException {
+    return toHex(calcSHA1(value, StandardCharsets.UTF_8));
+  }
+
+  /**
+   * Calcula o hash SHA-1 de uma String usando o charset informado e retorna o resultado em hexadecimal.
+   *
+   * @param value Texto a ter o hash calculado.
+   * @param charset Nome do charset usado para converter a String em bytes (ex.: "UTF-8", "ISO-8859-1").
+   * @return Hash SHA-1 em uma String hexadecimal (40 caracteres).
+   * @throws RFWException Em caso de charset inválido ou erro no cálculo do hash.
+   */
+  public static String calcSHA1ToHex(String value, String charset) throws RFWException {
+    return toHex(calcSHA1(value, charset));
+  }
+
+  /**
+   * Calcula o hash SHA-1 de uma String usando o charset informado e retorna o resultado em hexadecimal.
+   *
+   * @param value Texto a ter o hash calculado.
+   * @param charset Charset usado para converter a String em bytes.
+   * @return Hash SHA-1 em uma String hexadecimal (40 caracteres).
+   * @throws RFWException Em caso de falha no cálculo do hash.
+   */
+  public static String calcSHA1ToHex(String value, Charset charset) throws RFWException {
+    return toHex(calcSHA1(value, charset));
+  }
+
+  /**
+   * Calcula o hash SHA-1 de uma String usando UTF-8 e retorna o resultado em bytes.
+   *
+   * @param value Texto a ter o hash calculado.
+   * @return Hash SHA-1 em um array de bytes (20 bytes).
+   * @throws RFWException Em caso de falha no cálculo do hash.
+   */
+  public static byte[] calcSHA1(String value) throws RFWException {
+    return calcSHA1Internal(value, StandardCharsets.UTF_8);
+  }
+
+  /**
+   * Calcula o hash SHA-1 de uma String usando o charset informado e retorna o resultado em bytes.
+   *
+   * @param value Texto a ter o hash calculado.
+   * @param charset Nome do charset usado para converter a String em bytes (ex.: "UTF-8", "ISO-8859-1").
+   * @return Hash SHA-1 em um array de bytes (20 bytes).
+   * @throws RFWException Em caso de charset inválido ou erro no cálculo do hash.
+   */
+  public static byte[] calcSHA1(String value, String charset) throws RFWException {
     try {
-      MessageDigest cript = MessageDigest.getInstance("SHA-1");
-      cript.reset();
-      cript.update(value.getBytes());
-      return toHex(cript.digest());
+      return calcSHA1Internal(value, Charset.forName(charset));
+    } catch (IllegalArgumentException e) {
+      // Charset inválido
+      throw new RFWCriticalException("BISERP_000307", e);
+    }
+  }
+
+  /**
+   * Calcula o hash SHA-1 de uma String usando o charset informado e retorna o resultado em bytes.
+   *
+   * @param value Texto a ter o hash calculado.
+   * @param charset Charset usado para converter a String em bytes.
+   * @return Hash SHA-1 em um array de bytes (20 bytes).
+   * @throws RFWException Em caso de falha no cálculo do hash.
+   */
+  public static byte[] calcSHA1(String value, Charset charset) throws RFWException {
+    return calcSHA1Internal(value, charset);
+  }
+
+  /**
+   * Implementação centralizada do cálculo de SHA-1.
+   */
+  private static byte[] calcSHA1Internal(String value, Charset charset) throws RFWException {
+    try {
+      MessageDigest digest = MessageDigest.getInstance("SHA-1");
+      digest.reset();
+      return digest.digest(value.getBytes(charset));
     } catch (NoSuchAlgorithmException e) {
+      // Em teoria não deveria ocorrer em JVM padrão, mas tratamos como crítico
       throw new RFWCriticalException("BISERP_000307", e);
     }
   }
 
-  /**
-   * Calcula a Hash SHA1 de uma String.
-   *
-   * @param value Valor a ter a Hash calculada.
-   * @param charset Defineo charset do valor, usado para converter corretamente em bytes.
-   * @return Valor em Hexa calculado com o algorítimo de SHA1.
-   * @throws RFWException
-   */
-  public static String calcSHA1(String value, String charset) throws RFWException {
-    try {
-      MessageDigest cript = MessageDigest.getInstance("SHA-1");
-      cript.reset();
-      cript.update(value.getBytes(charset));
-      return toHex(cript.digest());
-    } catch (Exception e) {
-      throw new RFWCriticalException("BISERP_000307", e);
-    }
-  }
-
-  /**
-   * Calcula a Hash SHA1 de uma String.
-   *
-   * @param value Valor a ter a Hash calculada.
-   * @param charset Defineo charset do valor, usado para converter corretamente em bytes.
-   * @return Valor em Hexa calculado com o algorítimo de SHA1.
-   * @throws RFWException
-   */
-  public static String calcSHA1(String value, Charset charset) throws RFWException {
-    try {
-      MessageDigest cript = MessageDigest.getInstance("SHA-1");
-      cript.reset();
-      cript.update(value.getBytes(charset));
-      return toHex(cript.digest());
-    } catch (Exception e) {
-      throw new RFWCriticalException("BISERP_000307", e);
-    }
-  }
+  //
+  // /**
+  // * Calcula a Hash SHA1 de uma String já no formato Hex.
+  // *
+  // * @param value Valor a ter a Hash calculada em uma String em Hex.
+  // * @return Valor em Hexa calculado com o algorítimo de SHA1.
+  // * @throws RFWException
+  // */
+  // public static String calcSHA1ToHex(String value) throws RFWException {
+  // try {
+  // MessageDigest digest = MessageDigest.getInstance("SHA-1");
+  // byte[] hash = digest.digest(value.getBytes(StandardCharsets.UTF_8));
+  // return toHex(hash);
+  // // MessageDigest cript = MessageDigest.getInstance("SHA-1");
+  // // cript.reset();
+  // // cript.update(value.getBytes());
+  // // return toHex(cript.digest());
+  // } catch (NoSuchAlgorithmException e) {
+  // throw new RFWCriticalException("BISERP_000307", e);
+  // }
+  // }
+  //
+  // /**
+  // * Calcula a Hash SHA1 de uma String já no formato Hex.
+  // *
+  // * @param value Valor a ter a Hash calculada.
+  // * @param charset Defineo charset do valor, usado para converter corretamente em bytes.
+  // * @return Valor em Hexa calculado com o algorítimo de SHA1.
+  // * @throws RFWException
+  // */
+  // public static String calcSHA1ToHex(String value, String charset) throws RFWException {
+  // try {
+  // MessageDigest cript = MessageDigest.getInstance("SHA-1");
+  // cript.reset();
+  // cript.update(value.getBytes(charset));
+  // return toHex(cript.digest());
+  // } catch (Exception e) {
+  // throw new RFWCriticalException("BISERP_000307", e);
+  // }
+  // }
+  //
+  // /**
+  // * Calcula a Hash SHA1 de uma String já no formato Hex.
+  // *
+  // * @param value Valor a ter a Hash calculada.
+  // * @param charset Defineo charset do valor, usado para converter corretamente em bytes.
+  // * @return Valor em Hexa calculado com o algorítimo de SHA1.
+  // * @throws RFWException
+  // */
+  // public static String calcSHA1ToHex(String value, Charset charset) throws RFWException {
+  // try {
+  // MessageDigest cript = MessageDigest.getInstance("SHA-1");
+  // cript.reset();
+  // cript.update(value.getBytes(charset));
+  // return toHex(cript.digest());
+  // } catch (Exception e) {
+  // throw new RFWCriticalException("BISERP_000307", e);
+  // }
+  // }
 
   /**
    * Substitui o texto recursivamente até que o texto não sofra mais alterações.
