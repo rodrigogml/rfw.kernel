@@ -66,7 +66,7 @@ public @interface RFWMetaRelationshipField {
     /**
      * Similar ao PARENT_ASSOCIATION, este relacionamento permite que um objeto referencie outro que será adicionado/editado junto com o objeto principal, mas não necessariamente é o objeto pai deste objeto.<br>
      * Objetos com esse tipo de relacionamento podem ter que ser inseridos em duas etapas. Por exemplo, se o objeto associado ainda não tiver um ID, vamos inserir este objeto no banco, e posteriormente fazer um update para completar o ID da associação.<br>
-     * ISSO QUER DIZER QUE, a não ser que o objeto associado esteja hierarquicamente acima deste, a coluna no banco de dados não pode estar definida como Not Null ou a primeira atapalha falhará.<br>
+     * ISSO QUER DIZER QUE, a não ser que o objeto associado esteja hierarquicamente acima deste, a coluna no banco de dados não pode estar definida como Not Null ou a primeira etapalha falhará.<br>
      * Além disso, a FK deve ser sempre ON DELETE CASCADE ou ON DELETE SET NULL, para que exclusão do objeto associado não seja barrada pelo banco de dados.
      */
     INNER_ASSOCIATION,
@@ -94,7 +94,7 @@ public @interface RFWMetaRelationshipField {
    * Se {@link RelationshipTypes#MANY_TO_MANY}: deve ser informado a coluna da tabela de join em que está o ID deste objeto.<br>
    * Se {@link RelationshipTypes#PARENT_ASSOCIATION}: obrigatório com o nome da coluna com a FK da tabela do objeto pai.<br>
    * Se {@link RelationshipTypes#ASSOCIATION} : preenchido somente se a coluna estiver na tabela deste objeto. Caso contrário, veja {@link #columnMapped()}.<br>
-   * Se {@link RelationshipTypes#COMPOSITION} : nunca utilizado, já que é sempre o objeto filho quem carrega o ID deste objeto.<br>
+   * Se {@link RelationshipTypes#COMPOSITION} : quase nunca utilizado, já que o objeto filho quem costuma carregar o ID deste objeto. No entanto, em relacionamentos 1:1 raros pode ser utilizado quando o objeto pai que tem o ID do objeto filho.<br>
    * Se {@link RelationshipTypes#COMPOSITION_TREE} : nunca utilizado, já que é sempre o objeto filho quem carrega o ID deste objeto.<br>
    * Se {@link RelationshipTypes#INNER_ASSOCIATION} : preenchido somente se a coluna estiver na tabela deste objeto. Caso contrário, veja {@link #columnMapped()}.<br>
    * Se {@link RelationshipTypes#WEAK_ASSOCIATION} : preenchido somente se a coluna estiver na tabela deste objeto. Caso contrário, veja {@link #columnMapped()}.<br>
