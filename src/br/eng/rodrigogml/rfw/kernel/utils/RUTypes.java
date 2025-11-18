@@ -1091,4 +1091,47 @@ public class RUTypes {
     return dateTime.atZone(zoneId).format(FORMATTER_yyyy_MM_dd_T_HH_mm_ssXXX);
   }
 
+  /**
+   * Formata uma data usando um padrão customizado.
+   *
+   * <p>
+   * O parâmetro {@code pattern} segue as regras do {@link java.text.SimpleDateFormat}. Abaixo estão os principais termos que podem ser utilizados no padrão:
+   *
+   * <ul>
+   * <li><b>y</b> – Ano (ex.: yyyy = 2025, yy = 25)</li>
+   * <li><b>M</b> – Mês (ex.: MM = 03, MMM = Mar, MMMM = Março)</li>
+   * <li><b>d</b> – Dia do mês (ex.: dd = 09)</li>
+   * <li><b>E</b> – Dia da semana (ex.: EEE = Seg, EEEE = Segunda-feira)</li>
+   * <li><b>H</b> – Hora (0–23, ex.: HH = 17)</li>
+   * <li><b>h</b> – Hora (1–12, ex.: hh = 05)</li>
+   * <li><b>m</b> – Minutos (ex.: mm = 07)</li>
+   * <li><b>s</b> – Segundos (ex.: ss = 59)</li>
+   * <li><b>S</b> – Milissegundos (ex.: SSS = 123)</li>
+   * <li><b>a</b> – AM/PM (ex.: a = PM)</li>
+   * <li><b>z</b> – Fuso horário (ex.: z = BRT, zzzz = Brasília Standard Time)</li>
+   * <li><b>Z</b> – Offset numérico do fuso (ex.: -0300)</li>
+   * </ul>
+   *
+   * Exemplos de uso:
+   * <ul>
+   * <li>{@code formatDate(date, "dd/MM/yyyy")} -> "21/11/2025"</li>
+   * <li>{@code formatDate(date, "dd MMM yyyy HH:mm")} -> "21 Nov 2025 14:30"</li>
+   * <li>{@code formatDate(date, "EEEE, dd 'de' MMMM 'de' yyyy")} -> "Sexta-feira, 21 de Novembro de 2025"</li>
+   * </ul>
+   *
+   * @param date Data a ser formatada.
+   * @param pattern Padrão de formatação.
+   * @return String formatada ou {@code null} caso a data seja nula.
+   * @throws IllegalArgumentException caso o padrão seja inválido.
+   */
+  public static String formatDate(Date date, String pattern) {
+    if (date == null) {
+      return null;
+    }
+    if (pattern == null || pattern.trim().isEmpty()) {
+      throw new IllegalArgumentException("Pattern não pode ser nulo ou vazio");
+    }
+    return new java.text.SimpleDateFormat(pattern).format(date);
+  }
+
 }
