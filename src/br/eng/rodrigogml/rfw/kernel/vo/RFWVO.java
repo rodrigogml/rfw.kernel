@@ -24,9 +24,8 @@ public abstract class RFWVO implements RFWRecursiveClonable, Serializable, Clone
    * Caso este atributo esteja como false o método lançarpa uma exception avisando que o objeto usado não está completo para edição. Evitando assim que um update de um objeto errado faça alterações irreversíveis aos dados do sistema.<br>
    * <b>ATENÇÃO: Não altere o valor deste atributo manualmente, ele é gerenciado pelo {@link RFWDAO}.</b>
    *
-   * @deprecated NÃO DEVE SER UTILIZADO EM <B><U>NENHUM</U></B> PONTO DO SISTEMA PELO USUÁRIO! EM HIPÓTESE ALGUMA FAZER O OVERRIDE! ESTE ATRIBUTO DEVE SER UTILIZADO APENAS NO {@link RFWDAO}
+   * <B><u>NÃO DEVE SER UTILIZADO EM <B><U>NENHUM</U></B> PONTO DO SISTEMA PELO USUÁRIO! EM HIPÓTESE ALGUMA FAZER O OVERRIDE! ESTE ATRIBUTO DEVE SER UTILIZADO APENAS NO RFWDAO</u></b>
    */
-  @Deprecated
   private boolean _fullLoaded = false; // Começa com _ para ficar no topo quando inspecionamos o VO no debug e não misturar com os outros atributos
 
   /**
@@ -136,10 +135,10 @@ public abstract class RFWVO implements RFWRecursiveClonable, Serializable, Clone
    * Caso este atributo esteja como false o método lançarpa uma exception avisando que o objeto usado não está completo para edição. Evitando assim que um update de um objeto errado faça alterações irreversíveis aos dados do sistema.<br>
    * <b>ATENÇÃO: Não altere o valor deste atributo manualmente, ele é gerenciado pelo RFWDAO.</b>
    *
-   * @deprecated NÃO DEVE SER UTILIZADO EM <B><U>NENHUM</U></B> PONTO DO SISTEMA PELO USUÁRIO! EM HIPÓTESE ALGUMA FAZER O OVERRIDE! ESTE ATRIBUTO DEVE SER UTILIZADO APENAS NO RFWDAO
+   * <B><u>NÃO DEVE SER UTILIZADO EM <B><U>NENHUM</U></B> PONTO DO SISTEMA PELO USUÁRIO! EM HIPÓTESE ALGUMA FAZER O OVERRIDE! ESTE ATRIBUTO DEVE SER UTILIZADO APENAS NO RFWDAO</u></b>
+   *
    * @param fullLoaded indicador se o objeto foi inteiramente carregado no banco de dados.
    */
-  @Deprecated
   public void setFullLoaded(boolean fullLoaded) {
     this._fullLoaded = fullLoaded;
   }
@@ -192,8 +191,8 @@ public abstract class RFWVO implements RFWRecursiveClonable, Serializable, Clone
    * Note que alguns dialetos de bando de dados, como o DerbyDB, nunca inserem o atributo ID no statement de insert uma vez que ele seja gerado automaticamente. Para esses casos esse atributo não fará nenhuma diferença exceto nas validações.<br>
    * <b>Atenção:</b> Quando um objeto tem ID, mas tem essa flag definida como true, indica que o objeto não está persistido no banco de dados. Caso o objeto seja inserido, esta flag deve ser definida como false pelo RFWDAO.
    *
-   * @deprecated NÃO DEVE SER UTILIZADO PELO SISTEMA. Este recurso é útil em casos muito específicos, como migração de dados, nunca para as rotinas do sistema.
    * @param insertWithID define se este objeto deve ser inserido com um ID predefinido.
+   * @deprecated NÃO DEVE SER UTILIZADO PELO SISTEMA. Este recurso é útil em casos muito específicos, como migração de dados, nunca para as rotinas do sistema.
    */
   @Deprecated
   public void setInsertWithID(boolean insertWithID) {
