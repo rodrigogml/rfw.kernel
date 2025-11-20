@@ -28,8 +28,9 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
  * Os métodos dessa classe são organizados da seguinte forma de acordo com seu prefixo:<br>
  * <li><b>parse</b> - Indica métodos que estraem o tipo a partir de uma String, podendo ou não conter o Locale do usuário para uma correta interpretação dos dados.
  * <li><b>format</b> - Faz o inverso do método 'parse'. Converte o valor de um tipo de dado em uma string formata para leitura do usuário, podendo considerar o Locale ou não.
- * <li><b>to</b> - Métodos que convertem de forma 'segura' (prevendo nulo e outras condições) um tipo em outro tipo compatível.
- * <li><b>gen</b> - Métodos para geração de objetos do Java com conteúdo aleatório.
+ * <li><b>to</b> - Métodos que convertem de forma 'segura' (prevendo nulo e outras condições) um tipo em outro tipo compatível. <br>
+ * <br>
+ * Para métodos de geração de valores verifique {@link RUGenerators}.
  *
  * @author Rodrigo Leitão
  * @since (21 de fev. de 2025)
@@ -1132,6 +1133,57 @@ public class RUTypes {
       throw new IllegalArgumentException("Pattern não pode ser nulo ou vazio");
     }
     return new java.text.SimpleDateFormat(pattern).format(date);
+  }
+
+  /**
+   * Converte uma string em {@link Integer}.
+   *
+   * <p>
+   * Caso o valor informado seja {@code null}, retorna {@code null}. Se a string não representar um número válido, lança uma {@link IllegalStateException} encapsulando o {@link NumberFormatException} original.
+   * </p>
+   *
+   * @param value string a ser convertida
+   * @return o valor inteiro correspondente ou {@code null} se a entrada for {@code null}
+   * @throws IllegalStateException se a string não puder ser convertida para inteiro
+   */
+  public static Integer parseInteger(String value) {
+    if (value == null) {
+      return null;
+    }
+    try {
+      return Integer.valueOf(value);
+    } catch (NumberFormatException e) {
+      throw new IllegalStateException("Falha ao converter campo numerico da NF-e.", e);
+    }
+  }
+
+  /**
+   * Converte um {@link BigDecimal} em sua representação sem notação científica.
+   *
+   * <p>
+   * Retorna {@code null} se o valor informado for {@code null}.
+   * </p>
+   *
+   * @param value valor numérico a ser convertido
+   * @return representação textual sem notação científica ou {@code null} se o valor for {@code null}
+   */
+  public static String toString(BigDecimal value) {
+    return value != null ? value.toPlainString() : null;
+  }
+
+  /**
+   * Converte uma string em {@link BigDecimal}.
+   *
+   * <p>
+   * Retorna {@code null} se a string informada for {@code null}. Não realiza validação adicional; se a string não for um número válido, o construtor {@link BigDecimal#BigDecimal(String)} lançará {@link NumberFormatException}.
+   * </p>
+   *
+   * @param value string representando um número
+   * @return instância de {@link BigDecimal} ou {@code null} se a string for {@code null}
+   * @throws NumberFormatException se a string não representar um número válido
+   */
+  public static BigDecimal toBigDecimal(String value) {
+    return value == null ? null : new BigDecimal(value);
   }
 
 }
