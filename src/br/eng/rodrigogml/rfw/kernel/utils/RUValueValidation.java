@@ -56,6 +56,49 @@ public class RUValueValidation {
   }
 
   /**
+   * Calcula o Dígito Verificador (DV) da Chave de Acesso da NF-e versão 4.00 utilizando o algoritmo do Módulo 11, conforme especificado no Manual da NF-e.
+   *
+   * @param keyPrefix String contendo os 43 primeiros dígitos da chave de acesso.
+   * @return String contendo o dígito verificador calculado.
+   * @throws RFWException Se a entrada for nula, vazia ou não conter exatamente 43 dígitos numéricos.
+   */
+  public static int calcDVDANFeV400(String keyPrefix) throws RFWException {
+    // Remover caracteres não numéricos
+    keyPrefix = RUString.removeNonDigits(keyPrefix);
+
+    // Validar se a chave possui exatamente 43 dígitos
+    if (keyPrefix == null || keyPrefix.length() != 43 || !keyPrefix.matches("[0-9]+")) {
+      throw new RFWValidationException("RFW_000047", new String[] { keyPrefix });
+    }
+
+    // Pesos definidos no manual da NF-e (sequência cíclica de 2 a 9)
+    int[] weights = { 2, 3, 4, 5, 6, 7, 8, 9 };
+
+    long sum = 0;
+    int weightIndex = 0;
+
+    // Percorrer os dígitos da direita para a esquerda
+    for (int i = 42; i >= 0; i--) {
+      int digit = Character.getNumericValue(keyPrefix.charAt(i));
+      sum += digit * weights[weightIndex];
+
+      // Incrementar o índice do peso e reiniciar quando atingir o final do array
+      weightIndex = (weightIndex + 1) % weights.length;
+    }
+
+    // Aplicar a regra do Módulo 11
+    long remainder = sum % 11;
+    long checkDigit = 11 - remainder;
+
+    // Se o resultado for 0 ou 1, o dígito verificador deve ser 0
+    if (checkDigit >= 10) {
+      checkDigit = 0;
+    }
+
+    return (int) checkDigit;
+  }
+
+  /**
    * Valida um endereço IPv4 no formato textual.<br>
    * <p>
    * Regras:
@@ -1512,94 +1555,233 @@ public class RUValueValidation {
   }
 
   /**
-   * Valida se o código de barras GTIN é válido. Funciona para GTIN8, GTIN12, GTIN13 e GTIN14.<br>
-   * Caso o valor passado seja nulo, resultará em NullPointerException para evitar que erros de programação em passar o valor sejam acobertados por uma "prevenção" interna do método.
+   * Valida um código GTIN completo (8, 12, 13 ou 14 dígitos).
    *
-   * @param fullCodeBar Código de Barra completo, incluindo o dívido verificador
-   * @return boolean indicando se o conteúdo recebido é um código de barras GTIN válido.
+   * <p>
+   * Este método verifica:
+   * </p>
+   * <ul>
+   * <li>Se o valor é totalmente numérico;</li>
+   * <li>Se possui tamanho permitido (8, 12, 13 ou 14);</li>
+   * <li>Se o dígito verificador é consistente com o cálculo oficial.</li>
+   * </ul>
+   *
+   * <p>
+   * Se qualquer validação falhar, uma exceção clara e descritiva será lançada.
+   * </p>
+   *
+   * @param value GTIN completo a ser validado
+   * @throws RFWValidationException se o GTIN não for válido
    */
-  public static boolean isValidGTINCodeBar(String fullCodeBar) {
-    try {
-      validateGTINCodeBar(fullCodeBar);
-      return true;
-    } catch (RFWException e) {
+  public static void validateGTIN(String value) throws RFWValidationException {
+    if (!isValidGTIN(value)) {
+      throw new RFWValidationException("O código '" + value + "' não é um GTIN válido.");
+    }
+  }
+
+  /**
+   * Verifica se um valor é um GTIN válido.
+   *
+   * <p>
+   * Este método não lança exceções. Ele apenas retorna true/false.
+   * </p>
+   *
+   * @param value GTIN completo
+   * @return true se o valor for válido; false caso contrário
+   */
+  public static boolean isValidGTIN(String value) {
+    if (value == null || !value.matches("\\d+")) return false;
+
+    int len = value.length();
+
+    switch (len) {
+      case 8:
+      case 12:
+      case 13:
+      case 14:
+        return validateLengthAndDV(value, len);
+      default:
+        return false;
+    }
+  }
+
+  /**
+   * Valida um GTIN-8 completo.
+   *
+   * @param value código GTIN-8 com 8 dígitos
+   * @throws RFWValidationException se o código for inválido
+   */
+  public static void validateGTIN8(String value) throws RFWValidationException {
+    if (!isValidGTIN8(value)) {
+      throw new RFWValidationException("GTIN-8 inválido: '" + value + "'.");
+    }
+  }
+
+  /**
+   * Verifica se um GTIN-8 é válido.
+   *
+   * @param value GTIN-8 completo
+   * @return true se válido; false caso contrário
+   */
+  public static boolean isValidGTIN8(String value) {
+    return validateLengthAndDV(value, 8);
+  }
+
+  /**
+   * Calcula o dígito verificador de um GTIN-8 a partir dos 7 primeiros dígitos.
+   *
+   * @param baseValue sequência numérica de 7 dígitos
+   * @return dígito verificador calculado
+   */
+  public static int calcDVGTIN8(String baseValue) {
+    return calcDV(baseValue);
+  }
+
+  /**
+   * Valida um GTIN-12 completo.
+   *
+   * @param value código GTIN-12 com 12 dígitos
+   * @throws RFWValidationException se o código for inválido
+   */
+  public static void validateGTIN12(String value) throws RFWValidationException {
+    if (!isValidGTIN12(value)) {
+      throw new RFWValidationException("GTIN-12 inválido: '" + value + "'.");
+    }
+  }
+
+  /**
+   * Verifica se um GTIN-12 é válido.
+   *
+   * @param value GTIN-12 completo
+   * @return true se válido; false caso contrário
+   */
+  public static boolean isValidGTIN12(String value) {
+    return validateLengthAndDV(value, 12);
+  }
+
+  /**
+   * Calcula o dígito verificador de um GTIN-12 a partir dos 11 primeiros dígitos.
+   *
+   * @param baseValue sequência de 11 dígitos sem o DV
+   * @return dígito verificador calculado
+   */
+  public static int calcDVGTIN12(String baseValue) {
+    return calcDV(baseValue);
+  }
+
+  /**
+   * Valida um GTIN-13 completo.
+   *
+   * @param value código GTIN-13 com 13 dígitos
+   * @throws RFWValidationException se o valor for inválido
+   */
+  public static void validateGTIN13(String value) throws RFWValidationException {
+    if (!isValidGTIN13(value)) {
+      throw new RFWValidationException("GTIN-13 inválido: '" + value + "'.");
+    }
+  }
+
+  /**
+   * Verifica se um GTIN-13 é válido.
+   *
+   * @param value GTIN-13 completo
+   * @return true se válido; false caso contrário
+   */
+  public static boolean isValidGTIN13(String value) {
+    return validateLengthAndDV(value, 13);
+  }
+
+  /**
+   * Calcula o dígito verificador de um GTIN-13 a partir dos 12 primeiros dígitos.
+   *
+   * @param baseValue sequência de 12 dígitos sem o DV
+   * @return dígito verificador calculado
+   */
+  public static int calcDVGTIN13(String baseValue) {
+    return calcDV(baseValue);
+  }
+
+  /**
+   * Valida um GTIN-14 completo.
+   *
+   * @param value código GTIN-14 com 14 dígitos
+   * @throws RFWValidationException se o código for inválido
+   */
+  public static void validateGTIN14(String value) throws RFWValidationException {
+    if (!isValidGTIN14(value)) {
+      throw new RFWValidationException("GTIN-14 inválido: '" + value + "'.");
+    }
+  }
+
+  /**
+   * Verifica se um GTIN-14 é válido.
+   *
+   * @param value GTIN-14 completo
+   * @return true se válido; false caso contrário
+   */
+  public static boolean isValidGTIN14(String value) {
+    return validateLengthAndDV(value, 14);
+  }
+
+  /**
+   * Calcula o dígito verificador de um GTIN-14 a partir dos 13 primeiros dígitos.
+   *
+   * @param baseValue sequência de 13 dígitos sem o DV
+   * @return dígito verificador calculado
+   */
+  public static int calcDVGTIN14(String baseValue) {
+    return calcDV(baseValue);
+  }
+
+  /*
+   */
+
+  /**
+   * Verifica se o valor possui o tamanho esperado, contém apenas dígitos e se o dígito verificador informado corresponde ao cálculo oficial do GTIN.
+   *
+   * @param value GTIN completo
+   * @param expectedLength tamanho esperado (8, 12, 13 ou 14)
+   * @return true se todas as validações forem atendidas
+   */
+  private static boolean validateLengthAndDV(String value, int expectedLength) {
+    if (value == null || value.length() != expectedLength || !value.matches("\\d+")) {
       return false;
     }
+
+    int dvCalculado = calcDV(value.substring(0, expectedLength - 1));
+    int dvInformado = value.charAt(expectedLength - 1) - '0';
+
+    return dvCalculado == dvInformado;
   }
 
   /**
-   * Valida se o código de barras GTIN é válido. Funciona para GTIN8, GTIN12, GTIN13 e GTIN14.<br>
-   * Caso o valor passado seja nulo, resultará em NullPointerException para evitar que erros de programação em passar o valor sejam acobertados por uma "prevenção" interna do método.
+   * Calcula o dígito verificador de valores GTIN utilizando o algoritmo módulo 10.
    *
-   * @param fullCodeBar Código de Barra completo, incluindo o dívido verificador
-   * @throws RFWException Lançado se o conteúdo não for um código de barras GTIN válido.
-   */
-  public static void validateGTINCodeBar(String fullCodeBar) throws RFWException {
-    if (fullCodeBar != null && (fullCodeBar.length() == 8 || fullCodeBar.length() == 12 || fullCodeBar.length() == 13 || fullCodeBar.length() == 14)) {
-      if (fullCodeBar.matches("[0-9]*")) {
-        int impSum = 0;
-        // PS: Nas iterações não consideramos o último número apra os cálculos poide deve ser o DV
-        for (int i = fullCodeBar.length() - 2; i >= 0; i -= 2) { // itera os números nas posições impares
-          impSum += Integer.parseInt(fullCodeBar.substring(i, i + 1));
-        }
-        impSum *= 3; // Multiplicamos o resultado por 3
-        for (int i = fullCodeBar.length() - 3; i >= 0; i -= 2) { // soma os números nas porições pares
-          impSum += Integer.parseInt(fullCodeBar.substring(i, i + 1));
-        }
-        // Verificamos o número que "falta" para chegar no próximo múltiplo de 10
-        int dv = (10 - (impSum % 10)) % 10; // <- O segundo módulo garante que quando o resultado do primeiro módulo der 0, o DV não resulta em 10, e sim em 0 como deve ser.
-
-        // Verificamos se é válido
-        if (!fullCodeBar.substring(fullCodeBar.length() - 1, fullCodeBar.length()).equals("" + dv)) {
-          throw new RFWValidationException("RFW_000063");
-
-        }
-      }
-    } else {
-      throw new RFWValidationException("RFW_000063");
-    }
-  }
-
-  /**
-   * Calcula o Dígito Verificador (DV) da Chave de Acesso da NF-e versão 4.00 utilizando o algoritmo do Módulo 11, conforme especificado no Manual da NF-e.
+   * <p>
+   * O processo é:
+   * </p>
+   * <ol>
+   * <li>Ler os dígitos da direita para a esquerda;</li>
+   * <li>Multiplicar cada dígito por 3 e 1 alternadamente;</li>
+   * <li>Somar os resultados;</li>
+   * <li>Obter o resto da divisão por 10;</li>
+   * <li>Subtrair esse resto de 10;</li>
+   * <li>Aplicar módulo 10 novamente para evitar retornar 10.</li>
+   * </ol>
    *
-   * @param keyPrefix String contendo os 43 primeiros dígitos da chave de acesso.
-   * @return String contendo o dígito verificador calculado.
-   * @throws RFWException Se a entrada for nula, vazia ou não conter exatamente 43 dígitos numéricos.
+   * @param baseValue sequência numérica sem o dígito verificador
+   * @return dígito verificador calculado
    */
-  public static String calcDVDANFeV400(String keyPrefix) throws RFWException {
-    // Remover caracteres não numéricos
-    keyPrefix = RUString.removeNonDigits(keyPrefix);
+  private static int calcDV(String baseValue) {
+    int sum = 0;
+    boolean mult3 = true;
 
-    // Validar se a chave possui exatamente 43 dígitos
-    if (keyPrefix == null || keyPrefix.length() != 43 || !keyPrefix.matches("[0-9]+")) {
-      throw new RFWValidationException("RFW_000047", new String[] { keyPrefix });
+    for (int i = baseValue.length() - 1; i >= 0; i--) {
+      int digit = baseValue.charAt(i) - '0';
+      sum += digit * (mult3 ? 3 : 1);
+      mult3 = !mult3;
     }
 
-    // Pesos definidos no manual da NF-e (sequência cíclica de 2 a 9)
-    int[] weights = { 2, 3, 4, 5, 6, 7, 8, 9 };
-
-    long sum = 0;
-    int weightIndex = 0;
-
-    // Percorrer os dígitos da direita para a esquerda
-    for (int i = 42; i >= 0; i--) {
-      int digit = Character.getNumericValue(keyPrefix.charAt(i));
-      sum += digit * weights[weightIndex];
-
-      // Incrementar o índice do peso e reiniciar quando atingir o final do array
-      weightIndex = (weightIndex + 1) % weights.length;
-    }
-
-    // Aplicar a regra do Módulo 11
-    long remainder = sum % 11;
-    long checkDigit = 11 - remainder;
-
-    // Se o resultado for 0 ou 1, o dígito verificador deve ser 0
-    if (checkDigit >= 10) {
-      checkDigit = 0;
-    }
-
-    return String.valueOf(checkDigit);
+    return (10 - (sum % 10)) % 10;
   }
 }
