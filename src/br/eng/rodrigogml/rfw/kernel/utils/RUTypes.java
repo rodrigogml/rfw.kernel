@@ -1172,16 +1172,58 @@ public class RUTypes {
   }
 
   /**
-   * Converte um {@link Integer} em String.
+   * Converte um {@link Long} em uma {@link String}.
    *
    * <p>
-   * Retorna {@code null} se o valor informado for {@code null}.
+   * Retorna {@code null} caso o valor informado também seja {@code null}.
    * </p>
    *
-   * @param value valor numérico a ser convertido
-   * @return representação textual ou {@code null} se o valor for {@code null}
+   * @param value valor long a ser convertido
+   * @return representação textual do valor ou {@code null} se o valor for {@code null}
+   */
+  public static String toString(Long value) {
+    return value != null ? value.toString() : null;
+  }
+
+  /**
+   * Converte um {@link Integer} em uma {@link String}.
+   *
+   * <p>
+   * Retorna {@code null} caso o valor informado também seja {@code null}.
+   * </p>
+   *
+   * @param value valor inteiro a ser convertido
+   * @return representação textual do valor ou {@code null} se o valor for {@code null}
    */
   public static String toString(Integer value) {
+    return value != null ? value.toString() : null;
+  }
+
+  /**
+   * Converte um {@link Float} em uma {@link String}.
+   *
+   * <p>
+   * Retorna {@code null} caso o valor informado também seja {@code null}.
+   * </p>
+   *
+   * @param value valor float a ser convertido
+   * @return representação textual do valor ou {@code null} se o valor for {@code null}
+   */
+  public static String toString(Float value) {
+    return value != null ? value.toString() : null;
+  }
+
+  /**
+   * Converte um {@link Double} em uma {@link String}.
+   *
+   * <p>
+   * Retorna {@code null} caso o valor informado também seja {@code null}.
+   * </p>
+   *
+   * @param value valor double a ser convertido
+   * @return representação textual do valor ou {@code null} se o valor for {@code null}
+   */
+  public static String toString(Double value) {
     return value != null ? value.toString() : null;
   }
 
