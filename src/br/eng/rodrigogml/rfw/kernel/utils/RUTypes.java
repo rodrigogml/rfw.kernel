@@ -1172,18 +1172,65 @@ public class RUTypes {
   }
 
   /**
-   * Converte uma string em {@link BigDecimal}.
+   * Converte um {@link Integer} em String.
    *
    * <p>
-   * Retorna {@code null} se a string informada for {@code null}. Não realiza validação adicional; se a string não for um número válido, o construtor {@link BigDecimal#BigDecimal(String)} lançará {@link NumberFormatException}.
+   * Retorna {@code null} se o valor informado for {@code null}.
    * </p>
    *
-   * @param value string representando um número
-   * @return instância de {@link BigDecimal} ou {@code null} se a string for {@code null}
-   * @throws NumberFormatException se a string não representar um número válido
+   * @param value valor numérico a ser convertido
+   * @return representação textual ou {@code null} se o valor for {@code null}
    */
-  public static BigDecimal toBigDecimal(String value) {
-    return value == null ? null : new BigDecimal(value);
+  public static String toString(Integer value) {
+    return value != null ? value.toString() : null;
+  }
+
+  /**
+   * Converte de forma segura um {@link String} para {@link BigDecimal}.
+   *
+   * <p>
+   * <b>Regras de conversão:</b>
+   * </p>
+   * <ul>
+   * <li>Se o valor for {@code null} ou vazio (apenas espaços), retorna {@code null}.</li>
+   * <li>O formato aceito é:
+   * <ul>
+   * <li>Sinal opcional (+/-)</li>
+   * <li>Parte inteira composta apenas por dígitos</li>
+   * <li>Opcionalmente um ponto decimal seguido apenas de dígitos</li>
+   * </ul>
+   * Ex.: {@code "10"}, {@code "-5"}, {@code "12.34"}, {@code "+0.99"}.</li>
+   * <li>NÃO aceita formato com vírgula.</li>
+   * <li>Se o formato não for suportado, lança {@link RFWValidationException}.</li>
+   * <li>Se ocorrer falha interna no parser (ex.: valor muito grande ou formato inesperado), lança {@link RFWCriticalException}.</li>
+   * </ul>
+   *
+   * @param value Valor textual a ser convertido.
+   * @return Instância de {@link BigDecimal} representando o valor ou {@code null} se entrada nula ou vazia.
+   * @throws RFWException Em caso de erro de validação ou falha crítica de conversão.
+   */
+  public static BigDecimal toBigDecimal(String value) throws RFWException {
+    if (value == null) {
+      return null;
+    }
+
+    String trimmed = value.trim();
+    if (trimmed.isEmpty()) {
+      return null;
+    }
+
+    // Regex: sinal opcional, dígitos obrigatórios, decimal opcional com dígitos
+    // Aceita: 123, -10, +50, 1.23, -0.50, +12.0001
+    if (!trimmed.matches("[+-]?\\d+(\\.\\d+)?")) {
+      throw new RFWValidationException("Formato numérico inválido para BigDecimal. Valor recebido: '${0}'", new String[] { value });
+    }
+
+    try {
+      return new BigDecimal(trimmed);
+    } catch (Exception e) {
+      // BigDecimal pode lançar NumberFormatException ou ArithmeticException
+      throw new RFWCriticalException("Falha ao converter valor para BigDecimal. Valor '${0}'.", new String[] { value }, e);
+    }
   }
 
 }
