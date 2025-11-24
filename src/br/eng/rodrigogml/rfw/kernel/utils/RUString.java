@@ -1043,7 +1043,7 @@ public class RUString {
   }
 
   /**
-   * Substitui todas as ocorrencias de 'oldvalue' por 'newvalue' no texto de 'value'. No entanto este método diferencia maiúsculas, minúsculas, acentos, etc.
+   * Substitui todas as ocorrências de 'oldvalue' por 'newvalue' no texto de 'value'. No entanto este método diferencia maiúsculas, minúsculas, acentos, etc.
    *
    * @param text texto a ser manipulado
    * @param oldValue Valor a ser procurado e substituído.
@@ -1055,8 +1055,8 @@ public class RUString {
   }
 
   /**
-   * Substitui o texto recursivamente até que o texto não sofra mais alterações, isto é, o texto será procurado do inicio ao fim pela substituição quantas vezes for necessárias até que seja feita uma busca completa e nada seja encontrado.<br>
-   * <b>ATENÇÂO:</b> Pode gerar StackOverflow facilmente se substituimos um texto por outro que contém o valor sendo procurado!<Br>
+   * Substitui o texto recursivamente até que o texto não sofra mais alterações, isto é, o texto será procurado do início ao fim pela substituição quantas vezes for necessárias até que seja feita uma busca completa e nada seja encontrado.<br>
+   * <b>ATENÇÃO:</b> Pode gerar StackOverflow facilmente se substituímos um texto por outro que contém o valor sendo procurado!<Br>
    *
    * @param text texto a ser manipulado
    * @param oldValue Valor a ser procurado e substituído.

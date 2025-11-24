@@ -9,7 +9,7 @@ import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess.PreProcessOption;
 
 /**
  * Description: Annotation usada para definir um atributo do tipo Date.<BR>
- * ATENÇÃO: Essa tag automaticamente define a resulução por padrão é apenas de DIA. Para incluir horas, minutos, segundos, etc., configure a resolução.
+ * ATENÇÃO: Essa tag automaticamente define a resolução por padrão apenas de DIA. Para incluir horas, minutos, segundos, etc., configure a resolução.
  *
  * @author Davy Monteoliva
  * @since 7.1.0 (20/07/2015)

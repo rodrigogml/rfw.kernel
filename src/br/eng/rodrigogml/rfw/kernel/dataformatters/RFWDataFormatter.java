@@ -17,7 +17,7 @@ public interface RFWDataFormatter<PRESENTATIONTYPE, VOTYPE> {
 
   /**
    * Método chamado sempre que precisar converter o dado do jeito como é gerenciado no sistema para ser apresentado para o usuário.<br>
-   * <b>ATENÇÃO: </b>Para a apresentação, nuncca se retorna null! Para valores null, o valor formatado deve sempre ser "". Usualamente retornar null para exibição o usuário fará com que a palavra 'null' seja concatenada e exibida para o usuário final.
+   * <b>ATENÇÃO: </b>Para a apresentação, nunca se retorna null! Para valores null, o valor formatado deve sempre ser "". Usualmente retornar null para exibição fará com que a palavra 'null' seja concatenada e exibida para o usuário final.
    *
    * @param value valor a ser formatado para a tela.
    * @param locale Localidade para ser usada na formatação caso necessario.
