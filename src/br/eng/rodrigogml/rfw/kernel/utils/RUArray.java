@@ -82,8 +82,8 @@ public class RUArray {
   /**
    * Acrescenta um valor ao final do array.
    *
-   * @param first Primeiro Array que será clonado e redimensionado. ESTE OBJETO NÂO PODE SER NULO.
-   * @param values Valore a serem colocado no Array.
+   * @param first Primeiro Array que será clonado e redimensionado. ESTE OBJETO NÃO PODE SER NULO.
+   * @param values Valores a serem colocados no Array.
    * @return Array redimensionado com todos os objetos.
    * @throws RFWException
    */
@@ -96,7 +96,7 @@ public class RUArray {
    * Cria um {@link ArrayList} a partir de valores passados.
    *
    * @param <T> Tipo do ArrayList
-   * @param content Conteúdo a ser coocado no {@link ArrayList}
+   * @param content Conteúdo a ser colocado no {@link ArrayList}
    * @return {@link ArrayList} com o conteúdo desejado.
    */
   @SuppressWarnings("unchecked")

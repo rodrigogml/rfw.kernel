@@ -149,7 +149,7 @@ public class RFWValidator {
    * @param parentvo Objeto pai, usado quando estamos executando uma validação recursiva (Objetos mapeados dentro do objeto principal)
    * @param rootvo Objeto Raiz, o que foi passado quando o BISValidator foi chamado. Mesmo quando estivermos validando recursivamente, esse objeto será sempre o mesmo.
    * @param rootpath Caminho desde o objeto raiz até o atributo que estamos validando atualmente. Nulo quando estamos validando o próprio objeto raiz.
-   * @param newVOs Lista com os VOs que ainda não estão no banco mas fazem parte do objeto. Objetos nesta lista não serão validados se tem ID em uma eventual ASSOCIAÇÂO. Este objeto é gerenciado internamente com a recursão do método. Para a chamada inicial passar uma lista vazia.
+   * @param newVOs Lista com os VOs que ainda não estão no banco mas fazem parte do objeto. Objetos nesta lista não serão validados se tem ID em uma eventual ASSOCIAÇÃO. Este objeto é gerenciado internamente com a recursão do método. Para a chamada inicial passar uma lista vazia.
    * @param forceRequiredFields Lista com os campos que devem ser verificamos como "required = true", independente do que estiver definido no @BISMetaAnnotation do campo. Passar nulo caso não queira forçar nenhuma validação de obrigatoriedade.
    * @throws RFWException Lançado em caso de validação ou problemas durante a execução das validações.
    */
