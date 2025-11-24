@@ -4,15 +4,15 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Description: Classe utilitária com métodos de geração de dados.<br>
+ * Description: Classe utilitÃ¡ria com mÃ©todos de geraÃ§Ã£o de dados.<br>
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 10.0.0 (12 de jul de 2018)
  */
 public class RUGenerators {
 
   /**
-   * Expressão regular para validar o UUID gerado pelo método {@link #generateUUID()}
+   * ExpressÃ£o regular para validar o UUID gerado pelo mÃ©todo {@link #generateUUID()}
    */
   public static final String UUID_REGEXP = "[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}";
 
@@ -30,7 +30,7 @@ public class RUGenerators {
   }
 
   /**
-   * Gera um identificador único baseado no UUID. Veja mais em http://www.baeldung.com/java-uuid <br>
+   * Gera um identificador Ãºnico baseado no UUID. Veja mais em http://www.baeldung.com/java-uuid <br>
    * <br>
    * Exemplo: '00e4a76d-c792-4909-994f-371633f60b63' 36 carecteres.
    *
@@ -38,14 +38,14 @@ public class RUGenerators {
    * <br>
    * Para validar a UUID utilize a regexp definida em {@link #UUID_REGEXP}.
    *
-   * @return Identificador Único gerado
+   * @return Identificador Ãšnico gerado
    */
   public static String generateUUID() {
     return UUID.randomUUID().toString();
   }
 
   /**
-   * Gera uma String qualquer no padrão: [A-Za-z0-9]{length}
+   * Gera uma String qualquer no padrÃ£o: [A-Za-z0-9]{length}
    *
    * @param length tamanho exato da String desejada
    * @return String gerada aleatoriamente
@@ -59,7 +59,7 @@ public class RUGenerators {
   }
 
   /**
-   * Gera uma String qualquer no padrão: [0-9]{length}
+   * Gera uma String qualquer no padrÃ£o: [0-9]{length}
    *
    * @param length tamanho da String desejada
    * @return
@@ -73,16 +73,16 @@ public class RUGenerators {
   }
 
   /**
-   * Este método cria uma sequência numérica aleatória.
+   * Este mÃ©todo cria uma sequÃªncia numÃ©rica aleatÃ³ria.
    *
-   * @param length Tamanho/Quantida de Dígitos da sequência
+   * @param length Tamanho/Quantida de DÃ­gitos da sequÃªncia
    */
   public static String generateNumericSequence(int length) {
     String seq = "";
     while (seq.length() != length) {
       seq += ("" + Math.random()).replaceAll("\\.", "");
       if (seq.length() > length) {
-        // Obtem os dígitos mais a direita pois eles se alteram mais do que os primeiros gerados pelo Math.random()
+        // Obtem os dÃ­gitos mais a direita pois eles se alteram mais do que os primeiros gerados pelo Math.random()
         seq = seq.substring(seq.length() - length, seq.length());
       }
     }
@@ -90,12 +90,12 @@ public class RUGenerators {
   }
 
   /**
-   * Este método abstrai os cálculos que temos de fazer para gerar um número inteiro aleatório. Simplificando o código com uma chamada onde simplismente passamos os valores iniciais e final.<br>
-   * <B>ATENÇÃO: </b> os valores passados são inclusivos, isto é, os valores passados podem ser retornados como resultado da função.
+   * Este mÃ©todo abstrai os cÃ¡lculos que temos de fazer para gerar um nÃºmero inteiro aleatÃ³rio. Simplificando o cÃ³digo com uma chamada onde simplismente passamos os valores iniciais e final.<br>
+   * <B>ATENÃ‡ÃƒO: </b> os valores passados sÃ£o inclusivos, isto Ã©, os valores passados podem ser retornados como resultado da funÃ§Ã£o.
    *
-   * @param min Menor número gerado (inclusivo)
-   * @param max Maior número gerado (inclusivo)
-   * @return número aleatório entre os valores min e max, inclusive.
+   * @param min Menor nÃºmero gerado (inclusivo)
+   * @param max Maior nÃºmero gerado (inclusivo)
+   * @return nÃºmero aleatÃ³rio entre os valores min e max, inclusive.
    */
   public static int generateInt(int min, int max) {
     return ThreadLocalRandom.current().nextInt(min, max + 1);

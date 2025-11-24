@@ -8,7 +8,7 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 
 /**
- * Description: Classe utilit·ria com mÈtodos de definiÁıes de conexıes.<br>
+ * Description: Classe utilit√°ria com m√©todos de defini√ß√µes de conex√µes.<br>
  *
  * @author Rodrigo GML
  * @since 1.0.0 (24 de ago. de 2023)
@@ -17,38 +17,38 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 public class RUConnection {
 
   /**
-   * Construtor privado para classe exclusivamente utilit·ria com mÈtodos est·ticos.
+   * Construtor privado para classe exclusivamente utilit√°ria com m√©todos est√°ticos.
    */
   private RUConnection() {
   }
 
   /**
-   * Prepara o java para conseseguir realizar conexıes HTTPS com encriptaÁ„o TLS 1.2.
+   * Prepara o java para conseseguir realizar conex√µes HTTPS com encripta√ß√£o TLS 1.2.
    *
-   * @param km define o KeyManager com os certificados privados que podem ser usados para criptografia da conex„o.
-   * @param tm define o TrustManager, gerenciador de confiabilidade de certificados, para permitir que o java valide a realize a conex„o com os servidores que usem um desses certificados.
-   * @param sslProtocol Procolo de conex„o SSL. Ex: SSLv3, TLSv1, TLSv1.1 and TLSv1.2
+   * @param km define o KeyManager com os certificados privados que podem ser usados para criptografia da conex√£o.
+   * @param tm define o TrustManager, gerenciador de confiabilidade de certificados, para permitir que o java valide a realize a conex√£o com os servidores que usem um desses certificados.
+   * @param sslProtocol Procolo de conex√£o SSL. Ex: SSLv3, TLSv1, TLSv1.1 and TLSv1.2
    * @throws RFWException
    */
   public static void setupTLSConnection(final KeyManager[] km, final TrustManager[] tm, String sslProtocol) throws RFWException {
-    // Define que as conexıes que usam o protocolo de encriptaÁ„o PKGS devem utilizar a classe do pacote da SUN. Isso È necess·rio porque a implementaÁ„o nativa do java.net.URL n„o d· suporte ‡ HTTPS
+    // Define que as conex√µes que usam o protocolo de encripta√ß√£o PKGS devem utilizar a classe do pacote da SUN. Isso √© necess√°rio porque a implementa√ß√£o nativa do java.net.URL n√£o d√° suporte √† HTTPS
     // System.setProperty("java.protocol.handler.pkgs", "com.sun.net.ssl.internal.www.protocol");
 
     try {
       // Recupera o Contexto do SSL e define os certificados definidos
       SSLContext sc = SSLContext.getInstance(sslProtocol);
       sc.init(km, tm, null);
-      SSLContext.setDefault(sc); // Define esse contexto de chaves para as conexıes SSL
+      SSLContext.setDefault(sc); // Define esse contexto de chaves para as conex√µes SSL
     } catch (Exception e) {
       throw new RFWCriticalException("RFW_000034", e);
     }
   }
 
   /**
-   * Define que o java deve permitir a renegociaÁ„o insegura no handshake do SSL/TLS.<br>
-   * Desabilitar essa propriedade n„o È uma boa pr·tica, pois remove a seguranÁa de validaÁ„o dos certificados. <Br>
+   * Define que o java deve permitir a renegocia√ß√£o insegura no handshake do SSL/TLS.<br>
+   * Desabilitar essa propriedade n√£o √© uma boa pr√°tica, pois remove a seguran√ßa de valida√ß√£o dos certificados. <Br>
    * Considere incluir os certificados da outra parte no cacerts da JVM.<Br>
-   * Use apenas para testes, n„o utilize em ambientes de produÁ„o.
+   * Use apenas para testes, n√£o utilize em ambientes de produ√ß√£o.
    */
   public static void setUnsafeRenegotiation(final Boolean allow) {
     if (allow) {

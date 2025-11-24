@@ -5,61 +5,61 @@ import java.util.Locale;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 
 /**
- * Description: Esta classe È um padr„o de definiÁ„o de um DataFormatter usado pelo RFWDeprec.<br>
- * Um DataFormatter È uma classe que opera normalmente entre o bean (VOs) e os componentes de exibiÁ„o para o usu·rio (como GUI, relatÛrios, etc.), fazendo o parser e a formataÁ„o dos dados para que sejam armazenados no Bean corretamente, enquanto que s„o exibidos na tela de maneira amig·vel para o usu·rio.<br>
- * alÈm disso, esta classe carrega outras definiÁıes uteis, como validador para campos, tamanhos m·ximos digit·veis, etc. <br>
- * <b>Sempre que possÌvel (quando n„o houver configuraÁıes, como casas decimais, negativos, etc.) implemente o DataFormatter como singleton para evitar m˙ltiplas instancias denecess·rias na memÛria.</b>
+ * Description: Esta classe √© um padr√£o de defini√ß√£o de um DataFormatter usado pelo RFWDeprec.<br>
+ * Um DataFormatter √© uma classe que opera normalmente entre o bean (VOs) e os componentes de exibi√ß√£o para o usu√°rio (como GUI, relat√≥rios, etc.), fazendo o parser e a formata√ß√£o dos dados para que sejam armazenados no Bean corretamente, enquanto que s√£o exibidos na tela de maneira amig√°vel para o usu√°rio.<br>
+ * al√©m disso, esta classe carrega outras defini√ß√µes uteis, como validador para campos, tamanhos m√°ximos digit√°veis, etc. <br>
+ * <b>Sempre que poss√≠vel (quando n√£o houver configura√ß√µes, como casas decimais, negativos, etc.) implemente o DataFormatter como singleton para evitar m√∫ltiplas instancias denecess√°rias na mem√≥ria.</b>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 4.1.0 (23/06/2011)
  */
 public interface RFWDataFormatter<PRESENTATIONTYPE, VOTYPE> {
 
   /**
-   * MÈtodo chamado sempre que precisar converter o dado do jeito como È gerenciado no sistema para ser apresentado para o usu·rio.<br>
-   * <b>ATEN«√O: </b>Para a apresentaÁ„o, nuncca se retorna null! Para valores null, o valor formatado deve sempre ser "". Usualamente retornar null para exibiÁ„o o usu·rio far· com que a palavra 'null' seja concatenada e exibida para o usu·rio final.
+   * M√©todo chamado sempre que precisar converter o dado do jeito como √© gerenciado no sistema para ser apresentado para o usu√°rio.<br>
+   * <b>ATEN√á√ÉO: </b>Para a apresenta√ß√£o, nuncca se retorna null! Para valores null, o valor formatado deve sempre ser "". Usualamente retornar null para exibi√ß√£o o usu√°rio far√° com que a palavra 'null' seja concatenada e exibida para o usu√°rio final.
    *
    * @param value valor a ser formatado para a tela.
-   * @param locale Localidade para ser usada na formataÁ„o caso necessario.
-   * @return Valor em formato amig·vel para o usu·rio.
+   * @param locale Localidade para ser usada na formata√ß√£o caso necessario.
+   * @return Valor em formato amig√°vel para o usu√°rio.
    */
   public abstract PRESENTATIONTYPE toPresentation(VOTYPE value, Locale locale) throws RFWException;
 
   /**
-   * Converte uma informaÁ„o dada pelo usu·rio (ou mesmo dada pelo MÈtodo toPresentation) para o objeto como È gerenciado no VO.
+   * Converte uma informa√ß√£o dada pelo usu√°rio (ou mesmo dada pelo M√©todo toPresentation) para o objeto como √© gerenciado no VO.
    *
-   * @param formattedvalue valor formatado (ou n„o) como veio da tela, digitado pelo usu·rio. Pode precisar de validaÁ„o, ou mesmo ser inv·lido.
-   * @param locale Localidade para ser usada na formataÁ„o caso necessario.
+   * @param formattedvalue valor formatado (ou n√£o) como veio da tela, digitado pelo usu√°rio. Pode precisar de valida√ß√£o, ou mesmo ser inv√°lido.
+   * @param locale Localidade para ser usada na formata√ß√£o caso necessario.
    * @return Valor para ser colocado no VO.
-   * @throws RFWException ExceÁ„o a ser lanÁada quando n„o for possÌvel fazer o parser do valor. Em caso de exceÁ„o o valor ser· anulado no bean.
+   * @throws RFWException Exce√ß√£o a ser lan√ßada quando n√£o for poss√≠vel fazer o parser do valor. Em caso de exce√ß√£o o valor ser√° anulado no bean.
    */
   public abstract VOTYPE toVO(PRESENTATIONTYPE formattedvalue, Locale locale) throws RFWException;
 
   /**
-   * O MÈtodo de validaÁ„o deve validar se o conte˙do pode ser recebido no MÈtodo toVO() e ser salvo com sucesso, ou seja, ser convertido do valor do usu·rio para o valor como deve ser salvo no VO.<br>
-   * Esta validaÁ„o nada tem a ver com a validaÁ„o do VO, apenas se o valor recebido pode ser convertido e salvo no VO, se È um valor v·lido o valor formatado recebido.
+   * O M√©todo de valida√ß√£o deve validar se o conte√∫do pode ser recebido no M√©todo toVO() e ser salvo com sucesso, ou seja, ser convertido do valor do usu√°rio para o valor como deve ser salvo no VO.<br>
+   * Esta valida√ß√£o nada tem a ver com a valida√ß√£o do VO, apenas se o valor recebido pode ser convertido e salvo no VO, se √© um valor v√°lido o valor formatado recebido.
    */
   public abstract void validate(Object value, Locale locale) throws RFWException;
 
   /**
-   * Define o tamanho m·ximo formatado para o dado.<br>
-   * Normalmente a informaÁ„o formatada tende a ser maior do que o dado salvo no VO, essa informaÁ„o tende a informar qual o tamanho m·ximo que a informaÁ„o formatada pode ter. Seja para limitar o que o usu·rio poder· digitar, ou o tamanho que o dado formatado ocupar· em um relatÛrio ou outro tipo de midia.
+   * Define o tamanho m√°ximo formatado para o dado.<br>
+   * Normalmente a informa√ß√£o formatada tende a ser maior do que o dado salvo no VO, essa informa√ß√£o tende a informar qual o tamanho m√°ximo que a informa√ß√£o formatada pode ter. Seja para limitar o que o usu√°rio poder√° digitar, ou o tamanho que o dado formatado ocupar√° em um relat√≥rio ou outro tipo de midia.
    *
-   * @return inteiro que determina a quantidade de dÌgitos no campo.
+   * @return inteiro que determina a quantidade de d√≠gitos no campo.
    */
   public abstract int getMaxLenght();
 
   /**
-   * Este MÈtodo tem a funÁ„o de "reformatar" o conte˙do do campo digitado pelo usu·rio e retornar o valor formatado para a prÛpria apresentaÁ„o novamente.<br>
-   * A implementaÁ„o padr„o deste MÈtodo joga o conte˙do recebido da apresentaÁ„o apra o MÈtodo {@link #toVO(Object, Locale)} e depois joga novamente para o MÈtodo {@link #toPresentation(Object, Locale)}. Pois realizando as duas conversıes teremos o conte˙do formatado com sucesso para a apresentaÁ„o. Mas pode ser substituido por uma implementaÁıo mais eficiente dependendo da implementaÁ„o.
+   * Este M√©todo tem a fun√ß√£o de "reformatar" o conte√∫do do campo digitado pelo usu√°rio e retornar o valor formatado para a pr√≥pria apresenta√ß√£o novamente.<br>
+   * A implementa√ß√£o padr√£o deste M√©todo joga o conte√∫do recebido da apresenta√ß√£o apra o M√©todo {@link #toVO(Object, Locale)} e depois joga novamente para o M√©todo {@link #toPresentation(Object, Locale)}. Pois realizando as duas convers√µes teremos o conte√∫do formatado com sucesso para a apresenta√ß√£o. Mas pode ser substituido por uma implementa√ß√µo mais eficiente dependendo da implementa√ß√£o.
    *
-   * @param content conte˙do que o usu·rio entrou.
-   * @param locale Locale do usu·rio para interpretaÁ„o correta dos formatos utilizados pelo mesmo.
-   * @return Valor j· formatado, utilizando o prÛprio locale do usu·rio. Conforme implementaÁ„o da Interface.
-   * @throws RFWException LanÁado em caso de erro de convers„o ou o conte˙do entrado pelo usu·rio n„o seja v·lido. Na implementaÁ„o padr„o, retorna as exceptions que possam ocorrer nos MÈtodos {@link #toVO(Object, Locale)} ou {@link #toPresentation(Object, Locale)}
+   * @param content conte√∫do que o usu√°rio entrou.
+   * @param locale Locale do usu√°rio para interpreta√ß√£o correta dos formatos utilizados pelo mesmo.
+   * @return Valor j√° formatado, utilizando o pr√≥prio locale do usu√°rio. Conforme implementa√ß√£o da Interface.
+   * @throws RFWException Lan√ßado em caso de erro de convers√£o ou o conte√∫do entrado pelo usu√°rio n√£o seja v√°lido. Na implementa√ß√£o padr√£o, retorna as exceptions que possam ocorrer nos M√©todos {@link #toVO(Object, Locale)} ou {@link #toPresentation(Object, Locale)}
    */
   public default PRESENTATIONTYPE reformatPresentationContent(PRESENTATIONTYPE content, Locale locale) throws RFWException {
-    // Convertemos para o VO, j· que o MÈtodo de Presentation sÛ È preparado apra receber um dado v·lidado conforme esperado do VO.
+    // Convertemos para o VO, j√° que o M√©todo de Presentation s√≥ √© preparado apra receber um dado v√°lidado conforme esperado do VO.
     this.validate(content, locale);
     final VOTYPE voValue = this.toVO(content, locale);
     // Reconvertemos para a PRESENTATION

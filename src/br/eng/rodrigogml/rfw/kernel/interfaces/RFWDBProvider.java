@@ -8,9 +8,9 @@ import br.eng.rodrigogml.rfw.kernel.vo.RFWOrderBy;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 
 /**
- * Description: Esta interface provÍ acesso aos dados da aplicaÁ„o para componentes que precisam.<br>
- * A implementaÁ„o desta classe deve fornecer os dados conforme solicitados para que os componentes funcionem conforme esperado.<br>
- * Os mÈtodos desta classe s„o desenvolvidos na mesma assinatura utilizada no mÛdulo RFW ORM para f·cil integraÁ„o.
+ * Description: Esta interface prov√™ acesso aos dados da aplica√ß√£o para componentes que precisam.<br>
+ * A implementa√ß√£o desta classe deve fornecer os dados conforme solicitados para que os componentes funcionem conforme esperado.<br>
+ * Os m√©todos desta classe s√£o desenvolvidos na mesma assinatura utilizada no m√≥dulo RFW ORM para f√°cil integra√ß√£o.
  *
  * @author Rodrigo GML
  * @since 1.0.0 (29 de jul. de 2023)
@@ -19,21 +19,21 @@ import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 public interface RFWDBProvider {
 
   /**
-   * Este mÈtodo deve ser implementado pela classe da aplicaÁ„o e retornar os IDs dos objetos conforme os par‚metros passados.
+   * Este m√©todo deve ser implementado pela classe da aplica√ß√£o e retornar os IDs dos objetos conforme os par√¢metros passados.
    *
    * @param voClass Class do Objeto a ser retornado.
    * @param mo Filtro dos objetos.
-   * @param orderBy DefiniÁ„o da coluna para ordenar os objetos.
+   * @param orderBy Defini√ß√£o da coluna para ordenar os objetos.
    * @return Lista dos IDs conforme a ordem solicitada.
    */
   <VO extends RFWVO> List<Long> findIDs(Class<VO> voClass, RFWMO mo, RFWOrderBy orderBy) throws RFWException;
 
   /**
-   * Este mÈtodo deve ser implementado pela classe da aplicaÁ„o e retornar os IDs dos objetos conforme os par‚metros passados.
+   * Este m√©todo deve ser implementado pela classe da aplica√ß√£o e retornar os IDs dos objetos conforme os par√¢metros passados.
    *
    * @param voClass Class do Objeto a ser retornado.
    * @param mo Filtro dos objetos.
-   * @param orderBy DefiniÁ„o da coluna para ordenar os objetos.
+   * @param orderBy Defini√ß√£o da coluna para ordenar os objetos.
    * @param offset Quantidade de itens da lista a serem "pulados"
    * @param limit Limite de itens que devem ser retornados.
    * @return Lista dos IDs conforme a ordem solicitada.
@@ -41,11 +41,11 @@ public interface RFWDBProvider {
   <VO extends RFWVO> List<Long> findIDs(Class<VO> voClass, RFWMO mo, RFWOrderBy orderBy, Integer offset, Integer limit) throws RFWException;
 
   /**
-   * Este mÈtodo deve ser implementado pela classe da aplicaÁ„o e retornar os objetos conforme os par‚metros passados.
+   * Este m√©todo deve ser implementado pela classe da aplica√ß√£o e retornar os objetos conforme os par√¢metros passados.
    *
    * @param voClass Class do Objeto a ser retornado.
    * @param mo Filtro dos objetos.
-   * @param orderBy DefiniÁ„o da coluna para ordenar os objetos.
+   * @param orderBy Defini√ß√£o da coluna para ordenar os objetos.
    * @param attributes Array com os nomes/caminhos dos atributos que precisam estar presentes nos objetos.
    * @param offset Quantidade de itens da lista a serem "pulados"
    * @param limit Limite de itens que devem ser retornados.
@@ -54,7 +54,7 @@ public interface RFWDBProvider {
   <VO extends RFWVO> List<VO> findList(Class<VO> voClass, RFWMO mo, RFWOrderBy orderBy, String[] attributes, Integer offset, Integer limit) throws RFWException;
 
   /**
-   * MÈtodo usado para buscar um objeto pelo seu ID no banco de dados sem depender de interfaces de "Bridge".
+   * M√©todo usado para buscar um objeto pelo seu ID no banco de dados sem depender de interfaces de "Bridge".
    *
    * @param voClass Classe da entidade sendo procurada
    * @param id ID do objeto a ser recuperado.
@@ -65,7 +65,7 @@ public interface RFWDBProvider {
   <VO extends RFWVO> RFWVO findByID(Class<? extends RFWVO> voClass, Long id, String[] attributes) throws RFWException;
 
   /**
-   * MÈtodo usado para buscar um objeto no banco de dados sem depender de interfaces de "Bridge".
+   * M√©todo usado para buscar um objeto no banco de dados sem depender de interfaces de "Bridge".
    *
    * @param voClass Classe da entidade sendo procurada
    * @param mo MatchObject para filtrar os dados

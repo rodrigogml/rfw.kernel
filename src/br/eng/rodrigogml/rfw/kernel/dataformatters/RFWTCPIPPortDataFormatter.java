@@ -6,10 +6,10 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation;
 
 /**
- * Description: Classe para formatar e validar uma porta de conex„o TCP/IP.<BR>
+ * Description: Classe para formatar e validar uma porta de conex√£o TCP/IP.<BR>
  * Basicamente permite os valores entre 1 e 65535. (Mais info em: http://pt.wikipedia.org/wiki/Anexo:Lista_de_portas_de_protocolos)
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.0.0 (20/09/2014)
  */
 public class RFWTCPIPPortDataFormatter extends RFWIntegerDataFormatter {

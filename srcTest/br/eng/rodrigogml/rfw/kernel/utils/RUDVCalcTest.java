@@ -11,7 +11,7 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 
 /**
- * Classe de testes para {@link RUValueValidation}. Testa exaustivamente o método {@link RUValueValidation#calcDVDANFeV400(String)} com diversas entradas válidas e inválidas.
+ * Classe de testes para {@link RUValueValidation}. Testa exaustivamente o mÃ©todo {@link RUValueValidation#calcDVDANFeV400(String)} com diversas entradas vÃ¡lidas e invÃ¡lidas.
  *
  * @author Rodrigo GML
  * @since 1.0.0 (9 de fev. de 2025)
@@ -22,7 +22,7 @@ public class RUDVCalcTest {
 
   @Test
   public void t00_testValidDANFEKeys() throws RFWException {
-    // Entradas de exemplo com seus respectivos dígitos verificadores corretos
+    // Entradas de exemplo com seus respectivos dÃ­gitos verificadores corretos
     String[][] testCases = {
         { "3524086079597800020855001000892559127772513", "0" },
         { "3524080166029600013055002000168411155000908", "2" },
@@ -89,16 +89,16 @@ public class RUDVCalcTest {
         null, // Nulo
         "", // String vazia
         "12345678901234567890", // Muito curta
-        "ABCDEFGHIJKLMNO1234567890123456789012345", // Contém letras
-        "1234567890123456789012345678901234567890A", // Último caractere inválido
+        "ABCDEFGHIJKLMNO1234567890123456789012345", // ContÃ©m letras
+        "1234567890123456789012345678901234567890A", // Ãšltimo caractere invÃ¡lido
         "123456789012345678901234567890123456789012345", // Muito longa
-        "    12345678901234567890123456789012345678901", // Espaços no início
-        "12345678901234567890123456789012345678901    ", // Espaços no final
-        "12-345678901234567890123456789012345678901" // Contém caracteres especiais
+        "    12345678901234567890123456789012345678901", // EspaÃ§os no inÃ­cio
+        "12345678901234567890123456789012345678901    ", // EspaÃ§os no final
+        "12-345678901234567890123456789012345678901" // ContÃ©m caracteres especiais
     };
 
     for (String invalid : invalidInputs) {
-      assertThrows("Entrada inválida deveria lançar exceção: " + invalid,
+      assertThrows("Entrada invÃ¡lida deveria lanÃ§ar exceÃ§Ã£o: " + invalid,
           RFWValidationException.class, () -> RUValueValidation.calcDVDANFeV400(invalid));
     }
   }

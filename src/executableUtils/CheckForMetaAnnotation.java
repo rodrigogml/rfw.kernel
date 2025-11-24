@@ -10,9 +10,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Description: Classe utilit·ria para ajudar a encontrar Atributos em VOs que estejam faltando a RFWAnnotation.<br>
+ * Description: Classe utilit√°ria para ajudar a encontrar Atributos em VOs que estejam faltando a RFWAnnotation.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since (29 de ago. de 2024)
  */
 public class CheckForMetaAnnotation {
@@ -69,7 +69,7 @@ public class CheckForMetaAnnotation {
             String attributeName = extractAttributeName(line);
 
             if (!previousLineHasRFWMetaAnnotation(lines, index)) {
-              System.out.printf("A classe %s n„o apresenta a RFWMeta no atributo %s.%n", className, attributeName);
+              System.out.printf("A classe %s n√£o apresenta a RFWMeta no atributo %s.%n", className, attributeName);
             }
           }
         }
@@ -108,13 +108,13 @@ public class CheckForMetaAnnotation {
         return false; // Encontrou outro atributo
       }
       if (previousLine.startsWith("@RFWMeta")) {
-        return true; // Encontrou a anotaÁ„o
+        return true; // Encontrou a anota√ß√£o
       }
       if (previousLine.startsWith("public class ") || previousLine.startsWith("class ")) {
-        return false; // Encontrou a declaraÁ„o da classe
+        return false; // Encontrou a declara√ß√£o da classe
       }
     }
-    return false; // N„o encontrou a anotaÁ„o atÈ a declaraÁ„o da classe
+    return false; // N√£o encontrou a anota√ß√£o at√© a declara√ß√£o da classe
   }
 
 }

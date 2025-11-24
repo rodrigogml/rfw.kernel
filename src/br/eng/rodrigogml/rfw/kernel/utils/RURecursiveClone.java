@@ -24,26 +24,26 @@ import br.eng.rodrigogml.rfw.kernel.logger.RFWLogger;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWRecursiveClonable;
 
 /**
- * Description: Classe utilit·ria que ajuda a implementaÁ„o da interface {@link RFWRecursiveClonable}.<br>
+ * Description: Classe utilit√°ria que ajuda a implementa√ß√£o da interface {@link RFWRecursiveClonable}.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.1.0 (18/02/2016)
  */
 public class RURecursiveClone {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public static RFWRecursiveClonable cloneRecursive(RFWRecursiveClonable obj, HashMap<RFWRecursiveClonable, RFWRecursiveClonable> clonedObjects) throws RFWException {
-    // Veririca se j· estamos na hash, se estiver retornamos esse objeto
+    // Veririca se j√° estamos na hash, se estiver retornamos esse objeto
     RFWRecursiveClonable cloned = clonedObjects.get(obj);
     if (cloned != null) {
       return cloned;
     }
 
-    // Se ainda n„o estamos na hash de objetos clonados, nos clonamos e incluimos na hash
+    // Se ainda n√£o estamos na hash de objetos clonados, nos clonamos e incluimos na hash
     RFWRecursiveClonable clonedvo;
     try {
       try {
-        // Primeiro sempre tentamos fazer uma nova inst‚ncia ao invÈs de usar o mÈtodo clone(). D· mesmo conflito com as referÍncias do Java
+        // Primeiro sempre tentamos fazer uma nova inst√¢ncia ao inv√©s de usar o m√©todo clone(). D√° mesmo conflito com as refer√™ncias do Java
         clonedvo = obj.getClass().newInstance();
       } catch (Exception e) {
         clonedvo = (RFWRecursiveClonable) obj.clone();
@@ -52,9 +52,9 @@ public class RURecursiveClone {
       throw new RFWCriticalException(e1);
     }
     clonedObjects.put(obj, clonedvo);
-    // Recupera a lista de mÈtodos desse objeto
+    // Recupera a lista de m√©todos desse objeto
     Method[] methods = obj.getClass().getMethods();
-    // Itera essa lista atr·s de mÈtodos do tipo "get" ou "is"
+    // Itera essa lista atr√°s de m√©todos do tipo "get" ou "is"
     for (int i = 0; i < methods.length; i++) {
       String methodname = methods[i].getName();
       if (methodname.startsWith("get") || methodname.startsWith("is")) {
@@ -67,13 +67,13 @@ public class RURecursiveClone {
         } catch (SecurityException e) {
         } catch (NoSuchMethodException e) {
         }
-        // Verifica a existÍncia do MÈtodo SET
+        // Verifica a exist√™ncia do M√©todo SET
         if (methodset != null) {
-          // Verifica se o retorno do mÈtodo get n„o È nulo
+          // Verifica se o retorno do m√©todo get n√£o √© nulo
           try {
             Object gettedvalue = methodget.invoke(obj);
             if (gettedvalue != null) {
-              // Verifica se o tipo de objeto È um dos que desejamos fazer o "deep clone"
+              // Verifica se o tipo de objeto √© um dos que desejamos fazer o "deep clone"
               if (gettedvalue instanceof RFWRecursiveClonable) {
                 RFWRecursiveClonable clonedvalue = ((RFWRecursiveClonable) gettedvalue).cloneRecursive(clonedObjects);
                 methodset.invoke(clonedvo, clonedvalue);
@@ -84,7 +84,7 @@ public class RURecursiveClone {
                 } else if (gettedvalue instanceof LinkedList) {
                   clonedvalue = (List) ((LinkedList) gettedvalue).clone();
                 } else {
-                  throw new RFWCriticalException("O RURecursiveClone n„o suporta a List do tipo '${0}'.", new String[] { gettedvalue.getClass().getCanonicalName() });
+                  throw new RFWCriticalException("O RURecursiveClone n√£o suporta a List do tipo '${0}'.", new String[] { gettedvalue.getClass().getCanonicalName() });
                 }
                 clonedvalue.clear();
                 for (Object object : (List) gettedvalue) {
@@ -101,9 +101,9 @@ public class RURecursiveClone {
                   clonedvalue = (Map) ((HashMap) gettedvalue).clone();
                   clonedvalue.clear();
 
-                  // Clonamos n„o sÛ o valor, mas tambÈm a chave, em alguns casos a chave da Hash pode ser um prÛprio RFWVO como referÍncia
+                  // Clonamos n√£o s√≥ o valor, mas tamb√©m a chave, em alguns casos a chave da Hash pode ser um pr√≥prio RFWVO como refer√™ncia
                   for (Object key : ((HashMap) gettedvalue).keySet()) {
-                    Object mapValue = ((HashMap) gettedvalue).get(key); // Recupera antes de clonar a chave ou n„o encontramos nada.
+                    Object mapValue = ((HashMap) gettedvalue).get(key); // Recupera antes de clonar a chave ou n√£o encontramos nada.
 
                     if (key instanceof RFWRecursiveClonable) {
                       key = ((RFWRecursiveClonable) key).cloneRecursive(clonedObjects);
@@ -118,15 +118,15 @@ public class RURecursiveClone {
 
                   methodset.invoke(clonedvo, clonedvalue);
                 } else {
-                  throw new RFWCriticalException("O RURecursiveClone n„o suporta a Map do tipo '${0}'.", new String[] { gettedvalue.getClass().getCanonicalName() });
+                  throw new RFWCriticalException("O RURecursiveClone n√£o suporta a Map do tipo '${0}'.", new String[] { gettedvalue.getClass().getCanonicalName() });
                 }
               } else if (gettedvalue instanceof String || gettedvalue instanceof Long || gettedvalue instanceof Integer || gettedvalue instanceof BigDecimal || gettedvalue instanceof LocalDate || gettedvalue instanceof LocalDateTime || gettedvalue instanceof LocalTime || gettedvalue instanceof Byte || gettedvalue instanceof Character || gettedvalue instanceof Boolean || gettedvalue instanceof Double || gettedvalue instanceof Float || gettedvalue instanceof Date || gettedvalue instanceof Enum<?>) {
-                // Objetos imut·veis n„o precisam ser clonados, j· que eles n„o sofrem alteraÁ„o basta apontar o novo vo para o mesmo objeto.
+                // Objetos imut√°veis n√£o precisam ser clonados, j√° que eles n√£o sofrem altera√ß√£o basta apontar o novo vo para o mesmo objeto.
                 methodset.invoke(clonedvo, gettedvalue);
               } else if (gettedvalue.getClass().isArray() && gettedvalue.getClass().getComponentType().isPrimitive()) {
-                // Se Èum array de tipos primitivos apenas clonamos o array para que o array n„o seja o mesmo, mas os "objetos" dentro s„o imut·veis, logo n„o precisamos clona-los
+                // Se √©um array de tipos primitivos apenas clonamos o array para que o array n√£o seja o mesmo, mas os "objetos" dentro s√£o imut√°veis, logo n√£o precisamos clona-los
                 Object clonedvalue = null;
-                // Tenho um if para cada tipo porque n„o encontrei um jeito de clona-los ou copia-los sem fazer o cast
+                // Tenho um if para cada tipo porque n√£o encontrei um jeito de clona-los ou copia-los sem fazer o cast
                 if (gettedvalue instanceof byte[])
                   clonedvalue = ((byte[]) gettedvalue).clone();
                 else if (gettedvalue instanceof boolean[])
@@ -150,8 +150,8 @@ public class RURecursiveClone {
                 }
               } else if (gettedvalue instanceof Serializable) {
                 try {
-                  // Como um ˙ltimo recurso para garantir uma duplicaÁ„o do objeto utilizamos o Serializable, serializando o objeto e desserializando, enganamos o java sobre manter a mesma referÍncia de memÛria do objeto.
-                  // O problema com este mÈtodo È que se algum objeto dentro do serializable n„o for "serializ·vel" ele vai explodir. Neste caso vamos lanÁar um erro cÌritico, para que o desenvolvedor melhore o objeto ou esta implementaÁ„o do RecursiveClone
+                  // Como um √∫ltimo recurso para garantir uma duplica√ß√£o do objeto utilizamos o Serializable, serializando o objeto e desserializando, enganamos o java sobre manter a mesma refer√™ncia de mem√≥ria do objeto.
+                  // O problema com este m√©todo √© que se algum objeto dentro do serializable n√£o for "serializ√°vel" ele vai explodir. Neste caso vamos lan√ßar um erro c√≠ritico, para que o desenvolvedor melhore o objeto ou esta implementa√ß√£o do RecursiveClone
                   final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
                   final ObjectOutputStream oo = new ObjectOutputStream(byteStream);
                   oo.writeObject(gettedvalue);
@@ -164,7 +164,7 @@ public class RURecursiveClone {
 
                   methodset.invoke(clonedvo, clonedValue);
 
-                  // Vou logar como um erro a utilizaÁ„o do Serializable para chamar a atenÁ„o dos objetos que est„o usando essa definiÁ„o. Assim podemos melhorar a implementaÁ„o desse mÈtodo com o tempo
+                  // Vou logar como um erro a utiliza√ß√£o do Serializable para chamar a aten√ß√£o dos objetos que est√£o usando essa defini√ß√£o. Assim podemos melhorar a implementa√ß√£o desse m√©todo com o tempo
                   RFWLogger.logError("Utilizado Serializable Clone para o objeto: " + gettedvalue.getClass().toString());
                 } catch (Exception e) {
                   throw new RFWCriticalException("RFW_ERR_200450", new String[] { gettedvalue.getClass().toString() }, e);

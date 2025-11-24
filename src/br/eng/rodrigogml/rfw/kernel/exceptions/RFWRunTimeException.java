@@ -1,9 +1,9 @@
 package br.eng.rodrigogml.rfw.kernel.exceptions;
 
 /**
- * Description: Classe de exceÁıes de tempo de execuÁ„o. Devem ser evitadas ao m·ximo se substituindo, por exemplo, por exceÁıes de validaÁ„o sempre que possÌvel.<br>
+ * Description: Classe de exce√ß√µes de tempo de execu√ß√£o. Devem ser evitadas ao m√°ximo se substituindo, por exemplo, por exce√ß√µes de valida√ß√£o sempre que poss√≠vel.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 4.0 (25/01/2011)
  */
 public class RFWRunTimeException extends RuntimeException {
@@ -27,7 +27,7 @@ public class RFWRunTimeException extends RuntimeException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
    */
   public RFWRunTimeException(String exceptionCode) {
     super(exceptionCode);
@@ -38,7 +38,7 @@ public class RFWRunTimeException extends RuntimeException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
    */
   public RFWRunTimeException(String exceptionCode, Throwable cause) {
     super(exceptionCode, cause);
@@ -49,8 +49,8 @@ public class RFWRunTimeException extends RuntimeException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
-   * @param params Par‚metros que ser„o substituÌdos na mensagem do Bundle com o padr„o ${0}, ${1} ...
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
+   * @param params Par√¢metros que ser√£o substitu√≠dos na mensagem do Bundle com o padr√£o ${0}, ${1} ...
    */
   public RFWRunTimeException(String exceptionCode, String[] params) {
     super(exceptionCode);
@@ -61,8 +61,8 @@ public class RFWRunTimeException extends RuntimeException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
-   * @param params Par‚metros que ser„o substituÌdos na mensagem do Bundle com o padr„o ${0}, ${1} ...
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
+   * @param params Par√¢metros que ser√£o substitu√≠dos na mensagem do Bundle com o padr√£o ${0}, ${1} ...
    */
   public RFWRunTimeException(String exceptionCode, String[] params, Throwable cause) {
     super(exceptionCode, cause);

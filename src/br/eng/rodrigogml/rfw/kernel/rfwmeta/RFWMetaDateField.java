@@ -9,7 +9,7 @@ import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess.PreProcessOption;
 
 /**
  * Description: Annotation usada para definir um atributo do tipo Date.<BR>
- * ATENÇÃO: Essa tag automaticamente define a resulução por padrão é apenas de DIA. Para incluir horas, minutos, segundos, etc., configure a resolução.
+ * ATENÃ‡ÃƒO: Essa tag automaticamente define a resuluÃ§Ã£o por padrÃ£o Ã© apenas de DIA. Para incluir horas, minutos, segundos, etc., configure a resoluÃ§Ã£o.
  *
  * @author Davy Monteoliva
  * @since 7.1.0 (20/07/2015)
@@ -23,59 +23,59 @@ public @interface RFWMetaDateField {
   }
 
   /**
-   * Define o nome da coluna na tabela do banco de dados. Caso deixado em branco, será utilizado o nome da propriedade.
+   * Define o nome da coluna na tabela do banco de dados. Caso deixado em branco, serÃ¡ utilizado o nome da propriedade.
    */
   String column() default "";
 
   /**
-   * Define o nome do atributo/campo. Este nome é usado para facilitar mensagens de erros, validações, em UIs, etc.<br>
-   * Não utilize ":" no final ou outras formatações específicas do local de uso. Aqui deve ser definido apenas o nome, como "Caixa", "Nome do Usuário", etc.
+   * Define o nome do atributo/campo. Este nome Ã© usado para facilitar mensagens de erros, validaÃ§Ãµes, em UIs, etc.<br>
+   * NÃ£o utilize ":" no final ou outras formataÃ§Ãµes especÃ­ficas do local de uso. Aqui deve ser definido apenas o nome, como "Caixa", "Nome do UsuÃ¡rio", etc.
    */
   String caption();
 
   /**
-   * Define se o atributo é obrigatório ou não na entidade.
+   * Define se o atributo Ã© obrigatÃ³rio ou nÃ£o na entidade.
    */
   boolean required();
 
   /**
-   * Define se o atributo é único.
+   * Define se o atributo Ã© Ãºnico.
    */
   boolean unique() default false;
 
   /**
-   * Define a data máxima. <br>
+   * Define a data mÃ¡xima. <br>
    * Formato: yyyyMMddHHmmssSSSS<br>
-   * <li>yyyy = ano com quatro dígitos
-   * <li>MM = mês com dois dígitos
-   * <li>dd = dia com dois dígitos
-   * <li>HH = hora com dois dígitos
-   * <li>mm = minuto com dois dígitos
-   * <li>ss = segundo com dois dígitos
-   * <li>SSSS = milisegundo com quatro dígitos
+   * <li>yyyy = ano com quatro dÃ­gitos
+   * <li>MM = mÃªs com dois dÃ­gitos
+   * <li>dd = dia com dois dÃ­gitos
+   * <li>HH = hora com dois dÃ­gitos
+   * <li>mm = minuto com dois dÃ­gitos
+   * <li>ss = segundo com dois dÃ­gitos
+   * <li>SSSS = milisegundo com quatro dÃ­gitos
    */
   String maxValue() default "";
 
   /**
-   * Define a data mínima. <br>
+   * Define a data mÃ­nima. <br>
    * Formato: yyyyMMddHHmmssSSSS<br>
-   * <li>yyyy = ano com quatro dígitos
-   * <li>MM = mês com dois dígitos
-   * <li>dd = dia com dois dígitos
-   * <li>HH = hora com dois dígitos
-   * <li>mm = minuto com dois dígitos
-   * <li>ss = segundo com dois dígitos
-   * <li>SSSS = milisegundo com quatro dígitos
+   * <li>yyyy = ano com quatro dÃ­gitos
+   * <li>MM = mÃªs com dois dÃ­gitos
+   * <li>dd = dia com dois dÃ­gitos
+   * <li>HH = hora com dois dÃ­gitos
+   * <li>mm = minuto com dois dÃ­gitos
+   * <li>ss = segundo com dois dÃ­gitos
+   * <li>SSSS = milisegundo com quatro dÃ­gitos
    */
   String minValue() default "";
 
   /**
-   * Define a resolução do campo Date.
+   * Define a resoluÃ§Ã£o do campo Date.
    */
   DateResolution resolution() default DateResolution.DAY;
 
   /**
-   * Define um Pré Processamento a ser feito no atributo antes das persistências do objeto.
+   * Define um PrÃ© Processamento a ser feito no atributo antes das persistÃªncias do objeto.
    */
   PreProcessOption preProcess() default PreProcessOption.NONE;
 

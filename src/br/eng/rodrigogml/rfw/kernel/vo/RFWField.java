@@ -8,12 +8,12 @@ import java.util.Objects;
 
 /**
  * Description: Estrutura utilizada para criar "campos especiais" de uma lista de dados.<br>
- * Permitindo que sejam retornados resultados de funÁıes que normalmente os bancos de dados j· suportam, por exemplo:<br>
+ * Permitindo que sejam retornados resultados de fun√ß√µes que normalmente os bancos de dados j√° suportam, por exemplo:<br>
  * <li>count(id)</li>
  * <li>sum(total)</li> <br>
  * <br>
- * Sendo assim possÌvel buscar contadores e valores sumarizados diretamente, ou mesmo os valores de apenas algumas colunas, ao invÈs de um objeto completamente montado.<br>
- * Normalmente esta classe È utilizada pelo RFW.ORM para obter dados do banco de dados, mas pode ser utilizado por qualquer estrutura de dados para indicar alguma manipulaÁ„o.
+ * Sendo assim poss√≠vel buscar contadores e valores sumarizados diretamente, ou mesmo os valores de apenas algumas colunas, ao inv√©s de um objeto completamente montado.<br>
+ * Normalmente esta classe √© utilizada pelo RFW.ORM para obter dados do banco de dados, mas pode ser utilizado por qualquer estrutura de dados para indicar alguma manipula√ß√£o.
  *
  * @author Rodrigo GML
  * @since 10.0 (22 de nov de 2019)
@@ -24,114 +24,114 @@ public class RFWField implements Serializable, Cloneable {
 
   public static enum FieldFunction {
     /**
-     * Define que trata-se apenas de um campo, sem funÁ„o encapsulando.
+     * Define que trata-se apenas de um campo, sem fun√ß√£o encapsulando.
      */
     FIELD,
     /**
-     * Permite colocar um valor constante no lugar do campo ou como par‚metro para outrao funÁ„o.
+     * Permite colocar um valor constante no lugar do campo ou como par√¢metro para outrao fun√ß√£o.
      */
     CONSTANTE_STRING,
     /**
-     * Permite colocar um valor constante no lugar do campo ou como par‚metro para outrao funÁ„o.
+     * Permite colocar um valor constante no lugar do campo ou como par√¢metro para outrao fun√ß√£o.
      */
     CONSTANTE_NUMBER,
     /**
-     * Permite colocar um valor constante NULL no lugar do campo ou como par‚metro para outrao funÁ„o.
+     * Permite colocar um valor constante NULL no lugar do campo ou como par√¢metro para outrao fun√ß√£o.
      */
     CONSTANT_NULL,
     /**
-     * Define uma funÁ„o de soma dos valores.
+     * Define uma fun√ß√£o de soma dos valores.
      */
     SUM,
     /**
-     * Define uma operaÁ„o de subtraÁ„o de dois valores.
+     * Define uma opera√ß√£o de subtra√ß√£o de dois valores.
      */
     SUBTRACT,
     /**
-     * Cria a funÁ„o COUNT(*) para contabilizar o total de resultados retornados.
+     * Cria a fun√ß√£o COUNT(*) para contabilizar o total de resultados retornados.
      */
     COUNT,
     /**
-     * Cria a funÁ„o DISTINCT(*) para encontrar todos os valores distintos de uma determinada coluna.
+     * Cria a fun√ß√£o DISTINCT(*) para encontrar todos os valores distintos de uma determinada coluna.
      */
     DISTINCT,
     /**
-     * Cria a funÁ„o COALESCE para recuperar valores que n„o estejam nulos.
+     * Cria a fun√ß√£o COALESCE para recuperar valores que n√£o estejam nulos.
      */
     COALESCE,
     /**
-     * Cria a funÁ„o HOUR para separar a hora de uma coluna de data.
+     * Cria a fun√ß√£o HOUR para separar a hora de uma coluna de data.
      */
     HOUR,
     /**
-     * Cria a funÁ„o DAY para separar o dia de uma coluna de data.
+     * Cria a fun√ß√£o DAY para separar o dia de uma coluna de data.
      */
     DAY,
     /**
-     * Cria a funÁ„o MONTH para separar o mÍs de uma coluna de data.
+     * Cria a fun√ß√£o MONTH para separar o m√™s de uma coluna de data.
      */
     MONTH,
     /**
-     * Cria a funÁ„o YEAR para separar o ano de uma coluna de data.
+     * Cria a fun√ß√£o YEAR para separar o ano de uma coluna de data.
      */
     YEAR,
     /**
-     * Cria a funÁ„o WEEKDAY para retornar um valor numÈrico de acordo com o dia da semana de uma data.<br>
-     * Retorna valores de 0 a 6, comeÁando na segunda-feira.<br>
+     * Cria a fun√ß√£o WEEKDAY para retornar um valor num√©rico de acordo com o dia da semana de uma data.<br>
+     * Retorna valores de 0 a 6, come√ßando na segunda-feira.<br>
      * <br>
-     * <i><b>ObservaÁ„o:</b>
+     * <i><b>Observa√ß√£o:</b>
      * <ul>
-     * <li>Esta implementaÁ„o È padr„o do MySQL. Outros bancos utilizam outras funÁıes como DATEPART (SQL Server: valores de 1 a 7, comeÁando no domingo por padr„o) e EXTRACT (PostgreSQL: valores de 0 a 6, comeÁando no domingo) que trazem valores diferentes.
-     * <li>Aqui no RFW para todas as implementaÁıes (dialetos) este mÈtodo deve ser padronizado e trazer o resultado de 0 a 6 comeÁando na segunda-feira, seguindo a implementaÁ„o inicial.</i>
+     * <li>Esta implementa√ß√£o √© padr√£o do MySQL. Outros bancos utilizam outras fun√ß√µes como DATEPART (SQL Server: valores de 1 a 7, come√ßando no domingo por padr√£o) e EXTRACT (PostgreSQL: valores de 0 a 6, come√ßando no domingo) que trazem valores diferentes.
+     * <li>Aqui no RFW para todas as implementa√ß√µes (dialetos) este m√©todo deve ser padronizado e trazer o resultado de 0 a 6 come√ßando na segunda-feira, seguindo a implementa√ß√£o inicial.</i>
      * </ul>
      */
     WEEKDAY,
     /**
-     * Cria a funÁ„o de MÌnimo de um valor.
+     * Cria a fun√ß√£o de M√≠nimo de um valor.
      */
     MINIMUM,
     /**
-     * Cria a funÁ„o de M·ximo de um valor.
+     * Cria a fun√ß√£o de M√°ximo de um valor.
      */
     MAXIMUM,
     /**
-     * Cria a funÁ„o aritmÈtica que permite multiplicar dois par‚metros.
+     * Cria a fun√ß√£o aritm√©tica que permite multiplicar dois par√¢metros.
      */
     MULTIPLY,
     /**
-     * Cria a funÁ„o aritmÈtica que permite dividir dois par‚metros.
+     * Cria a fun√ß√£o aritm√©tica que permite dividir dois par√¢metros.
      */
     DIVIDE,
     /**
-     * Cria a funÁ„o concatenar. Quer permite juntar as partes de campos ou de constantes em uma ˙nica String/Coluna.
+     * Cria a fun√ß√£o concatenar. Quer permite juntar as partes de campos ou de constantes em uma √∫nica String/Coluna.
      */
     CONCAT,
   }
 
   /**
-   * Nome da coluna, quando a funÁ„o foi criada diretamente com um nome de coluna (e n„o como uma funÁ„o aninhada).<br>
-   * Permite que o fornecedor dos dados consiga saber que o valor È um caminho de coluna (utilizando a estrutura do Match Objetc) para saber como conectar as tabelas.
+   * Nome da coluna, quando a fun√ß√£o foi criada diretamente com um nome de coluna (e n√£o como uma fun√ß√£o aninhada).<br>
+   * Permite que o fornecedor dos dados consiga saber que o valor √© um caminho de coluna (utilizando a estrutura do Match Objetc) para saber como conectar as tabelas.
    */
   final String field;
 
   /**
-   * Define a funÁ„o representada por este {@link RFWField}.
+   * Define a fun√ß√£o representada por este {@link RFWField}.
    */
   final FieldFunction function;
 
   /**
-   * Lista com os par‚metros da funcÁ„o definida, na ordem em que precisam ser passados.<br>
-   * A lista aceita sempre um {@link RFWField} o que permite ter funÁıes aninhadas e definiÁ„o do nome da coluna ou constantes.<br>
+   * Lista com os par√¢metros da func√ß√£o definida, na ordem em que precisam ser passados.<br>
+   * A lista aceita sempre um {@link RFWField} o que permite ter fun√ß√µes aninhadas e defini√ß√£o do nome da coluna ou constantes.<br>
    */
   final LinkedList<RFWField> functionParam;
 
   /**
-   * Quando o tipo do {@link RFWField} for algum tipo de Constante, esse valor deve ser preenchido com o objeto de natureza equivalente ‡ constante definida.
+   * Quando o tipo do {@link RFWField} for algum tipo de Constante, esse valor deve ser preenchido com o objeto de natureza equivalente √† constante definida.
    */
   final Object constantValue;
 
   /**
-   * Construtor privado pois o objeto deve sempre ser criado pelos mÈtodos de criaÁ„o.
+   * Construtor privado pois o objeto deve sempre ser criado pelos m√©todos de cria√ß√£o.
    */
   private RFWField(FieldFunction function, String field, LinkedList<RFWField> params, Object constantValue) {
     this.function = function;
@@ -141,10 +141,10 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
-   * Cria um field de campo, sem qualquer funÁ„o encapsulado diretamente.
+   * Cria um field de campo, sem qualquer fun√ß√£o encapsulado diretamente.
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField field(String field) {
     return new RFWField(FieldFunction.FIELD, field, null, null);
@@ -153,26 +153,26 @@ public class RFWField implements Serializable, Cloneable {
   /**
    * Cria um campo com a constante "NULL".
    *
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField constantNULL() {
     return new RFWField(FieldFunction.CONSTANT_NULL, null, null, null);
   }
 
   /**
-   * Cria uma subtraÁ„o simples entre dois valores, o equivalente a: (fieldA - fieldB) j· operado pelo banco de dados. <br>
-   * Em uma operaÁ„o de subtraÁ„o, como na express„o (10 - 3 = 7):<br>
+   * Cria uma subtra√ß√£o simples entre dois valores, o equivalente a: (fieldA - fieldB) j√° operado pelo banco de dados. <br>
+   * Em uma opera√ß√£o de subtra√ß√£o, como na express√£o (10 - 3 = 7):<br>
    * <ul>
    * <li>
    *
-   * 10 È o minuendo.
-   * <li>3 È o subtraendo.
-   * <li>7 È a diferenÁa.
+   * 10 √© o minuendo.
+   * <li>3 √© o subtraendo.
+   * <li>7 √© a diferen√ßa.
    * </ul>
    *
-   * @param fieldA Minuendo da operaÁ„o
-   * @param fieldB Subtraendo da operaÁ„o
-   * @return Objeto montado indicando a subtraÁ„o desejada.
+   * @param fieldA Minuendo da opera√ß√£o
+   * @param fieldB Subtraendo da opera√ß√£o
+   * @return Objeto montado indicando a subtra√ß√£o desejada.
    */
   public static RFWField subtract(RFWField fieldA, RFWField fieldB) {
     LinkedList<RFWField> list = new LinkedList<RFWField>();
@@ -182,27 +182,27 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
-   * Cria a funÁ„o SUM para sumarizar valores de uma coluna numÈrica do banco de dados.
+   * Cria a fun√ß√£o SUM para sumarizar valores de uma coluna num√©rica do banco de dados.
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField sum(String field) {
     return new RFWField(FieldFunction.SUM, field, null, null);
   }
 
   /**
-   * Cria a funÁ„o WEEKDAY para retornar um valor numÈrico de acordo com o dia da semana de uma data.<br>
-   * Retorna valores de 0 a 6, comeÁando na segunda-feira.<br>
+   * Cria a fun√ß√£o WEEKDAY para retornar um valor num√©rico de acordo com o dia da semana de uma data.<br>
+   * Retorna valores de 0 a 6, come√ßando na segunda-feira.<br>
    * <br>
-   * <i><b>ObservaÁ„o:</b>
+   * <i><b>Observa√ß√£o:</b>
    * <ul>
-   * <li>Esta implementaÁ„o È padr„o do MySQL. Outros bancos utilizam outras funÁıes como DATEPART (SQL Server: valores de 1 a 7, comeÁando no domingo por padr„o) e EXTRACT (PostgreSQL: valores de 0 a 6, comeÁando no domingo) que trazem valores diferentes.
-   * <li>Aqui no RFW para todas as implementaÁıes (dialetos) este mÈtodo deve ser padronizado e trazer o resultado de 0 a 6 comeÁando na segunda-feira, seguindo a implementaÁ„o inicial.</i>
+   * <li>Esta implementa√ß√£o √© padr√£o do MySQL. Outros bancos utilizam outras fun√ß√µes como DATEPART (SQL Server: valores de 1 a 7, come√ßando no domingo por padr√£o) e EXTRACT (PostgreSQL: valores de 0 a 6, come√ßando no domingo) que trazem valores diferentes.
+   * <li>Aqui no RFW para todas as implementa√ß√µes (dialetos) este m√©todo deve ser padronizado e trazer o resultado de 0 a 6 come√ßando na segunda-feira, seguindo a implementa√ß√£o inicial.</i>
    * </ul>
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField weekday(RFWField field) {
     LinkedList<RFWField> list = new LinkedList<RFWField>();
@@ -211,37 +211,37 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
-   * Cria a funÁ„o WEEKDAY para retornar um valor numÈrico de acordo com o dia da semana de uma data.<br>
-   * Retorna valores de 0 a 6, comeÁando na segunda-feira.<br>
+   * Cria a fun√ß√£o WEEKDAY para retornar um valor num√©rico de acordo com o dia da semana de uma data.<br>
+   * Retorna valores de 0 a 6, come√ßando na segunda-feira.<br>
    * <br>
-   * <i><b>ObservaÁ„o:</b>
+   * <i><b>Observa√ß√£o:</b>
    * <ul>
-   * <li>Esta implementaÁ„o È padr„o do MySQL. Outros bancos utilizam outras funÁıes como DATEPART (SQL Server: valores de 1 a 7, comeÁando no domingo por padr„o) e EXTRACT (PostgreSQL: valores de 0 a 6, comeÁando no domingo) que trazem valores diferentes.
-   * <li>Aqui no RFW para todas as implementaÁıes (dialetos) este mÈtodo deve ser padronizado e trazer o resultado de 0 a 6 comeÁando na segunda-feira, seguindo a implementaÁ„o inicial.</i>
+   * <li>Esta implementa√ß√£o √© padr√£o do MySQL. Outros bancos utilizam outras fun√ß√µes como DATEPART (SQL Server: valores de 1 a 7, come√ßando no domingo por padr√£o) e EXTRACT (PostgreSQL: valores de 0 a 6, come√ßando no domingo) que trazem valores diferentes.
+   * <li>Aqui no RFW para todas as implementa√ß√µes (dialetos) este m√©todo deve ser padronizado e trazer o resultado de 0 a 6 come√ßando na segunda-feira, seguindo a implementa√ß√£o inicial.</i>
    * </ul>
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField weekday(String field) {
     return new RFWField(FieldFunction.WEEKDAY, field, null, null);
   }
 
   /**
-   * Cria a funÁ„o DISTINCT para trazer os valores ˙nicos de uma coluna.
+   * Cria a fun√ß√£o DISTINCT para trazer os valores √∫nicos de uma coluna.
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField distinct(String field) {
     return new RFWField(FieldFunction.DISTINCT, field, null, null);
   }
 
   /**
-   * Cria a funÁ„o SUM para sumarizar valores de uma coluna numÈrica do banco de dados.
+   * Cria a fun√ß√£o SUM para sumarizar valores de uma coluna num√©rica do banco de dados.
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField sum(RFWField field) {
     LinkedList<RFWField> list = new LinkedList<RFWField>();
@@ -250,20 +250,20 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
-   * Cria a funÁ„o MÌnimo.
+   * Cria a fun√ß√£o M√≠nimo.
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField minimum(String field) {
     return new RFWField(FieldFunction.MINIMUM, field, null, null);
   }
 
   /**
-   * Cria a funÁ„o MÌnimo.
+   * Cria a fun√ß√£o M√≠nimo.
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField minimum(RFWField field) {
     LinkedList<RFWField> list = new LinkedList<RFWField>();
@@ -272,11 +272,11 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
-   * Cria a funÁ„o aritmÈtica de MultiplicaÁ„o.
+   * Cria a fun√ß√£o aritm√©tica de Multiplica√ß√£o.
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o como primeiro argumento.
-   * @param field Caminho da coluna a ser passada para a funÁ„o como segundo argumento.
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o como primeiro argumento.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o como segundo argumento.
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField multiply(RFWField field1, RFWField field2) {
     LinkedList<RFWField> list = new LinkedList<RFWField>();
@@ -286,11 +286,11 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
-   * Cria a funÁ„o aritmÈtica de Divis„o.
+   * Cria a fun√ß√£o aritm√©tica de Divis√£o.
    *
    * @param field1 Caminho da coluna1.
    * @param field2 Caminho da coluna2.
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField divide(RFWField field1, RFWField field2) {
     LinkedList<RFWField> list = new LinkedList<RFWField>();
@@ -300,30 +300,30 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
-   * Cria a funÁ„o M·ximo.
+   * Cria a fun√ß√£o M√°ximo.
    *
    * @param field Caminho da coluna.
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField maximum(String field) {
     return new RFWField(FieldFunction.MAXIMUM, field, null, null);
   }
 
   /**
-   * Cria a funÁ„o HOUR para separar a hora de uma coluna de data.
+   * Cria a fun√ß√£o HOUR para separar a hora de uma coluna de data.
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o.
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o.
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField hour(String field) {
     return new RFWField(FieldFunction.HOUR, field, null, null);
   }
 
   /**
-   * Cria a funÁ„o HOUR para separar a hora de uma coluna de data.
+   * Cria a fun√ß√£o HOUR para separar a hora de uma coluna de data.
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o.
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o.
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField hour(RFWField field) {
     LinkedList<RFWField> list = new LinkedList<RFWField>();
@@ -332,20 +332,20 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
-   * Cria a funÁ„o DAY para separar o dia de uma coluna de data.
+   * Cria a fun√ß√£o DAY para separar o dia de uma coluna de data.
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o.
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o.
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField day(String field) {
     return new RFWField(FieldFunction.DAY, field, null, null);
   }
 
   /**
-   * Cria a funÁ„o DAY para separar o dia de uma coluna de data.
+   * Cria a fun√ß√£o DAY para separar o dia de uma coluna de data.
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o.
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o.
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField day(RFWField field) {
     LinkedList<RFWField> list = new LinkedList<RFWField>();
@@ -354,30 +354,30 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
-   * Cria a funÁ„o MONTH para obter o mÍs de uma coluna de data.
+   * Cria a fun√ß√£o MONTH para obter o m√™s de uma coluna de data.
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField month(String field) {
     return new RFWField(FieldFunction.MONTH, field, null, null);
   }
 
   /**
-   * Cria a funÁ„o YEAR para obter o mÍs de uma coluna de data.
+   * Cria a fun√ß√£o YEAR para obter o m√™s de uma coluna de data.
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField year(String field) {
     return new RFWField(FieldFunction.YEAR, field, null, null);
   }
 
   /**
-   * Cria a funÁ„o MONTH para obter o mÍs de uma coluna de data.
+   * Cria a fun√ß√£o MONTH para obter o m√™s de uma coluna de data.
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField month(RFWField field) {
     LinkedList<RFWField> list = new LinkedList<RFWField>();
@@ -386,10 +386,10 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
-   * Cria a funÁ„o YEAR para obter o mÍs de uma coluna de data.
+   * Cria a fun√ß√£o YEAR para obter o m√™s de uma coluna de data.
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField year(RFWField field) {
     LinkedList<RFWField> list = new LinkedList<RFWField>();
@@ -398,10 +398,10 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
-   * Cria a funÁ„o CONCAT para "juntar" os valores obeitdos.<Br>
+   * Cria a fun√ß√£o CONCAT para "juntar" os valores obeitdos.<Br>
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField concat(RFWField... fields) {
     LinkedList<RFWField> list = new LinkedList<RFWField>();
@@ -412,11 +412,11 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
-   * Cria a funÁ„o COALESCE para obter os valores.<Br>
-   * A funÁ„o coalesce recupera o valor da primeira coluna passada, se este for nulo ele retornar· o valor da seguinte. E assim por diante atÈ encontrar um valor que n„o seja nulo. Caso todos sejam, o valor nulo È retornado igualmente.
+   * Cria a fun√ß√£o COALESCE para obter os valores.<Br>
+   * A fun√ß√£o coalesce recupera o valor da primeira coluna passada, se este for nulo ele retornar√° o valor da seguinte. E assim por diante at√© encontrar um valor que n√£o seja nulo. Caso todos sejam, o valor nulo √© retornado igualmente.
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField coalesce(RFWField... fields) {
     LinkedList<RFWField> list = new LinkedList<RFWField>();
@@ -427,11 +427,11 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
-   * Cria a funÁ„o COALESCE para obter os valores.<Br>
-   * A funÁ„o coalesce recupera o valor da primeira coluna passada, se este for nulo ele retornar· o valor da seguinte. E assim por diante atÈ encontrar um valor que n„o seja nulo. Caso todos sejam, o valor nulo È retornado igualmente.
+   * Cria a fun√ß√£o COALESCE para obter os valores.<Br>
+   * A fun√ß√£o coalesce recupera o valor da primeira coluna passada, se este for nulo ele retornar√° o valor da seguinte. E assim por diante at√© encontrar um valor que n√£o seja nulo. Caso todos sejam, o valor nulo √© retornado igualmente.
    *
-   * @param field Caminho da coluna a ser passada para a funÁ„o
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @param field Caminho da coluna a ser passada para a fun√ß√£o
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField coalesce(String... fields) {
     LinkedList<RFWField> list = new LinkedList<RFWField>();
@@ -445,36 +445,36 @@ public class RFWField implements Serializable, Cloneable {
    * Cria uma constante do tipo texto para ser colocada no SQL.<Br>
    *
    * @param value Valor constante a ser utilizado.
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField constantString(String value) {
     return new RFWField(FieldFunction.CONSTANTE_STRING, null, null, value);
   }
 
   /**
-   * Cria a funÁ„o COUNT para contar a quantidade de Linhas que foram retornadas.<br>
-   * Equivalente a express„o count(*) no SQL.
+   * Cria a fun√ß√£o COUNT para contar a quantidade de Linhas que foram retornadas.<br>
+   * Equivalente a express√£o count(*) no SQL.
    *
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField count() {
     return new RFWField(FieldFunction.COUNT, null, null, null);
   }
 
   /**
-   * Cria a funÁ„o COUNT para contar a quantidade de Linhas que foram retornadas.<br>
-   * Equivalente a express„o count(*) no SQL.
+   * Cria a fun√ß√£o COUNT para contar a quantidade de Linhas que foram retornadas.<br>
+   * Equivalente a express√£o count(*) no SQL.
    *
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField count(String field) {
     return new RFWField(FieldFunction.COUNT, field, null, null);
   }
 
   /**
-   * Obtem uma lista dos par‚metros que foram influÌdos nesta funÁ„o.
+   * Obtem uma lista dos par√¢metros que foram influ√≠dos nesta fun√ß√£o.
    *
-   * @return Lista clonada dos par‚metros.
+   * @return Lista clonada dos par√¢metros.
    */
   @SuppressWarnings("unchecked")
   public LinkedList<RFWField> getFunctionParam() {
@@ -482,10 +482,10 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
-   * Recupera o nome da coluna, quando a funÁ„o foi criada diretamente com um nome de coluna (e n„o como uma funÁ„o aninhada).<br>
-   * Permite que o fornecedor dos dados consiga saber que o valor È um caminho de coluna (utilizando a estrutura do Match Objetc) para saber como conectar as tabelas.
+   * Recupera o nome da coluna, quando a fun√ß√£o foi criada diretamente com um nome de coluna (e n√£o como uma fun√ß√£o aninhada).<br>
+   * Permite que o fornecedor dos dados consiga saber que o valor √© um caminho de coluna (utilizando a estrutura do Match Objetc) para saber como conectar as tabelas.
    *
-   * @return the nome da coluna, quando a funÁ„o foi criada diretamente com um nome de coluna (e n„o como uma funÁ„o aninhada)
+   * @return the nome da coluna, quando a fun√ß√£o foi criada diretamente com um nome de coluna (e n√£o como uma fun√ß√£o aninhada)
    */
   public String getField() {
     return field;
@@ -519,10 +519,10 @@ public class RFWField implements Serializable, Cloneable {
   }
 
   /**
-   * Cria uma constante do tipo numÈrica para ser colocada no SQL.<Br>
+   * Cria uma constante do tipo num√©rica para ser colocada no SQL.<Br>
    *
    * @param value Valor constante a ser utilizado.
-   * @return Objeto montado indicando a funÁ„o selecionada.
+   * @return Objeto montado indicando a fun√ß√£o selecionada.
    */
   public static RFWField constantNumber(BigDecimal value) {
     return new RFWField(FieldFunction.CONSTANTE_NUMBER, null, null, value);

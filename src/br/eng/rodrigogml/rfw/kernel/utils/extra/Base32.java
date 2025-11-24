@@ -3,9 +3,9 @@ package br.eng.rodrigogml.rfw.kernel.utils.extra;
 import br.eng.rodrigogml.rfw.kernel.utils.RUString;
 
 /**
- * Description: Esta classe tem algumas funções auxiliares para os métodos da clase {@link RUString}: <code>decodeBase32</code>, <code>encodeBase32</code> e variações.<br>
- * O objetivo é manter o código interno ao RFWKernel sem importação de outras bibliotecas, como manda a especificação do RFW.Kernel.<br>
- * O resultado esperado é o mesmo oferecido pelas classes com.google.common.io.BaseEncoding. Como por exmeplo no código a seguir:<br>
+ * Description: Esta classe tem algumas funÃ§Ãµes auxiliares para os mÃ©todos da clase {@link RUString}: <code>decodeBase32</code>, <code>encodeBase32</code> e variaÃ§Ãµes.<br>
+ * O objetivo Ã© manter o cÃ³digo interno ao RFWKernel sem importaÃ§Ã£o de outras bibliotecas, como manda a especificaÃ§Ã£o do RFW.Kernel.<br>
+ * O resultado esperado Ã© o mesmo oferecido pelas classes com.google.common.io.BaseEncoding. Como por exmeplo no cÃ³digo a seguir:<br>
  *
  * <pre>
  * BaseEncoding.base32().decode(content)
@@ -17,7 +17,7 @@ import br.eng.rodrigogml.rfw.kernel.utils.RUString;
  * BaseEncoding.base32().encode(content)
  * </pre>
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since (6 de set. de 2024)
  */
 public class Base32 {
@@ -52,7 +52,7 @@ public class Base32 {
       char c = base32.charAt(i);
       int lookup = BASE32_LOOKUP[c];
       if (lookup == -1) {
-        throw new IllegalArgumentException("Caractere Base32 inválido: " + c);
+        throw new IllegalArgumentException("Caractere Base32 invÃ¡lido: " + c);
       }
 
       buffer <<= 5;

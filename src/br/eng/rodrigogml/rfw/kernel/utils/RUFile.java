@@ -28,69 +28,69 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWWarningException;
 
 /**
- * Description: MÈtodos utilit·rios para gerenciar arquivos, escrever, ler, etc.<br>
+ * Description: M√©todos utilit√°rios para gerenciar arquivos, escrever, ler, etc.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 3.1.0 (NOV / 2009)
  */
 public class RUFile {
 
   /**
-   * Verifica a existÍncia de um arquivo. Simplesmente redireciona para o mÈtodo {@link File#exists()}
+   * Verifica a exist√™ncia de um arquivo. Simplesmente redireciona para o m√©todo {@link File#exists()}
    *
-   * @param filename Caminho completo para o arquivo, ser· utilizado no construtor de {@link File}
-   * @return boolean informando se o arquivo existe ou n„o.
+   * @param filename Caminho completo para o arquivo, ser√° utilizado no construtor de {@link File}
+   * @return boolean informando se o arquivo existe ou n√£o.
    */
   public static boolean fileExists(String filename) {
     return fileExists(new File(filename));
   }
 
   /**
-   * Verifica a existÍncia de um arquivo. Simplesmente redireciona para o mÈtodo {@link File#exists()}
+   * Verifica a exist√™ncia de um arquivo. Simplesmente redireciona para o m√©todo {@link File#exists()}
    *
-   * @param file Objeto File j· montado com a referÍncia para o arquivo, que chama o mÈtodo diretamente no objeto.
-   * @return boolean informando se o arquivo existe ou n„o.
+   * @param file Objeto File j√° montado com a refer√™ncia para o arquivo, que chama o m√©todo diretamente no objeto.
+   * @return boolean informando se o arquivo existe ou n√£o.
    */
   public static boolean fileExists(File file) {
     return file.exists();
   }
 
   /**
-   * Escreve o conte˙do de texto em um arquivo de forma bin·ria.
+   * Escreve o conte√∫do de texto em um arquivo de forma bin√°ria.
    *
    * @param file Arquivo para Escrita
-   * @param fileContent Conte˙do a ser escrito dentro do arquivo.
+   * @param fileContent Conte√∫do a ser escrito dentro do arquivo.
    * @throws RFWException
    */
   public static void writeFileContent(File file, byte[] fileContent) throws RFWException {
     try (FileOutputStream writer = new FileOutputStream(file)) {
       writer.write(fileContent);
     } catch (Throwable e) {
-      throw new RFWWarningException("N„o foi possÌvel abrir o aquivo para escrita: '${0}'", new String[] { file.getAbsolutePath() }, e);
+      throw new RFWWarningException("N√£o foi poss√≠vel abrir o aquivo para escrita: '${0}'", new String[] { file.getAbsolutePath() }, e);
     }
   }
 
   /**
-   * Escreve o conte˙do de texto em um arquivo de forma bin·ria.
+   * Escreve o conte√∫do de texto em um arquivo de forma bin√°ria.
    *
    * @param file Arquivo para Escrita
-   * @param fileContent Conte˙do a ser escrito dentro do arquivo.
-   * @param append Indica se devemos anexar o conte˙do no conte˙do j· existente do arquivo (true) ou se devemos sobreescrever o conte˙do atual (false).
+   * @param fileContent Conte√∫do a ser escrito dentro do arquivo.
+   * @param append Indica se devemos anexar o conte√∫do no conte√∫do j√° existente do arquivo (true) ou se devemos sobreescrever o conte√∫do atual (false).
    * @throws RFWException
    */
   public static void writeFileContent(File file, byte[] fileContent, boolean append) throws RFWException {
     try (FileOutputStream writer = new FileOutputStream(file, append)) {
       writer.write(fileContent);
     } catch (Throwable e) {
-      throw new RFWWarningException("N„o foi possÌvel abrir o aquivo para escrita: '${0}'", new String[] { file.getAbsolutePath() }, e);
+      throw new RFWWarningException("N√£o foi poss√≠vel abrir o aquivo para escrita: '${0}'", new String[] { file.getAbsolutePath() }, e);
     }
   }
 
   /**
-   * Escreve o conte˙do de texto em um arquivo existente utilizando {@link StandardCharsets#UTF_8}.
+   * Escreve o conte√∫do de texto em um arquivo existente utilizando {@link StandardCharsets#UTF_8}.
    *
    * @param file Arquivo para Escrita
-   * @param fileContent Conte˙do a ser escrito dentro do arquivo
+   * @param fileContent Conte√∫do a ser escrito dentro do arquivo
    * @throws RFWException
    */
   public static void writeFileContent(File file, String filecontent) throws RFWException {
@@ -98,27 +98,27 @@ public class RUFile {
   }
 
   /**
-   * Escreve o conte˙do de texto em um arquivo utilizando o {@link StandardCharsets#UTF_8}.
+   * Escreve o conte√∫do de texto em um arquivo utilizando o {@link StandardCharsets#UTF_8}.
    *
    * @param file Arquivo para Escrita
-   * @param fileContent Conte˙do a ser escrito dentro do arquivo.
-   * @param append Indica se devemos anexar o conte˙do no conte˙do j· existente do arquivo (true) ou se devemos sobreescrever o conte˙do atual (false).
+   * @param fileContent Conte√∫do a ser escrito dentro do arquivo.
+   * @param append Indica se devemos anexar o conte√∫do no conte√∫do j√° existente do arquivo (true) ou se devemos sobreescrever o conte√∫do atual (false).
    * @throws RFWException
    */
   public static void writeFileContent(File file, String fileContent, boolean append) throws RFWException {
     try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file, append), StandardCharsets.UTF_8)) {
       writer.write(fileContent);
     } catch (Throwable e) {
-      throw new RFWWarningException("N„o foi possÌvel abrir o aquivo para escrita: '${0}'", new String[] { file.getAbsolutePath() }, e);
+      throw new RFWWarningException("N√£o foi poss√≠vel abrir o aquivo para escrita: '${0}'", new String[] { file.getAbsolutePath() }, e);
     }
   }
 
   /**
-   * Escreve o conte˙do de texto em um arquivo.
+   * Escreve o conte√∫do de texto em um arquivo.
    *
    * @param file Arquivo para Escrita
-   * @param fileContent Conte˙do a ser escrito dentro do arquivo
-   * @param append Indica se devemos anexar o conte˙do no conte˙do j· existente do arquivo (true) ou se devemos sobreescrever o conte˙do atual (false).
+   * @param fileContent Conte√∫do a ser escrito dentro do arquivo
+   * @param append Indica se devemos anexar o conte√∫do no conte√∫do j√° existente do arquivo (true) ou se devemos sobreescrever o conte√∫do atual (false).
    * @param charset Charset a ser utilizado na escrita do arquivo. {@link StandardCharsets}
    * @throws RFWException
    */
@@ -126,15 +126,15 @@ public class RUFile {
     try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file, append), charset)) {
       writer.write(fileContent);
     } catch (Throwable e) {
-      throw new RFWWarningException("N„o foi possÌvel abrir o aquivo para escrita: '${0}'", new String[] { file.getAbsolutePath() }, e);
+      throw new RFWWarningException("N√£o foi poss√≠vel abrir o aquivo para escrita: '${0}'", new String[] { file.getAbsolutePath() }, e);
     }
   }
 
   /**
-   * Escreve o conte˙do de texto em um arquivo existente.
+   * Escreve o conte√∫do de texto em um arquivo existente.
    *
    * @param file Arquivo para Escrita
-   * @param fileContent Conte˙do a ser escrito dentro do arquivo
+   * @param fileContent Conte√∫do a ser escrito dentro do arquivo
    * @param charset Charset a ser utilizado na escrita do arquivo. {@link StandardCharsets}
    * @throws RFWException
    */
@@ -151,7 +151,7 @@ public class RUFile {
     try {
       o = new FileOutputStream(filename, append);
     } catch (IOException ex) {
-      throw new RFWWarningException("N„o foi possÌvel abrir o aquivo para escrita: '${0}'", new String[] { filename }, ex);
+      throw new RFWWarningException("N√£o foi poss√≠vel abrir o aquivo para escrita: '${0}'", new String[] { filename }, ex);
     }
     try {
       o.write(filecontent);
@@ -173,11 +173,11 @@ public class RUFile {
   }
 
   /**
-   * Escreve/Anexa o conte˙do de texto em um arquivo utilizando o {@link StandardCharsets#UTF_8}
+   * Escreve/Anexa o conte√∫do de texto em um arquivo utilizando o {@link StandardCharsets#UTF_8}
    *
    * @param fileName Arquivo para Escrita
-   * @param fileContent Conte˙do a ser escrito dentro do arquivo
-   * @param append Indica se devemos anexar o conte˙do no conte˙do j· existente do arquivo (true) ou se devemos sobreescrever o conte˙do atual (false).
+   * @param fileContent Conte√∫do a ser escrito dentro do arquivo
+   * @param append Indica se devemos anexar o conte√∫do no conte√∫do j√° existente do arquivo (true) ou se devemos sobreescrever o conte√∫do atual (false).
    * @param charset Charset a ser utilizado na escrita do arquivo. {@link StandardCharsets}
    * @throws RFWException
    */
@@ -186,11 +186,11 @@ public class RUFile {
   }
 
   /**
-   * Escreve/Anexa o conte˙do de texto em um arquivo.
+   * Escreve/Anexa o conte√∫do de texto em um arquivo.
    *
    * @param fileName Arquivo para Escrita
-   * @param fileContent Conte˙do a ser escrito dentro do arquivo
-   * @param append Indica se devemos anexar o conte˙do no conte˙do j· existente do arquivo (true) ou se devemos sobreescrever o conte˙do atual (false).
+   * @param fileContent Conte√∫do a ser escrito dentro do arquivo
+   * @param append Indica se devemos anexar o conte√∫do no conte√∫do j√° existente do arquivo (true) ou se devemos sobreescrever o conte√∫do atual (false).
    * @param charset Charset a ser utilizado na escrita do arquivo. {@link StandardCharsets}
    * @throws RFWException
    */
@@ -199,12 +199,12 @@ public class RUFile {
   }
 
   /**
-   * Escreve o conte˙do de um arquivo em uma pasta tempor·ria com opÁ„o de exclus„o.
+   * Escreve o conte√∫do de um arquivo em uma pasta tempor√°ria com op√ß√£o de exclus√£o.
    *
-   * @param fileName Nome do Arquivo com a extens„o. Ex.: "meuarquivo.txt"
-   * @param fileContent Conte˙do a ser escrito dentro do arquivo.
-   * @param delayToDelete define um tempo em milisegundos antes de excluir o arquivo. Se passado um valor negativo, o arquivo ser· excluindo quando a VM for finalizada (desde que n„o finalize abortando por erro ou fechamento forÁado pelo SO). Se a aplicaÁ„o finalizar antes do tempo passado, o arquivo È excluÌdo no fechamento da aplicaÁ„o.
-   * @return File represetando o arquivo, usado para escrever o conte˙do.
+   * @param fileName Nome do Arquivo com a extens√£o. Ex.: "meuarquivo.txt"
+   * @param fileContent Conte√∫do a ser escrito dentro do arquivo.
+   * @param delayToDelete define um tempo em milisegundos antes de excluir o arquivo. Se passado um valor negativo, o arquivo ser√° excluindo quando a VM for finalizada (desde que n√£o finalize abortando por erro ou fechamento for√ßado pelo SO). Se a aplica√ß√£o finalizar antes do tempo passado, o arquivo √© exclu√≠do no fechamento da aplica√ß√£o.
+   * @return File represetando o arquivo, usado para escrever o conte√∫do.
    * @throws RFWException
    */
   public static File writeFileContentInTemporaryPathWithDelete(String fileName, byte[] fileContent, long delayToDelete) throws RFWException {
@@ -214,15 +214,15 @@ public class RUFile {
   }
 
   /**
-   * Equivalente ao mÈtodo {@link #createFileInTemporaryPath(String, String, Charset)} passando como charset {@link StandardCharsets#UTF_8} Cria um arquivo em uma pasta tempor·ria (em uma subpasta na pastas tempor·ria de acordo com o sistema) e escreve o conte˙do no arquivo.<br>
+   * Equivalente ao m√©todo {@link #createFileInTemporaryPath(String, String, Charset)} passando como charset {@link StandardCharsets#UTF_8} Cria um arquivo em uma pasta tempor√°ria (em uma subpasta na pastas tempor√°ria de acordo com o sistema) e escreve o conte√∫do no arquivo.<br>
    * <br>
-   * A diferenÁa entre este mÈtodo e o {@link #createTemporaryFile(String, String, String, Charset)} È que o nome do arquivo continuar· sendo o que o usu·rio passou, sÛ a pasta (caminho) È que receber· valores aleatÛrios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus mÈtodos. O caminho completo para o arquivo pode ser recuperado com
-   * file.getAbsolutePath(); j· o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
+   * A diferen√ßa entre este m√©todo e o {@link #createTemporaryFile(String, String, String, Charset)} √© que o nome do arquivo continuar√° sendo o que o usu√°rio passou, s√≥ a pasta (caminho) √© que receber√° valores aleat√≥rios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus m√©todos. O caminho completo para o arquivo pode ser recuperado com
+   * file.getAbsolutePath(); j√° o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
    *
-   * @param fileName Nome do Arquivo com a extens„o. Ex.: "meuarquivo.txt"
-   * @param delayToDelete define um tempo em milisegundos antes de excluir o arquivo. Se passado um valor negativo, o arquivo ser· excluindo quando a VM for finalizada (desde que n„o finalize abortando por erro ou fechamento forÁado pelo SO). Se a aplicaÁ„o finalizar antes do tempo passado, o arquivo È excluÌdo no fechamento da aplicaÁ„o.
-   * @return File represetando o arquivo, usado para escrever o conte˙do.
-   * @throws RFWException Em caso de falha durante a execuÁ„o.
+   * @param fileName Nome do Arquivo com a extens√£o. Ex.: "meuarquivo.txt"
+   * @param delayToDelete define um tempo em milisegundos antes de excluir o arquivo. Se passado um valor negativo, o arquivo ser√° excluindo quando a VM for finalizada (desde que n√£o finalize abortando por erro ou fechamento for√ßado pelo SO). Se a aplica√ß√£o finalizar antes do tempo passado, o arquivo √© exclu√≠do no fechamento da aplica√ß√£o.
+   * @return File represetando o arquivo, usado para escrever o conte√∫do.
+   * @throws RFWException Em caso de falha durante a execu√ß√£o.
    */
   public static File createFileInTemporaryPathWithDelete(String fileName, long delayToDelete) throws RFWException {
     File file = createFileInTemporaryPath(fileName, null, StandardCharsets.UTF_8);
@@ -239,29 +239,29 @@ public class RUFile {
   }
 
   /**
-   * Equivalente ao mÈtodo {@link #createFileInTemporaryPath(String, String, Charset)} passando como charset {@link StandardCharsets#UTF_8} Cria um arquivo em uma pasta tempor·ria (em uma subpasta na pastas tempor·ria de acordo com o sistema) e escreve o conte˙do no arquivo.<br>
-   * <b>A diferenÁa entre este mÈtodo e o {@link #createTemporaryFile(String, String, String, Charset)} È que o nome do arquivo continuar· sendo o que o usu·rio passou, sÛ a pasta (caminho) È que receber· valores aleatÛrios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus mÈtodos. O caminho completo para o arquivo pode ser recuperado com
-   * file.getAbsolutePath(); j· o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
+   * Equivalente ao m√©todo {@link #createFileInTemporaryPath(String, String, Charset)} passando como charset {@link StandardCharsets#UTF_8} Cria um arquivo em uma pasta tempor√°ria (em uma subpasta na pastas tempor√°ria de acordo com o sistema) e escreve o conte√∫do no arquivo.<br>
+   * <b>A diferen√ßa entre este m√©todo e o {@link #createTemporaryFile(String, String, String, Charset)} √© que o nome do arquivo continuar√° sendo o que o usu√°rio passou, s√≥ a pasta (caminho) √© que receber√° valores aleat√≥rios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus m√©todos. O caminho completo para o arquivo pode ser recuperado com
+   * file.getAbsolutePath(); j√° o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
    *
-   * @param fileName Nome do Arquivo com a extens„o. Ex.: "meuarquivo.txt"
+   * @param fileName Nome do Arquivo com a extens√£o. Ex.: "meuarquivo.txt"
    * @param charSet Charset a ser utilizado na escrita do arquivo. {@link StandardCharsets}
-   * @return File represetando o arquivo, usado para escrever o conte˙do.
-   * @throws RFWException Em caso de falha durante a execuÁ„o.
+   * @return File represetando o arquivo, usado para escrever o conte√∫do.
+   * @throws RFWException Em caso de falha durante a execu√ß√£o.
    */
   public static File createFileInTemporaryPath(String fileName, Charset charSet) throws RFWException {
     return createFileInTemporaryPath(fileName, null, charSet);
   }
 
   /**
-   * Cria um arquivo em uma pasta tempor·ria (em uma subpasta na pastas tempor·ria de acordo com o sistema) e escreve o conte˙do no arquivo.<br>
-   * <b>A diferenÁa entre este mÈtodo e o {@link #createTemporaryFile(String, String, String, Charset)} È que o nome do arquivo continuar· sendo o que o usu·rio passou, sÛ a pasta (caminho) È que receber· valores aleatÛrios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus mÈtodos. O caminho completo para o arquivo pode ser recuperado com
-   * file.getAbsolutePath(); j· o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
+   * Cria um arquivo em uma pasta tempor√°ria (em uma subpasta na pastas tempor√°ria de acordo com o sistema) e escreve o conte√∫do no arquivo.<br>
+   * <b>A diferen√ßa entre este m√©todo e o {@link #createTemporaryFile(String, String, String, Charset)} √© que o nome do arquivo continuar√° sendo o que o usu√°rio passou, s√≥ a pasta (caminho) √© que receber√° valores aleat√≥rios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus m√©todos. O caminho completo para o arquivo pode ser recuperado com
+   * file.getAbsolutePath(); j√° o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
    *
-   * @param fileName Nome do Arquivo com a extens„o. Ex.: "meuarquivo.txt"
-   * @param content Cont˙do do arquivo a ser escrito, ou null caso n„o deseje efetivamente criar o arquivo ainda.
+   * @param fileName Nome do Arquivo com a extens√£o. Ex.: "meuarquivo.txt"
+   * @param content Cont√∫do do arquivo a ser escrito, ou null caso n√£o deseje efetivamente criar o arquivo ainda.
    * @param charSet Charset a ser utilizado na escrita do arquivo. {@link StandardCharsets}
-   * @return File represetando o arquivo, usado para escrever o conte˙do.
-   * @throws RFWException Em caso de falha durante a execuÁ„o.
+   * @return File represetando o arquivo, usado para escrever o conte√∫do.
+   * @throws RFWException Em caso de falha durante a execu√ß√£o.
    */
   public static File createFileInTemporaryPath(String fileName, String content, Charset charSet) throws RFWException {
     try {
@@ -275,35 +275,35 @@ public class RUFile {
       if (content != null) writeFileContent(temp, content, charSet);
       return temp;
     } catch (IOException e) {
-      throw new RFWCriticalException("Falha ao escrever o arquivo tempor·rio!", new String[] { fileName }, e);
+      throw new RFWCriticalException("Falha ao escrever o arquivo tempor√°rio!", new String[] { fileName }, e);
     }
   }
 
   /**
-   * Equivalente ao mÈtodo {@link #createFileInTemporaryPath(String, String, Charset)} passando como charset {@link StandardCharsets#UTF_8} Cria um arquivo em uma pasta tempor·ria (em uma subpasta na pastas tempor·ria de acordo com o sistema) e escreve o conte˙do no arquivo.<br>
-   * <b>A diferenÁa entre este mÈtodo e o {@link #createTemporaryFile(String, String, String, Charset)} È que o nome do arquivo continuar· sendo o que o usu·rio passou, sÛ a pasta (caminho) È que receber· valores aleatÛrios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus mÈtodos. O caminho completo para o arquivo pode ser recuperado com
-   * file.getAbsolutePath(); j· o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
+   * Equivalente ao m√©todo {@link #createFileInTemporaryPath(String, String, Charset)} passando como charset {@link StandardCharsets#UTF_8} Cria um arquivo em uma pasta tempor√°ria (em uma subpasta na pastas tempor√°ria de acordo com o sistema) e escreve o conte√∫do no arquivo.<br>
+   * <b>A diferen√ßa entre este m√©todo e o {@link #createTemporaryFile(String, String, String, Charset)} √© que o nome do arquivo continuar√° sendo o que o usu√°rio passou, s√≥ a pasta (caminho) √© que receber√° valores aleat√≥rios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus m√©todos. O caminho completo para o arquivo pode ser recuperado com
+   * file.getAbsolutePath(); j√° o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
    *
-   * @param fileName Nome do Arquivo com a extens„o. Ex.: "meuarquivo.txt"
-   * @param content Cont˙do do arquivo a ser escrito, ou null caso n„o deseje efetivamente criar o arquivo ainda.
-   * @return File represetando o arquivo, usado para escrever o conte˙do.
-   * @throws RFWException Em caso de falha durante a execuÁ„o.
+   * @param fileName Nome do Arquivo com a extens√£o. Ex.: "meuarquivo.txt"
+   * @param content Cont√∫do do arquivo a ser escrito, ou null caso n√£o deseje efetivamente criar o arquivo ainda.
+   * @return File represetando o arquivo, usado para escrever o conte√∫do.
+   * @throws RFWException Em caso de falha durante a execu√ß√£o.
    */
   public static File createFileInTemporaryPath(String fileName, String content) throws RFWException {
     return createFileInTemporaryPath(fileName, content, StandardCharsets.UTF_8);
   }
 
   /**
-   * Cria um arquivo em uma pasta tempor·ria (em uma subpasta na pastas tempor·ria de acordo com o sistema) e escreve o conte˙do no arquivo.<br>
-   * <b>A diferenÁa entre este mÈtodo e o {@link #createTemporaryFile(String, String, String, Charset)} È que o nome do arquivo continuar· sendo o que o usu·rio passou, sÛ a pasta (caminho) È que receber· valores aleatÛrios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus mÈtodos. O caminho completo para o arquivo pode ser recuperado com
-   * file.getAbsolutePath(); j· o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
+   * Cria um arquivo em uma pasta tempor√°ria (em uma subpasta na pastas tempor√°ria de acordo com o sistema) e escreve o conte√∫do no arquivo.<br>
+   * <b>A diferen√ßa entre este m√©todo e o {@link #createTemporaryFile(String, String, String, Charset)} √© que o nome do arquivo continuar√° sendo o que o usu√°rio passou, s√≥ a pasta (caminho) √© que receber√° valores aleat√≥rios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus m√©todos. O caminho completo para o arquivo pode ser recuperado com
+   * file.getAbsolutePath(); j√° o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
    *
-   * @param fileName Nome do Arquivo com a extens„o. Ex.: "meuarquivo.txt"
-   * @param content Cont˙do do arquivo a ser escrito, ou null caso n„o deseje efetivamente criar o arquivo ainda.
+   * @param fileName Nome do Arquivo com a extens√£o. Ex.: "meuarquivo.txt"
+   * @param content Cont√∫do do arquivo a ser escrito, ou null caso n√£o deseje efetivamente criar o arquivo ainda.
    * @param charSet Charset a ser utilizado na escrita do arquivo. {@link StandardCharsets}
-   * @param delayToDelete define um tempo em milisegundos antes de excluir o arquivo. Se passado um valor negativo, o arquivo ser· excluindo quando a VM for finalizada (desde que n„o finalize abortando por erro ou fechamento forÁado pelo SO). Se a aplicaÁ„o finalizar antes do tempo passado, o arquivo È excluÌdo no fechamento da aplicaÁ„o.
-   * @return File represetando o arquivo, usado para escrever o conte˙do.
-   * @throws RFWException Em caso de falha durante a execuÁ„o.
+   * @param delayToDelete define um tempo em milisegundos antes de excluir o arquivo. Se passado um valor negativo, o arquivo ser√° excluindo quando a VM for finalizada (desde que n√£o finalize abortando por erro ou fechamento for√ßado pelo SO). Se a aplica√ß√£o finalizar antes do tempo passado, o arquivo √© exclu√≠do no fechamento da aplica√ß√£o.
+   * @return File represetando o arquivo, usado para escrever o conte√∫do.
+   * @throws RFWException Em caso de falha durante a execu√ß√£o.
    */
   public static File createFileInTemporaryPathWithDelete(String fileName, String content, Charset charSet, long delayToDelete) throws RFWException {
     try {
@@ -328,19 +328,19 @@ public class RUFile {
 
       return file;
     } catch (IOException e) {
-      throw new RFWCriticalException("Falha ao escrever o arquivo tempor·rio!", new String[] { fileName }, e);
+      throw new RFWCriticalException("Falha ao escrever o arquivo tempor√°rio!", new String[] { fileName }, e);
     }
   }
 
   /**
-   * Cria um arquivo em uma pasta tempor·ria (em uma subpasta na pastas tempor·ria de acordo com o sistema) e escreve o conte˙do no arquivo.<br>
-   * <b>A diferenÁa entre este mÈtodo e o {@link #createTemporaryFile(String, String, String, Charset)} È que o nome do arquivo continuar· sendo o que o usu·rio passou, sÛ a pasta (caminho) È que receber· valores aleatÛrios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus mÈtodos. O caminho completo para o arquivo pode ser recuperado com
-   * file.getAbsolutePath(); j· o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
+   * Cria um arquivo em uma pasta tempor√°ria (em uma subpasta na pastas tempor√°ria de acordo com o sistema) e escreve o conte√∫do no arquivo.<br>
+   * <b>A diferen√ßa entre este m√©todo e o {@link #createTemporaryFile(String, String, String, Charset)} √© que o nome do arquivo continuar√° sendo o que o usu√°rio passou, s√≥ a pasta (caminho) √© que receber√° valores aleat√≥rios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus m√©todos. O caminho completo para o arquivo pode ser recuperado com
+   * file.getAbsolutePath(); j√° o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
    *
-   * @param fileName Nome do Arquivo com a extens„o. Ex.: "meuarquivo.txt"
-   * @param content Cont˙do do arquivo a ser escrito, ou null caso n„o deseje efetivamente criar o arquivo ainda.
-   * @return File represetando o arquivo, usado para escrever o conte˙do.
-   * @throws RFWException Em caso de falha durante a execuÁ„o.
+   * @param fileName Nome do Arquivo com a extens√£o. Ex.: "meuarquivo.txt"
+   * @param content Cont√∫do do arquivo a ser escrito, ou null caso n√£o deseje efetivamente criar o arquivo ainda.
+   * @return File represetando o arquivo, usado para escrever o conte√∫do.
+   * @throws RFWException Em caso de falha durante a execu√ß√£o.
    */
   public static File createFileInTemporaryPath(String fileName, byte[] content) throws RFWException {
     try {
@@ -354,20 +354,20 @@ public class RUFile {
       if (content != null) writeFileContent(temp, content, false);
       return temp;
     } catch (IOException e) {
-      throw new RFWCriticalException("Falha ao escrever o arquivo tempor·rio!", new String[] { fileName }, e);
+      throw new RFWCriticalException("Falha ao escrever o arquivo tempor√°rio!", new String[] { fileName }, e);
     }
   }
 
   /**
-   * Cria um arquivo tempor·rio (na pastas tempor·ria de acordo com o sistema) e escreve o conte˙do no arquivo.<br>
-   * Para obter o caminho do arquivo utilize o File retornado e seus mÈtodos. O caminho completo para o arquivo pode ser recuperado com file.getAbsolutePath(); j· o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();<br>
+   * Cria um arquivo tempor√°rio (na pastas tempor√°ria de acordo com o sistema) e escreve o conte√∫do no arquivo.<br>
+   * Para obter o caminho do arquivo utilize o File retornado e seus m√©todos. O caminho completo para o arquivo pode ser recuperado com file.getAbsolutePath(); j√° o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();<br>
    * Utiliza o Charset {@link StandardCharsets#UTF_8}.
    *
    * @param filename Nome do Arquivo
-   * @param extension Extens„o do arquivo. N„o passar o "." somente a extenÁ„o. Ex: "txt", "log", etc...
-   * @param content Cont˙do do arquivo.
-   * @return Objeto File represetando o arquivo, usado para escrever o conte˙do.
-   * @throws RFWException Em caso de falha durante a execuÁ„o.
+   * @param extension Extens√£o do arquivo. N√£o passar o "." somente a exten√ß√£o. Ex: "txt", "log", etc...
+   * @param content Cont√∫do do arquivo.
+   * @return Objeto File represetando o arquivo, usado para escrever o conte√∫do.
+   * @throws RFWException Em caso de falha durante a execu√ß√£o.
    */
   public static File createTemporaryFile(String filename, String extension, String content) throws RFWException {
     try {
@@ -375,20 +375,20 @@ public class RUFile {
       if (content != null) writeFileContent(temp, content, StandardCharsets.UTF_8);
       return temp;
     } catch (IOException e) {
-      throw new RFWCriticalException("Falha ao escrever o arquivo tempor·rio!", new String[] { filename, extension }, e);
+      throw new RFWCriticalException("Falha ao escrever o arquivo tempor√°rio!", new String[] { filename, extension }, e);
     }
   }
 
   /**
-   * Cria um arquivo tempor·rio (na pastas tempor·ria de acordo com o sistema) e escreve o conte˙do no arquivo.<br>
-   * Para obter o caminho do arquivo utilize o File retornado e seus mÈtodos. O caminho completo para o arquivo pode ser recuperado com file.getAbsolutePath(); j· o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
+   * Cria um arquivo tempor√°rio (na pastas tempor√°ria de acordo com o sistema) e escreve o conte√∫do no arquivo.<br>
+   * Para obter o caminho do arquivo utilize o File retornado e seus m√©todos. O caminho completo para o arquivo pode ser recuperado com file.getAbsolutePath(); j√° o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
    *
    * @param filename Nome do Arquivo
-   * @param extension Extens„o do arquivo. N„o passar o "." somente a extenÁ„o. Ex: "txt", "log", etc...
-   * @param content Cont˙do do arquivo.
+   * @param extension Extens√£o do arquivo. N√£o passar o "." somente a exten√ß√£o. Ex: "txt", "log", etc...
+   * @param content Cont√∫do do arquivo.
    * @param charset Charset a ser utilizado na escrita do arquivo. {@link StandardCharsets}
-   * @return Objeto File represetando o arquivo, usado para escrever o conte˙do.
-   * @throws RFWException Em caso de falha durante a execuÁ„o.
+   * @return Objeto File represetando o arquivo, usado para escrever o conte√∫do.
+   * @throws RFWException Em caso de falha durante a execu√ß√£o.
    */
   public static File createTemporaryFile(String filename, String extension, String content, Charset charset) throws RFWException {
     try {
@@ -396,18 +396,18 @@ public class RUFile {
       if (content != null) writeFileContent(temp, content, charset);
       return temp;
     } catch (IOException e) {
-      throw new RFWCriticalException("Falha ao escrever o arquivo tempor·rio!", new String[] { filename, extension }, e);
+      throw new RFWCriticalException("Falha ao escrever o arquivo tempor√°rio!", new String[] { filename, extension }, e);
     }
   }
 
   /**
-   * Equivalente ao mÈtodo {@link #createFileInTemporaryPath(String, String, Charset)} passando como charset {@link StandardCharsets#UTF_8} Cria um arquivo em uma pasta tempor·ria (em uma subpasta na pastas tempor·ria de acordo com o sistema) e escreve o conte˙do no arquivo.<br>
-   * <b>A diferenÁa entre este mÈtodo e o {@link #createTemporaryFile(String, String, String, Charset)} È que o nome do arquivo continuar· sendo o que o usu·rio passou, sÛ a pasta (caminho) È que receber· valores aleatÛrios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus mÈtodos. O caminho completo para o arquivo pode ser recuperado com
-   * file.getAbsolutePath(); j· o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
+   * Equivalente ao m√©todo {@link #createFileInTemporaryPath(String, String, Charset)} passando como charset {@link StandardCharsets#UTF_8} Cria um arquivo em uma pasta tempor√°ria (em uma subpasta na pastas tempor√°ria de acordo com o sistema) e escreve o conte√∫do no arquivo.<br>
+   * <b>A diferen√ßa entre este m√©todo e o {@link #createTemporaryFile(String, String, String, Charset)} √© que o nome do arquivo continuar√° sendo o que o usu√°rio passou, s√≥ a pasta (caminho) √© que receber√° valores aleat√≥rios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus m√©todos. O caminho completo para o arquivo pode ser recuperado com
+   * file.getAbsolutePath(); j√° o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
    *
-   * @param fileName Nome do Arquivo com a extens„o. Ex.: "meuarquivo.txt"
-   * @return File represetando o arquivo, usado para escrever o conte˙do.
-   * @throws RFWException Em caso de falha durante a execuÁ„o.
+   * @param fileName Nome do Arquivo com a extens√£o. Ex.: "meuarquivo.txt"
+   * @return File represetando o arquivo, usado para escrever o conte√∫do.
+   * @throws RFWException Em caso de falha durante a execu√ß√£o.
    */
   public static File createFileInTemporaryPath(String fileName) throws RFWException {
     return createFileInTemporaryPath(fileName, null, StandardCharsets.UTF_8);
@@ -434,11 +434,11 @@ public class RUFile {
   }
 
   /**
-   * ObtÈm os arquivos de uma pasta/diretÛrio e retorna o caminho completo (absolutePath) dos elementos encontrados.<br>
-   * Utiliza o mÈtodo {@link #getFilesFromDirectory(String)} e chama o mÈtodo {@link File#getAbsolutePath()} de cada elemento.
+   * Obt√©m os arquivos de uma pasta/diret√≥rio e retorna o caminho completo (absolutePath) dos elementos encontrados.<br>
+   * Utiliza o m√©todo {@link #getFilesFromDirectory(String)} e chama o m√©todo {@link File#getAbsolutePath()} de cada elemento.
    *
-   * @param path Caminho da Pasta/DiretÛrio para obter os elementos.
-   * @return Array com os caminhos absolutos dos arquivos de um diretÛrio.
+   * @param path Caminho da Pasta/Diret√≥rio para obter os elementos.
+   * @return Array com os caminhos absolutos dos arquivos de um diret√≥rio.
    */
   public static String[] getFileNamesFromDirectory(String path) {
     File[] listOfFiles = getFilesFromDirectory(path);
@@ -446,9 +446,9 @@ public class RUFile {
   }
 
   /**
-   * Recupera todos os arquivos de um diretÛrio j· representados pelo objeto {@link File}.
+   * Recupera todos os arquivos de um diret√≥rio j√° representados pelo objeto {@link File}.
    *
-   * @param path Caminho da pasta/diretÛrio.
+   * @param path Caminho da pasta/diret√≥rio.
    * @return Array com os objetos {@link File} representando os elementos encontrados.
    */
   public static File[] getFilesFromDirectory(String path) {
@@ -456,10 +456,10 @@ public class RUFile {
   }
 
   /**
-   * LÍ o conte˙do de um arquivo para uma String.
+   * L√™ o conte√∫do de um arquivo para uma String.
    *
    * @param fileName Arquivo para ser lido.
-   * @param charset Charset do arquivo para interpretaÁ„o do byte.
+   * @param charset Charset do arquivo para interpreta√ß√£o do byte.
    * @return String contendo o arquivo.
    * @throws RFWException Caso ocorra algum erro na leitura do arquivo.
    */
@@ -469,7 +469,7 @@ public class RUFile {
   }
 
   /**
-   * LÍ o conte˙do de um arquivo para uma String.
+   * L√™ o conte√∫do de um arquivo para uma String.
    *
    * @param file Arquivo para ser lido.
    * @return String contendo o arquivo.
@@ -480,10 +480,10 @@ public class RUFile {
   }
 
   /**
-   * LÍ o conte˙do de um arquivo para uma String.
+   * L√™ o conte√∫do de um arquivo para uma String.
    *
    * @param fileName Arquivo para ser lido.
-   * @param charset Charset do arquivo para interpretaÁ„o do byte.
+   * @param charset Charset do arquivo para interpreta√ß√£o do byte.
    * @return String contendo o arquivo.
    * @throws RFWException Caso ocorra algum erro na leitura do arquivo.
    */
@@ -493,10 +493,10 @@ public class RUFile {
   }
 
   /**
-   * LÍ o conte˙do de um arquivo para uma String.
+   * L√™ o conte√∫do de um arquivo para uma String.
    *
    * @param fileName Arquivo para ser lido.
-   * @param charset Charset do arquivo para interpretaÁ„o do byte.
+   * @param charset Charset do arquivo para interpreta√ß√£o do byte.
    * @return String contendo o arquivo.
    * @throws RFWException Caso ocorra algum erro na leitura do arquivo.
    */
@@ -506,10 +506,10 @@ public class RUFile {
   }
 
   /**
-   * LÍ o conte˙do de um arquivo para uma String.
+   * L√™ o conte√∫do de um arquivo para uma String.
    *
    * @param file Arquivo para ser lido.
-   * @param charset Charset do arquivo para interpretaÁ„o do byte.
+   * @param charset Charset do arquivo para interpreta√ß√£o do byte.
    * @return String contendo o arquivo.
    * @throws RFWException Caso ocorra algum erro na leitura do arquivo.
    */
@@ -518,10 +518,10 @@ public class RUFile {
   }
 
   /**
-   * LÍ o conte˙do de um arquivo para uma String.
+   * L√™ o conte√∫do de um arquivo para uma String.
    *
    * @param file Arquivo para ser lido.
-   * @param charset Charset do arquivo para interpretaÁ„o do byte.
+   * @param charset Charset do arquivo para interpreta√ß√£o do byte.
    * @return String contendo o arquivo.
    * @throws RFWException Caso ocorra algum erro na leitura do arquivo.
    */
@@ -534,10 +534,10 @@ public class RUFile {
   }
 
   /**
-   * LÍ o conte˙do de um arquivo para um array de bytes.
+   * L√™ o conte√∫do de um arquivo para um array de bytes.
    *
    * @param file O arquivo a ser lido.
-   * @return Um array de bytes contendo o conte˙do do arquivo.
+   * @return Um array de bytes contendo o conte√∫do do arquivo.
    * @throws RFWException Se houver um erro ao ler o arquivo.
    */
   public static byte[] readFileContent(String fileName) throws RFWException {
@@ -545,10 +545,10 @@ public class RUFile {
   }
 
   /**
-   * LÍ o conte˙do de um arquivo para um array de bytes.
+   * L√™ o conte√∫do de um arquivo para um array de bytes.
    *
    * @param file O arquivo a ser lido.
-   * @return Um array de bytes contendo o conte˙do do arquivo.
+   * @return Um array de bytes contendo o conte√∫do do arquivo.
    * @throws RFWException Se houver um erro ao ler o arquivo.
    */
   public static byte[] readFileContent(File file) throws RFWException {
@@ -561,7 +561,7 @@ public class RUFile {
     if (file.length() > Integer.MAX_VALUE) {
       throw new RFWValidationException("RFW_000030", new String[] { LocaleConverter.formatBytesSize(file.length(), null, 1) });
     }
-    // LÍ o conte˙do do arquivo para um array de bytes.
+    // L√™ o conte√∫do do arquivo para um array de bytes.
     byte[] bytes = new byte[(int) file.length()];
     try (FileInputStream in = new FileInputStream(file)) {
       in.read(bytes);
@@ -572,7 +572,7 @@ public class RUFile {
   }
 
   /**
-   * Extrai o nome do arquivo de um caminho completo recebido. N√O RETORNA A EXTENS√O DO ARQUIVO!
+   * Extrai o nome do arquivo de um caminho completo recebido. N√ÉO RETORNA A EXTENS√ÉO DO ARQUIVO!
    *
    * @param file Caminho com o nome do arquivo
    * @return
@@ -591,10 +591,10 @@ public class RUFile {
   }
 
   /**
-   * Retorna os arquivos de um determinado diretÛrio que tenham a data de criaÁ„o maiores ou iguais a uma determinada data.
+   * Retorna os arquivos de um determinado diret√≥rio que tenham a data de cria√ß√£o maiores ou iguais a uma determinada data.
    *
-   * @param path Caminho/DiretÛrio dos arquivos
-   * @param timemillis Data de criaÁ„o inicial em milisegundos (Equivalente ao System.currentTimemillis)
+   * @param path Caminho/Diret√≥rio dos arquivos
+   * @param timemillis Data de cria√ß√£o inicial em milisegundos (Equivalente ao System.currentTimemillis)
    * @return Arquivos criados depois da data definida
    * @throws RFWException
    */
@@ -704,14 +704,14 @@ public class RUFile {
   }
 
   /**
-   * Retorna a data e hora de criaÁ„o de um arquivo.
+   * Retorna a data e hora de cria√ß√£o de um arquivo.
    *
-   * @param fileName Caminho completo ou relativo ‡ aplicaÁ„o que leve ao arquivo.
-   * @return Objeto Date criado com o timezone padr„o do sistema, que deve equivaler como do arquivo.
+   * @param fileName Caminho completo ou relativo √† aplica√ß√£o que leve ao arquivo.
+   * @return Objeto Date criado com o timezone padr√£o do sistema, que deve equivaler como do arquivo.
    * @throws RFWException
    */
   public static Date getCreationDate(String fileName) throws RFWException {
-    // Se o arquivo n„o existir lanÁa crÌtico, isso deve ser validado adequadamente fora da classe utilit·ria
+    // Se o arquivo n√£o existir lan√ßa cr√≠tico, isso deve ser validado adequadamente fora da classe utilit√°ria
     if (!fileExists(fileName)) throw new RFWCriticalException("BISERP_000444", new String[] { fileName });
 
     Path path = new File(fileName).toPath();
@@ -725,14 +725,14 @@ public class RUFile {
   }
 
   /**
-   * Retorna a data e hora de criaÁ„o de um arquivo no formato LocalDateTime.
+   * Retorna a data e hora de cria√ß√£o de um arquivo no formato LocalDateTime.
    *
-   * @param fileName Caminho completo ou relativo ‡ aplicaÁ„o que leva ao arquivo.
-   * @return Objeto LocalDateTime representando a data e hora de criaÁ„o do arquivo, usando o timezone padr„o do sistema.
-   * @throws RFWException se o arquivo n„o for encontrado ou ocorrer um erro ao ler os atributos do arquivo.
+   * @param fileName Caminho completo ou relativo √† aplica√ß√£o que leva ao arquivo.
+   * @return Objeto LocalDateTime representando a data e hora de cria√ß√£o do arquivo, usando o timezone padr√£o do sistema.
+   * @throws RFWException se o arquivo n√£o for encontrado ou ocorrer um erro ao ler os atributos do arquivo.
    */
   public static LocalDateTime getCreationLocalDateTime(String fileName) throws RFWException {
-    // Se o arquivo n„o existir lanÁa crÌtico, isso deve ser validado adequadamente fora da classe utilit·ria
+    // Se o arquivo n√£o existir lan√ßa cr√≠tico, isso deve ser validado adequadamente fora da classe utilit√°ria
     if (!fileExists(fileName)) throw new RFWCriticalException("BISERP_000444", new String[] { fileName });
 
     Path path = new File(fileName).toPath();
@@ -743,19 +743,19 @@ public class RUFile {
       throw new RFWCriticalException("BISERP_000443");
     }
 
-    // Converte o FileTime para LocalDateTime utilizando o timezone padr„o do sistema
+    // Converte o FileTime para LocalDateTime utilizando o timezone padr√£o do sistema
     return LocalDateTime.ofInstant(attr.creationTime().toInstant(), ZoneOffset.UTC);
   }
 
   /**
-   * Retorna a data e hora do ˙ltimo acesso ao arquivo.
+   * Retorna a data e hora do √∫ltimo acesso ao arquivo.
    *
-   * @param fileName Caminho completo ou relativo ‡ aplicaÁ„o que leve ao arquivo.
-   * @return Objeto Date criado com o timezone padr„o do sistema, que deve equivaler como do arquivo.
+   * @param fileName Caminho completo ou relativo √† aplica√ß√£o que leve ao arquivo.
+   * @return Objeto Date criado com o timezone padr√£o do sistema, que deve equivaler como do arquivo.
    * @throws RFWException
    */
   public static Date getLastAccessTime(String fileName) throws RFWException {
-    // Se o arquivo n„o existir lanÁa crÌtico, isso deve ser validado adequadamente fora da classe utilit·ria
+    // Se o arquivo n√£o existir lan√ßa cr√≠tico, isso deve ser validado adequadamente fora da classe utilit√°ria
     if (!fileExists(fileName)) throw new RFWCriticalException("BISERP_000444", new String[] { fileName });
 
     Path path = new File(fileName).toPath();
@@ -769,14 +769,14 @@ public class RUFile {
   }
 
   /**
-   * Retorna a data e hora da ˙ltima modificaÁ„o do arquivo.
+   * Retorna a data e hora da √∫ltima modifica√ß√£o do arquivo.
    *
-   * @param fileName Caminho completo ou relativo ‡ aplicaÁ„o que leve ao arquivo.
-   * @return Objeto Date criado com o timezone padr„o do sistema, que deve equivaler como do arquivo.
+   * @param fileName Caminho completo ou relativo √† aplica√ß√£o que leve ao arquivo.
+   * @return Objeto Date criado com o timezone padr√£o do sistema, que deve equivaler como do arquivo.
    * @throws RFWException
    */
   public static Date getLastModifiedTime(String fileName) throws RFWException {
-    // Se o arquivo n„o existir lanÁa crÌtico, isso deve ser validado adequadamente fora da classe utilit·ria
+    // Se o arquivo n√£o existir lan√ßa cr√≠tico, isso deve ser validado adequadamente fora da classe utilit√°ria
     if (!fileExists(fileName)) throw new RFWCriticalException("BISERP_000444", new String[] { fileName });
 
     Path path = new File(fileName).toPath();
@@ -790,14 +790,14 @@ public class RUFile {
   }
 
   /**
-   * Retorna a data e hora da ˙ltima modificaÁ„o de um arquivo no formato LocalDateTime.
+   * Retorna a data e hora da √∫ltima modifica√ß√£o de um arquivo no formato LocalDateTime.
    *
-   * @param fileName Caminho completo ou relativo ‡ aplicaÁ„o que leva ao arquivo.
-   * @return Objeto LocalDateTime representando a data e hora da ˙ltima modificaÁ„o do arquivo, sem considerar o fuso hor·rio.
-   * @throws RFWException se o arquivo n„o for encontrado ou ocorrer um erro ao ler os atributos do arquivo.
+   * @param fileName Caminho completo ou relativo √† aplica√ß√£o que leva ao arquivo.
+   * @return Objeto LocalDateTime representando a data e hora da √∫ltima modifica√ß√£o do arquivo, sem considerar o fuso hor√°rio.
+   * @throws RFWException se o arquivo n√£o for encontrado ou ocorrer um erro ao ler os atributos do arquivo.
    */
   public static LocalDateTime getLastModifiedLocalDateTime(String fileName) throws RFWException {
-    // Se o arquivo n„o existir lanÁa crÌtico, isso deve ser validado adequadamente fora da classe utilit·ria
+    // Se o arquivo n√£o existir lan√ßa cr√≠tico, isso deve ser validado adequadamente fora da classe utilit√°ria
     if (!fileExists(fileName)) throw new RFWCriticalException("BISERP_000444", new String[] { fileName });
 
     Path path = new File(fileName).toPath();
@@ -808,19 +808,19 @@ public class RUFile {
       throw new RFWCriticalException("BISERP_000443");
     }
 
-    // Converte FileTime para LocalDateTime sem considerar o fuso hor·rio
+    // Converte FileTime para LocalDateTime sem considerar o fuso hor√°rio
     return LocalDateTime.ofInstant(attr.lastModifiedTime().toInstant(), ZoneOffset.UTC);
   }
 
   /**
-   * Retorna se o objeto do caminho passado È um Symbolic Link.
+   * Retorna se o objeto do caminho passado √© um Symbolic Link.
    *
-   * @param fileName Caminho completo ou relativo ‡ aplicaÁ„o que leve ao arquivo.
-   * @return Boolean indicando 'true' caso o objeto seja um SymLink, 'false' n„o seja.
+   * @param fileName Caminho completo ou relativo √† aplica√ß√£o que leve ao arquivo.
+   * @return Boolean indicando 'true' caso o objeto seja um SymLink, 'false' n√£o seja.
    * @throws RFWException
    */
   public static boolean isSymbolicLink(String fileName) throws RFWException {
-    // Se o arquivo n„o existir lanÁa crÌtico, isso deve ser validado adequadamente fora da classe utilit·ria
+    // Se o arquivo n√£o existir lan√ßa cr√≠tico, isso deve ser validado adequadamente fora da classe utilit√°ria
     if (!fileExists(fileName)) throw new RFWCriticalException("BISERP_000444", new String[] { fileName });
 
     Path path = new File(fileName).toPath();
@@ -834,27 +834,27 @@ public class RUFile {
   }
 
   /**
-   * Este mÈtodo verifica a existÍncia do caminho e, caso n„o exista ainda, o cria.<br>
-   * <b>Este mÈtodo aceita o caminho do diretÛrio sem o nome do arquivo. Caso tenha o caminho com o nome do arquivo utilize o {@link #createPathOfFile(String)}</b>
+   * Este m√©todo verifica a exist√™ncia do caminho e, caso n√£o exista ainda, o cria.<br>
+   * <b>Este m√©todo aceita o caminho do diret√≥rio sem o nome do arquivo. Caso tenha o caminho com o nome do arquivo utilize o {@link #createPathOfFile(String)}</b>
    *
-   * @param pathName Caminho para o diretÛrio a ser criado.
+   * @param pathName Caminho para o diret√≥rio a ser criado.
    * @throws RFWException
    */
   public static void createPath(String pathName) throws RFWException {
     File file = new File(pathName);
-    file.mkdirs(); // ForÁa criar os diretÛrios caso n„o existam
+    file.mkdirs(); // For√ßa criar os diret√≥rios caso n√£o existam
   }
 
   /**
-   * Este mÈtodo verifica a existÍncia dos diretÛrios do caminho ddo arquivo passado, caso n„o exista ainda, o cria.<br>
-   * <b>Este mÈtodo aceita o caminho completo incluindo o nome do arquivo, e garante que sua pasta seja criada. Caso tenha apenas os nomes dos diretÛrios utilize o {@link #createPath(String)}</b>
+   * Este m√©todo verifica a exist√™ncia dos diret√≥rios do caminho ddo arquivo passado, caso n√£o exista ainda, o cria.<br>
+   * <b>Este m√©todo aceita o caminho completo incluindo o nome do arquivo, e garante que sua pasta seja criada. Caso tenha apenas os nomes dos diret√≥rios utilize o {@link #createPath(String)}</b>
    *
-   * @param filePath Caminho completo do arquivo, cujo diretÛrio deve ser criado.
+   * @param filePath Caminho completo do arquivo, cujo diret√≥rio deve ser criado.
    * @throws RFWException
    */
   public static void createPathOfFile(String filePath) throws RFWException {
     File file = new File(filePath);
-    file.mkdirs(); // ForÁa criar os diretÛrios caso n„o existam
+    file.mkdirs(); // For√ßa criar os diret√≥rios caso n√£o existam
   }
 
   /**
@@ -869,7 +869,7 @@ public class RUFile {
   }
 
   /**
-   * Extrai o caminho (diretÛrio) de um caminho completo recebido. N√O RETORNA O ⁄LTIMO SEPARADOR! Nem mesmo quando est· na raiz: Windows = "c:", no Linux = "".
+   * Extrai o caminho (diret√≥rio) de um caminho completo recebido. N√ÉO RETORNA O √öLTIMO SEPARADOR! Nem mesmo quando est√° na raiz: Windows = "c:", no Linux = "".
    *
    * @param file Caminho com o nome do arquivo
    * @return
@@ -879,13 +879,13 @@ public class RUFile {
   }
 
   /**
-   * Exclui todos os arquivos de um diretÛrio cuja data de modificaÁ„o seja anterior ‡ data limite informada.
+   * Exclui todos os arquivos de um diret√≥rio cuja data de modifica√ß√£o seja anterior √† data limite informada.
    * <p>
-   * Este mÈtodo n„o exclui subdiretÛrios nem seus conte˙dos ó apenas arquivos diretamente no diretÛrio especificado. Se o caminho informado n„o existir, n„o for um diretÛrio ou ocorrer erro de leitura, o mÈtodo apenas retorna sem lanÁar exceÁıes.
+   * Este m√©todo n√£o exclui subdiret√≥rios nem seus conte√∫dos ‚Äî apenas arquivos diretamente no diret√≥rio especificado. Se o caminho informado n√£o existir, n√£o for um diret√≥rio ou ocorrer erro de leitura, o m√©todo apenas retorna sem lan√ßar exce√ß√µes.
    * </p>
    *
-   * @param dirPath Caminho completo do diretÛrio a ser analisado. Exemplo: {@code "C:\\Pastas\\LOG\\"}.
-   * @param limitDate Data limite ó arquivos modificados antes desta data ser„o removidos.
+   * @param dirPath Caminho completo do diret√≥rio a ser analisado. Exemplo: {@code "C:\\Pastas\\LOG\\"}.
+   * @param limitDate Data limite ‚Äî arquivos modificados antes desta data ser√£o removidos.
    */
   public static void deleteFilesOlderThan(String dirPath, Date limitDate) {
     if (dirPath == null || limitDate == null) return;
@@ -893,13 +893,13 @@ public class RUFile {
   }
 
   /**
-   * Exclui todos os arquivos de um diretÛrio cuja data de modificaÁ„o (lastModified) seja anterior ao timestamp especificado.
+   * Exclui todos os arquivos de um diret√≥rio cuja data de modifica√ß√£o (lastModified) seja anterior ao timestamp especificado.
    * <p>
-   * Este mÈtodo percorre todos os arquivos do diretÛrio informado, ignorando subdiretÛrios, e tenta remover os arquivos mais antigos que o valor de {@code limitMillis}. Arquivos que n„o puderem ser apagados s„o ignorados silenciosamente.
+   * Este m√©todo percorre todos os arquivos do diret√≥rio informado, ignorando subdiret√≥rios, e tenta remover os arquivos mais antigos que o valor de {@code limitMillis}. Arquivos que n√£o puderem ser apagados s√£o ignorados silenciosamente.
    * </p>
    *
-   * @param dirPath Caminho completo do diretÛrio a ser analisado. Exemplo: {@code "C:\\Pastas\\LOG\\"}.
-   * @param limitMillis Timestamp (em milissegundos desde epoch) que define a data limite de retenÁ„o.
+   * @param dirPath Caminho completo do diret√≥rio a ser analisado. Exemplo: {@code "C:\\Pastas\\LOG\\"}.
+   * @param limitMillis Timestamp (em milissegundos desde epoch) que define a data limite de reten√ß√£o.
    */
   public static void deleteFilesOlderThan(String dirPath, long limitMillis) {
     if (dirPath == null || limitMillis <= 0) return;
@@ -916,7 +916,7 @@ public class RUFile {
         if (lastModified > 0 && lastModified < limitMillis) {
           try {
             if (!file.delete()) {
-              System.err.println("N„o foi possÌvel excluir o arquivo: " + file.getAbsolutePath());
+              System.err.println("N√£o foi poss√≠vel excluir o arquivo: " + file.getAbsolutePath());
             }
           } catch (SecurityException e) {
             System.err.println("Erro ao tentar excluir arquivo: " + file.getAbsolutePath() + " - " + e.getMessage());

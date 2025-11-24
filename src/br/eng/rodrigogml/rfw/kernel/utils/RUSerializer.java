@@ -20,9 +20,9 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 
 /**
- * Description: Classe com mÈtodos para auxiliar na serializaÁ„o e desserializaÁ„o de objetos.<br>
+ * Description: Classe com m√©todos para auxiliar na serializa√ß√£o e desserializa√ß√£o de objetos.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.1.0 (30/06/2015)
  */
 public class RUSerializer {
@@ -31,8 +31,8 @@ public class RUSerializer {
    * Serializa um objeto qualquer para um arquivo.
    *
    * @param obj Objeto a ser serializado.
-   * @param filepath Caminho + nome do arquivo + extens„o ‡ receber o arquivo serializado.
-   * @throws RFWException LanÁado caso falhe em serializar o objeto.
+   * @param filepath Caminho + nome do arquivo + extens√£o √† receber o arquivo serializado.
+   * @throws RFWException Lan√ßado caso falhe em serializar o objeto.
    */
   public static void serializeToFile(Object obj, String filepath) throws RFWException {
     try (final FileOutputStream out = new FileOutputStream(filepath)) {
@@ -49,8 +49,8 @@ public class RUSerializer {
    * Serializa um objeto qualquer para um OutputStream.
    *
    * @param obj Objeto a ser serializado.
-   * @param stream OutputStream para escrever os bytes do conte˙do da serializaÁ„o.
-   * @throws RFWException LanÁado caso falhe em serializar o objeto.
+   * @param stream OutputStream para escrever os bytes do conte√∫do da serializa√ß√£o.
+   * @throws RFWException Lan√ßado caso falhe em serializar o objeto.
    */
   public static byte[] serializeToByteArray(Object obj) throws RFWException {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
@@ -65,8 +65,8 @@ public class RUSerializer {
    * Serializa um objeto qualquer para um OutputStream.
    *
    * @param obj Objeto a ser serializado.
-   * @param stream OutputStream para escrever os bytes do conte˙do da serializaÁ„o.
-   * @throws RFWException LanÁado caso falhe em serializar o objeto.
+   * @param stream OutputStream para escrever os bytes do conte√∫do da serializa√ß√£o.
+   * @throws RFWException Lan√ßado caso falhe em serializar o objeto.
    */
   public static void serializeToOutputStream(Object obj, OutputStream stream) throws RFWException {
     try (ObjectOutputStream oo = new ObjectOutputStream(stream)) {
@@ -80,9 +80,9 @@ public class RUSerializer {
   /**
    * Desserializa o objeto do arquivo.
    *
-   * @param filePath Caminho completo do arquivo que contÈm o objeto.
+   * @param filePath Caminho completo do arquivo que cont√©m o objeto.
    * @return Objeto desserializado.
-   * @throws RFWException LanÁado em caso de falha ao realizar a operaÁ„o.
+   * @throws RFWException Lan√ßado em caso de falha ao realizar a opera√ß√£o.
    */
   public static Object desserializeFromFile(String filePath) throws RFWException {
     final File file = new File(filePath);
@@ -92,9 +92,9 @@ public class RUSerializer {
   /**
    * Desserializa o objeto do arquivo.
    *
-   * @param filepath Caminho completo do arquivo que contÈm o objeto.
+   * @param filepath Caminho completo do arquivo que cont√©m o objeto.
    * @return Objeto desserializado.
-   * @throws RFWException LanÁado em caso de falha ao realizar a operaÁ„o.
+   * @throws RFWException Lan√ßado em caso de falha ao realizar a opera√ß√£o.
    */
   public static Object desserializeFromFile(File file) throws RFWException {
     Object obj = null;
@@ -112,9 +112,9 @@ public class RUSerializer {
   /**
    * Desserializa o objeto de um array de bytes.
    *
-   * @param filepath Caminho completo do arquivo que contÈm o objeto.
+   * @param filepath Caminho completo do arquivo que cont√©m o objeto.
    * @return Objeto desserializado.
-   * @throws RFWException LanÁado em caso de falha ao realizar a operaÁ„o.
+   * @throws RFWException Lan√ßado em caso de falha ao realizar a opera√ß√£o.
    */
   public static Object desserializeFromByteArray(byte[] data) throws RFWException {
     return desserializeFromStream(new ByteArrayInputStream(data));
@@ -123,9 +123,9 @@ public class RUSerializer {
   /**
    * Desserializa o objeto do arquivo.
    *
-   * @param filepath Caminho completo do arquivo que contÈm o objeto.
+   * @param filepath Caminho completo do arquivo que cont√©m o objeto.
    * @return Objeto desserializado.
-   * @throws RFWException LanÁado em caso de falha ao realizar a operaÁ„o.
+   * @throws RFWException Lan√ßado em caso de falha ao realizar a opera√ß√£o.
    */
   public static Object desserializeFromStream(InputStream in) throws RFWException {
     Object obj = null;
@@ -139,7 +139,7 @@ public class RUSerializer {
   }
 
   /**
-   * Serializa um objeto para XML utilizando o padr„o JAXB do nativo do Java.
+   * Serializa um objeto para XML utilizando o padr√£o JAXB do nativo do Java.
    *
    * @param object Objeto a ser serializado.
    * @param clazz Classe do Objeto a ser serializado
@@ -160,10 +160,10 @@ public class RUSerializer {
   }
 
   /**
-   * Desserializa um objeto a partir do seu XML utilizando o padr„o JAXB do nativo do Java.
+   * Desserializa um objeto a partir do seu XML utilizando o padr√£o JAXB do nativo do Java.
    *
-   * @param xml String contendo o XML para desserializaÁ„o.
-   * @param clazz Classe do Objeto que ser· montado a partir do XML.
+   * @param xml String contendo o XML para desserializa√ß√£o.
+   * @param clazz Classe do Objeto que ser√° montado a partir do XML.
    * @throws RFWException
    */
   public static Object desserializeFromXML(String xml, Class<?> clazz) throws RFWException {

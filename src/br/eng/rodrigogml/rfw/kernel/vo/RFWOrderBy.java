@@ -5,9 +5,9 @@ import java.util.LinkedList;
 import java.util.Objects;
 
 /**
- * Description: Classe usada para definir os campos de ordenaÁ„o de uma consulta com filtro.<br>
+ * Description: Classe usada para definir os campos de ordena√ß√£o de uma consulta com filtro.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 3.2.0 (DEZ / 2009)
  */
 
@@ -118,7 +118,7 @@ public class RFWOrderBy implements Serializable {
   }
 
   /**
-   * Cria um {@link RFWOrderBy} Vazio, que n„o cria nenhum orderby no fim das contas. ⁄til quando vamos adicionar colunas para ordenaÁ„o dinamicamente, podendo utilizar um objeto "empty()" para comeÁar a colucar (ou n„o) novas colunas de order by sem ter que testar se o objeto j· foi instanciado ou n„o.
+   * Cria um {@link RFWOrderBy} Vazio, que n√£o cria nenhum orderby no fim das contas. √ötil quando vamos adicionar colunas para ordena√ß√£o dinamicamente, podendo utilizar um objeto "empty()" para come√ßar a colucar (ou n√£o) novas colunas de order by sem ter que testar se o objeto j√° foi instanciado ou n√£o.
    */
   public static RFWOrderBy createEmpty() {
     return new RFWOrderBy();
@@ -174,7 +174,7 @@ public class RFWOrderBy implements Serializable {
   }
 
   /**
-   * Recupera todos os atributos utilizados no {@link RFWOrderBy}. Incluindo os atributos utilizados nas ordenaÁıes secund·rias.
+   * Recupera todos os atributos utilizados no {@link RFWOrderBy}. Incluindo os atributos utilizados nas ordena√ß√µes secund√°rias.
    */
   public LinkedList<String> getAttributes() {
     final LinkedList<String> atts = new LinkedList<>();

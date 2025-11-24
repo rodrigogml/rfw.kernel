@@ -11,9 +11,9 @@ import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaStringField;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 
 /**
- * Description: VO de Estado/Provincia do serviço de localização.<br>
+ * Description: VO de Estado/Provincia do serviÃ§o de localizaÃ§Ã£o.<br>
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 4.1.0 (12/05/2011)
  */
 public class LocationStateVO extends RFWVO {
@@ -21,8 +21,8 @@ public class LocationStateVO extends RFWVO {
   private static final long serialVersionUID = 3071326358745978964L;
 
   /**
-   * Sigla de duas letras do estado (UF), Sempre maiúsculas.<br>
-   * Campo obrigatório para Estados Brasileiros. Normalmente únicos em cada país, mas podem se repetir em países diferentes.
+   * Sigla de duas letras do estado (UF), Sempre maiÃºsculas.<br>
+   * Campo obrigatÃ³rio para Estados Brasileiros. Normalmente Ãºnicos em cada paÃ­s, mas podem se repetir em paÃ­ses diferentes.
    */
   @RFWMetaStringField(caption = "UF", required = false, maxLength = 2, minLength = 2, pattern = "[A-Z] {2}", unique = false)
   private String acronym = null;
@@ -34,39 +34,39 @@ public class LocationStateVO extends RFWVO {
   private String name = null;
 
   /**
-   * País ao qual este estado pertence.
+   * PaÃ­s ao qual este estado pertence.
    */
-  @RFWMetaRelationshipField(caption = "País", required = true, relationship = RelationshipTypes.ASSOCIATION)
+  @RFWMetaRelationshipField(caption = "PaÃ­s", required = true, relationship = RelationshipTypes.ASSOCIATION)
   private LocationCountryVO locationCountryVO = null;
 
   /**
-   * Mantém o Código do IBGE para o estado. Obrigatório para estados brasileiros.
+   * MantÃ©m o CÃ³digo do IBGE para o estado. ObrigatÃ³rio para estados brasileiros.
    */
-  @RFWMetaStringField(caption = "Código IBGE", maxLength = 2, required = false)
+  @RFWMetaStringField(caption = "CÃ³digo IBGE", maxLength = 2, required = false)
   private String ibgeCode = null;
 
   /**
-   * Data da última alteração do objeto. Esta data é utilizada para o controle de sincronia dos dados com sistemas externos.<br>
-   * Toda vez que o objeto sofrer qualquer alteração esta data deve ser aualizada para a data corrente.
+   * Data da Ãºltima alteraÃ§Ã£o do objeto. Esta data Ã© utilizada para o controle de sincronia dos dados com sistemas externos.<br>
+   * Toda vez que o objeto sofrer qualquer alteraÃ§Ã£o esta data deve ser aualizada para a data corrente.
    */
-  @RFWMetaDateField(caption = "Última Alteração", required = true, resolution = DateResolution.SECOND)
+  @RFWMetaDateField(caption = "Ãšltima AlteraÃ§Ã£o", required = true, resolution = DateResolution.SECOND)
   private LocalDate lastChange = null;
 
   /**
-   * Recupera o sigla de duas letras do estado (UF), Sempre maiúsculas.<br>
-   * Campo obrigatório para Estados Brasileiros. Normalmente únicos em cada país, mas podem se repetir em países diferentes.
+   * Recupera o sigla de duas letras do estado (UF), Sempre maiÃºsculas.<br>
+   * Campo obrigatÃ³rio para Estados Brasileiros. Normalmente Ãºnicos em cada paÃ­s, mas podem se repetir em paÃ­ses diferentes.
    *
-   * @return the sigla de duas letras do estado (UF), Sempre maiúsculas
+   * @return the sigla de duas letras do estado (UF), Sempre maiÃºsculas
    */
   public String getAcronym() {
     return acronym;
   }
 
   /**
-   * Define o sigla de duas letras do estado (UF), Sempre maiúsculas.<br>
-   * Campo obrigatório para Estados Brasileiros. Normalmente únicos em cada país, mas podem se repetir em países diferentes.
+   * Define o sigla de duas letras do estado (UF), Sempre maiÃºsculas.<br>
+   * Campo obrigatÃ³rio para Estados Brasileiros. Normalmente Ãºnicos em cada paÃ­s, mas podem se repetir em paÃ­ses diferentes.
    *
-   * @param acronym the new sigla de duas letras do estado (UF), Sempre maiúsculas
+   * @param acronym the new sigla de duas letras do estado (UF), Sempre maiÃºsculas
    */
   public void setAcronym(String acronym) {
     this.acronym = acronym;
@@ -91,56 +91,56 @@ public class LocationStateVO extends RFWVO {
   }
 
   /**
-   * Recupera o país ao qual este estado pertence.
+   * Recupera o paÃ­s ao qual este estado pertence.
    *
-   * @return the país ao qual este estado pertence
+   * @return the paÃ­s ao qual este estado pertence
    */
   public LocationCountryVO getLocationCountryVO() {
     return locationCountryVO;
   }
 
   /**
-   * Define o país ao qual este estado pertence.
+   * Define o paÃ­s ao qual este estado pertence.
    *
-   * @param locationCountryVO the new país ao qual este estado pertence
+   * @param locationCountryVO the new paÃ­s ao qual este estado pertence
    */
   public void setLocationCountryVO(LocationCountryVO locationCountryVO) {
     this.locationCountryVO = locationCountryVO;
   }
 
   /**
-   * Recupera o mantém o Código do IBGE para o estado. Obrigatório para estados brasileiros.
+   * Recupera o mantÃ©m o CÃ³digo do IBGE para o estado. ObrigatÃ³rio para estados brasileiros.
    *
-   * @return the mantém o Código do IBGE para o estado
+   * @return the mantÃ©m o CÃ³digo do IBGE para o estado
    */
   public String getIbgeCode() {
     return ibgeCode;
   }
 
   /**
-   * Define o mantém o Código do IBGE para o estado. Obrigatório para estados brasileiros.
+   * Define o mantÃ©m o CÃ³digo do IBGE para o estado. ObrigatÃ³rio para estados brasileiros.
    *
-   * @param ibgecode the new mantém o Código do IBGE para o estado
+   * @param ibgecode the new mantÃ©m o CÃ³digo do IBGE para o estado
    */
   public void setIbgeCode(String ibgecode) {
     this.ibgeCode = ibgecode;
   }
 
   /**
-   * Recupera o data da última alteração do objeto. Esta data é utilizada para o controle de sincronia dos dados com sistemas externos.<br>
-   * Toda vez que o objeto sofrer qualquer alteração esta data deve ser aualizada para a data corrente.
+   * Recupera o data da Ãºltima alteraÃ§Ã£o do objeto. Esta data Ã© utilizada para o controle de sincronia dos dados com sistemas externos.<br>
+   * Toda vez que o objeto sofrer qualquer alteraÃ§Ã£o esta data deve ser aualizada para a data corrente.
    *
-   * @return the data da última alteração do objeto
+   * @return the data da Ãºltima alteraÃ§Ã£o do objeto
    */
   public LocalDate getLastChange() {
     return lastChange;
   }
 
   /**
-   * Define o data da última alteração do objeto. Esta data é utilizada para o controle de sincronia dos dados com sistemas externos.<br>
-   * Toda vez que o objeto sofrer qualquer alteração esta data deve ser aualizada para a data corrente.
+   * Define o data da Ãºltima alteraÃ§Ã£o do objeto. Esta data Ã© utilizada para o controle de sincronia dos dados com sistemas externos.<br>
+   * Toda vez que o objeto sofrer qualquer alteraÃ§Ã£o esta data deve ser aualizada para a data corrente.
    *
-   * @param lastchange the new data da última alteração do objeto
+   * @param lastchange the new data da Ãºltima alteraÃ§Ã£o do objeto
    */
   public void setLastChange(LocalDate lastchange) {
     this.lastChange = lastchange;

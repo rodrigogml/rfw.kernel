@@ -6,9 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Description: Esta annotation permite uma validaÁ„o simples, orientada ao prÛprio 'Object', para campos anotados por interfaces muito genÈricas que dificultam a validaÁ„o por conta do polimorfismo.<br>
+ * Description: Esta annotation permite uma valida√ß√£o simples, orientada ao pr√≥prio 'Object', para campos anotados por interfaces muito gen√©ricas que dificultam a valida√ß√£o por conta do polimorfismo.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.1.0 (18/02/2016)
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -16,18 +16,18 @@ import java.lang.annotation.Target;
 public @interface RFWMetaGenericField {
 
   /**
-   * Define o nome da coluna na tabela do banco de dados. Caso deixado em branco, ser· utilizado o nome da propriedade.
+   * Define o nome da coluna na tabela do banco de dados. Caso deixado em branco, ser√° utilizado o nome da propriedade.
    */
   String column() default "";
 
   /**
-   * Define o nome do atributo/campo. Este nome È usado para facilitar mensagens de erros, validaÁıes, em UIs, etc.<br>
-   * N„o utilize ":" no final ou outras formataÁıes especÌficas do local de uso. Aqui deve ser definido apenas o nome, como "Caixa", "Nome do Usu·rio", etc.
+   * Define o nome do atributo/campo. Este nome √© usado para facilitar mensagens de erros, valida√ß√µes, em UIs, etc.<br>
+   * N√£o utilize ":" no final ou outras formata√ß√µes espec√≠ficas do local de uso. Aqui deve ser definido apenas o nome, como "Caixa", "Nome do Usu√°rio", etc.
    */
   String caption();
 
   /**
-   * Define se o atributo È obrigatÛrio ou n„o na entidade.
+   * Define se o atributo √© obrigat√≥rio ou n√£o na entidade.
    */
   boolean required();
 

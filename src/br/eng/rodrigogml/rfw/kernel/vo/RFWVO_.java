@@ -5,9 +5,9 @@ import java.io.Serializable;
 import br.eng.rodrigogml.rfw.kernel.utils.RUReflex;
 
 /**
- * Description: Classe padr„o de definiÁ„o do Meta Object.<br>
+ * Description: Classe padr√£o de defini√ß√£o do Meta Object.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.1.0 (15/07/2015)
  */
 public abstract class RFWVO_ implements Serializable {
@@ -39,8 +39,8 @@ public abstract class RFWVO_ implements Serializable {
   /**
    * Cria o caminho para um item dentro de uma hash.
    *
-   * @param attribute Nome do atributo que contÈm a hash.
-   * @param key RepresentaÁ„o em String do objeto chave da hash.
+   * @param attribute Nome do atributo que cont√©m a hash.
+   * @param key Representa√ß√£o em String do objeto chave da hash.
    * @param clazz Classe da chave de Hash.
    * @return
    */

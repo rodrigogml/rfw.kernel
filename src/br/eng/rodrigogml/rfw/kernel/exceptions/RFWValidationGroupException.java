@@ -5,9 +5,9 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 /**
- * Description: Classe de exceção de validação de dados do Framework. Usada para acumular exceções de validações da camada de negócio.<br>
+ * Description: Classe de exceÃ§Ã£o de validaÃ§Ã£o de dados do Framework. Usada para acumular exceÃ§Ãµes de validaÃ§Ãµes da camada de negÃ³cio.<br>
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 1.0 (JUN / 2006)
  */
 public class RFWValidationGroupException extends RFWValidationException {
@@ -89,28 +89,28 @@ public class RFWValidationGroupException extends RFWValidationException {
 
   @Override
   public String getFieldPath() {
-    // Recupera os dados do primeiro item da lista de exceptions, transformando esta exception em uma transparência da primeira exception da lista
+    // Recupera os dados do primeiro item da lista de exceptions, transformando esta exception em uma transparÃªncia da primeira exception da lista
     if (validationlist != null && validationlist.size() > 0) return this.validationlist.get(0).getFieldPath();
     return super.getFieldPath();
   }
 
   @Override
   public String getClassName() {
-    // Recupera os dados do primeiro item da lista de exceptions, transformando esta exception em uma transparência da primeira exception da lista
+    // Recupera os dados do primeiro item da lista de exceptions, transformando esta exception em uma transparÃªncia da primeira exception da lista
     if (validationlist != null && validationlist.size() > 0) return this.validationlist.get(0).getClassName();
     return super.getClassName();
   }
 
   @Override
   public String[] getFieldName() {
-    // Recupera os dados do primeiro item da lista de exceptions, transformando esta exception em uma transparência da primeira exception da lista
+    // Recupera os dados do primeiro item da lista de exceptions, transformando esta exception em uma transparÃªncia da primeira exception da lista
     if (validationlist != null && validationlist.size() > 0) return this.validationlist.get(0).getFieldName();
     return super.getFieldName();
   }
 
   @Override
   public String[] getParams() {
-    // Recupera os dados do primeiro item da lista de exceptions, transformando esta exception em uma transparência da primeira exception da lista
+    // Recupera os dados do primeiro item da lista de exceptions, transformando esta exception em uma transparÃªncia da primeira exception da lista
     if (validationlist != null && validationlist.size() > 0) return this.validationlist.get(0).getParams();
     return super.getParams();
   }
@@ -118,7 +118,7 @@ public class RFWValidationGroupException extends RFWValidationException {
   @Override
   public void printStackTrace() {
     super.printStackTrace();
-    // Em seguinda imprime o Stack Trace das Exceções filhas
+    // Em seguinda imprime o Stack Trace das ExceÃ§Ãµes filhas
     for (RFWValidationException e : this.validationlist) {
       e.printStackTrace();
     }
@@ -127,7 +127,7 @@ public class RFWValidationGroupException extends RFWValidationException {
   @Override
   public void printStackTrace(PrintStream s) {
     super.printStackTrace(s);
-    // Em seguinda imprime o Stack Trace das Exceções filhas
+    // Em seguinda imprime o Stack Trace das ExceÃ§Ãµes filhas
     for (RFWValidationException e : this.validationlist) {
       e.printStackTrace(s);
     }
@@ -136,7 +136,7 @@ public class RFWValidationGroupException extends RFWValidationException {
   @Override
   public void printStackTrace(PrintWriter w) {
     super.printStackTrace(w);
-    // Em seguinda imprime o Stack Trace das Exceções filhas
+    // Em seguinda imprime o Stack Trace das ExceÃ§Ãµes filhas
     for (RFWValidationException e : this.validationlist) {
       e.printStackTrace(w);
     }
@@ -145,7 +145,7 @@ public class RFWValidationGroupException extends RFWValidationException {
   /**
    * Retorna a quantidade de exceptions existentes dentro do Grupo.
    *
-   * @return quantidade de excepptions de validação dentro do Grupo
+   * @return quantidade de excepptions de validaÃ§Ã£o dentro do Grupo
    */
   public int size() {
     return this.validationlist.size();

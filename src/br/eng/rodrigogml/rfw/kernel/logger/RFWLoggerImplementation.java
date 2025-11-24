@@ -6,10 +6,10 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationGroupException;
 import br.eng.rodrigogml.rfw.kernel.utils.RUReflex;
 
 /**
- * Description: Interface de definiÁ„o para implementaÁ„o da m·quina de Log do sistema.<br>
- * A implementaÁ„o desta interface permite que as chamadas de log feitas na classe {@link RFWLogger} sejam repassadas para a implementaÁ„o diretamente.
+ * Description: Interface de defini√ß√£o para implementa√ß√£o da m√°quina de Log do sistema.<br>
+ * A implementa√ß√£o desta interface permite que as chamadas de log feitas na classe {@link RFWLogger} sejam repassadas para a implementa√ß√£o diretamente.
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 10.0 (20 de jul. de 2023)
  */
 public interface RFWLoggerImplementation {
@@ -19,35 +19,35 @@ public interface RFWLoggerImplementation {
    */
   public static enum RFWLogSeverity {
     /**
-     * Registra um objeto no LOG. O RFWLogger far· o m·ximo para imprimir as informaÁıes do objeto no log.
+     * Registra um objeto no LOG. O RFWLogger far√° o m√°ximo para imprimir as informa√ß√µes do objeto no log.
      */
     OBJECT,
     /**
-     * Registra uma informaÁ„o com a severidade DEBUG
+     * Registra uma informa√ß√£o com a severidade DEBUG
      */
     DEBUG,
     /**
-     * Registra uma informaÁ„o com a severidade INFO
+     * Registra uma informa√ß√£o com a severidade INFO
      */
     INFO,
     /**
-     * Registra uma informaÁ„o com a severidade WARN
+     * Registra uma informa√ß√£o com a severidade WARN
      */
     WARN,
     /**
-     * Registra uma informaÁ„o com a severidade ERROR
+     * Registra uma informa√ß√£o com a severidade ERROR
      */
     ERROR,
     /**
-     * Registra uma informaÁ„o para os desenvolvedores. Criado para que seja possÌvel criar notificaÁıes para os desenvolvedores quando alguma nova informaÁ„o entrada no sistema È relevante a ponto de ser informada para o DEV mas n„o È um erro ou aviso.
+     * Registra uma informa√ß√£o para os desenvolvedores. Criado para que seja poss√≠vel criar notifica√ß√µes para os desenvolvedores quando alguma nova informa√ß√£o entrada no sistema √© relevante a ponto de ser informada para o DEV mas n√£o √© um erro ou aviso.
      */
     DEV,
     /**
-     * Registra uma ExceÁ„o que representa uma ValidaÁ„o.
+     * Registra uma Exce√ß√£o que representa uma Valida√ß√£o.
      */
     VALIDATION,
     /**
-     * Registra uma ExceÁ„o que representa Erro/Problema.
+     * Registra uma Exce√ß√£o que representa Erro/Problema.
      */
     EXCEPTION;
   }
@@ -64,7 +64,7 @@ public interface RFWLoggerImplementation {
   /**
    * Faz o log de uma exception.
    *
-   * @param e ExceÁ„o a ser Logada.
+   * @param e Exce√ß√£o a ser Logada.
    */
   public default void logException(Throwable e) {
     RFWLogSeverity severity = RFWLogSeverity.EXCEPTION;
@@ -91,13 +91,13 @@ public interface RFWLoggerImplementation {
   }
 
   /**
-   * Faz o log com diversas informaÁıes que podem ou n„o serem passadas.
+   * Faz o log com diversas informa√ß√µes que podem ou n√£o serem passadas.
    *
-   * @param severity Enumeration indicando a severidade (nÌvel) do log.
-   * @param msg Mensagem a ser registrada no log. Esta mensagem deve ser curta e o mais explicativa possÌvel.
-   * @param content Conte˙do em caso de conte˙do anexo. (Grande Volume de Dados).
+   * @param severity Enumeration indicando a severidade (n√≠vel) do log.
+   * @param msg Mensagem a ser registrada no log. Esta mensagem deve ser curta e o mais explicativa poss√≠vel.
+   * @param content Conte√∫do em caso de conte√∫do anexo. (Grande Volume de Dados).
    * @param exPoint Define o ponto da exception, assim consegimos encontrar mais registros da mesma exception.
-   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s„o utilizadas para ajudar a filtrar v·rios eventos de uma mesma natureza, n„o jogue informaÁıes que sÛ aparecer„o em um ˙nico evento por vez nas tags. Utilize para categorizar os tipos de logs. Para dados vol·teis ou ˙nicos, crie outras entradas de INFO ou DEBUG.
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s√£o utilizadas para ajudar a filtrar v√°rios eventos de uma mesma natureza, n√£o jogue informa√ß√µes que s√≥ aparecer√£o em um √∫nico evento por vez nas tags. Utilize para categorizar os tipos de logs. Para dados vol√°teis ou √∫nicos, crie outras entradas de INFO ou DEBUG.
    */
   public void log(RFWLogSeverity severity, String msg, String content, String exPoint, String... tags);
 
@@ -114,7 +114,7 @@ public interface RFWLoggerImplementation {
    * Realiza o log com a prioridade WARN
    *
    * @param msg Mensagem a ser registrada
-   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s„o utilizadas para ajudar a filtrar v·rios eventos de uma mesma natureza, n„o jogue informaÁıes que sÛ aparecer„o em um ˙nico evento por vez nas tags. Cria um log de debug ou info para isso.
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s√£o utilizadas para ajudar a filtrar v√°rios eventos de uma mesma natureza, n√£o jogue informa√ß√µes que s√≥ aparecer√£o em um √∫nico evento por vez nas tags. Cria um log de debug ou info para isso.
    */
   public default void logWarn(String msg, String[] tags) {
     log(RFWLogSeverity.WARN, msg, null, null, tags);
@@ -124,18 +124,18 @@ public interface RFWLoggerImplementation {
    * Realiza o log com a prioridade ERROR
    *
    * @param msg Mensagem a ser registrada
-   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s„o utilizadas para ajudar a filtrar v·rios eventos de uma mesma natureza, n„o jogue informaÁıes que sÛ aparecer„o em um ˙nico evento por vez nas tags. Cria um log de debug ou info para isso.
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s√£o utilizadas para ajudar a filtrar v√°rios eventos de uma mesma natureza, n√£o jogue informa√ß√µes que s√≥ aparecer√£o em um √∫nico evento por vez nas tags. Cria um log de debug ou info para isso.
    */
   public default void logError(String msg, String[] tags) {
     log(RFWLogSeverity.ERROR, msg, null, null, tags);
   }
 
   /**
-   * Faz o log do conte˙do de um objeto. Utilizando o mÈtodo {@link RUReflex#printObject(Object)}
+   * Faz o log do conte√∫do de um objeto. Utilizando o m√©todo {@link RUReflex#printObject(Object)}
    *
    * @param msg Mensagem a ser colocada no registro do Log.
    * @param obj Objeto a ser impresso no anexo do Log.
-   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s„o utilizadas para ajudar a filtrar v·rios eventos de uma mesma natureza, n„o jogue informaÁıes que sÛ aparecer„o em um ˙nico evento por vez nas tags. Cria um log de debug ou info para isso.
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s√£o utilizadas para ajudar a filtrar v√°rios eventos de uma mesma natureza, n√£o jogue informa√ß√µes que s√≥ aparecer√£o em um √∫nico evento por vez nas tags. Cria um log de debug ou info para isso.
    */
   public default void logObject(String msg, Object obj, String... tags) {
     log(RFWLogSeverity.OBJECT, msg, RUReflex.printObject(obj) + "\r\n========INVOKER:===========\r\n" + RUReflex.getInvoker(3, 10), null, tags);
@@ -160,7 +160,7 @@ public interface RFWLoggerImplementation {
   }
 
   /**
-   * Realiza o log de uma mensagem para os desenvolvedores, registrando alguma informaÁ„o para melhoria do cÛdigo no futuro.
+   * Realiza o log de uma mensagem para os desenvolvedores, registrando alguma informa√ß√£o para melhoria do c√≥digo no futuro.
    *
    * @param msg Mensagem a ser registrada
    */
@@ -172,17 +172,17 @@ public interface RFWLoggerImplementation {
    * Realiza o log com a prioridade DEBUG.
    *
    * @param msg Mensagem a ser registrada
-   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s„o utilizadas para ajudar a filtrar v·rios eventos de uma mesma natureza, n„o jogue informaÁıes que sÛ aparecer„o em um ˙nico evento por vez nas tags. Cria um log de debug ou info para isso.
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s√£o utilizadas para ajudar a filtrar v√°rios eventos de uma mesma natureza, n√£o jogue informa√ß√µes que s√≥ aparecer√£o em um √∫nico evento por vez nas tags. Cria um log de debug ou info para isso.
    */
   public default void logDebug(String msg, String... tags) {
     log(RFWLogSeverity.DEBUG, msg, null, null, tags);
   }
 
   /**
-   * Realiza o log de uma mensagem para os desenvolvedores, registrando alguma informaÁ„o para melhoria do cÛdigo no futuro.
+   * Realiza o log de uma mensagem para os desenvolvedores, registrando alguma informa√ß√£o para melhoria do c√≥digo no futuro.
    *
    * @param msg Mensagem a ser registrada
-   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s„o utilizadas para ajudar a filtrar v·rios eventos de uma mesma natureza, n„o jogue informaÁıes que sÛ aparecer„o em um ˙nico evento por vez nas tags. Cria um log de debug ou info para isso.
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s√£o utilizadas para ajudar a filtrar v√°rios eventos de uma mesma natureza, n√£o jogue informa√ß√µes que s√≥ aparecer√£o em um √∫nico evento por vez nas tags. Cria um log de debug ou info para isso.
    */
   public default void logImprovement(String msg, String... tags) {
     log(RFWLogSeverity.DEV, msg, null, null, tags);

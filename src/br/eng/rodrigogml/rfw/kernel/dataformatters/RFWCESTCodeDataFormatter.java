@@ -7,9 +7,9 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 import br.eng.rodrigogml.rfw.kernel.utils.RUString;
 
 /**
- * Description: Classe que formata e valida um cÛdigo CEST, de acordo com a quantidade de dÌgitos fornecida no campo.<br>
+ * Description: Classe que formata e valida um c√≥digo CEST, de acordo com a quantidade de d√≠gitos fornecida no campo.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.1.0 (14 de dez de 2016)
  */
 public class RFWCESTCodeDataFormatter implements RFWDataFormatter<String, Object> {
@@ -42,7 +42,7 @@ public class RFWCESTCodeDataFormatter implements RFWDataFormatter<String, Object
   public void validate(Object value, Locale locale) throws RFWException {
     if (value != null && !"".equals(value.toString().trim())) {
       String v = value.toString().replaceAll("[^0-9]", "");
-      // Verifica se tem tamanho Correto depois que sÛ sobrarem n˙meros - exige que tenha os 8 n˙meros e n„o completa n˙meros a esquerda para evitar que ao "esquecer" um n˙mero durante a digitaÁ„o, o erro seja detectado.
+      // Verifica se tem tamanho Correto depois que s√≥ sobrarem n√∫meros - exige que tenha os 8 n√∫meros e n√£o completa n√∫meros a esquerda para evitar que ao "esquecer" um n√∫mero durante a digita√ß√£o, o erro seja detectado.
       if (v.length() != 7) {
         throw new RFWValidationException("RFW_000008");
       }

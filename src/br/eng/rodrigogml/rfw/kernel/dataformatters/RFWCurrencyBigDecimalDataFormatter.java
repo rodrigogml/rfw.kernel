@@ -6,10 +6,10 @@ import java.math.RoundingMode;
 import br.eng.rodrigogml.rfw.kernel.RFW;
 
 /**
- * Description: Formata um numero qualquer como valor monet·rio.<br>
- * Atualmente este formatador n„o tem diferenÁa alguma para o padr„o de n˙meros. A existencia desta classe È apenas para que j· fiquem todos os campos centralizados, para uma eventual mudanÁa futura na formaÁ„o de valores monet·rios.
+ * Description: Formata um numero qualquer como valor monet√°rio.<br>
+ * Atualmente este formatador n√£o tem diferen√ßa alguma para o padr√£o de n√∫meros. A existencia desta classe √© apenas para que j√° fiquem todos os campos centralizados, para uma eventual mudan√ßa futura na forma√ß√£o de valores monet√°rios.
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 5.1.0 (20/10/2012)
  */
 public class RFWCurrencyBigDecimalDataFormatter extends RFWBigDecimalDataFormatter {

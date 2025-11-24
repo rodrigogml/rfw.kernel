@@ -9,9 +9,9 @@ import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaStringField;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 
 /**
- * Description: VO de País do serviço de localização.<br>
+ * Description: VO de PaÃ­s do serviÃ§o de localizaÃ§Ã£o.<br>
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 4.1.0 (12/05/2011)
  */
 public class LocationCountryVO extends RFWVO {
@@ -19,102 +19,102 @@ public class LocationCountryVO extends RFWVO {
   private static final long serialVersionUID = 5918641088186601780L;
 
   /**
-   * Sigla de duas letras do país, sempre em maiúsculas, seguindo a ISO 3166-1 alfa-2.
+   * Sigla de duas letras do paÃ­s, sempre em maiÃºsculas, seguindo a ISO 3166-1 alfa-2.
    */
   @RFWMetaStringField(caption = "Sigla ISO 3166-1", required = true, maxLength = 2, minLength = 2, pattern = "[A-Z]{2}", unique = true)
   private String acronym = null;
 
   /**
-   * Nome completo do País
+   * Nome completo do PaÃ­s
    */
   @RFWMetaStringField(caption = "Nome", required = true, maxLength = 250, unique = true, preProcess = PreProcessOption.STRING_SPACESCLEAN_TO_NULL)
   private String name = null;
 
   /**
-   * Código do país de acordo com a tabela do IBGE.<br>
-   * Código com 5 algarísmos. Apenas números.
+   * CÃ³digo do paÃ­s de acordo com a tabela do IBGE.<br>
+   * CÃ³digo com 5 algarÃ­smos. Apenas nÃºmeros.
    */
-  @RFWMetaStringField(caption = "Código BACEN", maxLength = 5, required = false)
+  @RFWMetaStringField(caption = "CÃ³digo BACEN", maxLength = 5, required = false)
   private String bacenCode = null;
 
   /**
-   * Data da última alteração neste objeto. Utilizado para fins de sincronização com sistemas externos.<br>
-   * Toda vez que este objeto sofrer alguma alteração esta data deve ser atualizada para a data da alteração.
+   * Data da Ãºltima alteraÃ§Ã£o neste objeto. Utilizado para fins de sincronizaÃ§Ã£o com sistemas externos.<br>
+   * Toda vez que este objeto sofrer alguma alteraÃ§Ã£o esta data deve ser atualizada para a data da alteraÃ§Ã£o.
    */
-  @RFWMetaDateField(caption = "Última Alteração", required = true, resolution = DateResolution.SECOND, preProcess = PreProcessOption.DATE_TONOW)
+  @RFWMetaDateField(caption = "Ãšltima AlteraÃ§Ã£o", required = true, resolution = DateResolution.SECOND, preProcess = PreProcessOption.DATE_TONOW)
   private LocalDate lastchange = null;
 
   /**
-   * Recupera o sigla de duas letras do país, sempre em maiúsculas.
+   * Recupera o sigla de duas letras do paÃ­s, sempre em maiÃºsculas.
    *
-   * @return the sigla de duas letras do país, sempre em maiúsculas
+   * @return the sigla de duas letras do paÃ­s, sempre em maiÃºsculas
    */
   public String getAcronym() {
     return acronym;
   }
 
   /**
-   * Define o sigla de duas letras do país, sempre em maiúsculas.
+   * Define o sigla de duas letras do paÃ­s, sempre em maiÃºsculas.
    *
-   * @param acronym the new sigla de duas letras do país, sempre em maiúsculas
+   * @param acronym the new sigla de duas letras do paÃ­s, sempre em maiÃºsculas
    */
   public void setAcronym(String acronym) {
     this.acronym = acronym;
   }
 
   /**
-   * Recupera o nome completo do País.
+   * Recupera o nome completo do PaÃ­s.
    *
-   * @return the nome completo do País
+   * @return the nome completo do PaÃ­s
    */
   public String getName() {
     return name;
   }
 
   /**
-   * Define o nome completo do País.
+   * Define o nome completo do PaÃ­s.
    *
-   * @param name the new nome completo do País
+   * @param name the new nome completo do PaÃ­s
    */
   public void setName(String name) {
     this.name = name;
   }
 
   /**
-   * Recupera o código do país de acordo com a tabela do IBGE.<br>
-   * Código com 5 algarísmos. Apenas números.
+   * Recupera o cÃ³digo do paÃ­s de acordo com a tabela do IBGE.<br>
+   * CÃ³digo com 5 algarÃ­smos. Apenas nÃºmeros.
    *
-   * @return the código do país de acordo com a tabela do IBGE
+   * @return the cÃ³digo do paÃ­s de acordo com a tabela do IBGE
    */
   public String getBacenCode() {
     return bacenCode;
   }
 
   /**
-   * Define o código do país de acordo com a tabela do IBGE.<br>
-   * Código com 5 algarísmos. Apenas números.
+   * Define o cÃ³digo do paÃ­s de acordo com a tabela do IBGE.<br>
+   * CÃ³digo com 5 algarÃ­smos. Apenas nÃºmeros.
    *
-   * @param ibgecode the new código do país de acordo com a tabela do IBGE
+   * @param ibgecode the new cÃ³digo do paÃ­s de acordo com a tabela do IBGE
    */
   public void setBacenCode(String ibgecode) {
     this.bacenCode = ibgecode;
   }
 
   /**
-   * Recupera o data da última alteração neste objeto. Utilizado para fins de sincronização com sistemas externos.<br>
-   * Toda vez que este objeto sofrer alguma alteração esta data deve ser atualizada para a data da alteração.
+   * Recupera o data da Ãºltima alteraÃ§Ã£o neste objeto. Utilizado para fins de sincronizaÃ§Ã£o com sistemas externos.<br>
+   * Toda vez que este objeto sofrer alguma alteraÃ§Ã£o esta data deve ser atualizada para a data da alteraÃ§Ã£o.
    *
-   * @return the data da última alteração neste objeto
+   * @return the data da Ãºltima alteraÃ§Ã£o neste objeto
    */
   public LocalDate getLastchange() {
     return lastchange;
   }
 
   /**
-   * Define o data da última alteração neste objeto. Utilizado para fins de sincronização com sistemas externos.<br>
-   * Toda vez que este objeto sofrer alguma alteração esta data deve ser atualizada para a data da alteração.
+   * Define o data da Ãºltima alteraÃ§Ã£o neste objeto. Utilizado para fins de sincronizaÃ§Ã£o com sistemas externos.<br>
+   * Toda vez que este objeto sofrer alguma alteraÃ§Ã£o esta data deve ser atualizada para a data da alteraÃ§Ã£o.
    *
-   * @param lastchange the new data da última alteração neste objeto
+   * @param lastchange the new data da Ãºltima alteraÃ§Ã£o neste objeto
    */
   public void setLastchange(LocalDate lastchange) {
     this.lastchange = lastchange;

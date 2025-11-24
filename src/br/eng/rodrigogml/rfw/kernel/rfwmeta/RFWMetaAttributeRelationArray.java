@@ -6,8 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Description: Meta Annotation usada para estabelecer um conjundo de validações que só são válidas baseadas com uma pré-condição de valores de outras variáveis.<BR>
- * Esta classe é utilizada apenas para permitir que sejam usadas uma coleção da classe {@link RFWMetaAttributeRelation} quando necessário, montrando um array diretamente.
+ * Description: Meta Annotation usada para estabelecer um conjundo de validaÃ§Ãµes que sÃ³ sÃ£o vÃ¡lidas baseadas com uma prÃ©-condiÃ§Ã£o de valores de outras variÃ¡veis.<BR>
+ * Esta classe Ã© utilizada apenas para permitir que sejam usadas uma coleÃ§Ã£o da classe {@link RFWMetaAttributeRelation} quando necessÃ¡rio, montrando um array diretamente.
  *
  *
  * @author Rodrigo Leit?o

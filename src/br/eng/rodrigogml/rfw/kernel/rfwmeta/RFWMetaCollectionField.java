@@ -6,9 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Description: Esta annotation permite uma validaÁ„o simples de objetos de coleÁ„o.<br>
+ * Description: Esta annotation permite uma valida√ß√£o simples de objetos de cole√ß√£o.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.1.0 (18/03/2016)
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -16,23 +16,23 @@ import java.lang.annotation.Target;
 public @interface RFWMetaCollectionField {
 
   /**
-   * Define o nome do atributo/campo. Este nome È usado para facilitar mensagens de erros, validaÁıes, em UIs, etc.<br>
-   * N„o utilize ":" no final ou outras formataÁıes especÌficas do local de uso. Aqui deve ser definido apenas o nome, como "Caixa", "Nome do Usu·rio", etc.
+   * Define o nome do atributo/campo. Este nome √© usado para facilitar mensagens de erros, valida√ß√µes, em UIs, etc.<br>
+   * N√£o utilize ":" no final ou outras formata√ß√µes espec√≠ficas do local de uso. Aqui deve ser definido apenas o nome, como "Caixa", "Nome do Usu√°rio", etc.
    */
   String caption();
 
   /**
-   * Define se o atributo È obrigatÛrio ou n„o na entidade. Ser obrigatÛrio basta ser diferente de null.
+   * Define se o atributo √© obrigat√≥rio ou n√£o na entidade. Ser obrigat√≥rio basta ser diferente de null.
    */
   boolean required();
 
   /**
-   * Define a quantidade mÌnima de elementos dentro da colection. Este atributo sÛ È validado se o objeto for diferente de nulo. Neste caso combine com o {@link #required()}
+   * Define a quantidade m√≠nima de elementos dentro da colection. Este atributo s√≥ √© validado se o objeto for diferente de nulo. Neste caso combine com o {@link #required()}
    */
   int minSize() default -1;
 
   /**
-   * Define a tabela que armazena a lista de itens da coleÁ„o.
+   * Define a tabela que armazena a lista de itens da cole√ß√£o.
    */
   String table();
 
@@ -42,48 +42,48 @@ public @interface RFWMetaCollectionField {
   String column();
 
   /**
-   * Define o nome da coluna da tabela onde ser· salvo o Ìndice de ordenaÁ„o dos itens da coleÁ„o.
+   * Define o nome da coluna da tabela onde ser√° salvo o √≠ndice de ordena√ß√£o dos itens da cole√ß√£o.
    */
   String sortColumn() default "";
 
   /**
-   * Define o nome da coluna onde ser· salvo a chave da hash, caso a colection esteja em uma Hash.
+   * Define o nome da coluna onde ser√° salvo a chave da hash, caso a colection esteja em uma Hash.
    */
   String keyColumn() default "";
 
   /**
-   * Define a classe do RFWDAOConverterInterface que ser· utilizado.<Br>
-   * Se n„o for uma classe do tipo link RFWDAOConverterInterface È considerado como valor null do atributo
+   * Define a classe do RFWDAOConverterInterface que ser√° utilizado.<Br>
+   * Se n√£o for uma classe do tipo link RFWDAOConverterInterface √© considerado como valor null do atributo
    */
   Class<?> keyConverterClass() default Object.class;
 
   /**
-   * Define o tamanho m·ximo da chave do Map.<br>
-   * <b>Este atrubuto È analizado apenas quando o tipo do atributo È um MAP e as chaves s„o do tipo String.</b>
+   * Define o tamanho m√°ximo da chave do Map.<br>
+   * <b>Este atrubuto √© analizado apenas quando o tipo do atributo √© um MAP e as chaves s√£o do tipo String.</b>
    */
   int maxLenghtKey() default -1;
 
   /**
-   * Define o tamanho m·ximo de caracteres dos valores da coleÁ„o.<br>
+   * Define o tamanho m√°ximo de caracteres dos valores da cole√ß√£o.<br>
    * Valido para os tipos:
    * <li>String
    */
   int maxLenght() default -1;
 
   /**
-   * Coluna onde ser· colocado o ID do objeto pai para criar o relacionamento.
+   * Coluna onde ser√° colocado o ID do objeto pai para criar o relacionamento.
    */
   String fkColumn();
 
   /**
-   * Define se dentro da lista os itens podem se repetir. O valor padr„o È 'true' (n„o permite valores repetidos).<br>
-   * Para Hashs o valor acaba sendo true, pois as "Set" sÛ permitem 1 item com a mesma chave.<br>
-   * ATEN«√O: ESTE ATRIBUTO N√O EST¡ SENDO VALIDADO PELO VALIDATOR AINDA!!!!
+   * Define se dentro da lista os itens podem se repetir. O valor padr√£o √© 'true' (n√£o permite valores repetidos).<br>
+   * Para Hashs o valor acaba sendo true, pois as "Set" s√≥ permitem 1 item com a mesma chave.<br>
+   * ATEN√á√ÉO: ESTE ATRIBUTO N√ÉO EST√Å SENDO VALIDADO PELO VALIDATOR AINDA!!!!
    */
   boolean uniqueValues() default true;
 
   /**
-   * Define a classe alvo da Lista. Ao indicar a classe neste atributo os objetos ser„o convertidos para este objeto ao serem recuperados/persistidos na base de dados.<br>
+   * Define a classe alvo da Lista. Ao indicar a classe neste atributo os objetos ser√£o convertidos para este objeto ao serem recuperados/persistidos na base de dados.<br>
    */
   Class<?> targetRelationship();
 }

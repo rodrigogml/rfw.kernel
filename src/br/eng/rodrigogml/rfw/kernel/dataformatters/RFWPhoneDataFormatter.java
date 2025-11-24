@@ -7,25 +7,25 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 
 /**
- * Description: DataFormatter para números de telefones.<br>
- * Atualmente formata para números no padrão nacional, no futuro podemos melhorar a implementação desta classe para receber um Location e formatar números de diferentes países.<br>
- * <br Referência: http://pt.wikipedia.org/wiki/N%C3%BAmeros_de_telefone_no_Brasil
+ * Description: DataFormatter para nÃºmeros de telefones.<br>
+ * Atualmente formata para nÃºmeros no padrÃ£o nacional, no futuro podemos melhorar a implementaÃ§Ã£o desta classe para receber um Location e formatar nÃºmeros de diferentes paÃ­ses.<br>
+ * <br ReferÃªncia: http://pt.wikipedia.org/wiki/N%C3%BAmeros_de_telefone_no_Brasil
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 7.1.0 (12/05/2015)
  */
 public class RFWPhoneDataFormatter implements RFWDataFormatter<String, String> {
 
   /**
-   * Enumeração com os tipos de números de telefones reconhecidos por esta classe
+   * EnumeraÃ§Ã£o com os tipos de nÃºmeros de telefones reconhecidos por esta classe
    */
   public static enum PhoneType {
     /**
-     * Número de telefone desconhecido pelo sistema.
+     * NÃºmero de telefone desconhecido pelo sistema.
      */
     UNKNOW,
     /**
-     * Números de utilidades publicas brasileiras, como 190 (Polícia), 199 (Defesa Civíl)
+     * NÃºmeros de utilidades publicas brasileiras, como 190 (PolÃ­cia), 199 (Defesa CivÃ­l)
      */
     BRAZIL_PUBLICUTILS,
     /**
@@ -37,7 +37,7 @@ public class RFWPhoneDataFormatter implements RFWDataFormatter<String, String> {
      */
     BRAZIL_MOBILE,
     /**
-     * Telefones de serviços não geográficos, como 0800 (ligação grátis nacional), 0500 (Doações e utilidade pública)
+     * Telefones de serviÃ§os nÃ£o geogrÃ¡ficos, como 0800 (ligaÃ§Ã£o grÃ¡tis nacional), 0500 (DoaÃ§Ãµes e utilidade pÃºblica)
      */
     BRAZIL_SERVICES
   }
@@ -46,65 +46,65 @@ public class RFWPhoneDataFormatter implements RFWDataFormatter<String, String> {
   }
 
   /**
-   * Este método tenta reconhecer o número realizando validações. Se o número não for reconhecido ou não for válido, retorna nulo.<br>
-   * Note que este método no momento não tem suporte à números internacionais, mas se algum dia vier a ter, números pequenos e sem prefixos internacionais devem ser considerados prioritariamente como telefones nacionais.
+   * Este mÃ©todo tenta reconhecer o nÃºmero realizando validaÃ§Ãµes. Se o nÃºmero nÃ£o for reconhecido ou nÃ£o for vÃ¡lido, retorna nulo.<br>
+   * Note que este mÃ©todo no momento nÃ£o tem suporte Ã  nÃºmeros internacionais, mas se algum dia vier a ter, nÃºmeros pequenos e sem prefixos internacionais devem ser considerados prioritariamente como telefones nacionais.
    *
-   * @param number número a ser identificado, validado e formatado
+   * @param number nÃºmero a ser identificado, validado e formatado
    * @return Retorna o tipo de telefone identificado.
    */
   public static PhoneType getPhoneType(String number) {
     if (number != null) {
-      number = number.replaceAll("[^\\d]", ""); // Remove o que não for dígito
+      number = number.replaceAll("[^\\d]", ""); // Remove o que nÃ£o for dÃ­gito
 
-      switch (number.length()) { // A formatação é baseada no tamanho da enumeração
+      switch (number.length()) { // A formataÃ§Ã£o Ã© baseada no tamanho da enumeraÃ§Ã£o
         case 3:
           switch (number) {
             case "100": // Secretaria dos Direitos Humanos
-            case "128": // Serviços de Emergência no Mercosul
-            case "151": // Fundação Procon
+            case "128": // ServiÃ§os de EmergÃªncia no Mercosul
+            case "151": // FundaÃ§Ã£o Procon
             case "152": // Ibama
             case "153": // Guarda Municipal
-            case "156": // Serviço Público Municipal
-            case "180": // Central de Atendimento à Mulher
-            case "181": // Disque Denúncia
+            case "156": // ServiÃ§o PÃºblico Municipal
+            case "180": // Central de Atendimento Ã  Mulher
+            case "181": // Disque DenÃºncia
             case "185": // Salvamar
-            case "188": // Centro de Valorização da Vida
-            case "190": // Polícia Militar
-            case "191": // Polícia Rodoviária Federal
-            case "192": // Serviço de Atendimento Móvel de Urgência
+            case "188": // Centro de ValorizaÃ§Ã£o da Vida
+            case "190": // PolÃ­cia Militar
+            case "191": // PolÃ­cia RodoviÃ¡ria Federal
+            case "192": // ServiÃ§o de Atendimento MÃ³vel de UrgÃªncia
             case "193": // Corpo de Bombeiros
-            case "194": // Polícia Federal
-            case "197": // Polícia Civil
-            case "198": // Polícia Rodoviária Estadual
+            case "194": // PolÃ­cia Federal
+            case "197": // PolÃ­cia Civil
+            case "198": // PolÃ­cia RodoviÃ¡ria Estadual
             case "199": // Defesa Civil
-            case "102": // Auxílio à Lista Disponível apenas em Telefonia Fixa
-            case "130": // Hora Certa Tarifado, Disponível apenas em Telefonia Fixa
-            case "134": // Despertador Tarifado, Disponível apenas em Telefonia Fixa
+            case "102": // AuxÃ­lio Ã  Lista DisponÃ­vel apenas em Telefonia Fixa
+            case "130": // Hora Certa Tarifado, DisponÃ­vel apenas em Telefonia Fixa
+            case "134": // Despertador Tarifado, DisponÃ­vel apenas em Telefonia Fixa
               return PhoneType.BRAZIL_PUBLICUTILS;
             default:
               return PhoneType.UNKNOW;
           }
-          // Ex: 190 - Telefones de serviços públicos
+          // Ex: 190 - Telefones de serviÃ§os pÃºblicos
         case 4:
-          if (number.startsWith("105")) {// 105X - Central de Relacionamento SMP X = Identificação da Operadora
+          if (number.startsWith("105")) {// 105X - Central de Relacionamento SMP X = IdentificaÃ§Ã£o da Operadora
             return PhoneType.BRAZIL_PUBLICUTILS;
           } else {
             return PhoneType.UNKNOW;
           }
         case 5:
-          if (number.startsWith("103")) {// 103XX - Central de Relacionamento STFC XX = Código da Operadora
+          if (number.startsWith("103")) {// 103XX - Central de Relacionamento STFC XX = CÃ³digo da Operadora
             return PhoneType.BRAZIL_PUBLICUTILS;
-          } else if (number.startsWith("106")) {// 106XX - Central de Relacionamento DTH/TDT XX = Código da Prestadora
+          } else if (number.startsWith("106")) {// 106XX - Central de Relacionamento DTH/TDT XX = CÃ³digo da Prestadora
             return PhoneType.BRAZIL_PUBLICUTILS;
           } else {
             return PhoneType.UNKNOW;
           }
         case 8:
           // Ex: 3236-3309 - Telefone Fixo
-          // Ex: 9999-5555 - Telefones celulares ainda sem o nono dígito (caindo em desuso por isso não considerado mais por este método)
+          // Ex: 9999-5555 - Telefones celulares ainda sem o nono dÃ­gito (caindo em desuso por isso nÃ£o considerado mais por este mÃ©todo)
           return PhoneType.BRAZIL_PHONE;
         case 9:
-          // Ex: 98189-5510 - Telefone celular com o nono dígito
+          // Ex: 98189-5510 - Telefone celular com o nono dÃ­gito
           return PhoneType.BRAZIL_MOBILE;
         case 10:
           // Ex: 19 3236-3309 - Telefones Fixos (ou celular antidos) com DDD
@@ -112,7 +112,7 @@ public class RFWPhoneDataFormatter implements RFWDataFormatter<String, String> {
         case 11:
           // Ex: 0800 543 1010 - Telefones de atendimento
           // Ex: 19 98189-5519 - Telefones Celular com DDD
-          if (number.substring(0, 4).matches("0[3589]00")) { // Se começa com 0800, 0300, 0500 e 0900
+          if (number.substring(0, 4).matches("0[3589]00")) { // Se comeÃ§a com 0800, 0300, 0500 e 0900
             return PhoneType.BRAZIL_SERVICES;
           } else {
             return PhoneType.BRAZIL_MOBILE;
@@ -121,7 +121,7 @@ public class RFWPhoneDataFormatter implements RFWDataFormatter<String, String> {
           // Ex: +55 19 3236-3309 - Telefone fixo brasileiro com DDI e DDD
           return PhoneType.BRAZIL_PHONE;
         case 13:
-          // Ex: +55 19 981895519 - Telefone celular com no no dígito com DDI e DDD
+          // Ex: +55 19 981895519 - Telefone celular com no no dÃ­gito com DDI e DDD
           return PhoneType.BRAZIL_MOBILE;
       }
     }
@@ -129,7 +129,7 @@ public class RFWPhoneDataFormatter implements RFWDataFormatter<String, String> {
   }
 
   /**
-   * Como os telefones são exibidos em campos especiais para tratar o telefone, este método apenas devolve o conteúdo como recebido no VO, toda a "formatação" é tratada pelo próprio campo. Para exibir o telfone de forma formata em uma String verifique o método {@link #format(String)}.
+   * Como os telefones sÃ£o exibidos em campos especiais para tratar o telefone, este mÃ©todo apenas devolve o conteÃºdo como recebido no VO, toda a "formataÃ§Ã£o" Ã© tratada pelo prÃ³prio campo. Para exibir o telfone de forma formata em uma String verifique o mÃ©todo {@link #format(String)}.
    */
   @Override
   public String toPresentation(String value, Locale locale) {
@@ -137,31 +137,31 @@ public class RFWPhoneDataFormatter implements RFWDataFormatter<String, String> {
   }
 
   /**
-   * Este método formata o número recebido. Para definir uma formatação adequada ele primeiro tenta reconhecero tipo do número. Se nao reconehcer, aplica uma formatação padrão baseado no tamanho.
+   * Este mÃ©todo formata o nÃºmero recebido. Para definir uma formataÃ§Ã£o adequada ele primeiro tenta reconhecero tipo do nÃºmero. Se nao reconehcer, aplica uma formataÃ§Ã£o padrÃ£o baseado no tamanho.
    *
-   * @param number número a ser identificado, validado e formatado
+   * @param number nÃºmero a ser identificado, validado e formatado
    * @return Retorna o valor formatado
    */
   public String format(String number) {
     if (number == null) number = "";
-    number = number.replaceAll("[^\\d]", ""); // Remove o que não for número
+    number = number.replaceAll("[^\\d]", ""); // Remove o que nÃ£o for nÃºmero
     switch (getPhoneType(number)) {
       case BRAZIL_MOBILE:
         switch (number.length()) {
           case 8:
-            // Ex: 9999-5555 - Telefones celulares ainda sem o nono dígito
+            // Ex: 9999-5555 - Telefones celulares ainda sem o nono dÃ­gito
             return new StringBuilder().append(number.substring(0, 4)).append("-").append(number.substring(4, 8)).toString();
           case 9:
-            // Ex: 98189-5510 - Telefone celular com o nono dígito
+            // Ex: 98189-5510 - Telefone celular com o nono dÃ­gito
             return new StringBuilder().append(number.substring(0, 5)).append("-").append(number.substring(5, 9)).toString();
           case 10:
-            // Ex: 19 81895519 - Telefone celular (sem o nono dígito) com com DDD
+            // Ex: 19 81895519 - Telefone celular (sem o nono dÃ­gito) com com DDD
             return new StringBuilder().append(number.substring(0, 2)).append(" ").append(number.substring(2, 6)).append(" ").append(number.substring(6, 10)).toString();
           case 11:
-            // Ex: 19 981895519 - Telefone celular com o nono dígito com DDD
+            // Ex: 19 981895519 - Telefone celular com o nono dÃ­gito com DDD
             return new StringBuilder().append(number.substring(0, 2)).append(" ").append(number.substring(2, 7)).append(" ").append(number.substring(7, 11)).toString();
           case 13:
-            // Ex: +55 19 981895519 - Telefone celular com no no dígito com DDI e DDD
+            // Ex: +55 19 981895519 - Telefone celular com no no dÃ­gito com DDI e DDD
             return new StringBuilder().append("+").append(number.substring(0, 2)).append(" ").append(number.substring(2, 4)).append(" ").append(number.substring(4, 8)).append("-").append(number.substring(8, 12)).toString();
         }
         break;
@@ -187,7 +187,7 @@ public class RFWPhoneDataFormatter implements RFWDataFormatter<String, String> {
         }
         break;
       case UNKNOW:
-        // Se o número não é reconhecido, não faz nenhuma formatação
+        // Se o nÃºmero nÃ£o Ã© reconhecido, nÃ£o faz nenhuma formataÃ§Ã£o
         break;
     }
     return number;
@@ -196,9 +196,9 @@ public class RFWPhoneDataFormatter implements RFWDataFormatter<String, String> {
   /**
    * Valida um DDD.
    *
-   * @param ddi DDI para detectar qual é o pais a qual pertence o DDD para que seja possível validar se é válido.
-   * @param ddd DDD código de área a ser validado.
-   * @throws RFWException Lançado em caso de erro ou se o valor for inválido.
+   * @param ddi DDI para detectar qual Ã© o pais a qual pertence o DDD para que seja possÃ­vel validar se Ã© vÃ¡lido.
+   * @param ddd DDD cÃ³digo de Ã¡rea a ser validado.
+   * @throws RFWException LanÃ§ado em caso de erro ou se o valor for invÃ¡lido.
    */
   public static void validateDDD(String ddi, String ddd) throws RFWException {
     switch (ddi) {
@@ -271,10 +271,10 @@ public class RFWPhoneDataFormatter implements RFWDataFormatter<String, String> {
           case "97":
           case "98":
           case "99":
-            // DDDs válidos para o Brasi
+            // DDDs vÃ¡lidos para o Brasi
             break;
           default:
-            throw new RFWValidationException("DDD inválido!", new String[] { ddi, ddd });
+            throw new RFWValidationException("DDD invÃ¡lido!", new String[] { ddi, ddd });
         }
         break;
       default:
@@ -289,13 +289,13 @@ public class RFWPhoneDataFormatter implements RFWDataFormatter<String, String> {
   }
 
   /**
-   * Este método valida o dado entrado pelo usuário na UI, como deve ser utilizado o RFWPhoneField já recebemos o valor correto do VO.
+   * Este mÃ©todo valida o dado entrado pelo usuÃ¡rio na UI, como deve ser utilizado o RFWPhoneField jÃ¡ recebemos o valor correto do VO.
    */
   @Override
   public void validate(Object value, Locale locale) throws RFWException {
     if (value != null && !"".equals(value)) {
       if (!(value instanceof String)) throw new RFWCriticalException("O Objeto recebido deveria ser uma String!");
-      if (getPhoneType((String) value) == PhoneType.UNKNOW) throw new RFWValidationException("Número de telefone inválido!");
+      if (getPhoneType((String) value) == PhoneType.UNKNOW) throw new RFWValidationException("NÃºmero de telefone invÃ¡lido!");
     }
   }
 

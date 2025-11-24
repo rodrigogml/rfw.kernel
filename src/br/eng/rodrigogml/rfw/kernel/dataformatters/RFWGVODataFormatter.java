@@ -7,9 +7,9 @@ import br.eng.rodrigogml.rfw.kernel.vo.GVO;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 
 /**
- * Data formatter utilizado para componentes que trabalham com lista de VOs, mas por falta do Equals por ID o componente n„o identifica corretamente os valores "definidos".<Br>
+ * Data formatter utilizado para componentes que trabalham com lista de VOs, mas por falta do Equals por ID o componente n√£o identifica corretamente os valores "definidos".<Br>
  * <br>
- * Confira mais detalhes na DocumentaÁ„o do {@link GVO}.
+ * Confira mais detalhes na Documenta√ß√£o do {@link GVO}.
  */
 public class RFWGVODataFormatter<VO extends RFWVO> implements RFWDataFormatter<GVO<VO>, VO> {
 

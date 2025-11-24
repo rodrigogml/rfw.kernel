@@ -9,10 +9,10 @@ import java.lang.annotation.Target;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 
 /**
- * Description: Meta Annotation para indica dependência com outras classes.<br>
- * Ao anotar esta classe como dependente de outra, indicará que as outras entidades não poderão ser excluídas enquanto esta à estiver usando. Note que além desta indicação, é necessário que na outra entidade seja anotada a {@link RFWMetaUsedBy} pra garantir a validação da dependência quando ele for manipulado.
+ * Description: Meta Annotation para indica dependÃªncia com outras classes.<br>
+ * Ao anotar esta classe como dependente de outra, indicarÃ¡ que as outras entidades nÃ£o poderÃ£o ser excluÃ­das enquanto esta Ã  estiver usando. Note que alÃ©m desta indicaÃ§Ã£o, Ã© necessÃ¡rio que na outra entidade seja anotada a {@link RFWMetaUsedBy} pra garantir a validaÃ§Ã£o da dependÃªncia quando ele for manipulado.
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 7.1.0 (16/07/2015)
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -26,7 +26,7 @@ public @interface RFWMetaDependency {
   Class<? extends RFWVO> voClass();
 
   /**
-   * Nome do atributo da classe que mantém o relacionamento/uso desta esta classe.
+   * Nome do atributo da classe que mantÃ©m o relacionamento/uso desta esta classe.
    */
   String attribute();
 

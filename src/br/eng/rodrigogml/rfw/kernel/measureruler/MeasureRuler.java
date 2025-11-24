@@ -22,26 +22,26 @@ import br.eng.rodrigogml.rfw.kernel.measureruler.interfaces.MeasureUnit.WeightUn
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 
 /**
- * Description: Classe utilizada para criar as definiÁıes de unidades de medidas do framework. Conversıes, "traduÁıes", e outras necessidades relacionadas a grandezas de medidas.<br>
+ * Description: Classe utilizada para criar as defini√ß√µes de unidades de medidas do framework. Convers√µes, "tradu√ß√µes", e outras necessidades relacionadas a grandezas de medidas.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 10.0.0 (10 de out de 2018)
  */
 public final class MeasureRuler {
 
   /**
-   * Construtor privado para classe estt·tica.
+   * Construtor privado para classe estt√°tica.
    */
   private MeasureRuler() {
   }
 
   /**
-   * Recupera a unidade de medida de acordo com o nome. Mesma funÁ„o que o mÈtodo {@link Enum#valueOf(Class, String)}, porÈm cruza entre todas a MeasureUnit conhecidas.<br>
-   * Este mÈtodo n„o È capaz de obter valor para unidades de medidas personalizadas, pois cada sistema pode serializa-las de forma diferente.
+   * Recupera a unidade de medida de acordo com o nome. Mesma fun√ß√£o que o m√©todo {@link Enum#valueOf(Class, String)}, por√©m cruza entre todas a MeasureUnit conhecidas.<br>
+   * Este m√©todo n√£o √© capaz de obter valor para unidades de medidas personalizadas, pois cada sistema pode serializa-las de forma diferente.
    *
    * @param name Nome da enum de MeasureUnit para retornar o objeto.
    * @return Enum da {@link MeasureDimension} encontrada.
-   * @throws RFWCriticalException LanÁado caso o nome passado n„o seja identificado como nenhuma das {@link MeasureUnit} conhecidas.
+   * @throws RFWCriticalException Lan√ßado caso o nome passado n√£o seja identificado como nenhuma das {@link MeasureUnit} conhecidas.
    */
   public static MeasureUnit valueOf(String name) throws RFWCriticalException {
     MeasureUnit result = null;
@@ -60,7 +60,7 @@ public final class MeasureRuler {
             try {
               result = Enum.valueOf(LengthUnit.class, name);
             } catch (IllegalArgumentException e4) {
-              throw new RFWCriticalException("N„o foi possÌvel desserializar o valor '" + name + "'", e4);
+              throw new RFWCriticalException("N√£o foi poss√≠vel desserializar o valor '" + name + "'", e4);
             }
           }
         }
@@ -71,13 +71,13 @@ public final class MeasureRuler {
 
   /**
    * Converte um valor de uma unidade de medida para outra unidade de medida.<br>
-   * O mÈtodo sÛ permite converter unidades entre a mesma Dimens„o (·rea para ·rea, volume para volume, massa para massa, etc.)<br>
-   * Este mÈtodo retorna o valor com uma precis„o de 3 casas decimais. Em geral 3 casas s„o o suficiente para exibiÁ„o para o usu·rio, mas para c·lculos continuados esse arredondamento pode gerar falta de precis„o no c·lculo. Para trabalhar com maior precis„o de casas utilize o mÈtodo {@link #convertTo(BigDecimal, MeasureUnit, MeasureUnit, int)}
+   * O m√©todo s√≥ permite converter unidades entre a mesma Dimens√£o (√°rea para √°rea, volume para volume, massa para massa, etc.)<br>
+   * Este m√©todo retorna o valor com uma precis√£o de 3 casas decimais. Em geral 3 casas s√£o o suficiente para exibi√ß√£o para o usu√°rio, mas para c√°lculos continuados esse arredondamento pode gerar falta de precis√£o no c√°lculo. Para trabalhar com maior precis√£o de casas utilize o m√©todo {@link #convertTo(BigDecimal, MeasureUnit, MeasureUnit, int)}
    *
    * @param value Valor da unidade a ser convertido.
    * @param startUnit Unidade de medida atual do valor passado.
    * @param endUnit Unidade de medida para a qual desejamos converter
-   * @return Valor convertido para a nova unidade de medida com a precis„o de 3 casas decimais.
+   * @return Valor convertido para a nova unidade de medida com a precis√£o de 3 casas decimais.
    * @throws RFWException
    */
   public static BigDecimal convertTo(BigDecimal value, MeasureUnit startUnit, MeasureUnit endUnit) throws RFWException {
@@ -86,14 +86,14 @@ public final class MeasureRuler {
 
   /**
    * Converte um valor de uma unidade de medida para outra unidade de medida.<br>
-   * O mÈtodo sÛ permite converter unidades entre a mesma Dimens„o (·rea para ·rea, volume para volume, massa para massa, etc.)<br>
+   * O m√©todo s√≥ permite converter unidades entre a mesma Dimens√£o (√°rea para √°rea, volume para volume, massa para massa, etc.)<br>
    *
    * @param value Valor da unidade a ser convertido.
    * @param startUnit Unidade de medida atual do valor passado.
    * @param endUnit Unidade de medida para a qual desejamos converter
-   * @param precision Total de casas decimais utilizadas. Evita que o arredondamento seja feito "muito curto" criando imprecis„o de c·lculo quando a convers„o È utilizada em c·lculos maiores.
+   * @param precision Total de casas decimais utilizadas. Evita que o arredondamento seja feito "muito curto" criando imprecis√£o de c√°lculo quando a convers√£o √© utilizada em c√°lculos maiores.
    *
-   * @return Valor convertido para a nova unidade de medida com a precis„o das casas decimais definidas pelo par‚metro 'precision".
+   * @return Valor convertido para a nova unidade de medida com a precis√£o das casas decimais definidas pelo par√¢metro 'precision".
    * @throws RFWException
    */
   public static BigDecimal convertTo(BigDecimal value, MeasureUnit startUnit, MeasureUnit endUnit, int precision) throws RFWException {
@@ -102,14 +102,14 @@ public final class MeasureRuler {
 
   /**
    * Converte um valor de uma unidade de medida para outra unidade de medida.<br>
-   * O mÈtodo sÛ permite converter unidades entre a mesma Dimens„o (·rea para ·rea, volume para volume, massa para massa, etc.)<br>
+   * O m√©todo s√≥ permite converter unidades entre a mesma Dimens√£o (√°rea para √°rea, volume para volume, massa para massa, etc.)<br>
    *
-   * @param equivalence Interface de definiÁ„o de equivalÍncias entre as unidades de medidas.
+   * @param equivalence Interface de defini√ß√£o de equival√™ncias entre as unidades de medidas.
    * @param value Valor da unidade a ser convertido.
    * @param startUnit Unidade de medida atual do valor passado.
    * @param endUnit Unidade de medida para a qual desejamos converter
    *
-   * @return Valor convertido para a nova unidade de medida com a precis„o de 3 casas decimais.
+   * @return Valor convertido para a nova unidade de medida com a precis√£o de 3 casas decimais.
    * @throws RFWException
    */
   public static BigDecimal convertTo(MeasureRulerEquivalenceInterface equivalence, BigDecimal value, MeasureUnit startUnit, MeasureUnit endUnit) throws RFWException {
@@ -118,21 +118,21 @@ public final class MeasureRuler {
 
   /**
    * Converte um valor de uma unidade de medida para outra unidade de medida.<br>
-   * O mÈtodo sÛ permite converter unidades entre a mesma Dimens„o (·rea para ·rea, volume para volume, massa para massa, etc.)<br>
+   * O m√©todo s√≥ permite converter unidades entre a mesma Dimens√£o (√°rea para √°rea, volume para volume, massa para massa, etc.)<br>
    *
-   * @param equivalence Interface de definiÁ„o de equivalÍncias entre as unidades de medidas.
+   * @param equivalence Interface de defini√ß√£o de equival√™ncias entre as unidades de medidas.
    * @param value Valor da unidade a ser convertido.
    * @param startUnit Unidade de medida atual do valor passado.
    * @param endUnit Unidade de medida para a qual desejamos converter
-   * @param precision Total de casas decimais utilizadas. Evita que o arredondamento seja feito "muito curto" criando imprecis„o de c·lculo quando a convers„o È utilizada em c·lculos maiores.
+   * @param precision Total de casas decimais utilizadas. Evita que o arredondamento seja feito "muito curto" criando imprecis√£o de c√°lculo quando a convers√£o √© utilizada em c√°lculos maiores.
    *
-   * @return Valor convertido para a nova unidade de medida com a precis„o das casas decimais definidas pelo par‚metro 'precision".
+   * @return Valor convertido para a nova unidade de medida com a precis√£o das casas decimais definidas pelo par√¢metro 'precision".
    * @throws RFWException
    */
   public static BigDecimal convertTo(MeasureRulerEquivalenceInterface equivalence, BigDecimal value, MeasureUnit startUnit, MeasureUnit endUnit, int precision) throws RFWException {
-    PreProcess.requiredNonNullCritical(startUnit, "Para converter unidades de medidas, startUnit È obrigatÛrio!");
-    PreProcess.requiredNonNullCritical(endUnit, "Para converter unidades de medidas, endUnit È obrigatÛrio!");
-    PreProcess.requiredNonNullCritical(value, "Para converter unidades de medidas, value È obrigatÛrio!");
+    PreProcess.requiredNonNullCritical(startUnit, "Para converter unidades de medidas, startUnit √© obrigat√≥rio!");
+    PreProcess.requiredNonNullCritical(endUnit, "Para converter unidades de medidas, endUnit √© obrigat√≥rio!");
+    PreProcess.requiredNonNullCritical(value, "Para converter unidades de medidas, value √© obrigat√≥rio!");
 
     BigDecimal startWeight = null;
     BigDecimal endWeight = null;
@@ -141,7 +141,7 @@ public final class MeasureRuler {
       startWeight = BigDecimal.ONE;
       endWeight = BigDecimal.ONE;
     } else {
-      if (equivalence == null) throw new RFWValidationException("N„o È possÌvel converter entre Dimensıes diferentes sem uma regra de equivalÍncia definida! (${0} -> ${1}')", new String[] { RFWBundle.get(startUnit.getDimension()), RFWBundle.get(endUnit.getDimension()) });
+      if (equivalence == null) throw new RFWValidationException("N√£o √© poss√≠vel converter entre Dimens√µes diferentes sem uma regra de equival√™ncia definida! (${0} -> ${1}')", new String[] { RFWBundle.get(startUnit.getDimension()), RFWBundle.get(endUnit.getDimension()) });
 
       HashMap<MeasureUnit, BigDecimal> eqHash = equivalence.getMeasureUnitHash();
       for (Entry<MeasureUnit, BigDecimal> entry : eqHash.entrySet()) {
@@ -163,8 +163,8 @@ public final class MeasureRuler {
         }
         if (startWeight != null && endWeight != null) break;
       }
-      if (startWeight == null) throw new RFWValidationException("N„o foi possÌvel converter as dimensıes de medida pois a rÈgua de equivalencias n„o tem informaÁıes para a '" + RFWBundle.get(startUnit) + "/" + RFWBundle.get(startUnit.getDimension()) + "'!");
-      if (endWeight == null) throw new RFWValidationException("N„o foi possÌvel converter as dimensıes de medida pois a rÈgua de equivalencias n„o tem informaÁıes para a '" + RFWBundle.get(endUnit) + "/" + RFWBundle.get(endUnit.getDimension()) + "'!");
+      if (startWeight == null) throw new RFWValidationException("N√£o foi poss√≠vel converter as dimens√µes de medida pois a r√©gua de equivalencias n√£o tem informa√ß√µes para a '" + RFWBundle.get(startUnit) + "/" + RFWBundle.get(startUnit.getDimension()) + "'!");
+      if (endWeight == null) throw new RFWValidationException("N√£o foi poss√≠vel converter as dimens√µes de medida pois a r√©gua de equivalencias n√£o tem informa√ß√µes para a '" + RFWBundle.get(endUnit) + "/" + RFWBundle.get(endUnit.getDimension()) + "'!");
     }
 
     BigDecimal num = value.multiply(startUnit.getRatio()).multiply(endWeight);
@@ -173,17 +173,17 @@ public final class MeasureRuler {
   }
 
   /**
-   * Valida o conte˙do da Hash retornada. <br>
+   * Valida o conte√∫do da Hash retornada. <br>
    * Procura por valores redundantes e/ou incoerentes.<Br>
-   * Garante que tenha no mÌnimo 2 dimensıes diferentes, uma tabela de equivalÍncias com um ˙nico valor n„o tem utilidade alguma.
+   * Garante que tenha no m√≠nimo 2 dimens√µes diferentes, uma tabela de equival√™ncias com um √∫nico valor n√£o tem utilidade alguma.
    *
-   * @param equivalence Interface que retorna a hash com as informaÁıes de equivalencia.
+   * @param equivalence Interface que retorna a hash com as informa√ß√µes de equivalencia.
    * @throws RFWException
    */
   public static void validateMeasureRulerEquivalence(MeasureRulerEquivalenceInterface equivalence) throws RFWException {
-    PreProcess.requiredNonNullCritical(equivalence, "A interface de equivalÍncia n„o pode ser passada nula!");
+    PreProcess.requiredNonNullCritical(equivalence, "A interface de equival√™ncia n√£o pode ser passada nula!");
     HashMap<MeasureUnit, BigDecimal> hash = equivalence.getMeasureUnitHash();
-    PreProcess.requiredNonNullCritical(hash, "A hash de equivalÍncias n„o pode ser nula!");
+    PreProcess.requiredNonNullCritical(hash, "A hash de equival√™ncias n√£o pode ser nula!");
 
     ArrayList<Entry<MeasureUnit, BigDecimal>> entryList = new ArrayList<>(hash.entrySet());
     for (int i = 0; i < entryList.size(); i++) {
@@ -191,34 +191,34 @@ public final class MeasureRuler {
 
       MeasureUnit mu = entry.getKey();
       BigDecimal weight = entry.getValue();
-      PreProcess.requiredNonNullCritical(mu, "A hash de equivalÍncias n„o pode ter uma chave nula!");
-      PreProcess.requiredNonNullCritical(weight, "A hash de equivalÍncias n„o pode ter uma valor nulo! '" + mu.name() + "'!");
+      PreProcess.requiredNonNullCritical(mu, "A hash de equival√™ncias n√£o pode ter uma chave nula!");
+      PreProcess.requiredNonNullCritical(weight, "A hash de equival√™ncias n√£o pode ter uma valor nulo! '" + mu.name() + "'!");
 
-      if (weight.compareTo(BigDecimal.ZERO) <= 0) throw new RFWValidationException("O peso de equivalÍncia deve ser positivo maior que zero! '" + mu.name() + "'.");
+      if (weight.compareTo(BigDecimal.ZERO) <= 0) throw new RFWValidationException("O peso de equival√™ncia deve ser positivo maior que zero! '" + mu.name() + "'.");
 
       for (int x = i + 1; x < entryList.size(); x++) {
         Entry<MeasureUnit, BigDecimal> entryTmp = entryList.get(x);
         if (mu.getDimension() == MeasureDimension.CUSTOM && entryTmp.getKey().getDimension() == MeasureDimension.CUSTOM) {
           if (entryTmp.getKey().getClass() == mu.getClass() && entryTmp.getKey().getSymbol().equals(mu.getSymbol()) && entryTmp.getKey().name().equals(mu.name())) {
-            throw new RFWValidationException("Foram encontradas mais de uma informaÁ„o para a unidade de medida personalizada '" + mu.name() + " (" + mu.getSymbol() + ")'");
+            throw new RFWValidationException("Foram encontradas mais de uma informa√ß√£o para a unidade de medida personalizada '" + mu.name() + " (" + mu.getSymbol() + ")'");
           }
         } else {
           if (entryTmp.getKey().getDimension() == mu.getDimension()) {
-            throw new RFWValidationException("Foram encontradas mais de uma informaÁ„o para a dimens„o '" + mu.getDimension() + "'");
+            throw new RFWValidationException("Foram encontradas mais de uma informa√ß√£o para a dimens√£o '" + mu.getDimension() + "'");
           }
         }
       }
     }
 
-    if (hash.size() < 2) throw new RFWValidationException("A tabela de equivalÍncia precisa ter 2 ou mais equivalÍncias para ter alguma utilidade.");
+    if (hash.size() < 2) throw new RFWValidationException("A tabela de equival√™ncia precisa ter 2 ou mais equival√™ncias para ter alguma utilidade.");
   }
 
   /**
-   * Extrai todas as unidades de medida que <b>podem</b> ser utilizadas a partir das equivalÍncias definidas.<br>
-   * Realiza a chamada do mÈtodo {@link #cleanInvalidEquivalences(MeasureRulerEquivalenceInterface)} antes de separar as unidades de medida.
+   * Extrai todas as unidades de medida que <b>podem</b> ser utilizadas a partir das equival√™ncias definidas.<br>
+   * Realiza a chamada do m√©todo {@link #cleanInvalidEquivalences(MeasureRulerEquivalenceInterface)} antes de separar as unidades de medida.
    *
-   * @param equivalence EquivalÍncia entre unidades de medidas.
-   * @return Lista com todos os objetos MeasureUnit de todas as dimensıes definidas na equivalÍncia e/ou unidades personalizadas.
+   * @param equivalence Equival√™ncia entre unidades de medidas.
+   * @return Lista com todos os objetos MeasureUnit de todas as dimens√µes definidas na equival√™ncia e/ou unidades personalizadas.
    * @throws RFWException
    */
   public static LinkedHashSet<MeasureUnit> extractAllMeasureUnites(MeasureRulerEquivalenceInterface equivalence) throws RFWException {
@@ -226,12 +226,12 @@ public final class MeasureRuler {
   }
 
   /**
-   * Extrai todas as unidades de medida que <b>podem</b> ser utilizadas a partir das equivalÍncias definidas + as unidades de medida de uma dimens„o especÌfica.<br>
-   * Realiza a chamada do mÈtodo {@link #cleanInvalidEquivalences(MeasureRulerEquivalenceInterface)} antes de separar as unidades de medida.<br>
-   * Este mÈtodo foi criado para que tenhamos as unidades de medida da rÈgua + a unidade padr„o de um item, j· que n„o conseguimos ter uma rÈgia de equivalÍncias sÛ com uma Dimens„o (o mÈtodo {@link #cleanInvalidEquivalences(MeasureRulerEquivalenceInterface)} excluÌ).
+   * Extrai todas as unidades de medida que <b>podem</b> ser utilizadas a partir das equival√™ncias definidas + as unidades de medida de uma dimens√£o espec√≠fica.<br>
+   * Realiza a chamada do m√©todo {@link #cleanInvalidEquivalences(MeasureRulerEquivalenceInterface)} antes de separar as unidades de medida.<br>
+   * Este m√©todo foi criado para que tenhamos as unidades de medida da r√©gua + a unidade padr√£o de um item, j√° que n√£o conseguimos ter uma r√©gia de equival√™ncias s√≥ com uma Dimens√£o (o m√©todo {@link #cleanInvalidEquivalences(MeasureRulerEquivalenceInterface)} exclu√≠).
    *
-   * @param equivalence EquivalÍncia entre unidades de medidas.
-   * @return Lista com todos os objetos MeasureUnit de todas as dimensıes definidas na equivalÍncia e/ou unidades personalizadas.
+   * @param equivalence Equival√™ncia entre unidades de medidas.
+   * @return Lista com todos os objetos MeasureUnit de todas as dimens√µes definidas na equival√™ncia e/ou unidades personalizadas.
    * @throws RFWException
    */
   public static LinkedHashSet<MeasureUnit> extractAllMeasureUnites(MeasureRulerEquivalenceInterface equivalence, MeasureDimension dimension) throws RFWException {
@@ -262,17 +262,17 @@ public final class MeasureRuler {
   }
 
   /**
-   * Valida os objetos dentro do equivalence e remove todos os objetos que n„o tiverem as informaÁıes de "ratio" e "MeasureUnit" (name e symbol) definidos.<br>
-   * Se depois de limpar os itens inv·lidos sobrar apenas 0 ou 1 entrada v·lida o mÈtodo retorna null, pois equivalÍncias sÛ s„o ˙teis quando estabelecem a relaÁ„o entre pelo menos 2 grandezas de medidas.
+   * Valida os objetos dentro do equivalence e remove todos os objetos que n√£o tiverem as informa√ß√µes de "ratio" e "MeasureUnit" (name e symbol) definidos.<br>
+   * Se depois de limpar os itens inv√°lidos sobrar apenas 0 ou 1 entrada v√°lida o m√©todo retorna null, pois equival√™ncias s√≥ s√£o √∫teis quando estabelecem a rela√ß√£o entre pelo menos 2 grandezas de medidas.
    *
-   * @param equivalence Interface de acesso ‡s EquivalÍncias.
-   * @return HashMap apenas com as equivalÍncias v·lidas, ou nulo caso sÛ exista uma ou nenhuma entrada v·lida.
+   * @param equivalence Interface de acesso √†s Equival√™ncias.
+   * @return HashMap apenas com as equival√™ncias v√°lidas, ou nulo caso s√≥ exista uma ou nenhuma entrada v√°lida.
    * @throws RFWException
    */
   public static HashMap<MeasureUnit, BigDecimal> cleanInvalidEquivalences(MeasureRulerEquivalenceInterface equivalence) throws RFWException {
-    PreProcess.requiredNonNullCritical(equivalence, "A interface de equivalÍncia n„o pode ser passada nula!");
+    PreProcess.requiredNonNullCritical(equivalence, "A interface de equival√™ncia n√£o pode ser passada nula!");
     HashMap<MeasureUnit, BigDecimal> hash = equivalence.getMeasureUnitHash();
-    PreProcess.requiredNonNullCritical(hash, "A hash de equivalÍncias n„o pode ser nula!");
+    PreProcess.requiredNonNullCritical(hash, "A hash de equival√™ncias n√£o pode ser nula!");
 
     final HashMap<MeasureUnit, BigDecimal> newHash = new HashMap<MeasureUnit, BigDecimal>();
     for (Entry<MeasureUnit, BigDecimal> entry : hash.entrySet()) {
@@ -287,18 +287,18 @@ public final class MeasureRuler {
   }
 
   /**
-   * Verifica se a unidade de medida est· configurada nas equivalÍncias passada.<br>
-   * Verifica as unidades de medida padrıes do sistema comparando suas dimensıes. J· as unidades personalizadas s„o comparadas com base no seu nome e sÌmbolo.<br>
-   * Executa a limpeza da rÈgua antes de avaliar, ou seja, sÛ returna que È equivalente caso a unidade esteja devidamente configurada.
+   * Verifica se a unidade de medida est√° configurada nas equival√™ncias passada.<br>
+   * Verifica as unidades de medida padr√µes do sistema comparando suas dimens√µes. J√° as unidades personalizadas s√£o comparadas com base no seu nome e s√≠mbolo.<br>
+   * Executa a limpeza da r√©gua antes de avaliar, ou seja, s√≥ returna que √© equivalente caso a unidade esteja devidamente configurada.
    *
-   * @param equivalence Interface de equivalÍncias
-   * @param measureUnit Unidade de medidas ‡ ser testada contra a coleÁ„o de equivalÍncias.
-   * @return true caso a unidade de medida esteja configurada nas equivalÍncias, false caso contr·rio.
+   * @param equivalence Interface de equival√™ncias
+   * @param measureUnit Unidade de medidas √† ser testada contra a cole√ß√£o de equival√™ncias.
+   * @return true caso a unidade de medida esteja configurada nas equival√™ncias, false caso contr√°rio.
    * @throws RFWException
    */
   public static boolean isMeasureUnitEquivalent(MeasureRulerEquivalenceInterface equivalence, MeasureUnit measureUnit) throws RFWException {
-    PreProcess.requiredNonNullCritical(equivalence, "A interface de equivalÍncia n„o pode ser passada nula!");
-    PreProcess.requiredNonNullCritical(equivalence.getMeasureUnitHash(), "A hash de equivalÍncias n„o pode ser nula!");
+    PreProcess.requiredNonNullCritical(equivalence, "A interface de equival√™ncia n√£o pode ser passada nula!");
+    PreProcess.requiredNonNullCritical(equivalence.getMeasureUnitHash(), "A hash de equival√™ncias n√£o pode ser nula!");
 
     HashMap<MeasureUnit, BigDecimal> hash = cleanInvalidEquivalences(equivalence);
 
@@ -320,18 +320,18 @@ public final class MeasureRuler {
   }
 
   /**
-   * Recupera o ratio de convers„o de uma unidade de medida atualmente configurada na rÈgua de equivalÍncias passada.<br>
-   * Unidades de medidas personalizadas ser„o comparadas com base no seu nome e sÌmbolo.<br>
-   * Unidades de medida do sistema ser„o comparadas conforme sua dimens„o, e caso necess·rio ser„o convertidas. Isto quer dizer que, se na rÈgua estiver configurado 1Kg, e for solicitado o ratio para "GRAM" o valor retornado ser· de 1000 e n„o de 1 como consta na Hash. (Afinal, internamente j· h· a configuraÁ„o de 1kg = 1000g).
+   * Recupera o ratio de convers√£o de uma unidade de medida atualmente configurada na r√©gua de equival√™ncias passada.<br>
+   * Unidades de medidas personalizadas ser√£o comparadas com base no seu nome e s√≠mbolo.<br>
+   * Unidades de medida do sistema ser√£o comparadas conforme sua dimens√£o, e caso necess√°rio ser√£o convertidas. Isto quer dizer que, se na r√©gua estiver configurado 1Kg, e for solicitado o ratio para "GRAM" o valor retornado ser√° de 1000 e n√£o de 1 como consta na Hash. (Afinal, internamente j√° h√° a configura√ß√£o de 1kg = 1000g).
    *
-   * @param equivalence Interface de equivalÍncias
-   * @param measureUnit Unidade de medidas ‡ ser encontrada na coleÁ„o de equivalÍncias.
-   * @return Ratio de equivalÍncia da unidade de medida solicitada, ou nulo, caso a unidade de medida solicitada n„o seja encontrada.
+   * @param equivalence Interface de equival√™ncias
+   * @param measureUnit Unidade de medidas √† ser encontrada na cole√ß√£o de equival√™ncias.
+   * @return Ratio de equival√™ncia da unidade de medida solicitada, ou nulo, caso a unidade de medida solicitada n√£o seja encontrada.
    * @throws RFWException
    */
   public static BigDecimal getRatio(MeasureRulerEquivalenceInterface equivalence, MeasureUnit measureUnit) throws RFWException {
-    PreProcess.requiredNonNullCritical(equivalence, "A interface de equivalÍncia n„o pode ser passada nula!");
-    PreProcess.requiredNonNullCritical(equivalence.getMeasureUnitHash(), "A hash de equivalÍncias n„o pode ser nula!");
+    PreProcess.requiredNonNullCritical(equivalence, "A interface de equival√™ncia n√£o pode ser passada nula!");
+    PreProcess.requiredNonNullCritical(equivalence.getMeasureUnitHash(), "A hash de equival√™ncias n√£o pode ser nula!");
 
     HashMap<MeasureUnit, BigDecimal> hash = cleanInvalidEquivalences(equivalence);
 

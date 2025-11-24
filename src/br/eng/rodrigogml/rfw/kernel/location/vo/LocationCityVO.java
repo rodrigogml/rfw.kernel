@@ -13,9 +13,9 @@ import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaStringField;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 
 /**
- * Description: VO de Cidade do serviço de localização.<br>
+ * Description: VO de Cidade do serviÃ§o de localizaÃ§Ã£o.<br>
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 4.1.0 (12/05/2011)
  */
 public class LocationCityVO extends RFWVO {
@@ -25,7 +25,7 @@ public class LocationCityVO extends RFWVO {
   /**
    * Nome completo da cidade.
    */
-  @RFWMetaStringField(caption = "Município", maxLength = 250, required = true)
+  @RFWMetaStringField(caption = "MunicÃ­pio", maxLength = 250, required = true)
   private String name = null;
 
   /**
@@ -41,29 +41,29 @@ public class LocationCityVO extends RFWVO {
   private BigDecimal longitude = null;
 
   /**
-   * Código telefônico do município.<br>
-   * Para Cidades do Brasil, DDD tem 2 dígitos.
+   * CÃ³digo telefÃ´nico do municÃ­pio.<br>
+   * Para Cidades do Brasil, DDD tem 2 dÃ­gitos.
    */
   @RFWMetaIntegerField(caption = "DDD", maxValue = 99, minValue = 10, required = false)
   private Integer ddd = null;
 
   /**
-   * Estado à qual este município pertence.
+   * Estado Ã  qual este municÃ­pio pertence.
    */
   @RFWMetaRelationshipField(caption = "Estado", relationship = RelationshipTypes.ASSOCIATION, required = true)
   private LocationStateVO locationStateVO = null;
 
   /**
-   * Mantém o código do IBGE para esta cidade. O código pode ser nulo para cidades não conhecidas ou para cidades não cadastradas no IBGE, como por exemplo cidades fora do Brasil.
+   * MantÃ©m o cÃ³digo do IBGE para esta cidade. O cÃ³digo pode ser nulo para cidades nÃ£o conhecidas ou para cidades nÃ£o cadastradas no IBGE, como por exemplo cidades fora do Brasil.
    */
-  @RFWMetaStringField(caption = "Código IBGE", maxLength = 7, required = false)
+  @RFWMetaStringField(caption = "CÃ³digo IBGE", maxLength = 7, required = false)
   private String ibgeCode = null;
 
   /**
-   * Data da última alteração do objeto. Esta data é utilizada para o controle de sincronia dos dados com sistemas externos.<br>
-   * Toda vez que o objeto sofrer qualquer alteração esta data deve ser aualizada para a data corrente.
+   * Data da Ãºltima alteraÃ§Ã£o do objeto. Esta data Ã© utilizada para o controle de sincronia dos dados com sistemas externos.<br>
+   * Toda vez que o objeto sofrer qualquer alteraÃ§Ã£o esta data deve ser aualizada para a data corrente.
    */
-  @RFWMetaDateField(caption = "Última Alteração", required = true, resolution = DateResolution.SECOND)
+  @RFWMetaDateField(caption = "Ãšltima AlteraÃ§Ã£o", required = true, resolution = DateResolution.SECOND)
   private LocalDate lastchange = null;
 
   /**
@@ -85,58 +85,58 @@ public class LocationCityVO extends RFWVO {
   }
 
   /**
-   * Recupera o mantém o código do IBGE para esta cidade. O código pode ser nulo para cidades não conhecidas ou para cidades não cadastradas no IBGE, como por exemplo cidades fora do Brasil.
+   * Recupera o mantÃ©m o cÃ³digo do IBGE para esta cidade. O cÃ³digo pode ser nulo para cidades nÃ£o conhecidas ou para cidades nÃ£o cadastradas no IBGE, como por exemplo cidades fora do Brasil.
    *
-   * @return the mantém o código do IBGE para esta cidade
+   * @return the mantÃ©m o cÃ³digo do IBGE para esta cidade
    */
   public String getIbgeCode() {
     return ibgeCode;
   }
 
   /**
-   * Define o mantém o código do IBGE para esta cidade. O código pode ser nulo para cidades não conhecidas ou para cidades não cadastradas no IBGE, como por exemplo cidades fora do Brasil.
+   * Define o mantÃ©m o cÃ³digo do IBGE para esta cidade. O cÃ³digo pode ser nulo para cidades nÃ£o conhecidas ou para cidades nÃ£o cadastradas no IBGE, como por exemplo cidades fora do Brasil.
    *
-   * @param ibgecode the new mantém o código do IBGE para esta cidade
+   * @param ibgecode the new mantÃ©m o cÃ³digo do IBGE para esta cidade
    */
   public void setIbgeCode(String ibgecode) {
     this.ibgeCode = ibgecode;
   }
 
   /**
-   * Recupera o código telefônico do município.<br>
-   * Para Cidades do Brasil, DDD tem 2 dígitos.
+   * Recupera o cÃ³digo telefÃ´nico do municÃ­pio.<br>
+   * Para Cidades do Brasil, DDD tem 2 dÃ­gitos.
    *
-   * @return the código telefônico do município
+   * @return the cÃ³digo telefÃ´nico do municÃ­pio
    */
   public Integer getDdd() {
     return ddd;
   }
 
   /**
-   * Define o código telefônico do município.<br>
-   * Para Cidades do Brasil, DDD tem 2 dígitos.
+   * Define o cÃ³digo telefÃ´nico do municÃ­pio.<br>
+   * Para Cidades do Brasil, DDD tem 2 dÃ­gitos.
    *
-   * @param ddd the new código telefônico do município
+   * @param ddd the new cÃ³digo telefÃ´nico do municÃ­pio
    */
   public void setDdd(Integer ddd) {
     this.ddd = ddd;
   }
 
   /**
-   * Recupera o data da última alteração do objeto. Esta data é utilizada para o controle de sincronia dos dados com sistemas externos.<br>
-   * Toda vez que o objeto sofrer qualquer alteração esta data deve ser aualizada para a data corrente.
+   * Recupera o data da Ãºltima alteraÃ§Ã£o do objeto. Esta data Ã© utilizada para o controle de sincronia dos dados com sistemas externos.<br>
+   * Toda vez que o objeto sofrer qualquer alteraÃ§Ã£o esta data deve ser aualizada para a data corrente.
    *
-   * @return the data da última alteração do objeto
+   * @return the data da Ãºltima alteraÃ§Ã£o do objeto
    */
   public LocalDate getLastchange() {
     return lastchange;
   }
 
   /**
-   * Define o data da última alteração do objeto. Esta data é utilizada para o controle de sincronia dos dados com sistemas externos.<br>
-   * Toda vez que o objeto sofrer qualquer alteração esta data deve ser aualizada para a data corrente.
+   * Define o data da Ãºltima alteraÃ§Ã£o do objeto. Esta data Ã© utilizada para o controle de sincronia dos dados com sistemas externos.<br>
+   * Toda vez que o objeto sofrer qualquer alteraÃ§Ã£o esta data deve ser aualizada para a data corrente.
    *
-   * @param lastchange the new data da última alteração do objeto
+   * @param lastchange the new data da Ãºltima alteraÃ§Ã£o do objeto
    */
   public void setLastchange(LocalDate lastchange) {
     this.lastchange = lastchange;
@@ -179,18 +179,18 @@ public class LocationCityVO extends RFWVO {
   }
 
   /**
-   * Recupera o estado à qual este município pertence.
+   * Recupera o estado Ã  qual este municÃ­pio pertence.
    *
-   * @return the estado à qual este município pertence
+   * @return the estado Ã  qual este municÃ­pio pertence
    */
   public LocationStateVO getLocationStateVO() {
     return locationStateVO;
   }
 
   /**
-   * Define o estado à qual este município pertence.
+   * Define o estado Ã  qual este municÃ­pio pertence.
    *
-   * @param locationstatevo the new estado à qual este município pertence
+   * @param locationstatevo the new estado Ã  qual este municÃ­pio pertence
    */
   public void setLocationStateVO(LocationStateVO locationstatevo) {
     this.locationStateVO = locationstatevo;

@@ -11,7 +11,7 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
  * Description: Formata um numero qualquer com cara de porcentagem.<br>
  * <b>Baseado no formato Float!</b>
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 4.1.0 (23/06/2011)
  */
 public class RFWPercentageDataFormatter extends RFWBigDecimalDataFormatter {
@@ -46,7 +46,7 @@ public class RFWPercentageDataFormatter extends RFWBigDecimalDataFormatter {
 
   @Override
   public String toPresentation(Object value, Locale locale) {
-    // Usa a mesma formatação de número e adiciona o simbolo no final
+    // Usa a mesma formataÃ§Ã£o de nÃºmero e adiciona o simbolo no final
     String format = super.toPresentation(value, locale);
     if (format != null && !"".equals(format)) {
       format += "%";

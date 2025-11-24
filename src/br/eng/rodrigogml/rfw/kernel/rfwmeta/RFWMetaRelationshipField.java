@@ -10,9 +10,9 @@ import java.util.List;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 
 /**
- * Description: Annotation usada para definir um atributo de associaÁ„o com outro VO que extenda RFWVO.<BR>
+ * Description: Annotation usada para definir um atributo de associa√ß√£o com outro VO que extenda RFWVO.<BR>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.1.0 (04/07/2015)
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -22,7 +22,7 @@ public @interface RFWMetaRelationshipField {
   public static enum RelationshipTypes {
 
     /**
-     * Representa uma associaÁ„o simples entre dois objetos, onde ambos existem de forma independente e apenas possuem um vÌnculo lÛgico entre si. Nenhum dos objetos depende do outro para existir.
+     * Representa uma associa√ß√£o simples entre dois objetos, onde ambos existem de forma independente e apenas possuem um v√≠nculo l√≥gico entre si. Nenhum dos objetos depende do outro para existir.
      *
      * <p>
      * Exemplo: Pessoas e Revistas, relacionadas por uma estrutura de assinantes/assinaturas.
@@ -30,107 +30,107 @@ public @interface RFWMetaRelationshipField {
      *
      * <b>Notas do RFWValidator:</b>
      * <ul>
-     * <li>Esse tipo de relacionamento exige que o objeto filho j· possua um ID definido, pois s„o entidades independentes e o vÌnculo ocorre apenas entre objetos j· existentes.</li>
+     * <li>Esse tipo de relacionamento exige que o objeto filho j√° possua um ID definido, pois s√£o entidades independentes e o v√≠nculo ocorre apenas entre objetos j√° existentes.</li>
      * </ul>
      */
     ASSOCIATION,
 
     /**
-     * Representa o mesmo tipo de relacionamento de {@link #ASSOCIATION}, com a diferenÁa de que, neste caso, o RFWDAO n„o atualiza automaticamente as associaÁıes removidas ou adicionadas ao persistir o objeto atual.
+     * Representa o mesmo tipo de relacionamento de {@link #ASSOCIATION}, com a diferen√ßa de que, neste caso, o RFWDAO n√£o atualiza automaticamente as associa√ß√µes removidas ou adicionadas ao persistir o objeto atual.
      *
      * <p>
-     * No relacionamento {@code ASSOCIATION}, o RFWDAO atualiza a relaÁ„o conforme alteraÁıes s„o feitas no objeto principal. J· em {@code WEAK_ASSOCIATION}, essas associaÁıes n„o ser„o atualizadas a partir deste objeto, devendo ser manipuladas apenas pela entidade "contraparte".
+     * No relacionamento {@code ASSOCIATION}, o RFWDAO atualiza a rela√ß√£o conforme altera√ß√µes s√£o feitas no objeto principal. J√° em {@code WEAK_ASSOCIATION}, essas associa√ß√µes n√£o ser√£o atualizadas a partir deste objeto, devendo ser manipuladas apenas pela entidade "contraparte".
      * </p>
      *
      * <p>
-     * Esse mapeamento È ˙til quando existe um objeto principal e outros secund·rios relacionados a ele, mas, da perspectiva do objeto principal, essas associaÁıes n„o s„o relevantes para manutenÁ„o, consistÍncia ou persistÍncia.
+     * Esse mapeamento √© √∫til quando existe um objeto principal e outros secund√°rios relacionados a ele, mas, da perspectiva do objeto principal, essas associa√ß√µes n√£o s√£o relevantes para manuten√ß√£o, consist√™ncia ou persist√™ncia.
      * </p>
      *
      * <p>
-     * Por que manter essa associaÁ„o aqui ent„o? Porque ela ainda È ˙til para filtros, consultas, relatÛrios ou navegaÁ„o de dados, mesmo que n„o seja usada para manutenÁ„o das relaÁıes no banco.
+     * Por que manter essa associa√ß√£o aqui ent√£o? Porque ela ainda √© √∫til para filtros, consultas, relat√≥rios ou navega√ß√£o de dados, mesmo que n√£o seja usada para manuten√ß√£o das rela√ß√µes no banco.
      * </p>
      *
      * <p>
-     * Esse relacionamento n„o ser· retornado pelo mÈtodo {@code findForUpdate()} e ser· ignorado pelos mÈtodos de persistÍncia.
+     * Esse relacionamento n√£o ser√° retornado pelo m√©todo {@code findForUpdate()} e ser√° ignorado pelos m√©todos de persist√™ncia.
      * </p>
      */
     WEAK_ASSOCIATION,
 
     /**
-     * Representa uma relaÁ„o de composiÁ„o, onde o objeto filho existe exclusivamente em funÁ„o do objeto pai. O objeto filho complementa o pai, e n„o pode existir isolado ou ser reaproveitado por outro objeto.
+     * Representa uma rela√ß√£o de composi√ß√£o, onde o objeto filho existe exclusivamente em fun√ß√£o do objeto pai. O objeto filho complementa o pai, e n√£o pode existir isolado ou ser reaproveitado por outro objeto.
      *
      * <p>
-     * Caso o objeto pai deixe de existir, todos os filhos deixam de existir tambÈm.
+     * Caso o objeto pai deixe de existir, todos os filhos deixam de existir tamb√©m.
      * </p>
      *
      * <b>Notas do RFWValidator:</b>
      * <ul>
-     * <li>Um objeto filho sÛ pode ter ID definido se o objeto pai tambÈm tiver ID definido.</li>
-     * <li>Se o pai for novo (a ser inserido), o filho tambÈm deve ser novo.</li>
+     * <li>Um objeto filho s√≥ pode ter ID definido se o objeto pai tamb√©m tiver ID definido.</li>
+     * <li>Se o pai for novo (a ser inserido), o filho tamb√©m deve ser novo.</li>
      * </ul>
      */
     COMPOSITION,
 
     /**
-     * Igual ‡ {@link #COMPOSITION}, porÈm aplicada a objetos que possuem relaÁ„o hier·rquica consigo mesmos.
+     * Igual √† {@link #COMPOSITION}, por√©m aplicada a objetos que possuem rela√ß√£o hier√°rquica consigo mesmos.
      *
      * <p>
-     * Esse tipo de composiÁ„o indica que um objeto contÈm outros do mesmo tipo, formando uma estrutura de ·rvore. Exemplo: hierarquia organizacional.
+     * Esse tipo de composi√ß√£o indica que um objeto cont√©m outros do mesmo tipo, formando uma estrutura de √°rvore. Exemplo: hierarquia organizacional.
      * </p>
      *
      * <p>
-     * Esse tipo de relacionamento exige tratamento especial, pois pode haver composiÁıes encadeadas potencialmente infinitas.
+     * Esse tipo de relacionamento exige tratamento especial, pois pode haver composi√ß√µes encadeadas potencialmente infinitas.
      * </p>
      */
     COMPOSITION_TREE,
 
     /**
-     * Indica uma associaÁ„o em que o objeto relacionado È o "pai" deste objeto. Isso significa que este objeto compıe o objeto pai, sendo parte obrigatÛria de sua composiÁ„o.
+     * Indica uma associa√ß√£o em que o objeto relacionado √© o "pai" deste objeto. Isso significa que este objeto comp√µe o objeto pai, sendo parte obrigat√≥ria de sua composi√ß√£o.
      *
      * <p>
-     * O objeto relacionado aqui deve obrigatoriamente possuir uma referÍncia deste tipo marcada como {@link RelationshipTypes#COMPOSITION} no objeto pai.
+     * O objeto relacionado aqui deve obrigatoriamente possuir uma refer√™ncia deste tipo marcada como {@link RelationshipTypes#COMPOSITION} no objeto pai.
      * </p>
      *
      * <b>Notas do RFWValidator:</b>
      * <ul>
-     * <li>Esse relacionamento È validado da mesma forma que uma {@link #ASSOCIATION}.</li>
+     * <li>Esse relacionamento √© validado da mesma forma que uma {@link #ASSOCIATION}.</li>
      * </ul>
      *
      * <b>Notas do RFWDAO:</b>
      * <ul>
-     * <li>Esse relacionamento È carregado automaticamente durante o mÈtodo {@code findForFullUpdate}, permitindo detectar ausÍncia de objetos que devem ser removidos no banco de dados.</li>
+     * <li>Esse relacionamento √© carregado automaticamente durante o m√©todo {@code findForFullUpdate}, permitindo detectar aus√™ncia de objetos que devem ser removidos no banco de dados.</li>
      * </ul>
      */
     PARENT_ASSOCIATION,
 
     /**
-     * Similar a {@link #PARENT_ASSOCIATION}, mas aplicado a relacionamentos internos onde o objeto associado ser· inserido ou atualizado juntamente com o objeto principal, sem ser necessariamente o "pai" hier·rquico.
+     * Similar a {@link #PARENT_ASSOCIATION}, mas aplicado a relacionamentos internos onde o objeto associado ser√° inserido ou atualizado juntamente com o objeto principal, sem ser necessariamente o "pai" hier√°rquico.
      *
      * <p>
-     * Objetos deste tipo podem precisar ser inseridos em duas etapas: primeiro o objeto associado È salvo para gerar seu ID, e depois o objeto principal È atualizado para registrar a referÍncia.
+     * Objetos deste tipo podem precisar ser inseridos em duas etapas: primeiro o objeto associado √© salvo para gerar seu ID, e depois o objeto principal √© atualizado para registrar a refer√™ncia.
      * </p>
      *
      * <p>
-     * Isso implica que, exceto quando o objeto associado est· hierarquicamente acima, a coluna de FK no banco de dados n„o pode ser {@code NOT NULL}, pois a primeira etapa da inserÁ„o falharia.
+     * Isso implica que, exceto quando o objeto associado est√° hierarquicamente acima, a coluna de FK no banco de dados n√£o pode ser {@code NOT NULL}, pois a primeira etapa da inser√ß√£o falharia.
      * </p>
      *
      * <p>
-     * A FK deve ser sempre configurada como {@code ON DELETE CASCADE} ou {@code ON DELETE SET NULL}, permitindo a exclus„o do objeto associado sem violaÁ„o de integridade referencial.
+     * A FK deve ser sempre configurada como {@code ON DELETE CASCADE} ou {@code ON DELETE SET NULL}, permitindo a exclus√£o do objeto associado sem viola√ß√£o de integridade referencial.
      * </p>
      */
     INNER_ASSOCIATION,
 
     /**
-     * Representa uma associaÁ„o "muitos para muitos" (N:N), em que os objetos s„o independentes, e a ligaÁ„o entre eles È representada por uma tabela associativa.
+     * Representa uma associa√ß√£o "muitos para muitos" (N:N), em que os objetos s√£o independentes, e a liga√ß√£o entre eles √© representada por uma tabela associativa.
      *
      * <b>Notas do RFWValidator:</b>
      * <ul>
-     * <li>Requer que os objetos filhos j· tenham ID definido, uma vez que ambos os lados da relaÁ„o s„o independentes.</li>
+     * <li>Requer que os objetos filhos j√° tenham ID definido, uma vez que ambos os lados da rela√ß√£o s√£o independentes.</li>
      * </ul>
      *
      * <b>Notas do RFWDAO:</b>
      * <ul>
-     * <li>Esse relacionamento È carregado automaticamente no {@code findForFullUpdate}, permitindo detectar elementos removidos para exclus„o adequada no banco.</li>
+     * <li>Esse relacionamento √© carregado automaticamente no {@code findForFullUpdate}, permitindo detectar elementos removidos para exclus√£o adequada no banco.</li>
      * </ul>
      */
     MANY_TO_MANY,
@@ -145,13 +145,13 @@ public @interface RFWMetaRelationshipField {
 
   /**
    * Coluna do ID do objeto relacionado. Deve ser preenchido caso a FK fique na tabela deste objeto.<br>
-   * Se {@link RelationshipTypes#MANY_TO_MANY}: deve ser informado a coluna da tabela de join em que est· o ID deste objeto.<br>
-   * Se {@link RelationshipTypes#PARENT_ASSOCIATION}: obrigatÛrio com o nome da coluna com a FK da tabela do objeto pai.<br>
-   * Se {@link RelationshipTypes#ASSOCIATION} : preenchido somente se a coluna estiver na tabela deste objeto. Caso contr·rio, veja {@link #columnMapped()}.<br>
-   * Se {@link RelationshipTypes#COMPOSITION} : quase nunca utilizado, j· que o objeto filho quem costuma carregar o ID deste objeto. No entanto, em relacionamentos 1:1 raros pode ser utilizado quando o objeto pai que tem o ID do objeto filho.<br>
-   * Se {@link RelationshipTypes#COMPOSITION_TREE} : nunca utilizado, j· que È sempre o objeto filho quem carrega o ID deste objeto.<br>
-   * Se {@link RelationshipTypes#INNER_ASSOCIATION} : preenchido somente se a coluna estiver na tabela deste objeto. Caso contr·rio, veja {@link #columnMapped()}.<br>
-   * Se {@link RelationshipTypes#WEAK_ASSOCIATION} : preenchido somente se a coluna estiver na tabela deste objeto. Caso contr·rio, veja {@link #columnMapped()}.<br>
+   * Se {@link RelationshipTypes#MANY_TO_MANY}: deve ser informado a coluna da tabela de join em que est√° o ID deste objeto.<br>
+   * Se {@link RelationshipTypes#PARENT_ASSOCIATION}: obrigat√≥rio com o nome da coluna com a FK da tabela do objeto pai.<br>
+   * Se {@link RelationshipTypes#ASSOCIATION} : preenchido somente se a coluna estiver na tabela deste objeto. Caso contr√°rio, veja {@link #columnMapped()}.<br>
+   * Se {@link RelationshipTypes#COMPOSITION} : quase nunca utilizado, j√° que o objeto filho quem costuma carregar o ID deste objeto. No entanto, em relacionamentos 1:1 raros pode ser utilizado quando o objeto pai que tem o ID do objeto filho.<br>
+   * Se {@link RelationshipTypes#COMPOSITION_TREE} : nunca utilizado, j√° que √© sempre o objeto filho quem carrega o ID deste objeto.<br>
+   * Se {@link RelationshipTypes#INNER_ASSOCIATION} : preenchido somente se a coluna estiver na tabela deste objeto. Caso contr√°rio, veja {@link #columnMapped()}.<br>
+   * Se {@link RelationshipTypes#WEAK_ASSOCIATION} : preenchido somente se a coluna estiver na tabela deste objeto. Caso contr√°rio, veja {@link #columnMapped()}.<br>
    *
    */
   String column()
@@ -161,12 +161,12 @@ public @interface RFWMetaRelationshipField {
   /**
    * Coluna com a FK quando na tabela da contra-parte do relacionamento.<br>
    * Se {@link RelationshipTypes#MANY_TO_MANY}: Nome da coluna na tabela de join, com o ID do "outro" objeto no relacionamento.<Br>
-   * Se {@link RelationshipTypes#PARENT_ASSOCIATION} : Nunca utilizado j· que o coluna com o ID do pai deve estar na nossa tabela e definido em {@link #column()}<br>
-   * Se {@link RelationshipTypes#ASSOCIATION} : Nome da coluna, quando a FK est· na tabela do outro objeto.<br>
-   * Se {@link RelationshipTypes#COMPOSITION} : Indica o nome da coluna da tabela filha que contÈm o nosso ID para associaÁ„o.<br>
-   * Se {@link RelationshipTypes#COMPOSITION_TREE} : Indica o nome da coluna da tabela filha que contÈm o nosso ID para associaÁ„o.<br>
-   * Se {@link RelationshipTypes#INNER_ASSOCIATION} : Nome da coluna, quando a FK est· na tabela do outro objeto.<br>
-   * Se {@link RelationshipTypes#WEAK_ASSOCIATION} : Nome da coluna, quando a FK est· na tabela do outro objeto.<br>
+   * Se {@link RelationshipTypes#PARENT_ASSOCIATION} : Nunca utilizado j√° que o coluna com o ID do pai deve estar na nossa tabela e definido em {@link #column()}<br>
+   * Se {@link RelationshipTypes#ASSOCIATION} : Nome da coluna, quando a FK est√° na tabela do outro objeto.<br>
+   * Se {@link RelationshipTypes#COMPOSITION} : Indica o nome da coluna da tabela filha que cont√©m o nosso ID para associa√ß√£o.<br>
+   * Se {@link RelationshipTypes#COMPOSITION_TREE} : Indica o nome da coluna da tabela filha que cont√©m o nosso ID para associa√ß√£o.<br>
+   * Se {@link RelationshipTypes#INNER_ASSOCIATION} : Nome da coluna, quando a FK est√° na tabela do outro objeto.<br>
+   * Se {@link RelationshipTypes#WEAK_ASSOCIATION} : Nome da coluna, quando a FK est√° na tabela do outro objeto.<br>
    *
    * @return valor definido.
    */
@@ -175,22 +175,22 @@ public @interface RFWMetaRelationshipField {
   default "";
 
   /**
-   * Define o nome do atributo/campo. Este nome È usado para facilitar mensagens de erros, validaÁıes, em UIs, etc.<br>
-   * N„o utilize ":" no final ou outras formataÁıes especÌficas do local de uso. Aqui deve ser definido apenas o nome, como "Caixa", "Nome do Usu·rio", etc.
+   * Define o nome do atributo/campo. Este nome √© usado para facilitar mensagens de erros, valida√ß√µes, em UIs, etc.<br>
+   * N√£o utilize ":" no final ou outras formata√ß√µes espec√≠ficas do local de uso. Aqui deve ser definido apenas o nome, como "Caixa", "Nome do Usu√°rio", etc.
    *
    * @return valor definido.
    */
   String caption();
 
   /**
-   * Define se o atributo È obrigatÛrio ou n„o na entidade.
+   * Define se o atributo √© obrigat√≥rio ou n√£o na entidade.
    *
    * @return valor definido.
    */
   boolean required();
 
   /**
-   * Define se o atributo È ˙nico.
+   * Define se o atributo √© √∫nico.
    *
    * @return valor definido.
    */
@@ -199,14 +199,14 @@ public @interface RFWMetaRelationshipField {
   default false;
 
   /**
-   * Define se o objeto associado j· deve existir no banco de dados. Quando true, indica que o objeto associado neste atributo j· existe no banco de dados antes da eixstÍncia deste objeto. Em outras palavras, caso true, o VO associado deve ter um ID definido.
+   * Define se o objeto associado j√° deve existir no banco de dados. Quando true, indica que o objeto associado neste atributo j√° existe no banco de dados antes da eixst√™ncia deste objeto. Em outras palavras, caso true, o VO associado deve ter um ID definido.
    *
    * @return valor definido.
    */
   RelationshipTypes relationship();
 
   /**
-   * Define a classe alvo do relacionamento. Ao indicar a classe neste atributo qualquer objeto associado ao atributo dever· ser igual ou herdeirada classe indicada.<br>
+   * Define a classe alvo do relacionamento. Ao indicar a classe neste atributo qualquer objeto associado ao atributo dever√° ser igual ou herdeirada classe indicada.<br>
    * <ul>
    * <li>RFWValidator: Utiliza este argumento para validar os objetos quando em uma {@link List} ou {@link HashMap}.</li>
    * </ul>
@@ -218,8 +218,8 @@ public @interface RFWMetaRelationshipField {
   default RFWVO.class;
 
   /**
-   * Para relacionamentos dentro de uma {@link List} ou {@link HashMap} este atributo pode ser usado para validar a quantidade mÌnima que a coleÁ„o deve conter.<br>
-   * Lembrando que o atributo {@link #required()} simplesmente valida se n„o È nulo, n„o se a coleÁ„o est· vazia.
+   * Para relacionamentos dentro de uma {@link List} ou {@link HashMap} este atributo pode ser usado para validar a quantidade m√≠nima que a cole√ß√£o deve conter.<br>
+   * Lembrando que o atributo {@link #required()} simplesmente valida se n√£o √© nulo, n√£o se a cole√ß√£o est√° vazia.
    *
    * @return valor definido.
    */
@@ -228,8 +228,8 @@ public @interface RFWMetaRelationshipField {
   default -1;
 
   /**
-   * Para relacionamentos dentro de uma {@link List} ou {@link HashMap} este atributo pode ser usado para validar a quantidade m·xima que a coleÁ„o deve conter.<br>
-   * Lembrando que o atributo {@link #required()} simplesmente valida se n„o È nulo, n„o se a coleÁ„o est· vazia.
+   * Para relacionamentos dentro de uma {@link List} ou {@link HashMap} este atributo pode ser usado para validar a quantidade m√°xima que a cole√ß√£o deve conter.<br>
+   * Lembrando que o atributo {@link #required()} simplesmente valida se n√£o √© nulo, n√£o se a cole√ß√£o est√° vazia.
    *
    * @return valor definido.
    */
@@ -238,8 +238,8 @@ public @interface RFWMetaRelationshipField {
   default Integer.MAX_VALUE;
 
   /**
-   * Define o nome do atributo do objeto destino que È utilizado para <b>colocar o objeto dentro da Hash</b>. Este atributo sÛ È utilizado quando a coleÁ„o do mapeamento È uma Hash.<br>
-   * ATEN«√O, N√O SUPORTA PROPRIEDADE ANINHADAS!!! O sistema falha se tentar utilizar propriedades aninhadas para a chave da Map, isso pq os sub-objetos ainda n„o ter„o sido montados quando precisamos colocar o objeto na Hash.
+   * Define o nome do atributo do objeto destino que √© utilizado para <b>colocar o objeto dentro da Hash</b>. Este atributo s√≥ √© utilizado quando a cole√ß√£o do mapeamento √© uma Hash.<br>
+   * ATEN√á√ÉO, N√ÉO SUPORTA PROPRIEDADE ANINHADAS!!! O sistema falha se tentar utilizar propriedades aninhadas para a chave da Map, isso pq os sub-objetos ainda n√£o ter√£o sido montados quando precisamos colocar o objeto na Hash.
    *
    * @return valor definido.
    */
@@ -248,8 +248,8 @@ public @interface RFWMetaRelationshipField {
   default "";
 
   /**
-   * Em caso de mapeamento em uma lista, permite informar o nome da coluna que contÈm o Ìndice de ordem do objeto. Neste atributo ser· persistido o index da ordem que estava na lista, e na recuperaÁ„o do objeto ser· montado na mesma ordem.<br>
-   * <b>AtenÁ„o, esta coluna n„o deve ser um atributo no objeto filho!</b>
+   * Em caso de mapeamento em uma lista, permite informar o nome da coluna que cont√©m o √≠ndice de ordem do objeto. Neste atributo ser√° persistido o index da ordem que estava na lista, e na recupera√ß√£o do objeto ser√° montado na mesma ordem.<br>
+   * <b>Aten√ß√£o, esta coluna n√£o deve ser um atributo no objeto filho!</b>
    *
    * @return valor definido.
    */

@@ -7,15 +7,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Description: RFWDeprec Annotation usada para definir uma constraint de relaÁ„o entre dois atributos da entidade.<BR>
+ * Description: RFWDeprec Annotation usada para definir uma constraint de rela√ß√£o entre dois atributos da entidade.<BR>
  * <ul>
- * <li>As comparaÁıes de equal e notequal consideram iguais quando ambos s„o nulos, e diferente caso 1 seja nulo e outro n„o.</li>
- * <li>As comparaÁıes de grandeza (<, <=, > e >=) retornam true caso um dos atributos seja nulo. Pois n„o È possÌvel compara-lo.</li>
+ * <li>As compara√ß√µes de equal e notequal consideram iguais quando ambos s√£o nulos, e diferente caso 1 seja nulo e outro n√£o.</li>
+ * <li>As compara√ß√µes de grandeza (<, <=, > e >=) retornam true caso um dos atributos seja nulo. Pois n√£o √© poss√≠vel compara-lo.</li>
  * </ul>
  * <br>
- * <b>A exceÁ„o ser· lanÁada caso a relaÁ„o n„o seja v·lida, isto È, seja falsa!</b>
+ * <b>A exce√ß√£o ser√° lan√ßada caso a rela√ß√£o n√£o seja v√°lida, isto √©, seja falsa!</b>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.1.0 (17/07/2015)
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -33,17 +33,17 @@ public @interface RFWMetaAttributeRelation {
   String attribute();
 
   /**
-   * Segundo atributo com qual o primeiro ser· comparado.
+   * Segundo atributo com qual o primeiro ser√° comparado.
    */
   String attribute2();
 
   /**
-   * OperaÁ„o de comparaÁ„o a ser realizada entre os atributos definidos.
+   * Opera√ß√£o de compara√ß√£o a ser realizada entre os atributos definidos.
    */
   CompareOperation operation();
 
   /**
-   * CÛdigo da exceÁ„o a ser lanÁada caso a operaÁ„o de comparaÁ„o n„o se satisfaÁa. Caso n„o seja informado um cÛdigo especÌfico a validaÁ„o padr„o ser· lanÁada.
+   * C√≥digo da exce√ß√£o a ser lan√ßada caso a opera√ß√£o de compara√ß√£o n√£o se satisfa√ßa. Caso n√£o seja informado um c√≥digo espec√≠fico a valida√ß√£o padr√£o ser√° lan√ßada.
    */
   String exceptioncode();
 

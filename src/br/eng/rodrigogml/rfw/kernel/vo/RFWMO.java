@@ -18,18 +18,18 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 
 /**
- * Description: Classe pai de todos os Match Objects do sistema. Permitindo assim que mÈtodos consigam operar genericamente em muitos casos.<br>
+ * Description: Classe pai de todos os Match Objects do sistema. Permitindo assim que m√©todos consigam operar genericamente em muitos casos.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 3.0.0 (SET / 2009)
- * @version 7.1.0 (18/07/2015) - Rodrigo Leit„o - SubstituiÁ„o do sistema hierarquico de MOs {@link RFWMO} para este MO ˘nico.
+ * @version 7.1.0 (18/07/2015) - Rodrigo Leit√£o - Substitui√ß√£o do sistema hierarquico de MOs {@link RFWMO} para este MO √πnico.
  */
 public final class RFWMO implements Serializable, Cloneable {
 
   private static final long serialVersionUID = 5581362952656098332L;
 
   /**
-   * Classe interna usada para guardar os valores das condiÁıes de busca do RFWMO.
+   * Classe interna usada para guardar os valores das condi√ß√µes de busca do RFWMO.
    */
   public static final class RFWMOData implements Serializable {
     private static final long serialVersionUID = -9013306659167465139L;
@@ -72,13 +72,13 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   /**
-   * Define como os argumentos deste MO ser„o conectados entre si.<br>
-   * Por padr„o os argumentos definidos recebem o conector condicional "AND" entre eles. Caso alterado, todos os atributos deste MO passar„o se ser conectados com o novo conector condicional.
+   * Define como os argumentos deste MO ser√£o conectados entre si.<br>
+   * Por padr√£o os argumentos definidos recebem o conector condicional "AND" entre eles. Caso alterado, todos os atributos deste MO passar√£o se ser conectados com o novo conector condicional.
    */
   private AppendMethod appendmethod = AppendMethod.AND;
 
   /**
-   * Permite definir uma lista de MOs que montar„o uma condiÁ„o "isolada". Em conjunto com as definiÁıes possÌveis em {@link #appendmethod} permite que condiÁıes com diferentes conectores sejam usadas em conjunto. Cria o efeito dos "parenteses" nas clausulas where do SQL.
+   * Permite definir uma lista de MOs que montar√£o uma condi√ß√£o "isolada". Em conjunto com as defini√ß√µes poss√≠veis em {@link #appendmethod} permite que condi√ß√µes com diferentes conectores sejam usadas em conjunto. Cria o efeito dos "parenteses" nas clausulas where do SQL.
    */
   private List<RFWMO> submo = null;
 
@@ -117,28 +117,28 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   /**
-   * Este mÈtodo simplifica a escrita de uma condiÁ„o para buscar/selecionar um registro que retorne TRUE para uma sobreposiÁ„o de valores (datas, ranges numÈricos, etc.). <br>
+   * Este m√©todo simplifica a escrita de uma condi√ß√£o para buscar/selecionar um registro que retorne TRUE para uma sobreposi√ß√£o de valores (datas, ranges num√©ricos, etc.). <br>
    * <br>
-   * Simplismente escreve a seguinte condiÁ„o: (fs == null || fs < ne) && (fe == null || fe > ns), onde:
-   * <li>fs = Field Start (Coluna da tabela com o valor inicial do perÌodo na base)
-   * <li>fe = Field End (Coluna da tabela com o valor final do perÌodo na base)
-   * <li>ns = New Start (Valor inicial do perÌodo que estamos querendo testar a sobreposiÁ„o)
-   * <li>ne = New End (Valod final do perÌodo que estamos querendo testar a sobreposiÁ„o) <br>
+   * Simplismente escreve a seguinte condi√ß√£o: (fs == null || fs < ne) && (fe == null || fe > ns), onde:
+   * <li>fs = Field Start (Coluna da tabela com o valor inicial do per√≠odo na base)
+   * <li>fe = Field End (Coluna da tabela com o valor final do per√≠odo na base)
+   * <li>ns = New Start (Valor inicial do per√≠odo que estamos querendo testar a sobreposi√ß√£o)
+   * <li>ne = New End (Valod final do per√≠odo que estamos querendo testar a sobreposi√ß√£o) <br>
    * <br>
-   * <b>ObservaÁ„o:</b> por escrever duas condiÁıes que obrigatoriamente precisam ser consideradas com o operador {@link AppendMethod#AND}, caso este MO esteja definido para outro {@link #appendmethod} que n„o {@link AppendMethod#AND} ser· automaticamente criado um novo {@link RFWMO} e colocado como um SubMO.<br>
-   * <b>ObsevaÁ„o 2:</b> Os intervalos "s„o exclusivos", isto È, s„o utilizados os comparativos > e < e n„o >= e <=. Em outras palavras, mesmo que um periodo termine em uma data e o outro comece na mesma data, n„o È considerado sobreposiÁ„o. <br>
-   * <b>ObservaÁ„o 3:</b> Caso os valores das colunas estejam nulos È considerado que trata-se de valor "infinito". Isto È, se a coluna de inÌcio do perÌodo for nula È considerado que ela comeÁou no "infinito incial", logo qualquer valor passado periodo informado ter· iniciado depois. O mesmo vale para a coluna de fim do perÌodo, vindo valor nulo È considerado que o perÌodo do banco n„o terminou
-   * (final infinito), em outras palavras qualquer perÌodo informado ter· terminado antes do perÌodo da base.
+   * <b>Observa√ß√£o:</b> por escrever duas condi√ß√µes que obrigatoriamente precisam ser consideradas com o operador {@link AppendMethod#AND}, caso este MO esteja definido para outro {@link #appendmethod} que n√£o {@link AppendMethod#AND} ser√° automaticamente criado um novo {@link RFWMO} e colocado como um SubMO.<br>
+   * <b>Obseva√ß√£o 2:</b> Os intervalos "s√£o exclusivos", isto √©, s√£o utilizados os comparativos > e < e n√£o >= e <=. Em outras palavras, mesmo que um periodo termine em uma data e o outro comece na mesma data, n√£o √© considerado sobreposi√ß√£o. <br>
+   * <b>Observa√ß√£o 3:</b> Caso os valores das colunas estejam nulos √© considerado que trata-se de valor "infinito". Isto √©, se a coluna de in√≠cio do per√≠odo for nula √© considerado que ela come√ßou no "infinito incial", logo qualquer valor passado periodo informado ter√° iniciado depois. O mesmo vale para a coluna de fim do per√≠odo, vindo valor nulo √© considerado que o per√≠odo do banco n√£o terminou
+   * (final infinito), em outras palavras qualquer per√≠odo informado ter√° terminado antes do per√≠odo da base.
    *
-   * @param startFieldName Coluna que contÈm o valor do inÌcio do perÌodo na base de dados.
-   * @param endFieldName Coluna que contÈm o valor do fim do perÌodo na base de dados.
-   * @param startValue Valor inicial do perÌodo que ser· testado contra o perÌodo da base. N„o pode ser nulo. Caso n„o tenha um valor inicial a busca pode ser realizada "forÁando" o menor valor possÌvel para o tipo de dado, algo como {@link Integer#MIN_VALUE} ou {@link LocalDate#MAX}.
-   * @param endValue Valor final do perÌodo que ser· testado contra o perÌodo da base. N„o pode ser nulo. Caso n„o tenha um valor final a busca pode ser realizada "forÁando" o maior valor possÌvel para o tipo de dado, algo como {@link Integer#MAX_VALUE} ou {@link LocalDate#MIN}
-   * @return Retorna esta inst‚ncia do RFWMO.
+   * @param startFieldName Coluna que cont√©m o valor do in√≠cio do per√≠odo na base de dados.
+   * @param endFieldName Coluna que cont√©m o valor do fim do per√≠odo na base de dados.
+   * @param startValue Valor inicial do per√≠odo que ser√° testado contra o per√≠odo da base. N√£o pode ser nulo. Caso n√£o tenha um valor inicial a busca pode ser realizada "for√ßando" o menor valor poss√≠vel para o tipo de dado, algo como {@link Integer#MIN_VALUE} ou {@link LocalDate#MAX}.
+   * @param endValue Valor final do per√≠odo que ser√° testado contra o per√≠odo da base. N√£o pode ser nulo. Caso n√£o tenha um valor final a busca pode ser realizada "for√ßando" o maior valor poss√≠vel para o tipo de dado, algo como {@link Integer#MAX_VALUE} ou {@link LocalDate#MIN}
+   * @return Retorna esta inst√¢ncia do RFWMO.
    */
   public RFWMO overlap(String startFieldName, String endFieldName, Object startValue, Object endValue) {
     RFWMO mo = this;
-    if (mo.getAppendmethod() != AppendMethod.AND) { // ObservaÁ„o 1
+    if (mo.getAppendmethod() != AppendMethod.AND) { // Observa√ß√£o 1
       mo = new RFWMO(AppendMethod.AND);
       this.getSubmo().add(mo);
     }
@@ -163,7 +163,7 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   public RFWMO in(String fieldname, Collection<?> valuelist) {
-    if (valuelist == null || valuelist.size() == 0) throw new RFWRunTimeException("N„o È permitido incluir uma lista sem valores no atributo IN do RFWMO!");
+    if (valuelist == null || valuelist.size() == 0) throw new RFWRunTimeException("N√£o √© permitido incluir uma lista sem valores no atributo IN do RFWMO!");
     this.in.add(new RFWMOData(fieldname, valuelist));
     return this;
   }
@@ -178,7 +178,7 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   public RFWMO notIn(String fieldname, Collection<?> valuelist) {
-    if (valuelist == null || valuelist.size() == 0) throw new RFWRunTimeException("N„o È permitido incluir uma lista sem valores no atributo NOT IN do RFWMO!");
+    if (valuelist == null || valuelist.size() == 0) throw new RFWRunTimeException("N√£o √© permitido incluir uma lista sem valores no atributo NOT IN do RFWMO!");
     this.notIn.add(new RFWMOData(fieldname, valuelist));
     return this;
   }
@@ -218,9 +218,9 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   /**
-   * ImplementaÁ„o de um clone genÈrico para todos os VOs do Framework.<br>
-   * Duplica o objeto e todos os objetos n„o mut·veis que tenham mÈtodos get e set.<br>
-   * Para uma clonagem mais especÌfica extender este mÈtodo em cada VO
+   * Implementa√ß√£o de um clone gen√©rico para todos os VOs do Framework.<br>
+   * Duplica o objeto e todos os objetos n√£o mut√°veis que tenham m√©todos get e set.<br>
+   * Para uma clonagem mais espec√≠fica extender este m√©todo em cada VO
    */
   @Override
   public Object clone() throws CloneNotSupportedException {
@@ -228,7 +228,7 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   /**
-   * MÈtodo respons·vel por clonar o RFWMO inteiro evitando que suas referÍncias sejam alteradas.<br>
+   * M√©todo respons√°vel por clonar o RFWMO inteiro evitando que suas refer√™ncias sejam alteradas.<br>
    * Usado, por exemplo, nas fachadas para evitar que o objeto seja alterado no CRUD e fique diferente caso Facade e Invoker estejam na mesma JVM.
    *
    * @return Retorna o RFWMO clonado recursivamente
@@ -244,13 +244,13 @@ public final class RFWMO implements Serializable, Cloneable {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   protected RFWMO cloneRecursive(HashMap<RFWMO, RFWMO> clonedobjects) throws CloneNotSupportedException {
-    // Veririca se j· estamos na hash, se estiver retornamos esse objeto
+    // Veririca se j√° estamos na hash, se estiver retornamos esse objeto
     RFWMO clonedvo = clonedobjects.get(this);
     if (clonedvo != null) {
       return clonedvo;
     }
 
-    // Se ainda n„o estamos na hash de objetos clonados, nos clonamos e incluimos na hash
+    // Se ainda n√£o estamos na hash de objetos clonados, nos clonamos e incluimos na hash
     clonedvo = (RFWMO) super.clone();
     clonedobjects.put(this, clonedvo);
 
@@ -267,9 +267,9 @@ public final class RFWMO implements Serializable, Cloneable {
     clonedvo.in = (LinkedList<RFWMOData>) this.in.clone();
     clonedvo.notIn = (LinkedList<RFWMOData>) this.notIn.clone();
 
-    // Recupera a lista de mÈtodos desse objeto
+    // Recupera a lista de m√©todos desse objeto
     Method[] methods = this.getClass().getMethods();
-    // Itera essa lista atr·s de mÈtodos do tipo "get" ou "is"
+    // Itera essa lista atr√°s de m√©todos do tipo "get" ou "is"
     for (int i = 0; i < methods.length; i++) {
       String methodname = methods[i].getName();
       if (methodname.startsWith("get") || methodname.startsWith("is")) {
@@ -281,13 +281,13 @@ public final class RFWMO implements Serializable, Cloneable {
         } catch (SecurityException e) {
         } catch (NoSuchMethodException e) {
         }
-        // Verifica a existÍncia do MÈtodo SET
+        // Verifica a exist√™ncia do M√©todo SET
         if (methodset != null) {
-          // Verifica se o retorno do mÈtodo get n„o È nulo
+          // Verifica se o retorno do m√©todo get n√£o √© nulo
           try {
             Object gettedvalue = methodget.invoke(this);
             if (gettedvalue != null) {
-              // Verifica se o tipo de objeto È um dos que desejamos fazer o "deep clone"
+              // Verifica se o tipo de objeto √© um dos que desejamos fazer o "deep clone"
               if (gettedvalue instanceof RFWMO) {
                 RFWMO clonedvalue = ((RFWMO) gettedvalue).cloneRecursive(clonedobjects);
                 methodset.invoke(clonedvo, clonedvalue);
@@ -333,29 +333,29 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   /**
-   * Recupera o define como os argumentos deste MO ser„o conectados entre si.<br>
-   * Por padr„o os argumentos definidos recebem o conector condicional "AND" entre eles. Caso alterado, todos os atributos deste MO passar„o se ser conectados com o novo conector condicional.
+   * Recupera o define como os argumentos deste MO ser√£o conectados entre si.<br>
+   * Por padr√£o os argumentos definidos recebem o conector condicional "AND" entre eles. Caso alterado, todos os atributos deste MO passar√£o se ser conectados com o novo conector condicional.
    *
-   * @return the define como os argumentos deste MO ser„o conectados entre si
+   * @return the define como os argumentos deste MO ser√£o conectados entre si
    */
   public AppendMethod getAppendmethod() {
     return appendmethod;
   }
 
   /**
-   * Define o define como os argumentos deste MO ser„o conectados entre si.<br>
-   * Por padr„o os argumentos definidos recebem o conector condicional "AND" entre eles. Caso alterado, todos os atributos deste MO passar„o se ser conectados com o novo conector condicional.
+   * Define o define como os argumentos deste MO ser√£o conectados entre si.<br>
+   * Por padr√£o os argumentos definidos recebem o conector condicional "AND" entre eles. Caso alterado, todos os atributos deste MO passar√£o se ser conectados com o novo conector condicional.
    *
-   * @param appendmethod the new define como os argumentos deste MO ser„o conectados entre si
+   * @param appendmethod the new define como os argumentos deste MO ser√£o conectados entre si
    */
   public void setAppendmethod(AppendMethod appendmethod) {
     this.appendmethod = appendmethod;
   }
 
   /**
-   * Recupera o permite definir uma lista de MOs que montar„o uma condiÁ„o "isolada". Em conjunto com as definiÁıes possÌveis em {@link #appendmethod} permite que condiÁıes com diferentes conectores sejam usadas em conjunto. Cria o efeito dos "parenteses" nas clausulas where do SQL.
+   * Recupera o permite definir uma lista de MOs que montar√£o uma condi√ß√£o "isolada". Em conjunto com as defini√ß√µes poss√≠veis em {@link #appendmethod} permite que condi√ß√µes com diferentes conectores sejam usadas em conjunto. Cria o efeito dos "parenteses" nas clausulas where do SQL.
    *
-   * @return the permite definir uma lista de MOs que montar„o uma condiÁ„o "isolada"
+   * @return the permite definir uma lista de MOs que montar√£o uma condi√ß√£o "isolada"
    */
   public List<RFWMO> getSubmo() {
     if (submo == null) this.submo = new LinkedList<>();
@@ -363,9 +363,9 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   /**
-   * Define o permite definir uma lista de MOs que montar„o uma condiÁ„o "isolada". Em conjunto com as definiÁıes possÌveis em {@link #appendmethod} permite que condiÁıes com diferentes conectores sejam usadas em conjunto. Cria o efeito dos "parenteses" nas clausulas where do SQL.
+   * Define o permite definir uma lista de MOs que montar√£o uma condi√ß√£o "isolada". Em conjunto com as defini√ß√µes poss√≠veis em {@link #appendmethod} permite que condi√ß√µes com diferentes conectores sejam usadas em conjunto. Cria o efeito dos "parenteses" nas clausulas where do SQL.
    *
-   * @param submo the new permite definir uma lista de MOs que montar„o uma condiÁ„o "isolada"
+   * @param submo the new permite definir uma lista de MOs que montar√£o uma condi√ß√£o "isolada"
    */
   public void setSubmo(List<RFWMO> submo) {
     this.submo = submo;
@@ -746,9 +746,9 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   /**
-   * Este mÈtodo imprime as condiÁıes deste MO como sendo o SQL. Usado apenas para DEBUG e registro do objeto
+   * Este m√©todo imprime as condi√ß√µes deste MO como sendo o SQL. Usado apenas para DEBUG e registro do objeto
    *
-   * @return String para visualizaÁ„o com as condiÁıes definidas no RFWMO.
+   * @return String para visualiza√ß√£o com as condi√ß√µes definidas no RFWMO.
    */
   public String printConditions() {
     StringBuilder sb = new StringBuilder();
@@ -804,7 +804,7 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   /**
-   * Sobreescrito para ajudar no DEBUG durante o desenvolvimento. N„o utilizar como parte do cÛdigo j· que sua implementaÁ„o pode ser alterada. Para obter o "impress„o" das condiÁıes utilize o mÈtodo printConditions()
+   * Sobreescrito para ajudar no DEBUG durante o desenvolvimento. N√£o utilizar como parte do c√≥digo j√° que sua implementa√ß√£o pode ser alterada. Para obter o "impress√£o" das condi√ß√µes utilize o m√©todo printConditions()
    */
   @Override
   public String toString() {
@@ -848,9 +848,9 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   /**
-   * Total de condiÁıes que este MO contÈm.
+   * Total de condi√ß√µes que este MO cont√©m.
    *
-   * @return Retorna o total de "condiÁıes" que este MO contÍm. Incluindo as condiÁıes dos SubMOs.
+   * @return Retorna o total de "condi√ß√µes" que este MO cont√™m. Incluindo as condi√ß√µes dos SubMOs.
    */
   public int size() {
     int size = 0;
@@ -861,11 +861,11 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   /**
-   * Permite criar um filtro que verifica se a data de hoje est· entre dois campos de datas do VO.<br>
-   * Far· uma consulta similar ‡: <b>periodStartField <= Hoje && (periodEndField >= hoje || periodEndField is null)</b>
+   * Permite criar um filtro que verifica se a data de hoje est√° entre dois campos de datas do VO.<br>
+   * Far√° uma consulta similar √†: <b>periodStartField <= Hoje && (periodEndField >= hoje || periodEndField is null)</b>
    *
-   * @param periodStartField Campo com a data de inÌcio do perÌodo.
-   * @param periodEndField Campin com a data de fim do perÌodo.
+   * @param periodStartField Campo com a data de in√≠cio do per√≠odo.
+   * @param periodEndField Campin com a data de fim do per√≠odo.
    * @throws RFWException
    */
   public void periodHasNow(String periodStartField, String periodEndField) throws RFWException {
@@ -874,14 +874,14 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   /**
-   * Filtra os registros cujo perÌodo contenham outro perÌodo completamente. Em outras palavras, o perÌodo passado deve estar completamente dentro de um perÌodo definido no registro (VO).<br>
-   * Caso a data fim do perÌodo do registro seja nula, È considerada como uma "data infinita" (um valor muito grande), fazendo com que nulo seja maior que qualquer data.<br>
-   * Far· uma consulta similar ‡: <b>periodStartField <= periodStart && (periodEndField >= periodEnd || periodEndField is null)</b>
+   * Filtra os registros cujo per√≠odo contenham outro per√≠odo completamente. Em outras palavras, o per√≠odo passado deve estar completamente dentro de um per√≠odo definido no registro (VO).<br>
+   * Caso a data fim do per√≠odo do registro seja nula, √© considerada como uma "data infinita" (um valor muito grande), fazendo com que nulo seja maior que qualquer data.<br>
+   * Far√° uma consulta similar √†: <b>periodStartField <= periodStart && (periodEndField >= periodEnd || periodEndField is null)</b>
    *
-   * @param periodStartField Campo com a data de inÌcio do perÌodo.
-   * @param periodEndField Campo com a data de fim do perÌodo.
-   * @param periodStart Data de inÌcio do perÌodo. Inclusivo.
-   * @param periodEnd Data de fim do perÌodo. Inclusivo.
+   * @param periodStartField Campo com a data de in√≠cio do per√≠odo.
+   * @param periodEndField Campo com a data de fim do per√≠odo.
+   * @param periodStart Data de in√≠cio do per√≠odo. Inclusivo.
+   * @param periodEnd Data de fim do per√≠odo. Inclusivo.
    * @throws RFWException
    */
   public void periodHasFullPeriod(String periodStartField, String periodEndField, LocalDate periodStart, LocalDate periodEnd) throws RFWException {
@@ -889,12 +889,12 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   /**
-   * Filtra os registros cujo perÌodo contenham outro perÌodo completamente. Em outras palavras, o perÌodo passado deve estar completamente dentro de um perÌodo definido no registro (VO).<br>
-   * Caso a data fim do perÌodo do registro seja nula, È considerada como uma "data infinita" (um valor muito grande), fazendo com que nulo seja maior que qualquer data.<br>
-   * Far· uma consulta similar ‡: <b>periodStartField <= date && (periodEndField >= date || periodEndField is null)</b>
+   * Filtra os registros cujo per√≠odo contenham outro per√≠odo completamente. Em outras palavras, o per√≠odo passado deve estar completamente dentro de um per√≠odo definido no registro (VO).<br>
+   * Caso a data fim do per√≠odo do registro seja nula, √© considerada como uma "data infinita" (um valor muito grande), fazendo com que nulo seja maior que qualquer data.<br>
+   * Far√° uma consulta similar √†: <b>periodStartField <= date && (periodEndField >= date || periodEndField is null)</b>
    *
-   * @param periodStartField Campo com a data de inÌcio do perÌodo.
-   * @param periodEndField Campin com a data de fim do perÌodo.
+   * @param periodStartField Campo com a data de in√≠cio do per√≠odo.
+   * @param periodEndField Campin com a data de fim do per√≠odo.
    * @param date Data que deve estar entre as datas.
    * @throws RFWException
    */
@@ -903,12 +903,12 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   /**
-   * Filtra os registros cujo perÌodo contenham outro perÌodo completamente. Em outras palavras, o perÌodo passado deve estar completamente dentro de um perÌodo definido no registro (VO).<br>
-   * Caso a data fim do perÌodo do registro seja nula, È considerada como uma "data infinita" (um valor muito grande), fazendo com que nulo seja maior que qualquer data.<br>
-   * Far· uma consulta similar ‡: <b>periodStartField <= periodStart && (periodEndField >= periodEnd || periodEndField is null)</b> Far· uma consulta similar ‡: <b>periodStartField <= dateTime && (periodEndField >= dateTime || periodEndField is null)</b>
+   * Filtra os registros cujo per√≠odo contenham outro per√≠odo completamente. Em outras palavras, o per√≠odo passado deve estar completamente dentro de um per√≠odo definido no registro (VO).<br>
+   * Caso a data fim do per√≠odo do registro seja nula, √© considerada como uma "data infinita" (um valor muito grande), fazendo com que nulo seja maior que qualquer data.<br>
+   * Far√° uma consulta similar √†: <b>periodStartField <= periodStart && (periodEndField >= periodEnd || periodEndField is null)</b> Far√° uma consulta similar √†: <b>periodStartField <= dateTime && (periodEndField >= dateTime || periodEndField is null)</b>
    *
-   * @param periodStartField Campo com a data de inÌcio do perÌodo.
-   * @param periodEndField Campin com a data de fim do perÌodo.
+   * @param periodStartField Campo com a data de in√≠cio do per√≠odo.
+   * @param periodEndField Campin com a data de fim do per√≠odo.
    * @param dateTime DateTime que deve estar entre as datas.
    * @throws RFWException
    */
@@ -917,15 +917,15 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   /**
-   * Filtra os registros cujo perÌodo contenham outro perÌodo completamente. Em outras palavras, o perÌodo passado deve estar completamente dentro de um perÌodo definido no registro (VO).<br>
-   * Caso a data fim do perÌodo do registro seja nula, È considerada como uma "data infinita" (um valor muito grande), fazendo com que nulo seja maior que qualquer data.<br>
-   * Far· uma consulta similar ‡: <b>periodStartField <= periodStart && (periodEndField >= periodEnd || periodEndField is null)</b> <br>
-   * <b>ObservaÁ„o:</b> por escrever duas condiÁıes que obrigatoriamente precisam ser consideradas com o operador {@link AppendMethod#AND}, caso este MO esteja definido para outro {@link #appendmethod} que n„o {@link AppendMethod#AND} ser· automaticamente criado um novo {@link RFWMO} e colocado como um SubMO.<br>
+   * Filtra os registros cujo per√≠odo contenham outro per√≠odo completamente. Em outras palavras, o per√≠odo passado deve estar completamente dentro de um per√≠odo definido no registro (VO).<br>
+   * Caso a data fim do per√≠odo do registro seja nula, √© considerada como uma "data infinita" (um valor muito grande), fazendo com que nulo seja maior que qualquer data.<br>
+   * Far√° uma consulta similar √†: <b>periodStartField <= periodStart && (periodEndField >= periodEnd || periodEndField is null)</b> <br>
+   * <b>Observa√ß√£o:</b> por escrever duas condi√ß√µes que obrigatoriamente precisam ser consideradas com o operador {@link AppendMethod#AND}, caso este MO esteja definido para outro {@link #appendmethod} que n√£o {@link AppendMethod#AND} ser√° automaticamente criado um novo {@link RFWMO} e colocado como um SubMO.<br>
    *
-   * @param periodStartField Campo com a data de inÌcio do perÌodo.
-   * @param periodEndField Campo com a data de fim do perÌodo.
-   * @param periodStart Data de inÌcio do perÌodo. Inclusivo.
-   * @param periodEnd Data de fim do perÌodo. Inclusivo.
+   * @param periodStartField Campo com a data de in√≠cio do per√≠odo.
+   * @param periodEndField Campo com a data de fim do per√≠odo.
+   * @param periodStart Data de in√≠cio do per√≠odo. Inclusivo.
+   * @param periodEnd Data de fim do per√≠odo. Inclusivo.
    * @throws RFWException
    */
   public void periodHasFullPeriod(String periodStartField, String periodEndField, LocalDateTime periodStart, LocalDateTime periodEnd) throws RFWException {
@@ -933,30 +933,30 @@ public final class RFWMO implements Serializable, Cloneable {
     PreProcess.requiredNonNull(periodEndField);
     PreProcess.requiredNonNull(periodEnd);
     PreProcess.requiredNonNull(periodStart);
-    if (periodEnd.compareTo(periodStart) < 0) throw new RFWValidationException("N„o h· um perÌodo v·lido entre " + periodStart + " e " + periodEnd + "!");
+    if (periodEnd.compareTo(periodStart) < 0) throw new RFWValidationException("N√£o h√° um per√≠odo v√°lido entre " + periodStart + " e " + periodEnd + "!");
 
     RFWMO mo = this;
-    if (mo.getAppendmethod() != AppendMethod.AND) { // ObservaÁ„o 1
+    if (mo.getAppendmethod() != AppendMethod.AND) { // Observa√ß√£o 1
       mo = new RFWMO(AppendMethod.AND);
       this.getSubmo().add(mo);
     }
 
-    mo.lessThanOrEqualTo(periodStartField, periodStart); // Filtra os registros que tenham iniciado antes do perÌodo
+    mo.lessThanOrEqualTo(periodStartField, periodStart); // Filtra os registros que tenham iniciado antes do per√≠odo
     RFWMO mo2 = new RFWMO(AppendMethod.OR);
-    mo2.isNull(periodEndField); // Filtra os objetos cuja da de fim n„o esteja definido ("v·lido para sempre")
-    mo2.greaterThanOrEqualTo(periodEndField, periodEnd); // Ou que o perÌodo de tÈrmino da vigÍncia sÛ tenha ocorrido depois que o nosso perÌodo tenha comeÁado
+    mo2.isNull(periodEndField); // Filtra os objetos cuja da de fim n√£o esteja definido ("v√°lido para sempre")
+    mo2.greaterThanOrEqualTo(periodEndField, periodEnd); // Ou que o per√≠odo de t√©rmino da vig√™ncia s√≥ tenha ocorrido depois que o nosso per√≠odo tenha come√ßado
     mo.getSubmo().add(mo2);
   }
 
   /**
-   * Filtra os registros cujo perÌodo interseccione outro perÌodo. Em outras palavras, a intersecÁ„o de um perÌodo com outro deve ser maior que zero.<br>
-   * Caso a data fim do perÌodo do registro seja nula, È considerada como uma "data infinita" (um valor muito grande), fazendo com que nulo seja maior que qualquer data.<br>
-   * Far· uma consulta similar ‡: <b>periodStartField <= periodEnd && (periodEndField >= periodStart || periodEndField is null)</b>
+   * Filtra os registros cujo per√≠odo interseccione outro per√≠odo. Em outras palavras, a intersec√ß√£o de um per√≠odo com outro deve ser maior que zero.<br>
+   * Caso a data fim do per√≠odo do registro seja nula, √© considerada como uma "data infinita" (um valor muito grande), fazendo com que nulo seja maior que qualquer data.<br>
+   * Far√° uma consulta similar √†: <b>periodStartField <= periodEnd && (periodEndField >= periodStart || periodEndField is null)</b>
    *
-   * @param periodStartField Campo com a data de inÌcio do perÌodo.
-   * @param periodEndField Campo com a data de fim do perÌodo.
-   * @param periodStart Data de inÌcio do perÌodo. Inclusivo.
-   * @param periodEnd Data de fim do perÌodo. Inclusivo.
+   * @param periodStartField Campo com a data de in√≠cio do per√≠odo.
+   * @param periodEndField Campo com a data de fim do per√≠odo.
+   * @param periodStart Data de in√≠cio do per√≠odo. Inclusivo.
+   * @param periodEnd Data de fim do per√≠odo. Inclusivo.
    * @throws RFWException
    */
   public void periodIntersectsAnotherPeriod(String periodStartField, String periodEndField, LocalDate periodStart, LocalDate periodEnd) throws RFWException {
@@ -964,15 +964,15 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   /**
-   * Filtra os registros cujo perÌodo interseccione outro perÌodo. Em outras palavras, a intersecÁ„o de um perÌodo com outro deve ser maior que zero.<br>
-   * Caso a data fim do perÌodo do registro seja nula, È considerada como uma "data infinita" (um valor muito grande), fazendo com que nulo seja maior que qualquer data.<br>
-   * Far· uma consulta similar ‡: <b>periodStartField <= periodEnd && (periodEndField >= periodStart || periodEndField is null)</b> <br>
-   * <b>ObservaÁ„o:</b> por escrever duas condiÁıes que obrigatoriamente precisam ser consideradas com o operador {@link AppendMethod#AND}, caso este MO esteja definido para outro {@link #appendmethod} que n„o {@link AppendMethod#AND} ser· automaticamente criado um novo {@link RFWMO} e colocado como um SubMO.<br>
+   * Filtra os registros cujo per√≠odo interseccione outro per√≠odo. Em outras palavras, a intersec√ß√£o de um per√≠odo com outro deve ser maior que zero.<br>
+   * Caso a data fim do per√≠odo do registro seja nula, √© considerada como uma "data infinita" (um valor muito grande), fazendo com que nulo seja maior que qualquer data.<br>
+   * Far√° uma consulta similar √†: <b>periodStartField <= periodEnd && (periodEndField >= periodStart || periodEndField is null)</b> <br>
+   * <b>Observa√ß√£o:</b> por escrever duas condi√ß√µes que obrigatoriamente precisam ser consideradas com o operador {@link AppendMethod#AND}, caso este MO esteja definido para outro {@link #appendmethod} que n√£o {@link AppendMethod#AND} ser√° automaticamente criado um novo {@link RFWMO} e colocado como um SubMO.<br>
    *
-   * @param periodStartField Campo com a data de inÌcio do perÌodo.
-   * @param periodEndField Campo com a data de fim do perÌodo.
-   * @param periodStart Data de inÌcio do perÌodo. Inclusivo.
-   * @param periodEnd Data de fim do perÌodo. Inclusivo.
+   * @param periodStartField Campo com a data de in√≠cio do per√≠odo.
+   * @param periodEndField Campo com a data de fim do per√≠odo.
+   * @param periodStart Data de in√≠cio do per√≠odo. Inclusivo.
+   * @param periodEnd Data de fim do per√≠odo. Inclusivo.
    * @throws RFWException
    */
   public void periodIntersectsAnotherPeriod(String periodStartField, String periodEndField, LocalDateTime periodStart, LocalDateTime periodEnd) throws RFWException {
@@ -980,27 +980,27 @@ public final class RFWMO implements Serializable, Cloneable {
     PreProcess.requiredNonNull(periodEndField);
     PreProcess.requiredNonNull(periodEnd);
     PreProcess.requiredNonNull(periodStart);
-    if (periodEnd.compareTo(periodStart) < 0) throw new RFWValidationException("N„o h· um perÌodo v·lido entre " + periodStart + " e " + periodEnd + "!");
+    if (periodEnd.compareTo(periodStart) < 0) throw new RFWValidationException("N√£o h√° um per√≠odo v√°lido entre " + periodStart + " e " + periodEnd + "!");
 
     RFWMO mo = this;
-    if (mo.getAppendmethod() != AppendMethod.AND) { // ObservaÁ„o 1
+    if (mo.getAppendmethod() != AppendMethod.AND) { // Observa√ß√£o 1
       mo = new RFWMO(AppendMethod.AND);
       this.getSubmo().add(mo);
     }
 
     mo.lessThanOrEqualTo(periodStartField, periodEnd);
     RFWMO mo2 = new RFWMO(AppendMethod.OR);
-    mo2.isNull(periodEndField); // Filtra os objetos cuja da de fim n„o esteja definido ("v·lido para sempre")
-    mo2.greaterThanOrEqualTo(periodEndField, periodStart); // Ou que o perÌodo de tÈrmino da vigÍncia sÛ tenha ocorrido depois que o nosso perÌodo tenha comeÁado
+    mo2.isNull(periodEndField); // Filtra os objetos cuja da de fim n√£o esteja definido ("v√°lido para sempre")
+    mo2.greaterThanOrEqualTo(periodEndField, periodStart); // Ou que o per√≠odo de t√©rmino da vig√™ncia s√≥ tenha ocorrido depois que o nosso per√≠odo tenha come√ßado
     mo.getSubmo().add(mo2);
   }
 
   /**
-   * Filetra os registros que tenham uma data dentro de um perÌodo especÌfico.
+   * Filetra os registros que tenham uma data dentro de um per√≠odo espec√≠fico.
    *
-   * @param dateField Campo do VO que contÈm a data.
-   * @param periodStart InÌcio do PerÌodo. InclusivoS.
-   * @param periodEnd Fim do PerÌodo. Inclusivo.
+   * @param dateField Campo do VO que cont√©m a data.
+   * @param periodStart In√≠cio do Per√≠odo. InclusivoS.
+   * @param periodEnd Fim do Per√≠odo. Inclusivo.
    * @throws RFWException
    */
   public void dateInPeriod(String dateField, LocalDate periodStart, LocalDate periodEnd) throws RFWException {
@@ -1008,17 +1008,17 @@ public final class RFWMO implements Serializable, Cloneable {
   }
 
   /**
-   * Filetra os registros que tenham uma data dentro de um perÌodo especÌfico.
+   * Filetra os registros que tenham uma data dentro de um per√≠odo espec√≠fico.
    *
-   * @param dateField Campo do VO que contÈm a data.
-   * @param periodStart InÌcio do PerÌodo. InclusivoS.
-   * @param periodEnd Fim do PerÌodo. Inclusivo.
+   * @param dateField Campo do VO que cont√©m a data.
+   * @param periodStart In√≠cio do Per√≠odo. InclusivoS.
+   * @param periodEnd Fim do Per√≠odo. Inclusivo.
    * @throws RFWException
    */
   public void dateInPeriod(String dateField, LocalDateTime periodStart, LocalDateTime periodEnd) throws RFWException {
     PreProcess.requiredNonNull(periodEnd);
     PreProcess.requiredNonNull(periodStart);
-    if (periodEnd.compareTo(periodStart) < 0) throw new RFWValidationException("N„o h· um perÌodo v·lido entre " + periodStart + " e " + periodEnd + "!");
+    if (periodEnd.compareTo(periodStart) < 0) throw new RFWValidationException("N√£o h√° um per√≠odo v√°lido entre " + periodStart + " e " + periodEnd + "!");
 
     this.greaterThanOrEqualTo(dateField, periodStart);
     this.lessThanOrEqualTo(dateField, periodEnd);

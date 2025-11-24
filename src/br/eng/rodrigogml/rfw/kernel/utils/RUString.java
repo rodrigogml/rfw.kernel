@@ -28,34 +28,34 @@ import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 import br.eng.rodrigogml.rfw.kernel.utils.extra.Base32;
 
 /**
- * Description: Classe com mÈtodos ˙teis para tratamentos e manipulaÁ„o de String.<br>
+ * Description: Classe com m√©todos √∫teis para tratamentos e manipula√ß√£o de String.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 1.0.0 (AGO / 2007)
- * @version 4.1.0 (23/06/2011) - rodrigogml - Nome alterado de StringUtils, para ficar no padr„o do sistema.
+ * @version 4.1.0 (23/06/2011) - rodrigogml - Nome alterado de StringUtils, para ficar no padr√£o do sistema.
  */
 public class RUString {
 
   /*
-   * Referencia os mÈtodos de normalizaÁ„o de string para cada um dos jdks, para evitar de se fazer diversas reflexıes em cada vez que se usa o mÈtodo de remover acentos.
+   * Referencia os m√©todos de normaliza√ß√£o de string para cada um dos jdks, para evitar de se fazer diversas reflex√µes em cada vez que se usa o m√©todo de remover acentos.
    */
-  private static Method normalizerJDK5 = null; // Salva o mÈtodo que ser· usado na normalizaÁ„o da string no JDK5
-  private static Method normalizerJDK6 = null;// Salva o mÈtodo que ser· usado na normalizaÁ„o da string no JDK6
-  private static Object normalizerJDK6form = null; // Salva o form necess·rio para o normalizer do jdk6
-  private static Boolean unknownormalizer = null; // Salva se o mÈtodo de normalizaÁ„o È desconhecido, null n„o procurado ainda, true desconhecido (usa modo manual), false conhecido
+  private static Method normalizerJDK5 = null; // Salva o m√©todo que ser√° usado na normaliza√ß√£o da string no JDK5
+  private static Method normalizerJDK6 = null;// Salva o m√©todo que ser√° usado na normaliza√ß√£o da string no JDK6
+  private static Object normalizerJDK6form = null; // Salva o form necess√°rio para o normalizer do jdk6
+  private static Boolean unknownormalizer = null; // Salva se o m√©todo de normaliza√ß√£o √© desconhecido, null n√£o procurado ainda, true desconhecido (usa modo manual), false conhecido
 
   /**
-   * Construtor privado para classe exclusivamente est·tica.
+   * Construtor privado para classe exclusivamente est√°tica.
    */
   private RUString() {
   }
 
   /**
-   * Corta uma string caso ela passe do tamanho m·ximo definido.
+   * Corta uma string caso ela passe do tamanho m√°ximo definido.
    *
-   * @param value Texto a ser avaliado e cortado caso necess·rio.
-   * @param length Tamanho m·ximo que a String pode ter.
-   * @return Valor igual ao passado caso n„o ultrapasse o tamanho informado, ou a string cortada para ter o tamanho m·ximo definido.
+   * @param value Texto a ser avaliado e cortado caso necess√°rio.
+   * @param length Tamanho m√°ximo que a String pode ter.
+   * @return Valor igual ao passado caso n√£o ultrapasse o tamanho informado, ou a string cortada para ter o tamanho m√°ximo definido.
    */
   public static String truncate(String value, int length) {
     if (value != null) {
@@ -67,36 +67,36 @@ public class RUString {
   }
 
   /**
-   * Faz a mesma funÁ„o que os mÈtodo {@link #completeUntilLengthLeft(String, String, int)}, mas tambÈm faz a funÁ„o de {@link #truncate(String, int)} caso o tamanho recebido em data j· seja maior que o tamanho de length ou as concatenaÁıes geram um dado maior (caso do appendValue ser maior que 1 caracteres).
+   * Faz a mesma fun√ß√£o que os m√©todo {@link #completeUntilLengthLeft(String, String, int)}, mas tamb√©m faz a fun√ß√£o de {@link #truncate(String, int)} caso o tamanho recebido em data j√° seja maior que o tamanho de length ou as concatena√ß√µes geram um dado maior (caso do appendValue ser maior que 1 caracteres).
    *
-   * @param appendvalue string que ser· adicionada a string principal
+   * @param appendvalue string que ser√° adicionada a string principal
    * @param data string principal.
    * @param length tamanho a ser atingido
-   * @return string principal com a string appendvalue concatenada n vezes ‡ sua esquerda.
+   * @return string principal com a string appendvalue concatenada n vezes √† sua esquerda.
    */
   public static String completeOrTruncateUntilLengthLeft(String appendvalue, String data, int length) {
     return truncate(completeUntilLengthLeft(appendvalue, data, length), length);
   }
 
   /**
-   * Faz a mesma funÁ„o que os mÈtoso {@link #completeUntilLengthRight(String, String, int)}, mas tambÈm faz a funÁ„o de {@link #truncate(String, int)} caso o tamanho recebido em data j· seja maior que o tamanho de length ou as concatenaÁıes geram um dado maior (caso do appendValue ser maior que 1 caracteres).
+   * Faz a mesma fun√ß√£o que os m√©toso {@link #completeUntilLengthRight(String, String, int)}, mas tamb√©m faz a fun√ß√£o de {@link #truncate(String, int)} caso o tamanho recebido em data j√° seja maior que o tamanho de length ou as concatena√ß√µes geram um dado maior (caso do appendValue ser maior que 1 caracteres).
    *
-   * @param appendvalue string que ser· adicionada a string principal
+   * @param appendvalue string que ser√° adicionada a string principal
    * @param data string principal.
    * @param length tamanho a ser atingido
-   * @return string principal com a string appendvalue concatenada n vezes ‡ sua esquerda.
+   * @return string principal com a string appendvalue concatenada n vezes √† sua esquerda.
    */
   public static String completeOrTruncateUntilLengthRight(String appendvalue, String data, int length) {
     return truncate(completeUntilLengthRight(appendvalue, data, length), length);
   }
 
   /**
-   * Incrementa uma string, pela esquerda, com outra passada atÈ que o tamanho ultrapasse o valor informado.
+   * Incrementa uma string, pela esquerda, com outra passada at√© que o tamanho ultrapasse o valor informado.
    *
-   * @param appendvalue string que ser· adicionada a string principal
+   * @param appendvalue string que ser√° adicionada a string principal
    * @param data string principal.
    * @param length tamanho a ser atingido
-   * @return string principal com a string appendvalue concatenada n vezes ‡ sua esquerda.
+   * @return string principal com a string appendvalue concatenada n vezes √† sua esquerda.
    */
   public static String completeUntilLengthLeft(String appendvalue, String data, int length) {
     if (data == null) data = "";
@@ -110,12 +110,12 @@ public class RUString {
   }
 
   /**
-   * Incrementa uma string, pela direita, com outra passada atÈ que o tamanho ultrapasse o valor informado.
+   * Incrementa uma string, pela direita, com outra passada at√© que o tamanho ultrapasse o valor informado.
    *
-   * @param appendvalue string que ser· adicionada a string principal
+   * @param appendvalue string que ser√° adicionada a string principal
    * @param data string principal.
    * @param length tamanho a ser atingido
-   * @return string principal com a string appendvalue concatenada n vezes ‡ sua direita.
+   * @return string principal com a string appendvalue concatenada n vezes √† sua direita.
    */
   public static String completeUntilLengthRight(String appendvalue, String data, int length) {
     if (data == null) data = "";
@@ -128,10 +128,10 @@ public class RUString {
   }
 
   /**
-   * Este mÈtodo tira todos os espaÁos em excesso de uma String, deixando apenas 1. N„o importa se tiver 2, 3, 4 ou 1000. Ele substituir· todos por 1 ˙nico.
+   * Este m√©todo tira todos os espa√ßos em excesso de uma String, deixando apenas 1. N√£o importa se tiver 2, 3, 4 ou 1000. Ele substituir√° todos por 1 √∫nico.
    *
-   * @param value Texto a ser analizado e ter os espaÁo duplicados exterminados.
-   * @return Texto com apenas 1 espaÁo entre as palavras.
+   * @param value Texto a ser analizado e ter os espa√ßo duplicados exterminados.
+   * @return Texto com apenas 1 espa√ßo entre as palavras.
    */
   public static String replaceDoubleSpaces(String value) {
     if (value != null) {
@@ -141,10 +141,10 @@ public class RUString {
   }
 
   /**
-   * Este mÈtodo tira todos "TABS" (\\t) de uma String, deixando apenas 1 espaÁo. N„o importa se tiver 2, 3, 4 ou 1000. Ele substituir· todos por 1 ˙nico.
+   * Este m√©todo tira todos "TABS" (\\t) de uma String, deixando apenas 1 espa√ßo. N√£o importa se tiver 2, 3, 4 ou 1000. Ele substituir√° todos por 1 √∫nico.
    *
-   * @param value Texto a ser analizado e ter os espaÁo duplicados exterminados.
-   * @return Texto com apenas 1 espaÁo entre as palavras.
+   * @param value Texto a ser analizado e ter os espa√ßo duplicados exterminados.
+   * @return Texto com apenas 1 espa√ßo entre as palavras.
    */
   public static String replaceTabsByUniqueSpace(String value) {
     if (value != null) {
@@ -154,10 +154,10 @@ public class RUString {
   }
 
   /**
-   * Este mÈtodo tira todos "Falsos EspaÁos conhecidos" (como o \\u00a0) de uma String, deixando apenas 1 espaÁo. N„o importa se tiver 2, 3, 4 ou 1000. Ele substituir· todos por 1 ˙nico.
+   * Este m√©todo tira todos "Falsos Espa√ßos conhecidos" (como o \\u00a0) de uma String, deixando apenas 1 espa√ßo. N√£o importa se tiver 2, 3, 4 ou 1000. Ele substituir√° todos por 1 √∫nico.
    *
-   * @param value Texto a ser analizado e ter os espaÁo duplicados exterminados.
-   * @return Texto com apenas 1 espaÁo entre as palavras.
+   * @param value Texto a ser analizado e ter os espa√ßo duplicados exterminados.
+   * @return Texto com apenas 1 espa√ßo entre as palavras.
    */
   public static String replaceFakeSpacesByUniqueSpace(String value) {
     if (value != null) {
@@ -167,8 +167,8 @@ public class RUString {
   }
 
   /**
-   * Converte o objeto que contÈm o valor da enumeraÁ„o (a prÛpria enumeraÁ„o) em "chave".<br>
-   * O mesmo que o mÈtodo <code>getEnumKey()</code>, exceto pelo acrescimo do valor da enumeraÁ„o ao final.
+   * Converte o objeto que cont√©m o valor da enumera√ß√£o (a pr√≥pria enumera√ß√£o) em "chave".<br>
+   * O mesmo que o m√©todo <code>getEnumKey()</code>, exceto pelo acrescimo do valor da enumera√ß√£o ao final.
    *
    * @param value enum desejado.
    * @return String com da chave.
@@ -182,7 +182,7 @@ public class RUString {
   }
 
   /**
-   * Converte o valor da enumeraÁ„o em "chave" que nada mais È do que sua qualificaÁ„o completa de class + enumeraÁ„o + objeto da enumeraÁ„o. ⁄til para IDs e para unificaÁ„o na internacionalizaÁıes de labels.
+   * Converte o valor da enumera√ß√£o em "chave" que nada mais √© do que sua qualifica√ß√£o completa de class + enumera√ß√£o + objeto da enumera√ß√£o. √ötil para IDs e para unifica√ß√£o na internacionaliza√ß√µes de labels.
    *
    * @param value enum desejado.
    * @return String com da chave.
@@ -196,17 +196,17 @@ public class RUString {
   }
 
   /**
-   * Substitui todas as ocorrÍncias de {@code oldValue} por {@code newValue} no texto de {@code text}.
+   * Substitui todas as ocorr√™ncias de {@code oldValue} por {@code newValue} no texto de {@code text}.
    * <p>
-   * De acordo com as definiÁıes passadas, pode ignorar acentos e diferenciaÁ„o entre mai˙sculas e min˙sculas.
+   * De acordo com as defini√ß√µes passadas, pode ignorar acentos e diferencia√ß√£o entre mai√∫sculas e min√∫sculas.
    * </p>
    *
    * @param text Texto a ser manipulado.
-   * @param oldValue Valor a ser procurado e substituÌdo.
-   * @param newValue Valor que substituir· {@code oldValue}.
+   * @param oldValue Valor a ser procurado e substitu√≠do.
+   * @param newValue Valor que substituir√° {@code oldValue}.
    * @param distinctAccents {@code true} diferencia acentos, {@code false} ignora acentos.
-   * @param distinctCase {@code true} diferencia mai˙sculas de min˙sculas, {@code false} ignora diferenciaÁ„o de case.
-   * @return Texto com as substituiÁıes realizadas.
+   * @param distinctCase {@code true} diferencia mai√∫sculas de min√∫sculas, {@code false} ignora diferencia√ß√£o de case.
+   * @return Texto com as substitui√ß√µes realizadas.
    * @throws IllegalArgumentException Se {@code oldValue} for uma string vazia.
    */
   public static String replaceAll(String text, String oldValue, String newValue, boolean distinctAccents, boolean distinctCase) {
@@ -237,16 +237,16 @@ public class RUString {
   }
 
   /**
-   * Remove a acentuaÁ„o de um texto passado. Incluindo 'Á' por 'c', mai˙sculas e min˙scas (preservando a captalizaÁ„o da letra).
+   * Remove a acentua√ß√£o de um texto passado. Incluindo '√ß' por 'c', mai√∫sculas e min√∫scas (preservando a captaliza√ß√£o da letra).
    *
-   * @param text String que ter· seus acentos removidos.
+   * @param text String que ter√° seus acentos removidos.
    * @return String sem caracteres acentuados, trocados pelos seus correspondentes.
    */
   public static String removeAccents(String text) {
-    // Verifica se conhece o mÈtodo de normalizaÁ„o
-    if (unknownormalizer == null) { // Se ainda n„o foi procurado, procura
+    // Verifica se conhece o m√©todo de normaliza√ß√£o
+    if (unknownormalizer == null) { // Se ainda n√£o foi procurado, procura
       try {
-        // Tenta Compatibilidade com JDK 6 - Evita o Import para evitar erros de compilaÁ„o e execuÁ„o
+        // Tenta Compatibilidade com JDK 6 - Evita o Import para evitar erros de compila√ß√£o e execu√ß√£o
         // Recupera a Classe do Normalizer
         Class<?> normalizer = Class.forName("java.text.Normalizer");
         // Encontra a classe do Form
@@ -264,7 +264,7 @@ public class RUString {
         return ((String) normalizerJDK6.invoke(null, new Object[] { text, normalizerJDK6form })).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
       } catch (Exception ex) {
         try {
-          // Compatibilidade com JDK 5 - Evita o Import para evitar erros de compilaÁ„o e execuÁ„o
+          // Compatibilidade com JDK 5 - Evita o Import para evitar erros de compila√ß√£o e execu√ß√£o
           Class<?> normalizerC = Class.forName("sun.text.Normalizer");
           normalizerJDK5 = normalizerC.getMethod("decompose", new Class[] { String.class, boolean.class, int.class });
           unknownormalizer = Boolean.FALSE;
@@ -272,36 +272,36 @@ public class RUString {
         } catch (Exception ex2) {
           // Salva como modo manual, normalizador desconhecido
           unknownormalizer = Boolean.TRUE;
-          text = text.replaceAll("[·‡„‚‰]", "a");
-          text = text.replaceAll("[ÈËÍÎ]", "e");
-          text = text.replaceAll("[ÌÏÓÔ]", "i");
-          text = text.replaceAll("[ÛÚıÙˆ]", "o");
-          text = text.replaceAll("[˙˘˚¸]", "u");
-          text = text.replaceAll("[Á]", "c");
-          text = text.replaceAll("[Ò]", "n");
-          text = text.replaceAll("[¡¿√¬ƒ]", "A");
-          text = text.replaceAll("[…» À]", "E");
-          text = text.replaceAll("[ÕÃŒœ]", "I");
-          text = text.replaceAll("[”“’‘÷]", "O");
-          text = text.replaceAll("[⁄Ÿ€‹]", "U");
-          text = text.replaceAll("[—]", "N");
+          text = text.replaceAll("[√°√†√£√¢√§]", "a");
+          text = text.replaceAll("[√©√®√™√´]", "e");
+          text = text.replaceAll("[√≠√¨√Æ√Ø]", "i");
+          text = text.replaceAll("[√≥√≤√µ√¥√∂]", "o");
+          text = text.replaceAll("[√∫√π√ª√º]", "u");
+          text = text.replaceAll("[√ß]", "c");
+          text = text.replaceAll("[√±]", "n");
+          text = text.replaceAll("[√Å√Ä√É√Ç√Ñ]", "A");
+          text = text.replaceAll("[√â√à√ä√ã]", "E");
+          text = text.replaceAll("[√ç√å√é√è]", "I");
+          text = text.replaceAll("[√ì√í√ï√î√ñ]", "O");
+          text = text.replaceAll("[√ö√ô√õ√ú]", "U");
+          text = text.replaceAll("[√ë]", "N");
           return text;
         }
       }
     } else if (unknownormalizer) {
-      text = text.replaceAll("[·‡„‚‰]", "a");
-      text = text.replaceAll("[ÈËÍÎ]", "e");
-      text = text.replaceAll("[ÌÏÓÔ]", "i");
-      text = text.replaceAll("[ÛÚıÙˆ]", "o");
-      text = text.replaceAll("[˙˘˚¸]", "u");
-      text = text.replaceAll("[Á]", "c");
-      text = text.replaceAll("[Ò]", "n");
-      text = text.replaceAll("[¡¿√¬ƒ]", "A");
-      text = text.replaceAll("[…» À]", "E");
-      text = text.replaceAll("[ÕÃŒœ]", "I");
-      text = text.replaceAll("[”“’‘÷]", "O");
-      text = text.replaceAll("[⁄Ÿ€‹]", "U");
-      text = text.replaceAll("[—]", "N");
+      text = text.replaceAll("[√°√†√£√¢√§]", "a");
+      text = text.replaceAll("[√©√®√™√´]", "e");
+      text = text.replaceAll("[√≠√¨√Æ√Ø]", "i");
+      text = text.replaceAll("[√≥√≤√µ√¥√∂]", "o");
+      text = text.replaceAll("[√∫√π√ª√º]", "u");
+      text = text.replaceAll("[√ß]", "c");
+      text = text.replaceAll("[√±]", "n");
+      text = text.replaceAll("[√Å√Ä√É√Ç√Ñ]", "A");
+      text = text.replaceAll("[√â√à√ä√ã]", "E");
+      text = text.replaceAll("[√ç√å√é√è]", "I");
+      text = text.replaceAll("[√ì√í√ï√î√ñ]", "O");
+      text = text.replaceAll("[√ö√ô√õ√ú]", "U");
+      text = text.replaceAll("[√ë]", "N");
       return text;
     } else if (!unknownormalizer) {
       if (normalizerJDK6 != null) {
@@ -324,11 +324,11 @@ public class RUString {
   }
 
   /**
-   * Remove da String tudo o que n„o for dÌgitos.<br>
-   * MÈtodo para remover pontuaÁ„o de valores numÈridos como CPF, CNPJ, RepresentaÁıes NumÈricas de CÛdigos de Barras, CEP, etc.<Br>
+   * Remove da String tudo o que n√£o for d√≠gitos.<br>
+   * M√©todo para remover pontua√ß√£o de valores num√©ridos como CPF, CNPJ, Representa√ß√µes Num√©ricas de C√≥digos de Barras, CEP, etc.<Br>
    *
-   * @param value Valor a ter os "n„o n˙meros" estripados
-   * @return String apenas com os n˙meros/dÌgitos recebidos.
+   * @param value Valor a ter os "n√£o n√∫meros" estripados
+   * @return String apenas com os n√∫meros/d√≠gitos recebidos.
    * @throws RFWException
    */
   public static String removeNonDigits(String value) {
@@ -337,23 +337,23 @@ public class RUString {
   }
 
   /**
-   * Cria uma String com n repetiÁıes de uma determinada cadeira de caracteres (ou caracter simples).
+   * Cria uma String com n repeti√ß√µes de uma determinada cadeira de caracteres (ou caracter simples).
    *
-   * @param repeats N˙mero de repetiÁıes na String final.
-   * @param base Conte˙do a ser repetido na String.
-   * @return String montada conforme as definiÁıes. Com tamanho total = repeats * base.length();
+   * @param repeats N√∫mero de repeti√ß√µes na String final.
+   * @param base Conte√∫do a ser repetido na String.
+   * @return String montada conforme as defini√ß√µes. Com tamanho total = repeats * base.length();
    */
   public static String repeatString(int repeats, String base) {
     return new String(new char[repeats]).replaceAll("\0", base);
   }
 
   /**
-   * Remove os caracteres inv·lidospara UTF-8.<br>
-   * Trocando letras acentuadas por suas correspondentes sem acentos, e outros caracteres inv·lidos pelo caractere '?'.
+   * Remove os caracteres inv√°lidospara UTF-8.<br>
+   * Trocando letras acentuadas por suas correspondentes sem acentos, e outros caracteres inv√°lidos pelo caractere '?'.
    *
    * @param text Texto a ser processado.
    * @return Texto processado.
-   * @throws RFWException LanÁado caso ocorra alguma falha em processar o texto.
+   * @throws RFWException Lan√ßado caso ocorra alguma falha em processar o texto.
    */
   public static String removeNonUTF8(String text) throws RFWException {
     PreProcess.requiredNonNull(text);
@@ -369,12 +369,12 @@ public class RUString {
   }
 
   /**
-   * Este mÈtodo realiza o "escape" dos carateres que atrapalham o parser do do XML. N„o faz escape de todos os caracteres acentuados e fora da tabela padr„o, simplesmente faz escape dos seguintes caracteres que atrapalham a estrutura do XML:<br>
+   * Este m√©todo realiza o "escape" dos carateres que atrapalham o parser do do XML. N√£o faz escape de todos os caracteres acentuados e fora da tabela padr√£o, simplesmente faz escape dos seguintes caracteres que atrapalham a estrutura do XML:<br>
    * <li>< - &amp;lt;</li>
    * <li>> - &amp;gt;</li>
    * <li>& - &amp;amp;</li>
-   * <li>ì - &amp;quot;</li>
-   * <li>ë - &amp;#39;</li>
+   * <li>‚Äú - &amp;quot;</li>
+   * <li>‚Äò - &amp;#39;</li>
    *
    * @param clientname
    * @return
@@ -389,213 +389,213 @@ public class RUString {
   }
 
   /**
-   * MÈtodo utilizado para "escapar" os caracteres especiais em HTML.<Br>
+   * M√©todo utilizado para "escapar" os caracteres especiais em HTML.<Br>
    *
    * @param text
    */
   public static String escapeHTML(String text) {
     text = text.replaceAll("\\&", "&amp;");
-    text = text.replaceAll("\\•", "&yen;");
-    text = text.replaceAll("\\›", "&Yacute;");
-    text = text.replaceAll("\\˝", "&yacute;");
-    text = text.replaceAll("\\‹", "&Uuml;");
-    text = text.replaceAll("\\¸", "&uuml;");
-    text = text.replaceAll("\\®", "&uml;");
-    text = text.replaceAll("\\Ÿ", "&Ugrave;");
-    text = text.replaceAll("\\˘", "&ugrave;");
-    text = text.replaceAll("\\€", "&Ucirc;");
-    text = text.replaceAll("\\˚", "&ucirc;");
-    text = text.replaceAll("\\⁄", "&Uacute;");
-    text = text.replaceAll("\\˙", "&uacute;");
-    text = text.replaceAll("\\◊", "&times;");
-    text = text.replaceAll("\\ﬁ", "&THORN;");
-    text = text.replaceAll("\\˛", "&thorn;");
-    text = text.replaceAll("\\ﬂ", "&szlig;");
-    text = text.replaceAll("\\≥", "&sup3;");
-    text = text.replaceAll("\\≤", "&sup2;");
-    text = text.replaceAll("\\π", "&sup1;");
-    text = text.replaceAll("\\ß", "&sect;");
-    text = text.replaceAll("\\Æ", "&reg;");
-    text = text.replaceAll("\\ª", "&raquo;");
+    text = text.replaceAll("\\¬•", "&yen;");
+    text = text.replaceAll("\\√ù", "&Yacute;");
+    text = text.replaceAll("\\√Ω", "&yacute;");
+    text = text.replaceAll("\\√ú", "&Uuml;");
+    text = text.replaceAll("\\√º", "&uuml;");
+    text = text.replaceAll("\\¬®", "&uml;");
+    text = text.replaceAll("\\√ô", "&Ugrave;");
+    text = text.replaceAll("\\√π", "&ugrave;");
+    text = text.replaceAll("\\√õ", "&Ucirc;");
+    text = text.replaceAll("\\√ª", "&ucirc;");
+    text = text.replaceAll("\\√ö", "&Uacute;");
+    text = text.replaceAll("\\√∫", "&uacute;");
+    text = text.replaceAll("\\√ó", "&times;");
+    text = text.replaceAll("\\√û", "&THORN;");
+    text = text.replaceAll("\\√æ", "&thorn;");
+    text = text.replaceAll("\\√ü", "&szlig;");
+    text = text.replaceAll("\\¬≥", "&sup3;");
+    text = text.replaceAll("\\¬≤", "&sup2;");
+    text = text.replaceAll("\\¬π", "&sup1;");
+    text = text.replaceAll("\\¬ß", "&sect;");
+    text = text.replaceAll("\\¬Æ", "&reg;");
+    text = text.replaceAll("\\¬ª", "&raquo;");
     text = text.replaceAll("\\\"", "&quot;");
-    text = text.replaceAll("\\£", "&pound;");
-    text = text.replaceAll("\\±", "&plusmn;");
-    text = text.replaceAll("\\∂", "&para;");
-    text = text.replaceAll("\\÷", "&Ouml;");
-    text = text.replaceAll("\\ˆ", "&ouml;");
-    text = text.replaceAll("\\’", "&Otilde;");
-    text = text.replaceAll("\\ı", "&otilde;");
-    text = text.replaceAll("\\ÿ", "&Oslash;");
-    text = text.replaceAll("\\¯", "&oslash;");
-    text = text.replaceAll("\\∫", "&ordm;");
-    text = text.replaceAll("\\™", "&ordf;");
-    text = text.replaceAll("\\“", "&Ograve;");
-    text = text.replaceAll("\\Ú", "&ograve;");
-    text = text.replaceAll("\\‘", "&Ocirc;");
-    text = text.replaceAll("\\Ù", "&ocirc;");
-    text = text.replaceAll("\\”", "&Oacute;");
-    text = text.replaceAll("\\Û", "&oacute;");
-    text = text.replaceAll("\\—", "&Ntilde;");
-    text = text.replaceAll("\\Ò", "&ntilde;");
-    text = text.replaceAll("\\¨", "&not;");
-    text = text.replaceAll("\\∑", "&middot;");
-    text = text.replaceAll("\\µ", "&micro;");
-    text = text.replaceAll("\\Ø", "&macr;");
+    text = text.replaceAll("\\¬£", "&pound;");
+    text = text.replaceAll("\\¬±", "&plusmn;");
+    text = text.replaceAll("\\¬∂", "&para;");
+    text = text.replaceAll("\\√ñ", "&Ouml;");
+    text = text.replaceAll("\\√∂", "&ouml;");
+    text = text.replaceAll("\\√ï", "&Otilde;");
+    text = text.replaceAll("\\√µ", "&otilde;");
+    text = text.replaceAll("\\√ò", "&Oslash;");
+    text = text.replaceAll("\\√∏", "&oslash;");
+    text = text.replaceAll("\\¬∫", "&ordm;");
+    text = text.replaceAll("\\¬™", "&ordf;");
+    text = text.replaceAll("\\√í", "&Ograve;");
+    text = text.replaceAll("\\√≤", "&ograve;");
+    text = text.replaceAll("\\√î", "&Ocirc;");
+    text = text.replaceAll("\\√¥", "&ocirc;");
+    text = text.replaceAll("\\√ì", "&Oacute;");
+    text = text.replaceAll("\\√≥", "&oacute;");
+    text = text.replaceAll("\\√ë", "&Ntilde;");
+    text = text.replaceAll("\\√±", "&ntilde;");
+    text = text.replaceAll("\\¬¨", "&not;");
+    text = text.replaceAll("\\¬∑", "&middot;");
+    text = text.replaceAll("\\¬µ", "&micro;");
+    text = text.replaceAll("\\¬Ø", "&macr;");
     text = text.replaceAll("\\<", "&lt;");
-    text = text.replaceAll("\\œ", "&Iuml;");
-    text = text.replaceAll("\\Ô", "&iuml;");
-    text = text.replaceAll("\\ø", "&iquest;");
-    text = text.replaceAll("\\Ã", "&Igrave;");
-    text = text.replaceAll("\\Ï", "&igrave;");
-    text = text.replaceAll("\\°", "&iexcl;");
-    text = text.replaceAll("\\Œ", "&Icirc;");
-    text = text.replaceAll("\\Ó", "&icirc;");
-    text = text.replaceAll("\\Õ", "&Iacute;");
-    text = text.replaceAll("\\Ì", "&iacute;");
+    text = text.replaceAll("\\√è", "&Iuml;");
+    text = text.replaceAll("\\√Ø", "&iuml;");
+    text = text.replaceAll("\\¬ø", "&iquest;");
+    text = text.replaceAll("\\√å", "&Igrave;");
+    text = text.replaceAll("\\√¨", "&igrave;");
+    text = text.replaceAll("\\¬°", "&iexcl;");
+    text = text.replaceAll("\\√é", "&Icirc;");
+    text = text.replaceAll("\\√Æ", "&icirc;");
+    text = text.replaceAll("\\√ç", "&Iacute;");
+    text = text.replaceAll("\\√≠", "&iacute;");
     text = text.replaceAll("\\>", "&gt;");
-    text = text.replaceAll("\\æ", "&frac34;");
-    text = text.replaceAll("\\º", "&frac14;");
-    text = text.replaceAll("\\Ω", "&frac12;");
-    text = text.replaceAll("\\Ä", "&euro;");
-    text = text.replaceAll("\\À", "&Euml;");
-    text = text.replaceAll("\\Î", "&euml;");
-    text = text.replaceAll("\\–", "&ETH;");
-    text = text.replaceAll("\\", "&eth;");
-    text = text.replaceAll("\\»", "&Egrave;");
-    text = text.replaceAll("\\Ë", "&egrave;");
-    text = text.replaceAll("\\ ", "&Ecirc;");
-    text = text.replaceAll("\\Í", "&ecirc;");
-    text = text.replaceAll("\\…", "&Eacute;");
-    text = text.replaceAll("\\È", "&eacute;");
-    text = text.replaceAll("\\˜", "&divide;");
-    text = text.replaceAll("\\∞", "&deg;");
-    text = text.replaceAll("\\§", "&curren;");
-    text = text.replaceAll("\\©", "&copy;");
-    text = text.replaceAll("\\¢", "&cent;");
-    text = text.replaceAll("\\∏", "&cedil;");
-    text = text.replaceAll("\\«", "&Ccedil;");
-    text = text.replaceAll("\\Á", "&ccedil;");
-    text = text.replaceAll("\\¶", "&brvbar;");
-    text = text.replaceAll("\\ƒ", "&Auml;");
-    text = text.replaceAll("\\‰", "&auml;");
-    text = text.replaceAll("\\√", "&Atilde;");
-    text = text.replaceAll("\\„", "&atilde;");
-    text = text.replaceAll("\\≈", "&Aring;");
-    text = text.replaceAll("\\Â", "&aring;");
-    text = text.replaceAll("\\¿", "&Agrave;");
-    text = text.replaceAll("\\‡", "&agrave;");
-    text = text.replaceAll("\\∆", "&AElig;");
-    text = text.replaceAll("\\Ê", "&aelig;");
-    text = text.replaceAll("\\¥", "&acute;");
-    text = text.replaceAll("\\¬", "&Acirc;");
-    text = text.replaceAll("\\‚", "&acirc;");
-    text = text.replaceAll("\\¡", "&Aacute;");
-    text = text.replaceAll("\\·", "&aacute;");
+    text = text.replaceAll("\\¬æ", "&frac34;");
+    text = text.replaceAll("\\¬º", "&frac14;");
+    text = text.replaceAll("\\¬Ω", "&frac12;");
+    text = text.replaceAll("\\‚Ç¨", "&euro;");
+    text = text.replaceAll("\\√ã", "&Euml;");
+    text = text.replaceAll("\\√´", "&euml;");
+    text = text.replaceAll("\\√ê", "&ETH;");
+    text = text.replaceAll("\\√∞", "&eth;");
+    text = text.replaceAll("\\√à", "&Egrave;");
+    text = text.replaceAll("\\√®", "&egrave;");
+    text = text.replaceAll("\\√ä", "&Ecirc;");
+    text = text.replaceAll("\\√™", "&ecirc;");
+    text = text.replaceAll("\\√â", "&Eacute;");
+    text = text.replaceAll("\\√©", "&eacute;");
+    text = text.replaceAll("\\√∑", "&divide;");
+    text = text.replaceAll("\\¬∞", "&deg;");
+    text = text.replaceAll("\\¬§", "&curren;");
+    text = text.replaceAll("\\¬©", "&copy;");
+    text = text.replaceAll("\\¬¢", "&cent;");
+    text = text.replaceAll("\\¬∏", "&cedil;");
+    text = text.replaceAll("\\√á", "&Ccedil;");
+    text = text.replaceAll("\\√ß", "&ccedil;");
+    text = text.replaceAll("\\¬¶", "&brvbar;");
+    text = text.replaceAll("\\√Ñ", "&Auml;");
+    text = text.replaceAll("\\√§", "&auml;");
+    text = text.replaceAll("\\√É", "&Atilde;");
+    text = text.replaceAll("\\√£", "&atilde;");
+    text = text.replaceAll("\\√Ö", "&Aring;");
+    text = text.replaceAll("\\√•", "&aring;");
+    text = text.replaceAll("\\√Ä", "&Agrave;");
+    text = text.replaceAll("\\√†", "&agrave;");
+    text = text.replaceAll("\\√Ü", "&AElig;");
+    text = text.replaceAll("\\√¶", "&aelig;");
+    text = text.replaceAll("\\¬¥", "&acute;");
+    text = text.replaceAll("\\√Ç", "&Acirc;");
+    text = text.replaceAll("\\√¢", "&acirc;");
+    text = text.replaceAll("\\√Å", "&Aacute;");
+    text = text.replaceAll("\\√°", "&aacute;");
     return text;
   }
 
   /**
-   * MÈtodo utilizado para remover o "escapar" os caracteres especiais em HTML.<Br>
+   * M√©todo utilizado para remover o "escapar" os caracteres especiais em HTML.<Br>
    *
    * @param text
    */
   public static String unescapeHTML(String text) {
-    text = text.replaceAll("&yen;", "\\•");
-    text = text.replaceAll("&Yacute;", "\\›");
-    text = text.replaceAll("&yacute;", "\\˝");
-    text = text.replaceAll("&Uuml;", "\\‹");
-    text = text.replaceAll("&uuml;", "\\¸");
-    text = text.replaceAll("&uml;", "\\®");
-    text = text.replaceAll("&Ugrave;", "\\Ÿ");
-    text = text.replaceAll("&ugrave;", "\\˘");
-    text = text.replaceAll("&Ucirc;", "\\€");
-    text = text.replaceAll("&ucirc;", "\\˚");
-    text = text.replaceAll("&Uacute;", "\\⁄");
-    text = text.replaceAll("&uacute;", "\\˙");
-    text = text.replaceAll("&times;", "\\◊");
-    text = text.replaceAll("&THORN;", "\\ﬁ");
-    text = text.replaceAll("&thorn;", "\\˛");
-    text = text.replaceAll("&szlig;", "\\ﬂ");
-    text = text.replaceAll("&sup3;", "\\≥");
-    text = text.replaceAll("&sup2;", "\\≤");
-    text = text.replaceAll("&sup1;", "\\π");
-    text = text.replaceAll("&sect;", "\\ß");
-    text = text.replaceAll("&reg;", "\\Æ");
-    text = text.replaceAll("&raquo;", "\\ª");
+    text = text.replaceAll("&yen;", "\\¬•");
+    text = text.replaceAll("&Yacute;", "\\√ù");
+    text = text.replaceAll("&yacute;", "\\√Ω");
+    text = text.replaceAll("&Uuml;", "\\√ú");
+    text = text.replaceAll("&uuml;", "\\√º");
+    text = text.replaceAll("&uml;", "\\¬®");
+    text = text.replaceAll("&Ugrave;", "\\√ô");
+    text = text.replaceAll("&ugrave;", "\\√π");
+    text = text.replaceAll("&Ucirc;", "\\√õ");
+    text = text.replaceAll("&ucirc;", "\\√ª");
+    text = text.replaceAll("&Uacute;", "\\√ö");
+    text = text.replaceAll("&uacute;", "\\√∫");
+    text = text.replaceAll("&times;", "\\√ó");
+    text = text.replaceAll("&THORN;", "\\√û");
+    text = text.replaceAll("&thorn;", "\\√æ");
+    text = text.replaceAll("&szlig;", "\\√ü");
+    text = text.replaceAll("&sup3;", "\\¬≥");
+    text = text.replaceAll("&sup2;", "\\¬≤");
+    text = text.replaceAll("&sup1;", "\\¬π");
+    text = text.replaceAll("&sect;", "\\¬ß");
+    text = text.replaceAll("&reg;", "\\¬Æ");
+    text = text.replaceAll("&raquo;", "\\¬ª");
     text = text.replaceAll("\\\"", "&quot;");
-    text = text.replaceAll("&pound;", "\\£");
-    text = text.replaceAll("&plusmn;", "\\±");
-    text = text.replaceAll("&para;", "\\∂");
-    text = text.replaceAll("&Ouml;", "\\÷");
-    text = text.replaceAll("&ouml;", "\\ˆ");
-    text = text.replaceAll("&Otilde;", "\\’");
-    text = text.replaceAll("&otilde;", "\\ı");
-    text = text.replaceAll("&Oslash;", "\\ÿ");
-    text = text.replaceAll("&oslash;", "\\¯");
-    text = text.replaceAll("&ordm;", "\\∫");
-    text = text.replaceAll("&ordf;", "\\™");
-    text = text.replaceAll("&Ograve;", "\\“");
-    text = text.replaceAll("&ograve;", "\\Ú");
-    text = text.replaceAll("&Ocirc;", "\\‘");
-    text = text.replaceAll("&ocirc;", "\\Ù");
-    text = text.replaceAll("&Oacute;", "\\”");
-    text = text.replaceAll("&oacute;", "\\Û");
-    text = text.replaceAll("&Ntilde;", "\\—");
-    text = text.replaceAll("&ntilde;", "\\Ò");
-    text = text.replaceAll("&not;", "\\¨");
-    text = text.replaceAll("&middot;", "\\∑");
-    text = text.replaceAll("&micro;", "\\µ");
-    text = text.replaceAll("&macr;", "\\Ø");
+    text = text.replaceAll("&pound;", "\\¬£");
+    text = text.replaceAll("&plusmn;", "\\¬±");
+    text = text.replaceAll("&para;", "\\¬∂");
+    text = text.replaceAll("&Ouml;", "\\√ñ");
+    text = text.replaceAll("&ouml;", "\\√∂");
+    text = text.replaceAll("&Otilde;", "\\√ï");
+    text = text.replaceAll("&otilde;", "\\√µ");
+    text = text.replaceAll("&Oslash;", "\\√ò");
+    text = text.replaceAll("&oslash;", "\\√∏");
+    text = text.replaceAll("&ordm;", "\\¬∫");
+    text = text.replaceAll("&ordf;", "\\¬™");
+    text = text.replaceAll("&Ograve;", "\\√í");
+    text = text.replaceAll("&ograve;", "\\√≤");
+    text = text.replaceAll("&Ocirc;", "\\√î");
+    text = text.replaceAll("&ocirc;", "\\√¥");
+    text = text.replaceAll("&Oacute;", "\\√ì");
+    text = text.replaceAll("&oacute;", "\\√≥");
+    text = text.replaceAll("&Ntilde;", "\\√ë");
+    text = text.replaceAll("&ntilde;", "\\√±");
+    text = text.replaceAll("&not;", "\\¬¨");
+    text = text.replaceAll("&middot;", "\\¬∑");
+    text = text.replaceAll("&micro;", "\\¬µ");
+    text = text.replaceAll("&macr;", "\\¬Ø");
     text = text.replaceAll("&lt;", "\\<");
-    text = text.replaceAll("&Iuml;", "\\œ");
-    text = text.replaceAll("&iuml;", "\\Ô");
-    text = text.replaceAll("&iquest;", "\\ø");
-    text = text.replaceAll("&Igrave;", "\\Ã");
-    text = text.replaceAll("&igrave;", "\\Ï");
-    text = text.replaceAll("&iexcl;", "\\°");
-    text = text.replaceAll("&Icirc;", "\\Œ");
-    text = text.replaceAll("&icirc;", "\\Ó");
-    text = text.replaceAll("&Iacute;", "\\Õ");
-    text = text.replaceAll("&iacute;", "\\Ì");
+    text = text.replaceAll("&Iuml;", "\\√è");
+    text = text.replaceAll("&iuml;", "\\√Ø");
+    text = text.replaceAll("&iquest;", "\\¬ø");
+    text = text.replaceAll("&Igrave;", "\\√å");
+    text = text.replaceAll("&igrave;", "\\√¨");
+    text = text.replaceAll("&iexcl;", "\\¬°");
+    text = text.replaceAll("&Icirc;", "\\√é");
+    text = text.replaceAll("&icirc;", "\\√Æ");
+    text = text.replaceAll("&Iacute;", "\\√ç");
+    text = text.replaceAll("&iacute;", "\\√≠");
     text = text.replaceAll("&gt;", "\\>");
-    text = text.replaceAll("&frac34;", "\\æ");
-    text = text.replaceAll("&frac14;", "\\º");
-    text = text.replaceAll("&frac12;", "\\Ω");
-    text = text.replaceAll("&euro;", "\\Ä");
-    text = text.replaceAll("&Euml;", "\\À");
-    text = text.replaceAll("&euml;", "\\Î");
-    text = text.replaceAll("&ETH;", "\\–");
-    text = text.replaceAll("&eth;", "\\");
-    text = text.replaceAll("&Egrave;", "\\»");
-    text = text.replaceAll("&egrave;", "\\Ë");
-    text = text.replaceAll("&Ecirc;", "\\ ");
-    text = text.replaceAll("&ecirc;", "\\Í");
-    text = text.replaceAll("&Eacute;", "\\…");
-    text = text.replaceAll("&eacute;", "\\È");
-    text = text.replaceAll("&divide;", "\\˜");
-    text = text.replaceAll("&deg;", "\\∞");
-    text = text.replaceAll("&curren;", "\\§");
-    text = text.replaceAll("&copy;", "\\©");
-    text = text.replaceAll("&cent;", "\\¢");
-    text = text.replaceAll("&cedil;", "\\∏");
-    text = text.replaceAll("&Ccedil;", "\\«");
-    text = text.replaceAll("&ccedil;", "\\Á");
-    text = text.replaceAll("&brvbar;", "\\¶");
-    text = text.replaceAll("&Auml;", "\\ƒ");
-    text = text.replaceAll("&auml;", "\\‰");
-    text = text.replaceAll("&Atilde;", "\\√");
-    text = text.replaceAll("&atilde;", "\\„");
-    text = text.replaceAll("&Aring;", "\\≈");
-    text = text.replaceAll("&aring;", "\\Â");
-    text = text.replaceAll("&Agrave;", "\\¿");
-    text = text.replaceAll("&agrave;", "\\‡");
-    text = text.replaceAll("&AElig;", "\\∆");
-    text = text.replaceAll("&aelig;", "\\Ê");
-    text = text.replaceAll("&acute;", "\\¥");
-    text = text.replaceAll("&Acirc;", "\\¬");
-    text = text.replaceAll("&acirc;", "\\‚");
-    text = text.replaceAll("&Aacute;", "\\¡");
-    text = text.replaceAll("&aacute;", "\\·");
+    text = text.replaceAll("&frac34;", "\\¬æ");
+    text = text.replaceAll("&frac14;", "\\¬º");
+    text = text.replaceAll("&frac12;", "\\¬Ω");
+    text = text.replaceAll("&euro;", "\\‚Ç¨");
+    text = text.replaceAll("&Euml;", "\\√ã");
+    text = text.replaceAll("&euml;", "\\√´");
+    text = text.replaceAll("&ETH;", "\\√ê");
+    text = text.replaceAll("&eth;", "\\√∞");
+    text = text.replaceAll("&Egrave;", "\\√à");
+    text = text.replaceAll("&egrave;", "\\√®");
+    text = text.replaceAll("&Ecirc;", "\\√ä");
+    text = text.replaceAll("&ecirc;", "\\√™");
+    text = text.replaceAll("&Eacute;", "\\√â");
+    text = text.replaceAll("&eacute;", "\\√©");
+    text = text.replaceAll("&divide;", "\\√∑");
+    text = text.replaceAll("&deg;", "\\¬∞");
+    text = text.replaceAll("&curren;", "\\¬§");
+    text = text.replaceAll("&copy;", "\\¬©");
+    text = text.replaceAll("&cent;", "\\¬¢");
+    text = text.replaceAll("&cedil;", "\\¬∏");
+    text = text.replaceAll("&Ccedil;", "\\√á");
+    text = text.replaceAll("&ccedil;", "\\√ß");
+    text = text.replaceAll("&brvbar;", "\\¬¶");
+    text = text.replaceAll("&Auml;", "\\√Ñ");
+    text = text.replaceAll("&auml;", "\\√§");
+    text = text.replaceAll("&Atilde;", "\\√É");
+    text = text.replaceAll("&atilde;", "\\√£");
+    text = text.replaceAll("&Aring;", "\\√Ö");
+    text = text.replaceAll("&aring;", "\\√•");
+    text = text.replaceAll("&Agrave;", "\\√Ä");
+    text = text.replaceAll("&agrave;", "\\√†");
+    text = text.replaceAll("&AElig;", "\\√Ü");
+    text = text.replaceAll("&aelig;", "\\√¶");
+    text = text.replaceAll("&acute;", "\\¬¥");
+    text = text.replaceAll("&Acirc;", "\\√Ç");
+    text = text.replaceAll("&acirc;", "\\√¢");
+    text = text.replaceAll("&Aacute;", "\\√Å");
+    text = text.replaceAll("&aacute;", "\\√°");
     text = text.replaceAll("&amp;", "\\&");
     return text;
   }
@@ -604,7 +604,7 @@ public class RUString {
    * Capitaliza a primeira letra de uma string.
    *
    * @param str A string a ser capitalizada.
-   * @return A string com a primeira letra em mai˙scula.
+   * @return A string com a primeira letra em mai√∫scula.
    */
   public static String capitalize(String str) {
     if (str == null || str.isEmpty()) {
@@ -614,8 +614,8 @@ public class RUString {
   }
 
   /**
-   * Este mÈtodo decodifica uma string codificada em base 64.<br>
-   * A diferenÁa do mÈtodo 'mime' È que ele quebra a linha a cada 76 caracteres (comp·tivel com e-mails), enquanto que o mÈtodo padr„o n„o considera as quebras de linha.
+   * Este m√©todo decodifica uma string codificada em base 64.<br>
+   * A diferen√ßa do m√©todo 'mime' √© que ele quebra a linha a cada 76 caracteres (comp√°tivel com e-mails), enquanto que o m√©todo padr√£o n√£o considera as quebras de linha.
    *
    * @param encodedContent String codificada
    * @return String decodificada
@@ -625,8 +625,8 @@ public class RUString {
   }
 
   /**
-   * Este mÈtodo decodifica uma string codificada em base 64.<br>
-   * A diferenÁa do mÈtodo 'mime' È que ele quebra a linha a cada 76 caracteres (comp·tivel com e-mails), enquanto que o mÈtodo padr„o n„o considera as quebras de linha.
+   * Este m√©todo decodifica uma string codificada em base 64.<br>
+   * A diferen√ßa do m√©todo 'mime' √© que ele quebra a linha a cada 76 caracteres (comp√°tivel com e-mails), enquanto que o m√©todo padr√£o n√£o considera as quebras de linha.
    *
    * @param encodedContent String codificada
    * @return String decodificada
@@ -636,13 +636,13 @@ public class RUString {
     try {
       return new String(Base64.getMimeDecoder().decode(encodedContent), charset);
     } catch (UnsupportedEncodingException e) {
-      throw new RFWCriticalException("Charset inv·lido: '" + charset + "'!");
+      throw new RFWCriticalException("Charset inv√°lido: '" + charset + "'!");
     }
   }
 
   /**
-   * Este mÈtodo decodifica uma string codificada em base 64.<br>
-   * A diferenÁa do mÈtodo 'mime' È que ele quebra a linha a cada 76 caracteres (comp·tivel com e-mails), enquanto que o mÈtodo padr„o n„o considera as quebras de linha.
+   * Este m√©todo decodifica uma string codificada em base 64.<br>
+   * A diferen√ßa do m√©todo 'mime' √© que ele quebra a linha a cada 76 caracteres (comp√°tivel com e-mails), enquanto que o m√©todo padr√£o n√£o considera as quebras de linha.
    *
    * @param encodedContent String codificada
    * @return String decodificada
@@ -652,8 +652,8 @@ public class RUString {
   }
 
   /**
-   * Este mÈtodo codifica uma string em base 64.<br>
-   * A diferenÁa do mÈtodo 'mime' È que ele quebra a linha a cada 76 caracteres (comp·tivel com e-mails), enquanto que o mÈtodo padr„o n„o considera as quebras de linha.
+   * Este m√©todo codifica uma string em base 64.<br>
+   * A diferen√ßa do m√©todo 'mime' √© que ele quebra a linha a cada 76 caracteres (comp√°tivel com e-mails), enquanto que o m√©todo padr√£o n√£o considera as quebras de linha.
    *
    * @param content String para ser codificada.
    * @return String codificada
@@ -663,8 +663,8 @@ public class RUString {
   }
 
   /**
-   * Este mÈtodo codifica um array de bytes em base 64.<br>
-   * A diferenÁa do mÈtodo 'mime' È que ele quebra a linha a cada 76 caracteres (comp·tivel com e-mails), enquanto que o mÈtodo padr„o n„o considera as quebras de linha.
+   * Este m√©todo codifica um array de bytes em base 64.<br>
+   * A diferen√ßa do m√©todo 'mime' √© que ele quebra a linha a cada 76 caracteres (comp√°tivel com e-mails), enquanto que o m√©todo padr√£o n√£o considera as quebras de linha.
    *
    * @param content String para ser codificada.
    * @return String codificada
@@ -674,7 +674,7 @@ public class RUString {
   }
 
   /**
-   * Este mÈtodo decodifica uma string codificada em base 64.
+   * Este m√©todo decodifica uma string codificada em base 64.
    *
    * @param encodedContent String codificada
    * @return String decodificada
@@ -684,7 +684,7 @@ public class RUString {
   }
 
   /**
-   * Este mÈtodo decodifica uma string codificada em base 64.
+   * Este m√©todo decodifica uma string codificada em base 64.
    *
    * @param encodedContent String codificada
    * @return String decodificada
@@ -694,12 +694,12 @@ public class RUString {
     try {
       return new String(Base64.getDecoder().decode(encodedContent), charset);
     } catch (UnsupportedEncodingException e) {
-      throw new RFWCriticalException("Charset inv·lido: '" + charset + "'!");
+      throw new RFWCriticalException("Charset inv√°lido: '" + charset + "'!");
     }
   }
 
   /**
-   * Este mÈtodo decodifica uma string codificada em base 64.
+   * Este m√©todo decodifica uma string codificada em base 64.
    *
    * @param encodedContent String codificada
    * @return String decodificada
@@ -709,7 +709,7 @@ public class RUString {
   }
 
   /**
-   * Este mÈtodo codifica uma string em base 64.
+   * Este m√©todo codifica uma string em base 64.
    *
    * @param content String para ser codificada.
    * @return String codificada
@@ -719,7 +719,7 @@ public class RUString {
   }
 
   /**
-   * Este mÈtodo codifica um array de bytes em base 64.
+   * Este m√©todo codifica um array de bytes em base 64.
    *
    * @param content String para ser codificada.
    * @return String codificada
@@ -729,56 +729,56 @@ public class RUString {
   }
 
   /**
-   * Este mÈtodo codifica um array de bytes em base 32.
+   * Este m√©todo codifica um array de bytes em base 32.
    *
    * @param content String para ser codificada.
    * @return String codificada
    */
   public static String encodeBase32(byte[] content) {
-    // Estamos usando o Google Guava (j· presente no RFW por conta do Vaadin e outras bibliotecas) Outra opÁ„o seria utilizar o Apache Commons, mas este ainda n„o est· presente no RFW. No futuro quem sabe ter a prÛpria implementaÁ„o
+    // Estamos usando o Google Guava (j√° presente no RFW por conta do Vaadin e outras bibliotecas) Outra op√ß√£o seria utilizar o Apache Commons, mas este ainda n√£o est√° presente no RFW. No futuro quem sabe ter a pr√≥pria implementa√ß√£o
     // return BaseEncoding.base32().encode(content);
     return Base32.encode(content);
   }
 
   /**
-   * Este mÈtodo codifica uma String em base 32.
+   * Este m√©todo codifica uma String em base 32.
    *
    * @param content String para ser codificada.
    * @return String codificada
    */
   public static String encodeBase32(String content) {
-    // Estamos usando o Google Guava (j· presente no RFW por conta do Vaadin e outras bibliotecas) Outra opÁ„o seria utilizar o Apache Commons, mas este ainda n„o est· presente no RFW. No futuro quem sabe ter a prÛpria implementaÁ„o
+    // Estamos usando o Google Guava (j√° presente no RFW por conta do Vaadin e outras bibliotecas) Outra op√ß√£o seria utilizar o Apache Commons, mas este ainda n√£o est√° presente no RFW. No futuro quem sabe ter a pr√≥pria implementa√ß√£o
     // return BaseEncoding.base32().encode(content.getBytes());
     return Base32.encode(content.getBytes());
   }
 
   /**
-   * Este mÈtodo decodifica uma String em base 32.
+   * Este m√©todo decodifica uma String em base 32.
    *
    * @param content String para codificada.
    * @return String codificada
    */
   public static String decodeBase32(String content) {
-    // Estamos usando o Google Guava (j· presente no RFW por conta do Vaadin e outras bibliotecas) Outra opÁ„o seria utilizar o Apache Commons, mas este ainda n„o est· presente no RFW. No futuro quem sabe ter a prÛpria implementaÁ„o
+    // Estamos usando o Google Guava (j√° presente no RFW por conta do Vaadin e outras bibliotecas) Outra op√ß√£o seria utilizar o Apache Commons, mas este ainda n√£o est√° presente no RFW. No futuro quem sabe ter a pr√≥pria implementa√ß√£o
     // return new String(BaseEncoding.base32().decode(content));
     return new String(Base32.decode(content));
   }
 
   /**
-   * Este mÈtodo decodifica uma String em base 32.
+   * Este m√©todo decodifica uma String em base 32.
    *
    * @param content String para codificada.
    * @return String codificada
    */
   public static byte[] decodeBase32ToByte(String content) {
-    // Estamos usando o Google Guava (j· presente no RFW por conta do Vaadin e outras bibliotecas) Outra opÁ„o seria utilizar o Apache Commons, mas este ainda n„o est· presente no RFW. No futuro quem sabe ter a prÛpria implementaÁ„o
+    // Estamos usando o Google Guava (j√° presente no RFW por conta do Vaadin e outras bibliotecas) Outra op√ß√£o seria utilizar o Apache Commons, mas este ainda n√£o est√° presente no RFW. No futuro quem sabe ter a pr√≥pria implementa√ß√£o
     // return BaseEncoding.base32().decode(content);
     return Base32.decode(content);
   }
 
   /**
-   * MÈtodo utilizado para converter um byte array de base 64 em uma String para Hexadecimal.<br>
-   * Este mÈtodo È utilizado por exemplo para receber o bytearray do campo DigestValue do XML da NFe/NFCe (cuja base È 64), e converte para uma representaÁ„o Hexadecimal. Essa representaÁ„o Hexa È utilizada na geraÁ„o da URL no QRCode da NFCe.
+   * M√©todo utilizado para converter um byte array de base 64 em uma String para Hexadecimal.<br>
+   * Este m√©todo √© utilizado por exemplo para receber o bytearray do campo DigestValue do XML da NFe/NFCe (cuja base √© 64), e converte para uma representa√ß√£o Hexadecimal. Essa representa√ß√£o Hexa √© utilizada na gera√ß√£o da URL no QRCode da NFCe.
    *
    * @param bytearray
    * @return String com o valor em HexaDecimal com as letras em lowercase.
@@ -788,8 +788,8 @@ public class RUString {
   }
 
   /**
-   * MÈtodo utilizado extrair o byte array de base 64 a partir de uma string que represente um valor em hexa.<br>
-   * Faz o procedimento contr·rio ao {@link #toHexFromBase64(byte[])}<br>
+   * M√©todo utilizado extrair o byte array de base 64 a partir de uma string que represente um valor em hexa.<br>
+   * Faz o procedimento contr√°rio ao {@link #toHexFromBase64(byte[])}<br>
    *
    * @param bytearray
    * @param hexstring
@@ -800,8 +800,8 @@ public class RUString {
   }
 
   /**
-   * MÈtodo utilizado para converter uma String para Hexadecimal.<br>
-   * Este mÈtodo utiliza o CharSet Padr„o do ambiente.
+   * M√©todo utilizado para converter uma String para Hexadecimal.<br>
+   * Este m√©todo utiliza o CharSet Padr√£o do ambiente.
    *
    * @param value Valor a ser convertido
    * @return String com o valor em HexaDecimal com as letras em lowercase.
@@ -811,11 +811,11 @@ public class RUString {
   }
 
   /**
-   * MÈtodo utilizado para converter uma String para Hexadecimal.<br>
-   * Este mÈtodo permite identificar o charset usado para decodificar a String.
+   * M√©todo utilizado para converter uma String para Hexadecimal.<br>
+   * Este m√©todo permite identificar o charset usado para decodificar a String.
    *
    * @param value Valor a ser convertido
-   * @param charset Charset para decodificaÁ„o da String
+   * @param charset Charset para decodifica√ß√£o da String
    * @return String com o valor em HexaDecimal com as letras em lowercase.
    */
   public static String toHex(String value, Charset charset) throws RFWException {
@@ -823,7 +823,7 @@ public class RUString {
   }
 
   /**
-   * MÈtodo utilizado para converter um array de bytes para Hexadecimal.<br>
+   * M√©todo utilizado para converter um array de bytes para Hexadecimal.<br>
    *
    * @param bytes cadeia de bytes a ser convertido para uma String representando o valor Hexadecimal
    * @return String com o valor em HexaDecimal com as letras em lowercase.
@@ -833,14 +833,14 @@ public class RUString {
   }
 
   /**
-   * Este mÈtodo recebe uma string representando valores em hexa e retorna os valores em um array de bytes.
+   * Este m√©todo recebe uma string representando valores em hexa e retorna os valores em um array de bytes.
    *
    * @param hexstring String representando um valor hexa
    * @return array de bytes com os mesmos valores representados em hexa na string.
    * @throws RFWException
    */
   public static byte[] fromHexToByteArray(String hexstring) throws RFWException {
-    // Valida a String recebida se sÛ tem caracteres em Hexa
+    // Valida a String recebida se s√≥ tem caracteres em Hexa
     if (!hexstring.matches("[0-9A-Fa-f]*")) {
       throw new RFWValidationException("BISERP_000362");
     }
@@ -848,14 +848,14 @@ public class RUString {
   }
 
   /**
-   * MÈtodo utilizado para converter uma string de valor hexadecimal para uma String. Utiliza os bytes dos valores hexa decimal para converter em String utilizando o charset padr„o do sistema.
+   * M√©todo utilizado para converter uma string de valor hexadecimal para uma String. Utiliza os bytes dos valores hexa decimal para converter em String utilizando o charset padr√£o do sistema.
    *
    * @param hexstring String com valores em hexa
-   * @return String montada usando os bytes do valor hexa com o charset padr„o do sistema.
+   * @return String montada usando os bytes do valor hexa com o charset padr√£o do sistema.
    * @throws RFWException
    */
   public static String fromHexToString(String hexstring) throws RFWException {
-    // Valida a String recebida se sÛ tem caracteres em Hexa
+    // Valida a String recebida se s√≥ tem caracteres em Hexa
     if (!hexstring.matches("[0-9A-Fa-f]*")) {
       throw new RFWValidationException("BISERP_000362");
     }
@@ -867,7 +867,7 @@ public class RUString {
    *
    * @param value Texto a ter o hash calculado.
    * @return Hash SHA-1 em uma String hexadecimal (40 caracteres).
-   * @throws RFWException Em caso de falha no c·lculo do hash.
+   * @throws RFWException Em caso de falha no c√°lculo do hash.
    */
   public static String calcSHA1ToHex(String value) throws RFWException {
     return toHex(calcSHA1(value, StandardCharsets.UTF_8));
@@ -879,7 +879,7 @@ public class RUString {
    * @param value Texto a ter o hash calculado.
    * @param charset Nome do charset usado para converter a String em bytes (ex.: "UTF-8", "ISO-8859-1").
    * @return Hash SHA-1 em uma String hexadecimal (40 caracteres).
-   * @throws RFWException Em caso de charset inv·lido ou erro no c·lculo do hash.
+   * @throws RFWException Em caso de charset inv√°lido ou erro no c√°lculo do hash.
    */
   public static String calcSHA1ToHex(String value, String charset) throws RFWException {
     return toHex(calcSHA1(value, charset));
@@ -891,7 +891,7 @@ public class RUString {
    * @param value Texto a ter o hash calculado.
    * @param charset Charset usado para converter a String em bytes.
    * @return Hash SHA-1 em uma String hexadecimal (40 caracteres).
-   * @throws RFWException Em caso de falha no c·lculo do hash.
+   * @throws RFWException Em caso de falha no c√°lculo do hash.
    */
   public static String calcSHA1ToHex(String value, Charset charset) throws RFWException {
     return toHex(calcSHA1(value, charset));
@@ -902,7 +902,7 @@ public class RUString {
    *
    * @param value Texto a ter o hash calculado.
    * @return Hash SHA-1 em um array de bytes (20 bytes).
-   * @throws RFWException Em caso de falha no c·lculo do hash.
+   * @throws RFWException Em caso de falha no c√°lculo do hash.
    */
   public static byte[] calcSHA1(String value) throws RFWException {
     return calcSHA1Internal(value, StandardCharsets.UTF_8);
@@ -914,13 +914,13 @@ public class RUString {
    * @param value Texto a ter o hash calculado.
    * @param charset Nome do charset usado para converter a String em bytes (ex.: "UTF-8", "ISO-8859-1").
    * @return Hash SHA-1 em um array de bytes (20 bytes).
-   * @throws RFWException Em caso de charset inv·lido ou erro no c·lculo do hash.
+   * @throws RFWException Em caso de charset inv√°lido ou erro no c√°lculo do hash.
    */
   public static byte[] calcSHA1(String value, String charset) throws RFWException {
     try {
       return calcSHA1Internal(value, Charset.forName(charset));
     } catch (IllegalArgumentException e) {
-      // Charset inv·lido
+      // Charset inv√°lido
       throw new RFWCriticalException("BISERP_000307", e);
     }
   }
@@ -931,14 +931,14 @@ public class RUString {
    * @param value Texto a ter o hash calculado.
    * @param charset Charset usado para converter a String em bytes.
    * @return Hash SHA-1 em um array de bytes (20 bytes).
-   * @throws RFWException Em caso de falha no c·lculo do hash.
+   * @throws RFWException Em caso de falha no c√°lculo do hash.
    */
   public static byte[] calcSHA1(String value, Charset charset) throws RFWException {
     return calcSHA1Internal(value, charset);
   }
 
   /**
-   * ImplementaÁ„o centralizada do c·lculo de SHA-1.
+   * Implementa√ß√£o centralizada do c√°lculo de SHA-1.
    */
   private static byte[] calcSHA1Internal(String value, Charset charset) throws RFWException {
     try {
@@ -946,17 +946,17 @@ public class RUString {
       digest.reset();
       return digest.digest(value.getBytes(charset));
     } catch (NoSuchAlgorithmException e) {
-      // Em teoria n„o deveria ocorrer em JVM padr„o, mas tratamos como crÌtico
+      // Em teoria n√£o deveria ocorrer em JVM padr√£o, mas tratamos como cr√≠tico
       throw new RFWCriticalException("BISERP_000307", e);
     }
   }
 
   //
   // /**
-  // * Calcula a Hash SHA1 de uma String j· no formato Hex.
+  // * Calcula a Hash SHA1 de uma String j√° no formato Hex.
   // *
   // * @param value Valor a ter a Hash calculada em uma String em Hex.
-  // * @return Valor em Hexa calculado com o algorÌtimo de SHA1.
+  // * @return Valor em Hexa calculado com o algor√≠timo de SHA1.
   // * @throws RFWException
   // */
   // public static String calcSHA1ToHex(String value) throws RFWException {
@@ -974,11 +974,11 @@ public class RUString {
   // }
   //
   // /**
-  // * Calcula a Hash SHA1 de uma String j· no formato Hex.
+  // * Calcula a Hash SHA1 de uma String j√° no formato Hex.
   // *
   // * @param value Valor a ter a Hash calculada.
   // * @param charset Defineo charset do valor, usado para converter corretamente em bytes.
-  // * @return Valor em Hexa calculado com o algorÌtimo de SHA1.
+  // * @return Valor em Hexa calculado com o algor√≠timo de SHA1.
   // * @throws RFWException
   // */
   // public static String calcSHA1ToHex(String value, String charset) throws RFWException {
@@ -993,11 +993,11 @@ public class RUString {
   // }
   //
   // /**
-  // * Calcula a Hash SHA1 de uma String j· no formato Hex.
+  // * Calcula a Hash SHA1 de uma String j√° no formato Hex.
   // *
   // * @param value Valor a ter a Hash calculada.
   // * @param charset Defineo charset do valor, usado para converter corretamente em bytes.
-  // * @return Valor em Hexa calculado com o algorÌtimo de SHA1.
+  // * @return Valor em Hexa calculado com o algor√≠timo de SHA1.
   // * @throws RFWException
   // */
   // public static String calcSHA1ToHex(String value, Charset charset) throws RFWException {
@@ -1012,26 +1012,26 @@ public class RUString {
   // }
 
   /**
-   * Substitui o texto recursivamente atÈ que o texto n„o sofra mais alteraÁıes.
+   * Substitui o texto recursivamente at√© que o texto n√£o sofra mais altera√ß√µes.
    * <p>
-   * O texto ser· processado do inÌcio ao fim quantas vezes forem necess·rias atÈ que nenhuma substituiÁ„o ocorra.
+   * O texto ser√° processado do in√≠cio ao fim quantas vezes forem necess√°rias at√© que nenhuma substitui√ß√£o ocorra.
    * </p>
    * <p>
-   * <b>ATEN«√O:</b> Pode causar um loop infinito e gerar {@code StackOverflowError} se {@code newValue} contiver {@code oldValue}!
+   * <b>ATEN√á√ÉO:</b> Pode causar um loop infinito e gerar {@code StackOverflowError} se {@code newValue} contiver {@code oldValue}!
    * </p>
    *
    * @param text Texto a ser manipulado.
-   * @param oldValue Valor a ser procurado e substituÌdo.
-   * @param newValue Valor que substituir· {@code oldValue}.
+   * @param oldValue Valor a ser procurado e substitu√≠do.
+   * @param newValue Valor que substituir√° {@code oldValue}.
    * @param distinctAccents {@code true} diferencia acentos, {@code false} ignora acentos.
-   * @param distinctCase {@code true} diferencia mai˙sculas de min˙sculas, {@code false} ignora diferenciaÁ„o de case.
-   * @return Texto processado com todas as substituiÁıes aplicadas recursivamente.
+   * @param distinctCase {@code true} diferencia mai√∫sculas de min√∫sculas, {@code false} ignora diferencia√ß√£o de case.
+   * @return Texto processado com todas as substitui√ß√µes aplicadas recursivamente.
    * @throws RFWException
-   * @throws StackOverflowError Se a substituiÁ„o entrar em um ciclo infinito.
+   * @throws StackOverflowError Se a substitui√ß√£o entrar em um ciclo infinito.
    */
   public static String replaceAllRecursively(String text, String oldValue, String newValue, boolean distinctAccents, boolean distinctCase) throws RFWException {
     if (oldValue.isEmpty()) throw new IllegalArgumentException("Old value must have content.");
-    if (newValue.indexOf(oldValue) > -1) throw new RFWCriticalException("O valor substituto: '${0}' inclui o valor a ser substituÌdo: '${1}' isso resulta resulta em substituiÁıes infinitas!", new String[] { newValue, oldValue }); // Evita loop infinito
+    if (newValue.indexOf(oldValue) > -1) throw new RFWCriticalException("O valor substituto: '${0}' inclui o valor a ser substitu√≠do: '${1}' isso resulta resulta em substitui√ß√µes infinitas!", new String[] { newValue, oldValue }); // Evita loop infinito
 
     String previousText;
     do {
@@ -1043,11 +1043,11 @@ public class RUString {
   }
 
   /**
-   * Substitui todas as ocorrencias de 'oldvalue' por 'newvalue' no texto de 'value'. No entanto este mÈtodo diferencia mai˙sculas, min˙sculas, acentos, etc.
+   * Substitui todas as ocorrencias de 'oldvalue' por 'newvalue' no texto de 'value'. No entanto este m√©todo diferencia mai√∫sculas, min√∫sculas, acentos, etc.
    *
    * @param text texto a ser manipulado
-   * @param oldValue Valor a ser procurado e substituÌdo.
-   * @param newValue Valor que substituir· {@code oldValue}.
+   * @param oldValue Valor a ser procurado e substitu√≠do.
+   * @param newValue Valor que substituir√° {@code oldValue}.
    * @return
    */
   public static String replaceAll(String text, String oldValue, String newValue) {
@@ -1055,12 +1055,12 @@ public class RUString {
   }
 
   /**
-   * Substitui o texto recursivamente atÈ que o texto n„o sofra mais alteraÁıes, isto È, o texto ser· procurado do inicio ao fim pela substituiÁ„o quantas vezes for necess·rias atÈ que seja feita uma busca completa e nada seja encontrado.<br>
-   * <b>ATEN«¬O:</b> Pode gerar StackOverflow facilmente se substituimos um texto por outro que contÈm o valor sendo procurado!<Br>
+   * Substitui o texto recursivamente at√© que o texto n√£o sofra mais altera√ß√µes, isto √©, o texto ser√° procurado do inicio ao fim pela substitui√ß√£o quantas vezes for necess√°rias at√© que seja feita uma busca completa e nada seja encontrado.<br>
+   * <b>ATEN√á√ÇO:</b> Pode gerar StackOverflow facilmente se substituimos um texto por outro que cont√©m o valor sendo procurado!<Br>
    *
    * @param text texto a ser manipulado
-   * @param oldValue Valor a ser procurado e substituÌdo.
-   * @param newValue Valor que substituir· {@code oldValue}.
+   * @param oldValue Valor a ser procurado e substitu√≠do.
+   * @param newValue Valor que substituir√° {@code oldValue}.
    * @return
    */
   public static String replaceAllRecursively(String text, String oldValue, String newValue) {
@@ -1074,21 +1074,21 @@ public class RUString {
   }
 
   /**
-   * Coloca espaÁos no comeÁo do texto para dar a sensaÁ„o de centralizaÁ„o de um texto com n˙mero de colunas certo. ⁄til quando trabalhamos com fontes de largura fixa e queremos deixar o texto centralizado em um espaÁo, como em impressıes matriciais (por colunas) ou janelas de terminais.
+   * Coloca espa√ßos no come√ßo do texto para dar a sensa√ß√£o de centraliza√ß√£o de um texto com n√∫mero de colunas certo. √ötil quando trabalhamos com fontes de largura fixa e queremos deixar o texto centralizado em um espa√ßo, como em impress√µes matriciais (por colunas) ou janelas de terminais.
    *
    * @param text Texto para ser centralizado
-   * @param columns N˙mero de colunas totais para calcular o "offset" inicial
-   * @return Texto recebido com espaÁos em brancos no comeÁo equivalente a metade do espaÁo restante entre o n˙mero de colunas passado e o tamanho do texto.
+   * @param columns N√∫mero de colunas totais para calcular o "offset" inicial
+   * @return Texto recebido com espa√ßos em brancos no come√ßo equivalente a metade do espa√ßo restante entre o n√∫mero de colunas passado e o tamanho do texto.
    */
   public static String centerTextInColumns(String text, int columns) {
     return completeUntilLengthLeft(" ", text, text.length() + (columns - text.length()) / 2);
   }
 
   /**
-   * Este mÈtodo recebe um valor string e quebra em linhas com o tamanho m·ximo definido. Este mÈtodo quebrar· as linhas somente nos espaÁos em branco entre as palavras, n„o quebra as palavras no meio.
+   * Este m√©todo recebe um valor string e quebra em linhas com o tamanho m√°ximo definido. Este m√©todo quebrar√° as linhas somente nos espa√ßos em branco entre as palavras, n√£o quebra as palavras no meio.
    *
-   * @param content Conte˙do a ser quebrado em linhas
-   * @param maxlength tamanho m·ximo de cada linha.
+   * @param content Conte√∫do a ser quebrado em linhas
+   * @param maxlength tamanho m√°ximo de cada linha.
    * @return Array de String com todas as linhas criadas.
    */
   public static String[] breakLineInBlankSpaces(String content, int maxlength) {
@@ -1098,7 +1098,7 @@ public class RUString {
     final StringBuilder b = new StringBuilder(maxlength);
     for (int i = 0; i < blines.length; i++) {
       // Verifica se ainda cabe na mesmoa linha
-      if (b.length() + blines[i].length() + 1 <= maxlength) { // O +1 refere-se ao espaÁo que ser· adicionado entre o conte˙do do buffer e a nova palavra
+      if (b.length() + blines[i].length() + 1 <= maxlength) { // O +1 refere-se ao espa√ßo que ser√° adicionado entre o conte√∫do do buffer e a nova palavra
         b.append(" ").append(blines[i]);
       } else {
         lines.add(b.toString());
@@ -1106,26 +1106,26 @@ public class RUString {
         b.append(blines[i]);
       }
     }
-    // Ao acabar, verificamose se temos conte˙do no buff e passamos e acrescentamos ‡ lista, caso contr·rio perdemos a ˙ltima linha
+    // Ao acabar, verificamose se temos conte√∫do no buff e passamos e acrescentamos √† lista, caso contr√°rio perdemos a √∫ltima linha
     if (b.length() > 0) lines.add(b.toString());
     String[] a = new String[lines.size()];
     return lines.toArray(a);
   }
 
   /**
-   * Escreve um valor por extenso. Apesar de aceitar um BigDecimal por causa do tamanho dos n˙meros, os valores fracion·rios ser„o simplesmente ignorados.
+   * Escreve um valor por extenso. Apesar de aceitar um BigDecimal por causa do tamanho dos n√∫meros, os valores fracion√°rios ser√£o simplesmente ignorados.
    *
    * @param value Valor a ser transformado por extenso.
-   * @return String com o valor por extenso em PortuguÍs Brasileiro.
+   * @return String com o valor por extenso em Portugu√™s Brasileiro.
    */
   public static Object valueToExtense_BrazilianPortuguese(BigDecimal value) {
     final StringBuilder buff = new StringBuilder();
     final BigDecimal BIGTHOUSAND = new BigDecimal("1000");
 
-    // Garante que os decimais ser„o ignorados
+    // Garante que os decimais ser√£o ignorados
     value = value.setScale(0, RoundingMode.FLOOR);
 
-    // Se o valor È zero j· retorna logo, n„o sai tentando calcular e esrever para n„o escrever errado. Esse È o ˙nico n˙mero em que "zero" È escrito
+    // Se o valor √© zero j√° retorna logo, n√£o sai tentando calcular e esrever para n√£o escrever errado. Esse √© o √∫nico n√∫mero em que "zero" √© escrito
     if (value.compareTo(BigDecimal.ZERO) == 0) {
       return "zero";
     }
@@ -1137,7 +1137,7 @@ public class RUString {
       value = value.divide(BIGTHOUSAND, 0, RoundingMode.FLOOR);
 
       if (hundreds > 0) {
-        // Decopıe o n˙mero em unidades, dezens e centenas para criar o texto
+        // Decop√µe o n√∫mero em unidades, dezens e centenas para criar o texto
         int uvalue = (int) (hundreds % 10);
         int dvalue = (int) ((hundreds / 10f) % 10);
         int cvalue = (int) ((hundreds / 100f) % 10);
@@ -1197,7 +1197,7 @@ public class RUString {
               dtext = "dezenove";
             }
           } else {
-            // Se n„o tem nome especÌfico para o conjunto dezena e unidade, separamos em dezena e unidade
+            // Se n√£o tem nome espec√≠fico para o conjunto dezena e unidade, separamos em dezena e unidade
             if (dvalue == 2) {
               dtext = "vinte";
             } else if (dvalue == 3) {
@@ -1221,7 +1221,7 @@ public class RUString {
             } else if (uvalue == 2) {
               utext = "dois";
             } else if (uvalue == 3) {
-              utext = "trÍs";
+              utext = "tr√™s";
             } else if (uvalue == 4) {
               utext = "quatro";
             } else if (uvalue == 5) {
@@ -1254,40 +1254,40 @@ public class RUString {
           }
         }
 
-        // Depois que o n˙mero est· pronto, verificamos em que casa de milhar estamos para anexar o valor
+        // Depois que o n√∫mero est√° pronto, verificamos em que casa de milhar estamos para anexar o valor
         switch (pow) {
           case 0:
-            // N„o h· nada, sÛ o n˙mero mesmo
+            // N√£o h√° nada, s√≥ o n√∫mero mesmo
             break;
           case 1:
             text += " mil";
             break;
           case 2:
-            text += (hundreds == 1 ? " milh„o" : " milhıes");
+            text += (hundreds == 1 ? " milh√£o" : " milh√µes");
             break;
           case 3:
-            text += (hundreds == 1 ? " bilh„o" : " bilhıes");
+            text += (hundreds == 1 ? " bilh√£o" : " bilh√µes");
             break;
           case 4:
-            text += (hundreds == 1 ? " trilh„o" : " trilhıes");
+            text += (hundreds == 1 ? " trilh√£o" : " trilh√µes");
             break;
           case 5:
-            text += (hundreds == 1 ? " quatrilh„o" : " quatrilhıes");
+            text += (hundreds == 1 ? " quatrilh√£o" : " quatrilh√µes");
             break;
           case 6:
-            text += (hundreds == 1 ? " quintilh„o" : " quintilhıes");
+            text += (hundreds == 1 ? " quintilh√£o" : " quintilh√µes");
             break;
           case 7:
-            text += (hundreds == 1 ? " sextilh„o" : " sextilhıes");
+            text += (hundreds == 1 ? " sextilh√£o" : " sextilh√µes");
             break;
           case 8:
-            text += (hundreds == 1 ? " setilh„o" : " setilhıes");
+            text += (hundreds == 1 ? " setilh√£o" : " setilh√µes");
             break;
           case 9:
-            text += (hundreds == 1 ? " octilh„o" : " octilhıes");
+            text += (hundreds == 1 ? " octilh√£o" : " octilh√µes");
             break;
           case 10:
-            text += (hundreds == 1 ? " nonilh„o" : " nonilhıes");
+            text += (hundreds == 1 ? " nonilh√£o" : " nonilh√µes");
             break;
           default:
             break;
@@ -1301,10 +1301,10 @@ public class RUString {
   }
 
   /**
-   * Recebe um valor em BigDecimal e o escreve por extenso. Se passado algum valor com mais de 2 casas decimais o valor ser· arredondado.
+   * Recebe um valor em BigDecimal e o escreve por extenso. Se passado algum valor com mais de 2 casas decimais o valor ser√° arredondado.
    *
    * @param value Valor a ser transformado por extenso.
-   * @return String com o texto do valor por extenso em Reais, escrito em PortuguÍs brasileiro.
+   * @return String com o texto do valor por extenso em Reais, escrito em Portugu√™s brasileiro.
    */
   public static String currencyToExtense_BrazilianReal_BrazilianPortuguese(BigDecimal value) {
     // Garante que teremos apenas duas casas decimais
@@ -1325,7 +1325,7 @@ public class RUString {
       buff.append(" Reais");
     }
 
-    // SÛ processa os centavos se ele existir, se estiver zerado n„o escreve "zero centavos"
+    // S√≥ processa os centavos se ele existir, se estiver zerado n√£o escreve "zero centavos"
     if (fraction.signum() != 0) {
       // Recupera o extendo da parte dos centavos
       buff.append(" e ").append(valueToExtense_BrazilianPortuguese(fraction.movePointRight(2)));
@@ -1341,7 +1341,7 @@ public class RUString {
   }
 
   /**
-   * Remove todos os caracteres que n„o compıe os primeiros 128 caracteres da tabela UTF-8 pelo texto passado.
+   * Remove todos os caracteres que n√£o comp√µe os primeiros 128 caracteres da tabela UTF-8 pelo texto passado.
    *
    * @param text Texto a ser tratado.
    * @return Texto sem os caracteres fora dos primeiros caracteres da tabela UTF-8.
@@ -1352,10 +1352,10 @@ public class RUString {
   }
 
   /**
-   * Substitui todos os caracteres que n„o compıe os primeiros 128 caracteres da tabela UTF-8 pelo texto passado.
+   * Substitui todos os caracteres que n√£o comp√µe os primeiros 128 caracteres da tabela UTF-8 pelo texto passado.
    *
    * @param text Texto a ser tratado.
-   * @param replacement Valor que substituir· os caracteres removidos
+   * @param replacement Valor que substituir√° os caracteres removidos
    * @return Texto tratado.
    * @throws RFWException
    */
@@ -1364,9 +1364,9 @@ public class RUString {
   }
 
   /**
-   * Escreve uma String de tr·s para frente.
+   * Escreve uma String de tr√°s para frente.
    *
-   * @param content - Conte˙do para ser invertido.
+   * @param content - Conte√∫do para ser invertido.
    * @return String invertida
    */
   public static String invert(String content) {
@@ -1374,15 +1374,15 @@ public class RUString {
   }
 
   /**
-   * Remove zeros ‡ esquerda no inÌcio da String.
+   * Remove zeros √† esquerda no in√≠cio da String.
    * <p>
    * Casos de uso:
    * <ul>
    * <li>null -> null</li>
    * <li>"0001234" -> "1234"</li>
    * <li>"00012340000" -> "12340000"</li>
-   * <li>" 00012340000" -> " 00012340000" (MantÈm espaÁos iniciais)</li>
-   * <li>"000000000000000000" -> "" (Retorna String vazia e n„o null)</li>
+   * <li>" 00012340000" -> " 00012340000" (Mant√©m espa√ßos iniciais)</li>
+   * <li>"000000000000000000" -> "" (Retorna String vazia e n√£o null)</li>
    * </ul>
    *
    * @param input Texto a ser processado.
@@ -1403,7 +1403,7 @@ public class RUString {
    *
    * @param value String original
    * @param length Tamanho da parte desejada.
-   * @return Retorna uma string contendo a parte direita da string original com o tamanho especificado. Se o tamanho solicitado for maior ou igual ao da string original, retorna a prÛpria string original. Se a string original for nula, retorna null. Se o tamanho solicitado for menor ou igual a zero, retorna uma string vazia.
+   * @return Retorna uma string contendo a parte direita da string original com o tamanho especificado. Se o tamanho solicitado for maior ou igual ao da string original, retorna a pr√≥pria string original. Se a string original for nula, retorna null. Se o tamanho solicitado for menor ou igual a zero, retorna uma string vazia.
    */
   public static String right(String value, int length) {
     if (value == null) {
@@ -1418,7 +1418,7 @@ public class RUString {
    *
    * @param value String original
    * @param length Tamanho da parte desejada.
-   * @return Retorna uma string contendo a parte esquerda da string original com o tamanho especificado. Se o tamanho solicitado for maior ou igual ao da string original, retorna a prÛpria string original. Se a string original for nula, retorna null. Se o tamanho solicitado for menor ou igual a zero, retorna uma string vazia.
+   * @return Retorna uma string contendo a parte esquerda da string original com o tamanho especificado. Se o tamanho solicitado for maior ou igual ao da string original, retorna a pr√≥pria string original. Se a string original for nula, retorna null. Se o tamanho solicitado for menor ou igual a zero, retorna uma string vazia.
    */
   public static String left(String value, int length) {
     if (value == null) {
@@ -1441,12 +1441,12 @@ public class RUString {
   /**
    * Separa os campos de uma linha de arquivo CSV, considerando aspas e caracteres de escape.
    *
-   * O separador define o caractere delimitador entre os campos e as aspas determinam quais trechos devem ser tratados como um ˙nico valor, mesmo contendo o separador interno.
+   * O separador define o caractere delimitador entre os campos e as aspas determinam quais trechos devem ser tratados como um √∫nico valor, mesmo contendo o separador interno.
    *
    * Regras:
    * <li>Valores entre aspas ignoram separadores internos.
-   * <li>Aspas duplas dentro de um campo s„o representadas por aspas duplas consecutivas.
-   * <li>Caracteres de quebra de linha (\r ou \n) s„o mantidos e n„o s„o considerados como outro registro, pois este mÈtodo j· espera receber uma ˙nica linha do CSV.
+   * <li>Aspas duplas dentro de um campo s√£o representadas por aspas duplas consecutivas.
+   * <li>Caracteres de quebra de linha (\r ou \n) s√£o mantidos e n√£o s√£o considerados como outro registro, pois este m√©todo j√° espera receber uma √∫nica linha do CSV.
    *
    * @param line linha do arquivo a ser processada.
    * @param separator caractere delimitador entre os campos (exemplo: ',', '|', '\t').
@@ -1469,11 +1469,11 @@ public class RUString {
       if (inQuotes) {
         if (ch == quote) {
           if (i + 1 < line.length() && line.charAt(i + 1) == quote) {
-            // Aspas duplas dentro de um campo s„o escapadas com aspas duplas consecutivas
+            // Aspas duplas dentro de um campo s√£o escapadas com aspas duplas consecutivas
             currentField.append(quote);
-            i++; // Pular a prÛxima aspa duplicada
+            i++; // Pular a pr√≥xima aspa duplicada
           } else {
-            inQuotes = false; // Fechar citaÁ„o
+            inQuotes = false; // Fechar cita√ß√£o
           }
         } else {
           currentField.append(ch);
@@ -1490,21 +1490,21 @@ public class RUString {
       }
     }
 
-    // Adiciona o ˙ltimo campo
+    // Adiciona o √∫ltimo campo
     result.add(currentField.toString());
 
     return result.toArray(new String[0]);
   }
 
   /**
-   * Extrai valores numÈricos do texto. Aceita que os milhares dos n˙meros estejam separados por pontos e os decimais por vÌrgula ou vice-versa.<br>
-   * Este mÈtodo considera apenas valores que contenham um separador decimal.<br>
+   * Extrai valores num√©ricos do texto. Aceita que os milhares dos n√∫meros estejam separados por pontos e os decimais por v√≠rgula ou vice-versa.<br>
+   * Este m√©todo considera apenas valores que contenham um separador decimal.<br>
    *
-   * @param text Texto de entrada do qual os n˙meros decimais ser„o extraÌdos.
-   * @param groupId Õndice do grupo da express„o regular a ser retornado.
-   * @param useCommaToDecimal Define se a vÌrgula deve ser usada como separador decimal (true) ou o ponto (false).
-   * @return O n˙mero decimal extraÌdo do texto ou null caso nenhum n˙mero v·lido seja encontrado.
-   * @throws RFWException Se ocorrer erro na extraÁ„o.
+   * @param text Texto de entrada do qual os n√∫meros decimais ser√£o extra√≠dos.
+   * @param groupId √çndice do grupo da express√£o regular a ser retornado.
+   * @param useCommaToDecimal Define se a v√≠rgula deve ser usada como separador decimal (true) ou o ponto (false).
+   * @return O n√∫mero decimal extra√≠do do texto ou null caso nenhum n√∫mero v√°lido seja encontrado.
+   * @throws RFWException Se ocorrer erro na extra√ß√£o.
    */
   public static String extractDecimalValues(String text, int groupId, boolean useCommaToDecimal) throws RFWException {
     if (text == null || text.isEmpty()) {
@@ -1519,27 +1519,27 @@ public class RUString {
   }
 
   /**
-   * Extrai o conte˙do de uma String que seja compatÌvel com uma express„o regular.<br>
-   * O conte˙do retornado È o conte˙do dentro do primeiro grupo encontrado.<br>
+   * Extrai o conte√∫do de uma String que seja compat√≠vel com uma express√£o regular.<br>
+   * O conte√∫do retornado √© o conte√∫do dentro do primeiro grupo encontrado.<br>
    *
-   * @param text Texto de onde o valor dever· ser extraÌdo.
-   * @param regExp Express„o regular que define o bloco a ser recuperado.
-   * @return Conte˙do que combina com a express„o regular, extraÌdo do texto principal, ou null caso o conte˙do n„o seja encontrado.
-   * @throws RFWException Se ocorrer erro na compilaÁ„o da express„o regular.
+   * @param text Texto de onde o valor dever√° ser extra√≠do.
+   * @param regExp Express√£o regular que define o bloco a ser recuperado.
+   * @return Conte√∫do que combina com a express√£o regular, extra√≠do do texto principal, ou null caso o conte√∫do n√£o seja encontrado.
+   * @throws RFWException Se ocorrer erro na compila√ß√£o da express√£o regular.
    */
   public static String extract(String text, String regExp) throws RFWException {
     return extract(text, regExp, 1);
   }
 
   /**
-   * Extrai o conte˙do de uma String que seja compatÌvel com uma express„o regular.<br>
-   * O conte˙do retornado È o conte˙do dentro do grupo definido pelo Ìndice informado.<br>
+   * Extrai o conte√∫do de uma String que seja compat√≠vel com uma express√£o regular.<br>
+   * O conte√∫do retornado √© o conte√∫do dentro do grupo definido pelo √≠ndice informado.<br>
    *
-   * @param text Texto de onde o valor dever· ser extraÌdo.
-   * @param regExp Express„o regular que define o bloco a ser recuperado.
-   * @param groupId Õndice do grupo a ser retornado.
-   * @return Conte˙do que combina com a express„o regular, extraÌdo do texto principal, ou null caso o conte˙do n„o seja encontrado.
-   * @throws RFWException Se ocorrer erro na compilaÁ„o da express„o regular.
+   * @param text Texto de onde o valor dever√° ser extra√≠do.
+   * @param regExp Express√£o regular que define o bloco a ser recuperado.
+   * @param groupId √çndice do grupo a ser retornado.
+   * @return Conte√∫do que combina com a express√£o regular, extra√≠do do texto principal, ou null caso o conte√∫do n√£o seja encontrado.
+   * @throws RFWException Se ocorrer erro na compila√ß√£o da express√£o regular.
    */
   public static String extract(String text, String regExp, int groupId) throws RFWException {
     if (text == null || regExp == null) {
@@ -1553,12 +1553,12 @@ public class RUString {
 
   /**
    * Procura e extrai uma data no formato dd/MM/yyyy dentro de uma String.<br>
-   * <b>AtenÁ„o:</b> Este mÈtodo n„o valida a data, apenas busca uma ocorrÍncia no formato e a retorna.<br>
-   * O mÈtodo verifica a consistÍncia dos dias em meses de 30, 31 e 29 dias. Para anos iniciados com 21xx, ser· necess·rio atualizar o mÈtodo.
+   * <b>Aten√ß√£o:</b> Este m√©todo n√£o valida a data, apenas busca uma ocorr√™ncia no formato e a retorna.<br>
+   * O m√©todo verifica a consist√™ncia dos dias em meses de 30, 31 e 29 dias. Para anos iniciados com 21xx, ser√° necess√°rio atualizar o m√©todo.
    *
-   * @param text Texto de entrada onde a data ser· procurada.
-   * @param groupId Õndice do grupo da express„o regular a ser retornado.
-   * @return A data encontrada ou null caso n„o seja encontrada nenhuma.
+   * @param text Texto de entrada onde a data ser√° procurada.
+   * @param groupId √çndice do grupo da express√£o regular a ser retornado.
+   * @return A data encontrada ou null caso n√£o seja encontrada nenhuma.
    * @throws RFWException
    */
   public static String extractDateDDMMYYYY(String text, int groupId) throws RFWException {
@@ -1572,12 +1572,12 @@ public class RUString {
 
   /**
    * Procura e extrai uma data no formato MM/yyyy dentro de uma String.<br>
-   * <b>AtenÁ„o:</b> Este mÈtodo n„o valida a data, apenas busca uma ocorrÍncia no formato e a retorna.<br>
-   * O mÈtodo valida anos iniciados com 19xx ou 20xx.
+   * <b>Aten√ß√£o:</b> Este m√©todo n√£o valida a data, apenas busca uma ocorr√™ncia no formato e a retorna.<br>
+   * O m√©todo valida anos iniciados com 19xx ou 20xx.
    *
-   * @param text Texto de entrada onde a data ser· procurada.
-   * @param groupId Õndice do grupo da express„o regular a ser retornado.
-   * @return A data encontrada ou null caso n„o seja encontrada nenhuma.
+   * @param text Texto de entrada onde a data ser√° procurada.
+   * @param groupId √çndice do grupo da express√£o regular a ser retornado.
+   * @return A data encontrada ou null caso n√£o seja encontrada nenhuma.
    * @throws RFWException
    */
   public static String extractDateMMYYYY(String text, int groupId) throws RFWException {
@@ -1591,12 +1591,12 @@ public class RUString {
 
   /**
    * Procura e extrai uma hora no formato hh:mm:ss dentro de uma String.<br>
-   * <b>AtenÁ„o:</b> Este mÈtodo n„o valida o hor·rio, apenas busca uma ocorrÍncia no formato e a retorna.<br>
-   * Verifica se o formato est· dentro dos limites v·lidos para horas, minutos e segundos.
+   * <b>Aten√ß√£o:</b> Este m√©todo n√£o valida o hor√°rio, apenas busca uma ocorr√™ncia no formato e a retorna.<br>
+   * Verifica se o formato est√° dentro dos limites v√°lidos para horas, minutos e segundos.
    *
-   * @param text Texto de entrada onde a hora ser· procurada.
-   * @param groupId Õndice do grupo da express„o regular a ser retornado.
-   * @return A hora encontrada ou null caso n„o seja encontrada nenhuma.
+   * @param text Texto de entrada onde a hora ser√° procurada.
+   * @param groupId √çndice do grupo da express√£o regular a ser retornado.
+   * @return A hora encontrada ou null caso n√£o seja encontrada nenhuma.
    * @throws RFWException
    */
   public static String extractTimeHHMMSS(String text, int groupId) throws RFWException {
@@ -1609,13 +1609,13 @@ public class RUString {
   }
 
   /**
-   * Procura e extrai uma sequÍncia de n˙meros com a quantidade exata de dÌgitos.<br>
-   * Verifica se a sequÍncia est· isolada (n„o inserida em outra sequÍncia de n˙meros).
+   * Procura e extrai uma sequ√™ncia de n√∫meros com a quantidade exata de d√≠gitos.<br>
+   * Verifica se a sequ√™ncia est√° isolada (n√£o inserida em outra sequ√™ncia de n√∫meros).
    *
-   * @param text Texto de entrada onde a sequÍncia de n˙meros ser· procurada.
-   * @param digitsCount N˙mero de dÌgitos esperados na sequÍncia.
-   * @param groupId Õndice do grupo da express„o regular a ser retornado.
-   * @return A sequÍncia encontrada ou null caso n„o seja encontrada nenhuma.
+   * @param text Texto de entrada onde a sequ√™ncia de n√∫meros ser√° procurada.
+   * @param digitsCount N√∫mero de d√≠gitos esperados na sequ√™ncia.
+   * @param groupId √çndice do grupo da express√£o regular a ser retornado.
+   * @return A sequ√™ncia encontrada ou null caso n√£o seja encontrada nenhuma.
    * @throws RFWException
    */
   public static String extractCodes(String text, int digitsCount, int groupId) throws RFWException {
@@ -1628,12 +1628,12 @@ public class RUString {
   }
 
   /**
-   * Procura e extrai um n˙mero de CNPJ de um texto, no formato pontuado ou n„o.<br>
-   * <b>AtenÁ„o:</b> Este mÈtodo n„o valida o CNPJ, apenas encontra uma ocorrÍncia no formato e a retorna.
+   * Procura e extrai um n√∫mero de CNPJ de um texto, no formato pontuado ou n√£o.<br>
+   * <b>Aten√ß√£o:</b> Este m√©todo n√£o valida o CNPJ, apenas encontra uma ocorr√™ncia no formato e a retorna.
    *
-   * @param text Texto de entrada onde o CNPJ ser· procurado.
-   * @param groupId Õndice do grupo da express„o regular a ser retornado.
-   * @return O CNPJ encontrado ou null caso n„o seja encontrado nenhum.
+   * @param text Texto de entrada onde o CNPJ ser√° procurado.
+   * @param groupId √çndice do grupo da express√£o regular a ser retornado.
+   * @return O CNPJ encontrado ou null caso n√£o seja encontrado nenhum.
    * @throws RFWException
    */
   public static String extractCNPJ(String text, int groupId) throws RFWException {
@@ -1646,12 +1646,12 @@ public class RUString {
   }
 
   /**
-   * Procura e extrai um cÛdigo numÈrico de serviÁo/consumo de um texto.<br>
-   * <b>AtenÁ„o:</b> Este mÈtodo n„o valida o cÛdigo, apenas encontra uma ocorrÍncia no formato e a retorna.
+   * Procura e extrai um c√≥digo num√©rico de servi√ßo/consumo de um texto.<br>
+   * <b>Aten√ß√£o:</b> Este m√©todo n√£o valida o c√≥digo, apenas encontra uma ocorr√™ncia no formato e a retorna.
    *
-   * @param text Texto de entrada onde o cÛdigo ser· procurado.
-   * @param groupId Õndice do grupo da express„o regular a ser retornado.
-   * @return O cÛdigo encontrado ou null caso n„o seja encontrado nenhum.
+   * @param text Texto de entrada onde o c√≥digo ser√° procurado.
+   * @param groupId √çndice do grupo da express√£o regular a ser retornado.
+   * @return O c√≥digo encontrado ou null caso n√£o seja encontrado nenhum.
    * @throws RFWException
    */
   public static String extractServiceNumericCode(String text, int groupId) throws RFWException {
@@ -1718,15 +1718,15 @@ public class RUString {
   }
 
   /**
-   * Este mÈtodo recebe um valor inteiro e o converte para letras no padr„o de colunas do Excel.<br>
+   * Este m√©todo recebe um valor inteiro e o converte para letras no padr√£o de colunas do Excel.<br>
    * <b>Por exemplo 1 -> A, 2 -> B, ..., 26 -> Z, 27 -> AA, 28 -> AB, ...</b>
    *
-   * @param value valor numÈrico a ser convertido.
+   * @param value valor num√©rico a ser convertido.
    * @return Letras equivalendo o valor convertido.
    */
   public static String convertToExcelColumnLetters(long value) {
     final StringBuilder buff = new StringBuilder();
-    value = value - 1; // Corrige valor de value para comeÁar em 0, j· que a definiÁ„o do mÈtodo diz que o primeiro valor È 1 e n„o 0.
+    value = value - 1; // Corrige valor de value para come√ßar em 0, j√° que a defini√ß√£o do m√©todo diz que o primeiro valor √© 1 e n√£o 0.
     while (value > -1) {
       int mod = (int) (value % 26);
       // Converte o valor para o char adequado
@@ -1737,18 +1737,18 @@ public class RUString {
   }
 
   /**
-   * Este mÈtodo obtem uma string e a converte em um pattern RegExp para realizar Matches em Strings.<br>
-   * O propÛsito deste mÈtodo È auxiliar o desenvolvedor a aplicar as mesmas mascaras (do SQL) utilizadas atualmente nos campos de filtros que populam o RFWMO, em uma Express„o Regular que possa ser utilizada para filtrar lista de valores em String, sem consulta no banco de dados.<br>
-   * As m·scaras s„o: % - para qualquer caracter em qualquer quantidade e _ para 1 ˙nico caracter qualquer.
+   * Este m√©todo obtem uma string e a converte em um pattern RegExp para realizar Matches em Strings.<br>
+   * O prop√≥sito deste m√©todo √© auxiliar o desenvolvedor a aplicar as mesmas mascaras (do SQL) utilizadas atualmente nos campos de filtros que populam o RFWMO, em uma Express√£o Regular que possa ser utilizada para filtrar lista de valores em String, sem consulta no banco de dados.<br>
+   * As m√°scaras s√£o: % - para qualquer caracter em qualquer quantidade e _ para 1 √∫nico caracter qualquer.
    *
-   * @param value Texto escrito pelo usu·rio com as mascaras escrita acima
-   * @return String com a express„o regular equivalente a ser usada em cada "String".matches() para saber se o valor È equivalente com o filtro do usu·rio.
+   * @param value Texto escrito pelo usu√°rio com as mascaras escrita acima
+   * @return String com a express√£o regular equivalente a ser usada em cada "String".matches() para saber se o valor √© equivalente com o filtro do usu√°rio.
    */
   public static String convertFieldMaskToRegExpPattern(String value) {
     if (value != null) {
-      // Primeiro fazemos o Quota de toda a express„o para evitar problemas
+      // Primeiro fazemos o Quota de toda a express√£o para evitar problemas
       value = "\\Q" + value + "\\E";
-      // Troca os filtros, lembrando que antes de cada filtros temos que encerrar e recomeÁar o "quote" ou a express„o n„o vai considerar nem estes comandos
+      // Troca os filtros, lembrando que antes de cada filtros temos que encerrar e recome√ßar o "quote" ou a express√£o n√£o vai considerar nem estes comandos
       value = value.replaceAll("\\%", "\\\\E.*\\\\Q");
       value = value.replaceAll("\\_", "\\\\E.\\\\Q");
     }
@@ -1760,7 +1760,7 @@ public class RUString {
    *
    * @param string1 Primeiro valor a ser concatenado
    * @param string2 Segundo valor a ser concatenado
-   * @return Nunca retorna nulo, retorna o conte˙do de String1 e String2 separados por virgula caso ambos tenham valor v·lido. Sendo algum nulo ou vazio, retorna apena o valor do outro. Sendo ambos nulos ou vazios, retorna "".
+   * @return Nunca retorna nulo, retorna o conte√∫do de String1 e String2 separados por virgula caso ambos tenham valor v√°lido. Sendo algum nulo ou vazio, retorna apena o valor do outro. Sendo ambos nulos ou vazios, retorna "".
    */
   public static String appendWithComma(String string1, String string2) {
     string1 = PreProcess.processStringToNull(string1);
@@ -1780,27 +1780,27 @@ public class RUString {
     int i = 0;
     for (; i < expected.length(); i++) {
       if (i >= actual.length()) {
-        throw new RFWValidationException("O valor do texto 'Atual' chegou ao fim na posiÁ„o '${0}' quando era esperado o caracter '${1}'.", new String[] { "" + i, "" + expected.charAt(i) });
+        throw new RFWValidationException("O valor do texto 'Atual' chegou ao fim na posi√ß√£o '${0}' quando era esperado o caracter '${1}'.", new String[] { "" + i, "" + expected.charAt(i) });
       }
       if (expected.charAt(i) != actual.charAt(i)) {
         String part1 = expected.substring(Math.max(0, i - 5), Math.min(expected.length(), i + 5));
         String part2 = actual.substring(Math.max(0, i - 5), Math.min(actual.length(), i + 5));
-        throw new RFWValidationException("O valor do texto est· diferente na posiÁ„o '${0}'. Esperavamos '${1}' e encontramos '${2}'.", new String[] { "" + i, part1, part2 });
+        throw new RFWValidationException("O valor do texto est√° diferente na posi√ß√£o '${0}'. Esperavamos '${1}' e encontramos '${2}'.", new String[] { "" + i, part1, part2 });
       }
     }
     if (actual.length() > expected.length()) {
       String part2 = actual.substring(i, Math.min(actual.length(), i + 10));
-      throw new RFWValidationException("O texto esperado chegou ao fim na posiÁ„o '${0}' mas o valor atual continua com o conte˙do '${1}...'.", new String[] { "" + i, part2 });
+      throw new RFWValidationException("O texto esperado chegou ao fim na posi√ß√£o '${0}' mas o valor atual continua com o conte√∫do '${1}...'.", new String[] { "" + i, part2 });
     }
   }
 
   /**
-   * Realiza o substring na melhor maneira possÌvel sem lanÁar qualquer exception ou retornar nulo.
+   * Realiza o substring na melhor maneira poss√≠vel sem lan√ßar qualquer exception ou retornar nulo.
    *
    * @param value Valor String para ser cortado. Se nulo, retorna "".
-   * @param startIndex PosiÁ„o inicial para iniciar o corte. Se menor que 0, ser· ajutada para 0. Se maior que o tamanho da String forÁa o retorno de "".
-   * @param finalIndex PosiÁ„o final para finalizar o corte. Se maior que o tamanho da String, ser· ajutado para o tamanho m·ximo da String. Se finalIndex <= startIndex retorna "".
-   * @return Corte possÌvel conforme par‚metros definidos.
+   * @param startIndex Posi√ß√£o inicial para iniciar o corte. Se menor que 0, ser√° ajutada para 0. Se maior que o tamanho da String for√ßa o retorno de "".
+   * @param finalIndex Posi√ß√£o final para finalizar o corte. Se maior que o tamanho da String, ser√° ajutado para o tamanho m√°ximo da String. Se finalIndex <= startIndex retorna "".
+   * @return Corte poss√≠vel conforme par√¢metros definidos.
    */
   public static String subString(String value, int startIndex, int finalIndex) {
     if (value == null) return "";

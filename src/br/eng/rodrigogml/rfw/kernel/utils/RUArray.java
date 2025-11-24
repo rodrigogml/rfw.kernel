@@ -12,9 +12,9 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 
 /**
- * Description: Classe utilit·ria para manipulaÁ„o de Arrays.<br>
+ * Description: Classe utilit√°ria para manipula√ß√£o de Arrays.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.1.0 (18/02/2016)
  */
 public class RUArray {
@@ -26,16 +26,16 @@ public class RUArray {
   }
 
   /**
-   * Concatena dois arrays de bytes em um ˙nico array.
+   * Concatena dois arrays de bytes em um √∫nico array.
    *
-   * @param first Primeiro array de bytes. **N„o pode ser nulo**.
+   * @param first Primeiro array de bytes. **N√£o pode ser nulo**.
    * @param rest Segundo array de bytes. **Pode ser nulo ou vazio**.
    * @return Um novo array contendo todos os elementos de `first` seguido pelos elementos de `rest`.
    * @throws IllegalArgumentException Se `first` for nulo.
    */
   public static byte[] concatAll(byte[] first, byte[] rest) {
     if (first == null) {
-      throw new IllegalArgumentException("O primeiro array n„o pode ser nulo.");
+      throw new IllegalArgumentException("O primeiro array n√£o pode ser nulo.");
     }
 
     if (rest == null || rest.length == 0) {
@@ -51,9 +51,9 @@ public class RUArray {
   }
 
   /**
-   * Concatena m˙ltiplos arrays do mesmo tipo em um ˙nico array, preservando a ordem dos elementos.
+   * Concatena m√∫ltiplos arrays do mesmo tipo em um √∫nico array, preservando a ordem dos elementos.
    *
-   * @param first Primeiro array a ser clonado e expandido. **Este par‚metro n„o pode ser nulo.**
+   * @param first Primeiro array a ser clonado e expandido. **Este par√¢metro n√£o pode ser nulo.**
    * @param rest Arrays adicionais a serem concatenados ao primeiro. **Podem ser nulos ou vazios.**
    * @param <T> Tipo dos elementos dos arrays.
    * @return Novo array contendo todos os elementos de `first` seguido pelos elementos de `rest`.
@@ -61,7 +61,7 @@ public class RUArray {
    */
   @SuppressWarnings("unchecked")
   public static <T> T[] concatAll(T[] first, T[]... rest) throws RFWException {
-    PreProcess.requiredNonNullCritical(first, "O primeiro Array n„o pode ser nulo.");
+    PreProcess.requiredNonNullCritical(first, "O primeiro Array n√£o pode ser nulo.");
     int totalLength = first.length;
     for (T[] array : rest) {
       if (array != null) {
@@ -82,7 +82,7 @@ public class RUArray {
   /**
    * Acrescenta um valor ao final do array.
    *
-   * @param first Primeiro Array que ser· clonado e redimensionado. ESTE OBJETO N¬O PODE SER NULO.
+   * @param first Primeiro Array que ser√° clonado e redimensionado. ESTE OBJETO N√ÇO PODE SER NULO.
    * @param values Valore a serem colocado no Array.
    * @return Array redimensionado com todos os objetos.
    * @throws RFWException
@@ -96,8 +96,8 @@ public class RUArray {
    * Cria um {@link ArrayList} a partir de valores passados.
    *
    * @param <T> Tipo do ArrayList
-   * @param content Conte˙do a ser coocado no {@link ArrayList}
-   * @return {@link ArrayList} com o conte˙do desejado.
+   * @param content Conte√∫do a ser coocado no {@link ArrayList}
+   * @return {@link ArrayList} com o conte√∫do desejado.
    */
   @SuppressWarnings("unchecked")
   public static <T> ArrayList<T> createArrayList(T... content) {
@@ -112,8 +112,8 @@ public class RUArray {
    * Cria um {@link HashSet} a partir de valores passados.
    *
    * @param <T> Tipo do HashSet
-   * @param content Conte˙do a ser coocado no {@link HashSet}
-   * @return {@link HashSet} com o conte˙do desejado.
+   * @param content Conte√∫do a ser coocado no {@link HashSet}
+   * @return {@link HashSet} com o conte√∫do desejado.
    */
   @SuppressWarnings("unchecked")
   public static <T> HashSet<T> createHashSet(T... content) {
@@ -125,11 +125,11 @@ public class RUArray {
   }
 
   /**
-   * Cria um Array com todos os objetos recidos que n„o sejam nulos, e a cada objeto inclui no array um objeto "separador". Note que este mÈtodo n„o permite que separadores sejam colocados em sequÍncia. Caso um objeto seja nulo, entre dois objetos n„o nulos, apenas um separador È colocado.
+   * Cria um Array com todos os objetos recidos que n√£o sejam nulos, e a cada objeto inclui no array um objeto "separador". Note que este m√©todo n√£o permite que separadores sejam colocados em sequ√™ncia. Caso um objeto seja nulo, entre dois objetos n√£o nulos, apenas um separador √© colocado.
    *
    * @param <T>
-   * @param separator Separador a ser colocado no array entre os objetos v·lidos.
-   * @param values Array de objetos valores, que ser„o verificados apenas os diferentes de nulo, e colocados no array de retorno separados pelo objeto separador.
+   * @param separator Separador a ser colocado no array entre os objetos v√°lidos.
+   * @param values Array de objetos valores, que ser√£o verificados apenas os diferentes de nulo, e colocados no array de retorno separados pelo objeto separador.
    * @return
    */
   @SuppressWarnings("unchecked")
@@ -139,7 +139,7 @@ public class RUArray {
       if (values[i] != null) count++;
     }
     if (count == 0) return Arrays.copyOf(values, 0);
-    T[] result = Arrays.copyOf(values, count * 2 - 1); // Cria o array com o total de objetos v·lidos + 1 separados para cada intermÈdio entre um objeto e outro.
+    T[] result = Arrays.copyOf(values, count * 2 - 1); // Cria o array com o total de objetos v√°lidos + 1 separados para cada interm√©dio entre um objeto e outro.
     int a = 0;
     for (int i = 0; i < result.length; i++) {
       while (values[a] == null)
@@ -152,7 +152,7 @@ public class RUArray {
   }
 
   /**
-   * Verifique se um Array contÈm determinado objeto. Verifique com o equals.
+   * Verifique se um Array cont√©m determinado objeto. Verifique com o equals.
    *
    * @param itemsArray
    * @param item
@@ -166,13 +166,13 @@ public class RUArray {
   }
 
   /**
-   * Este mÈtodo obtem um array de Enumerations de valores, e escreve os mesmos em uma lista separadas por ",". <br>
-   * Se o total de itens a serem escritos estrapolar o valor definido em maxItens o total restante È resumindo com a express„o "+N", onde N indica quantos itens foram suprimidos.<br>
-   * Caso o total de items passado seja o total de itens disponÌveis na enumeration retorna apenas o texto "*".
+   * Este m√©todo obtem um array de Enumerations de valores, e escreve os mesmos em uma lista separadas por ",". <br>
+   * Se o total de itens a serem escritos estrapolar o valor definido em maxItens o total restante √© resumindo com a express√£o "+N", onde N indica quantos itens foram suprimidos.<br>
+   * Caso o total de items passado seja o total de itens dispon√≠veis na enumeration retorna apenas o texto "*".
    *
    * @param <E> Tipo da enumeration.
    * @param items Lista de Itens selecionados
-   * @param maxItens M·ximo de itens a serem escritos
+   * @param maxItens M√°ximo de itens a serem escritos
    * @return
    */
   public static <E extends Enum<?>> String concatArrayIntoString(E[] items, int maxItens) {
@@ -180,14 +180,14 @@ public class RUArray {
   }
 
   /**
-   * Este mÈtodo obtem um array de Enumerations de valores, e escreve os mesmos em uma lista separadas por ",". <br>
-   * Se o total de itens a serem escritos estrapolar o valor definido em maxItens o total restante È resumindo com a express„o "+N", onde N indica quantos itens foram suprimidos.<br>
-   * Caso o total de items passado seja o total de itens disponÌveis na enumeration retorna apenas o texto "*".
+   * Este m√©todo obtem um array de Enumerations de valores, e escreve os mesmos em uma lista separadas por ",". <br>
+   * Se o total de itens a serem escritos estrapolar o valor definido em maxItens o total restante √© resumindo com a express√£o "+N", onde N indica quantos itens foram suprimidos.<br>
+   * Caso o total de items passado seja o total de itens dispon√≠veis na enumeration retorna apenas o texto "*".
    *
    * @param <E> Tipo da enumeration.
    * @param items Lista de Itens selecionados
-   * @param maxItens M·ximo de itens a serem escritos
-   * @param separator Define a String que ser· concatenada entre os elementos. Se utilizado ", " o resultado ser· o mesmo que o do mÈtodo {@link #concatArrayIntoString(Enum[], int)}
+   * @param maxItens M√°ximo de itens a serem escritos
+   * @param separator Define a String que ser√° concatenada entre os elementos. Se utilizado ", " o resultado ser√° o mesmo que o do m√©todo {@link #concatArrayIntoString(Enum[], int)}
    * @return
    */
   public static <E extends Enum<?>> String concatArrayIntoString(E[] items, int maxItens, String separator) {
@@ -212,12 +212,12 @@ public class RUArray {
   }
 
   /**
-   * Este mÈtodo obtem uma lista de Enumerations de valores, e escreve os mesmos em uma lista separadas por ",". <br>
-   * Se o total de itens a serem escritos estrapolar o valor definido em maxItens o total restante È resumindo com a express„o "+N", onde N indica quantos itens foram suprimidos.<br>
+   * Este m√©todo obtem uma lista de Enumerations de valores, e escreve os mesmos em uma lista separadas por ",". <br>
+   * Se o total de itens a serem escritos estrapolar o valor definido em maxItens o total restante √© resumindo com a express√£o "+N", onde N indica quantos itens foram suprimidos.<br>
    *
    * @param <E> Tipo da enumeration.
    * @param list Lista de Itens selecionados
-   * @param maxItens M·ximo de itens a serem escritos
+   * @param maxItens M√°ximo de itens a serem escritos
    * @return
    */
   public static <E extends Enum<?>> String concatArrayIntoString(List<E> list, int maxItens) {
@@ -225,13 +225,13 @@ public class RUArray {
   }
 
   /**
-   * Este mÈtodo obtem uma lista de Enumerations de valores, e escreve os mesmos em uma lista separadas por ",". <br>
-   * Se o total de itens a serem escritos estrapolar o valor definido em maxItens o total restante È resumindo com a express„o "+N", onde N indica quantos itens foram suprimidos.<br>
+   * Este m√©todo obtem uma lista de Enumerations de valores, e escreve os mesmos em uma lista separadas por ",". <br>
+   * Se o total de itens a serem escritos estrapolar o valor definido em maxItens o total restante √© resumindo com a express√£o "+N", onde N indica quantos itens foram suprimidos.<br>
    *
    * @param <E> Tipo da enumeration.
    * @param list Lista de Itens selecionados
-   * @param maxItens M·ximo de itens a serem escritos
-   * @param separator Define a String que ser· concatenada entre os elementos. Se utilizado ", " o resultado ser· o mesmo que o do mÈtodo {@link #concatArrayIntoString(Enum[], int)}
+   * @param maxItens M√°ximo de itens a serem escritos
+   * @param separator Define a String que ser√° concatenada entre os elementos. Se utilizado ", " o resultado ser√° o mesmo que o do m√©todo {@link #concatArrayIntoString(Enum[], int)}
    * @return
    */
   public static <E extends Enum<?>> String concatArrayIntoString(List<E> list, int maxItens, String separator) {
@@ -252,7 +252,7 @@ public class RUArray {
   }
 
   /**
-   * Recebe um array de String e concatena seus valroes em uma ˙nica String.
+   * Recebe um array de String e concatena seus valroes em uma √∫nica String.
    *
    * @param values Valores a serem concatenados
    * @param separator Separados a ser concatenado entre cada um dos valores.
@@ -263,7 +263,7 @@ public class RUArray {
   }
 
   /**
-   * Recebe um array de Integer e concatena seus valroes em uma ˙nica String.
+   * Recebe um array de Integer e concatena seus valroes em uma √∫nica String.
    *
    * @param values Valores a serem concatenados
    * @param separator Separados a ser concatenado entre cada um dos valores.
@@ -274,10 +274,10 @@ public class RUArray {
   }
 
   /**
-   * Recebe um array de String e concatena seus valroes em uma ˙nica String. Utilizando o separador ", ".
+   * Recebe um array de String e concatena seus valroes em uma √∫nica String. Utilizando o separador ", ".
    *
    * @param values Valores a serem concatenados
-   * @param maxItens M·ximo de itens a serem escritos
+   * @param maxItens M√°ximo de itens a serem escritos
    * @return String com seus valores concatenados
    */
   public static String concatArrayIntoString(String[] values, int maxItens) {
@@ -285,13 +285,13 @@ public class RUArray {
   }
 
   /**
-   * Este mÈtodo obtem um array de Enumerations de valores, e escreve os mesmos em uma lista separadas por ",". <br>
-   * Se o total de itens a serem escritos estrapolar o valor definido em maxItens o total restante È resumindo com a express„o "+N", onde N indica quantos itens foram suprimidos.<br>
-   * Caso o total de items passado seja o total de itens disponÌveis na enumeration retorna apenas o texto "*".
+   * Este m√©todo obtem um array de Enumerations de valores, e escreve os mesmos em uma lista separadas por ",". <br>
+   * Se o total de itens a serem escritos estrapolar o valor definido em maxItens o total restante √© resumindo com a express√£o "+N", onde N indica quantos itens foram suprimidos.<br>
+   * Caso o total de items passado seja o total de itens dispon√≠veis na enumeration retorna apenas o texto "*".
    *
    * @param <E> Tipo da enumeration.
    * @param items Lista de Itens selecionados
-   * @param separator Define a String que ser· concatenada entre os elementos. Se utilizado ", " o resultado ser· o mesmo que o do mÈtodo {@link #concatArrayIntoString(Enum[], int)}
+   * @param separator Define a String que ser√° concatenada entre os elementos. Se utilizado ", " o resultado ser√° o mesmo que o do m√©todo {@link #concatArrayIntoString(Enum[], int)}
    * @return
    */
   public static String concatArrayIntoString(String[] items, String separator, int maxItens) {
@@ -312,13 +312,13 @@ public class RUArray {
   }
 
   /**
-   * Este mÈtodo obtem um array de Enumerations de valores, e escreve os mesmos em uma lista separadas por ",". <br>
-   * Se o total de itens a serem escritos estrapolar o valor definido em maxItens o total restante È resumindo com a express„o "+N", onde N indica quantos itens foram suprimidos.<br>
-   * Caso o total de items passado seja o total de itens disponÌveis na enumeration retorna apenas o texto "*".
+   * Este m√©todo obtem um array de Enumerations de valores, e escreve os mesmos em uma lista separadas por ",". <br>
+   * Se o total de itens a serem escritos estrapolar o valor definido em maxItens o total restante √© resumindo com a express√£o "+N", onde N indica quantos itens foram suprimidos.<br>
+   * Caso o total de items passado seja o total de itens dispon√≠veis na enumeration retorna apenas o texto "*".
    *
    * @param <E> Tipo da enumeration.
    * @param items Lista de Itens selecionados
-   * @param separator Define a String que ser· concatenada entre os elementos. Se utilizado ", " o resultado ser· o mesmo que o do mÈtodo {@link #concatArrayIntoString(Enum[], int)}
+   * @param separator Define a String que ser√° concatenada entre os elementos. Se utilizado ", " o resultado ser√° o mesmo que o do m√©todo {@link #concatArrayIntoString(Enum[], int)}
    * @return
    */
   public static String concatArrayIntoString(int[] items, String separator, int maxItens) {
@@ -339,10 +339,10 @@ public class RUArray {
   }
 
   /**
-   * Este mÈtodo itera o array para remover os dados de um array. Sua lÛgica consiste em contabilizar quantos itens destinados a remoÁ„o s„o encontrados, reposicioar os itens do array para as posiÁıes dos itens que devem ser removidos e no fim realizar uma cÛpia do array descartando as ˙ltimas posiÁıes.
+   * Este m√©todo itera o array para remover os dados de um array. Sua l√≥gica consiste em contabilizar quantos itens destinados a remo√ß√£o s√£o encontrados, reposicioar os itens do array para as posi√ß√µes dos itens que devem ser removidos e no fim realizar uma c√≥pia do array descartando as √∫ltimas posi√ß√µes.
    *
-   * @param <T> Tipo do Array que ser· operado
-   * @param dataArray Array com os dados que ser„o removidos.
+   * @param <T> Tipo do Array que ser√° operado
+   * @param dataArray Array com os dados que ser√£o removidos.
    * @param valueToRemove Array com os dados que devem ser removidos do array.
    * @return
    */
@@ -354,10 +354,10 @@ public class RUArray {
   }
 
   /**
-   * Este mÈtodo itera o array para remover os dados de um array. Sua lÛgica consiste em contabilizar quantos itens destinados a remoÁ„o s„o encontrados, reposicioar os itens do array para as posiÁıes dos itens que devem ser removidos e no fim realizar uma cÛpia do array descartando as ˙ltimas posiÁıes.
+   * Este m√©todo itera o array para remover os dados de um array. Sua l√≥gica consiste em contabilizar quantos itens destinados a remo√ß√£o s√£o encontrados, reposicioar os itens do array para as posi√ß√µes dos itens que devem ser removidos e no fim realizar uma c√≥pia do array descartando as √∫ltimas posi√ß√µes.
    *
-   * @param <T> Tipo do Array que ser· operado
-   * @param dataArray Array com os dados que ser„o removidos.
+   * @param <T> Tipo do Array que ser√° operado
+   * @param dataArray Array com os dados que ser√£o removidos.
    * @param valuesToRemove Array com os dados que devem ser removidos do array.
    * @return
    */

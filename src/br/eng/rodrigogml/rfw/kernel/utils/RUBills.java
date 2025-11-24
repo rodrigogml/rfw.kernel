@@ -4,44 +4,44 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 
 /**
- * Description: Classe utilit·ria com mÈtodos relacionados a contas (boletos, cÛdigo de barras de contas, QRCodes de PIX, etc.).<br>
+ * Description: Classe utilit√°ria com m√©todos relacionados a contas (boletos, c√≥digo de barras de contas, QRCodes de PIX, etc.).<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since (18 de fev. de 2025)
  */
 public class RUBills {
 
   /**
-   * Tipos de CÛdigo de Barras de boleto e outros tÌtulos banc·rio.
+   * Tipos de C√≥digo de Barras de boleto e outros t√≠tulos banc√°rio.
    */
   public enum BankBillCodeType {
     /**
-     * CÛdigo de barras do boleto.
+     * C√≥digo de barras do boleto.
      */
     BOLETO_BARCODE,
     /**
-     * Linha digit·vel do boleto.
+     * Linha digit√°vel do boleto.
      */
     BOLETO_NUMERICCODE,
     /**
-     * CÛdigo de barras de uma guia de arrecadaÁ„o.
+     * C√≥digo de barras de uma guia de arrecada√ß√£o.
      */
     SERVICE_BARCODE,
     /**
-     * Linha digit·vel de uma guia de arrecadaÁ„o.
+     * Linha digit√°vel de uma guia de arrecada√ß√£o.
      */
     SERVICE_NUMERICCODE
   }
 
   /**
-   * Classe est·tica.
+   * Classe est√°tica.
    */
   private RUBills() {
   }
 
   /**
-   * Verifica se a linha numÈrica (linha digit·vel) È uma linha de boleto v·lida.<br>
-   * O mÈtodo considera apenas os dÌgitos, removendo automaticamente qualquer pontuaÁ„o ou formataÁ„o existente.
+   * Verifica se a linha num√©rica (linha digit√°vel) √© uma linha de boleto v√°lida.<br>
+   * O m√©todo considera apenas os d√≠gitos, removendo automaticamente qualquer pontua√ß√£o ou formata√ß√£o existente.
    *
    * @param numericLine the numeric line
    * @throws RFWException the RFWDeprec exception
@@ -49,17 +49,17 @@ public class RUBills {
   public static void isBoletoNumericCodeValid(String numericLine) throws RFWException {
     numericLine = RUString.removeNonDigits(numericLine);
 
-    // Se o tamanho est· correto
+    // Se o tamanho est√° correto
     if (!(numericLine.length() == 33 || (numericLine.length() > 33 && numericLine.length() <= 36 && numericLine.substring(33) == "0000") || numericLine.length() >= 37 && numericLine.length() <= 47)) {
       throw new RFWValidationException("RFW_ERR_210055");
     }
 
-    // Se possui cÛdigo do banco preenchido
+    // Se possui c√≥digo do banco preenchido
     if (numericLine.substring(0, 3) == "000") {
       throw new RFWValidationException("RFW_ERR_210057");
     }
 
-    // Se o cÛdigo da moeda È v·lido
+    // Se o c√≥digo da moeda √© v√°lido
     if (numericLine.charAt(3) != '9') {
       throw new RFWValidationException("RFW_ERR_210063");
     }
@@ -82,7 +82,7 @@ public class RUBills {
       throw new RFWValidationException("RFW_ERR_210062");
     }
 
-    // O DV È calculado com base no cÛdigo de barras e n„o no cÛdigo numÈrico. Por isso primeiro vamos converter o cÛdigo numÈrico no cÛdigo de barras e depois calcular o DV
+    // O DV √© calculado com base no c√≥digo de barras e n√£o no c√≥digo num√©rico. Por isso primeiro vamos converter o c√≥digo num√©rico no c√≥digo de barras e depois calcular o DV
     String codeBar = convertNumericCodeToBarCode(numericLine);
     String codeBarWithoutDV = codeBar.substring(0, 4) + codeBar.substring(5);
     if (numericLine.charAt(32) != RUDVCalc.calcPaymentSlipDVForServices(codeBarWithoutDV).charAt(0)) {
@@ -91,11 +91,11 @@ public class RUBills {
   }
 
   /**
-   * Converte o cÛdigo numÈrico para o cÛdigo de barras.<br>
-   * Este mÈtodo espera receber um cÛdigo numÈrico v·lido. N√O CALCULA O DV, copia ele do cÛdigo numÈrico. N√O VALIDA O RESULTADO!
+   * Converte o c√≥digo num√©rico para o c√≥digo de barras.<br>
+   * Este m√©todo espera receber um c√≥digo num√©rico v√°lido. N√ÉO CALCULA O DV, copia ele do c√≥digo num√©rico. N√ÉO VALIDA O RESULTADO!
    *
-   * @param numericCode A linha numÈrica a ser convertida.
-   * @return O cÛdigo de barras convertido.
+   * @param numericCode A linha num√©rica a ser convertida.
+   * @return O c√≥digo de barras convertido.
    * @throws RFWException
    */
   public static String convertNumericCodeToBarCode(String numericCode) throws RFWException {
@@ -103,7 +103,7 @@ public class RUBills {
 
     String barCode = null;
     final BankBillCodeType type = getCodeType(numericCode, false);
-    if (type == null) throw new RFWValidationException("CÛdigo NumÈrico Inv·lido ou n„o conhecido pelo RFWDeprec!");
+    if (type == null) throw new RFWValidationException("C√≥digo Num√©rico Inv√°lido ou n√£o conhecido pelo RFWDeprec!");
 
     switch (type) {
       case SERVICE_NUMERICCODE: {
@@ -114,7 +114,7 @@ public class RUBills {
       }
         break;
       case BOLETO_NUMERICCODE: {
-        // Completa com zeros o cÛdigo caso ele n„o esteja no tamaho correto para facilitar a convers„o
+        // Completa com zeros o c√≥digo caso ele n√£o esteja no tamaho correto para facilitar a convers√£o
         numericCode = RUString.completeUntilLengthRight("0", numericCode, 47);
 
         barCode = numericCode.substring(0, 4);
@@ -127,7 +127,7 @@ public class RUBills {
         break;
       case BOLETO_BARCODE:
       case SERVICE_BARCODE:
-        // N„o converte neste mÈtodo
+        // N√£o converte neste m√©todo
         barCode = numericCode;
         break;
     }
@@ -135,11 +135,11 @@ public class RUBills {
   }
 
   /**
-   * Identifica qual È o tipo de {@code BankBillCodeType} que uma string representa.<br>
-   * ESTE M…TODO FAZ A VALIDA«√O DOS DVs PARA GARANTIR QUE A NUMERA«√O EST¡ SENDO CORRETAMENTE INTERPRETADA
+   * Identifica qual √© o tipo de {@code BankBillCodeType} que uma string representa.<br>
+   * ESTE M√âTODO FAZ A VALIDA√á√ÉO DOS DVs PARA GARANTIR QUE A NUMERA√á√ÉO EST√Å SENDO CORRETAMENTE INTERPRETADA
    *
-   * @param code O cÛdigo a ser verificado.
-   * @return Um {@code BankBillCodeType} que identifica o cÛdigo passado ao mÈtodo, OU nulo caso o cÛdigo n„o seja reconhecido/v·lido
+   * @param code O c√≥digo a ser verificado.
+   * @return Um {@code BankBillCodeType} que identifica o c√≥digo passado ao m√©todo, OU nulo caso o c√≥digo n√£o seja reconhecido/v√°lido
    * @throws RFWException
    */
   public static BankBillCodeType getCodeType(String code) throws RFWException {
@@ -147,32 +147,32 @@ public class RUBills {
   }
 
   /**
-   * Recupera o tipo do cÛdigo de barra baseado no tamanho e estrutura do cÛdigo.
+   * Recupera o tipo do c√≥digo de barra baseado no tamanho e estrutura do c√≥digo.
    *
-   * @param code CÛdigo a ser definido.
-   * @param test Caso true, o mÈtodo testa a estrutura e DV para garantir que È o cÛdigo, caso false considera apenas o tamanho. (Em alguns casos n„o testa para evitar o loop infinito entre mÈtodos).
+   * @param code C√≥digo a ser definido.
+   * @param test Caso true, o m√©todo testa a estrutura e DV para garantir que √© o c√≥digo, caso false considera apenas o tamanho. (Em alguns casos n√£o testa para evitar o loop infinito entre m√©todos).
    * @return the code type
    * @throws RFWException
    */
   private static BankBillCodeType getCodeType(String code, boolean test) throws RFWException {
     code = RUString.removeNonDigits(code);
-    if (code.length() == 44) { // Provavelmente È cÛdigo de barras
-      if (code.startsWith("8")) { // Provavelmente cÛdigo de arrecadaÁ„o
+    if (code.length() == 44) { // Provavelmente √© c√≥digo de barras
+      if (code.startsWith("8")) { // Provavelmente c√≥digo de arrecada√ß√£o
         try {
           if (test) isServiceBarCodeValid(code);
           return BankBillCodeType.SERVICE_BARCODE;
         } catch (RFWValidationException e) {
         }
       }
-      // Se n„o comeÁa com 8, ou se n„o era v·lido, tentamos como boleto
+      // Se n√£o come√ßa com 8, ou se n√£o era v√°lido, tentamos como boleto
       try {
         if (test) isBoletoBarCodeValid(code);
         return BankBillCodeType.BOLETO_BARCODE;
       } catch (RFWValidationException e) {
       }
     }
-    // Se o tamanho n„o È 44, ou se falhou em validar como cÛdigo de barras, vamos processar como representaÁ„o numÈrica
-    // A primeira È a representaÁ„o de arrecadaÁ„o, que È sempre fixa e È a maior
+    // Se o tamanho n√£o √© 44, ou se falhou em validar como c√≥digo de barras, vamos processar como representa√ß√£o num√©rica
+    // A primeira √© a representa√ß√£o de arrecada√ß√£o, que √© sempre fixa e √© a maior
     if (code.length() == 48) {
       try {
         if (test) isServiceNumericCodeValid(code);
@@ -180,7 +180,7 @@ public class RUBills {
       } catch (RFWValidationException e) {
       }
     } else if (code.length() >= 33 && code.length() <= 47) {
-      // Se o tamanho est· entre os tamanhos que a representaÁ„o numÈrica do boleto pode ter, validamos para verificar
+      // Se o tamanho est√° entre os tamanhos que a representa√ß√£o num√©rica do boleto pode ter, validamos para verificar
       try {
         if (test) isBoletoNumericCodeValid(code);
         return BankBillCodeType.BOLETO_NUMERICCODE;
@@ -191,10 +191,10 @@ public class RUBills {
   }
 
   /**
-   * Verifica se o cÛdigo de barras È um cÛdigo de guia de arrecadaÁ„o/serviÁos v·lido. <br>
-   * O mÈtodo remove quaisquer caracteres que n„o sejam dÌgitos do cÛdigo de barras antes de validar.
+   * Verifica se o c√≥digo de barras √© um c√≥digo de guia de arrecada√ß√£o/servi√ßos v√°lido. <br>
+   * O m√©todo remove quaisquer caracteres que n√£o sejam d√≠gitos do c√≥digo de barras antes de validar.
    *
-   * @param codeBar O cÛdigo de barras a ser verificado.
+   * @param codeBar O c√≥digo de barras a ser verificado.
    * @throws RFWException
    */
   public static void isServiceBarCodeValid(String codeBar) throws RFWException {
@@ -202,48 +202,48 @@ public class RUBills {
 
     // Tamanho exato deve ser de 44 algarismos
     if (codeBar.length() != 44) {
-      throw new RFWValidationException("O tamanho do cÛdigo n„o È v·lido para uma guia de arrecadaÁ„o/serviÁo.", new String[] { "44" });
+      throw new RFWValidationException("O tamanho do c√≥digo n√£o √© v√°lido para uma guia de arrecada√ß√£o/servi√ßo.", new String[] { "44" });
     }
 
-    // O primeiro dÌgito deve ser "8"
+    // O primeiro d√≠gito deve ser "8"
     if (codeBar.charAt(0) != '8') {
-      throw new RFWValidationException("O cÛdigo de barras da guia de arrecadaÁ„o deve sempre comeÁar com 8.");
+      throw new RFWValidationException("O c√≥digo de barras da guia de arrecada√ß√£o deve sempre come√ßar com 8.");
     }
 
     // Removendo o DV da string
     String codeToCheck = codeBar.substring(0, 3) + codeBar.substring(4);
 
     // Identificador do valor deve ser:
-    // 6 (Valor a ser cobrado efetivamente em reais) - com dÌgito verificador calculado pelo mÛdulo 10
-    // 7 (Quantidade de Moeda) - com dÌgito verificador calculado pelo mÛdulo 10
-    // 8 (Valor a ser cobrado efetivamente em reais) - com dÌgito verificador calculado pelo mÛdulo 11
-    // 9 (Quantidade de Moeda) - com dÌgito verificador calculado pelo mÛdulo 11
+    // 6 (Valor a ser cobrado efetivamente em reais) - com d√≠gito verificador calculado pelo m√≥dulo 10
+    // 7 (Quantidade de Moeda) - com d√≠gito verificador calculado pelo m√≥dulo 10
+    // 8 (Valor a ser cobrado efetivamente em reais) - com d√≠gito verificador calculado pelo m√≥dulo 11
+    // 9 (Quantidade de Moeda) - com d√≠gito verificador calculado pelo m√≥dulo 11
     if (codeBar.charAt(2) != '6' && codeBar.charAt(2) != '7' && codeBar.charAt(2) != '8' && codeBar.charAt(2) != '9') {
-      throw new RFWValidationException("O cÛdigo da moeda do cÛdigo de barras n„o È v·lido, ou n„o reconhecido pelo RFWDeprec.");
+      throw new RFWValidationException("O c√≥digo da moeda do c√≥digo de barras n√£o √© v√°lido, ou n√£o reconhecido pelo RFWDeprec.");
     }
 
-    // Se o campo 'segmento' possui um valor v·lido, ou seja, diferente de zero e 8 (os ˙nicos valores inv·lidos atualmente)
+    // Se o campo 'segmento' possui um valor v√°lido, ou seja, diferente de zero e 8 (os √∫nicos valores inv√°lidos atualmente)
     if (codeBar.charAt(1) == '0' || codeBar.charAt(1) == '8') {
       throw new RFWValidationException("RFW_ERR_210065");
     }
 
     // O DV deve estar correto
     if ((codeBar.charAt(2) == '6' || codeBar.charAt(2) == '7') && codeBar.charAt(3) != RUDVCalc.calcBoletoBlocoDigitavelDV(codeToCheck).charAt(0)) {
-      throw new RFWValidationException("O dÌgito verificador do cÛdigo de barras n„o est· correto.");
+      throw new RFWValidationException("O d√≠gito verificador do c√≥digo de barras n√£o est√° correto.");
     } else if ((codeBar.charAt(2) == '8' || codeBar.charAt(2) == '9')) {
       if (codeBar.charAt(1) == '5' || codeBar.charAt(1) == '1') { // 5 - Guias Governo // 1 - Prefeituras
         if (codeBar.charAt(3) != RUDVCalc.calcPaymentSlipDVForGovernment(codeToCheck).charAt(0)) {
-          throw new RFWValidationException("O dÌgito verificador do cÛdigo de barras n„o est· correto.");
+          throw new RFWValidationException("O d√≠gito verificador do c√≥digo de barras n√£o est√° correto.");
         }
       } else if (codeBar.charAt(3) != RUDVCalc.calcPaymentSlipDVForServices(codeToCheck).charAt(0)) {
-        throw new RFWValidationException("O dÌgito verificador do cÛdigo de barras n„o est· correto.");
+        throw new RFWValidationException("O d√≠gito verificador do c√≥digo de barras n√£o est√° correto.");
       }
     }
   }
 
   /**
-   * Verifica se a linha numÈrica (linha digit·vel) È uma linha de guia de arrecadaÁ„o/serviÁos v·lida. <br>
-   * O mÈtodo remove quaisquer caracteres que n„o sejam dÌgitos do cÛdigo de barras antes de validar.
+   * Verifica se a linha num√©rica (linha digit√°vel) √© uma linha de guia de arrecada√ß√£o/servi√ßos v√°lida. <br>
+   * O m√©todo remove quaisquer caracteres que n√£o sejam d√≠gitos do c√≥digo de barras antes de validar.
    *
    * @param numericCode the numeric code
    * @throws RFWException
@@ -253,11 +253,11 @@ public class RUBills {
 
     // Tamanho exato de 48 algarismos
     if (numericCode.length() != 48) {
-      throw new RFWValidationException("O tamanho do cÛdigo numÈrico n„o È v·lido para uma conta serviÁo/guia de arrecadaÁ„o.", new String[] { "48" });
+      throw new RFWValidationException("O tamanho do c√≥digo num√©rico n√£o √© v√°lido para uma conta servi√ßo/guia de arrecada√ß√£o.", new String[] { "48" });
     }
 
-    // Como o a representaÁ„o numÈrica È o prÛprio cÛdigo de barras, sÛ acrescido de um DV a cada 11 posiÁıes, vamos remover elas e fazer a validaÁ„o do cÛdigo de barras, depois sÛ validamos os DVs.
-    // Assim as validaÁıes ficam todas concentradas sÛ no mÈtodo do cÛdigo de barras.
+    // Como o a representa√ß√£o num√©rica √© o pr√≥prio c√≥digo de barras, s√≥ acrescido de um DV a cada 11 posi√ß√µes, vamos remover elas e fazer a valida√ß√£o do c√≥digo de barras, depois s√≥ validamos os DVs.
+    // Assim as valida√ß√µes ficam todas concentradas s√≥ no m√©todo do c√≥digo de barras.
     String firstBlockCode = numericCode.substring(0, 11);
     String secondBlockCode = numericCode.substring(12, 23);
     String thirdBlockCode = numericCode.substring(24, 35);
@@ -270,57 +270,57 @@ public class RUBills {
     if (barCode.charAt(2) == '6' || barCode.charAt(2) == '7') {
       modCalc = 1;
     } else if (barCode.charAt(2) == '8' || barCode.charAt(2) == '9') {
-      if (barCode.charAt(1) == '5' || barCode.charAt(1) == '1') { // 5 - Guias de ArrecadaÁ„o Governo / 1 - Prefeituras
+      if (barCode.charAt(1) == '5' || barCode.charAt(1) == '1') { // 5 - Guias de Arrecada√ß√£o Governo / 1 - Prefeituras
         modCalc = 3;
       } else {
         modCalc = 2;
       }
     } else {
-      throw new RFWValidationException("CÛdigo do Identificador desconhecido pelo RFWDeprec!");
+      throw new RFWValidationException("C√≥digo do Identificador desconhecido pelo RFWDeprec!");
     }
 
     // Validar DV do primeiro bloco
     if (modCalc == 1 && numericCode.charAt(11) != RUDVCalc.calcBoletoBlocoDigitavelDV(firstBlockCode).charAt(0)) {
-      throw new RFWValidationException("O dÌgito verificador do bloco 1 È inv·lido!");
+      throw new RFWValidationException("O d√≠gito verificador do bloco 1 √© inv√°lido!");
     } else if (modCalc == 2 && numericCode.charAt(11) != RUDVCalc.calcPaymentSlipDVForServices(firstBlockCode).charAt(0)) {
-      throw new RFWValidationException("O dÌgito verificador do bloco 1 È inv·lido!");
+      throw new RFWValidationException("O d√≠gito verificador do bloco 1 √© inv√°lido!");
     } else if (modCalc == 3 && numericCode.charAt(11) != RUDVCalc.calcPaymentSlipDVForGovernment(firstBlockCode).charAt(0)) {
-      throw new RFWValidationException("O dÌgito verificador do bloco 1 È inv·lido!");
+      throw new RFWValidationException("O d√≠gito verificador do bloco 1 √© inv√°lido!");
     }
 
     // Validar DV do segundo bloco
     if (modCalc == 1 && numericCode.charAt(23) != RUDVCalc.calcBoletoBlocoDigitavelDV(secondBlockCode).charAt(0)) {
-      throw new RFWValidationException("O dÌgito verificador do bloco 1 È inv·lido!");
+      throw new RFWValidationException("O d√≠gito verificador do bloco 1 √© inv√°lido!");
     } else if (modCalc == 2 && numericCode.charAt(23) != RUDVCalc.calcPaymentSlipDVForServices(secondBlockCode).charAt(0)) {
-      throw new RFWValidationException("O dÌgito verificador do bloco 1 È inv·lido!");
+      throw new RFWValidationException("O d√≠gito verificador do bloco 1 √© inv√°lido!");
     } else if (modCalc == 3 && numericCode.charAt(23) != RUDVCalc.calcPaymentSlipDVForGovernment(secondBlockCode).charAt(0)) {
-      throw new RFWValidationException("O dÌgito verificador do bloco 1 È inv·lido!");
+      throw new RFWValidationException("O d√≠gito verificador do bloco 1 √© inv√°lido!");
     }
 
     // Validar DV do terceiro bloco
     if (modCalc == 1 && numericCode.charAt(35) != RUDVCalc.calcBoletoBlocoDigitavelDV(thirdBlockCode).charAt(0)) {
-      throw new RFWValidationException("O dÌgito verificador do bloco 1 È inv·lido!");
+      throw new RFWValidationException("O d√≠gito verificador do bloco 1 √© inv√°lido!");
     } else if (modCalc == 2 && numericCode.charAt(35) != RUDVCalc.calcPaymentSlipDVForServices(thirdBlockCode).charAt(0)) {
-      throw new RFWValidationException("O dÌgito verificador do bloco 1 È inv·lido!");
+      throw new RFWValidationException("O d√≠gito verificador do bloco 1 √© inv√°lido!");
     } else if (modCalc == 3 && numericCode.charAt(35) != RUDVCalc.calcPaymentSlipDVForGovernment(thirdBlockCode).charAt(0)) {
-      throw new RFWValidationException("O dÌgito verificador do bloco 1 È inv·lido!");
+      throw new RFWValidationException("O d√≠gito verificador do bloco 1 √© inv√°lido!");
     }
 
     // Validar DV do terceiro bloco
     if (modCalc == 1 && numericCode.charAt(47) != RUDVCalc.calcBoletoBlocoDigitavelDV(fourthBlockCode).charAt(0)) {
-      throw new RFWValidationException("O dÌgito verificador do bloco 1 È inv·lido!");
+      throw new RFWValidationException("O d√≠gito verificador do bloco 1 √© inv√°lido!");
     } else if (modCalc == 2 && numericCode.charAt(47) != RUDVCalc.calcPaymentSlipDVForServices(fourthBlockCode).charAt(0)) {
-      throw new RFWValidationException("O dÌgito verificador do bloco 1 È inv·lido!");
+      throw new RFWValidationException("O d√≠gito verificador do bloco 1 √© inv√°lido!");
     } else if (modCalc == 3 && numericCode.charAt(47) != RUDVCalc.calcPaymentSlipDVForGovernment(fourthBlockCode).charAt(0)) {
-      throw new RFWValidationException("O dÌgito verificador do bloco 1 È inv·lido!");
+      throw new RFWValidationException("O d√≠gito verificador do bloco 1 √© inv√°lido!");
     }
   }
 
   /**
-   * Verifica se o cÛdigo de barras È um cÛdigo de boleto v·lido. <br>
-   * O mÈtodo remove quaisquer caracteres que n„o sejam dÌgitos do cÛdigo de barras antes de validar.
+   * Verifica se o c√≥digo de barras √© um c√≥digo de boleto v√°lido. <br>
+   * O m√©todo remove quaisquer caracteres que n√£o sejam d√≠gitos do c√≥digo de barras antes de validar.
    *
-   * @param codebar O cÛdigo de barras a ser verificado.
+   * @param codebar O c√≥digo de barras a ser verificado.
    * @throws RFWException
    */
   public static void isBoletoBarCodeValid(String codebar) throws RFWException {
@@ -338,27 +338,27 @@ public class RUBills {
       throw new RFWValidationException("RFW_ERR_210058");
     }
 
-    // Se o cÛdigo do banco n„o est· zerado
+    // Se o c√≥digo do banco n√£o est√° zerado
     if (codebar.substring(0, 3) == "000") {
       throw new RFWValidationException("RFW_ERR_210057");
     }
 
-    // Se o campo de moeda È 9, pois n„o conhecemos outro valor
+    // Se o campo de moeda √© 9, pois n√£o conhecemos outro valor
     if (codebar.charAt(3) != '9') {
       throw new RFWValidationException("RFW_ERR_210063");
     }
   }
 
   /**
-   * Este mÈtodo recebe um cÛdigo, podendo ser um cÛdigo de barras ou uma representaÁ„o numÈrica (numericCode) e verifica se È v·lida. O mÈtodo tenta reconhecer entre todos os tipos de cÛdigo conhecido pelo Framework.
+   * Este m√©todo recebe um c√≥digo, podendo ser um c√≥digo de barras ou uma representa√ß√£o num√©rica (numericCode) e verifica se √© v√°lida. O m√©todo tenta reconhecer entre todos os tipos de c√≥digo conhecido pelo Framework.
    *
-   * @param code CÛdigo e ser validado.
+   * @param code C√≥digo e ser validado.
    * @throws RFWException
    */
   public static void isCodeValid(String code) throws RFWException {
     code = RUString.removeNonDigits(code);
     final BankBillCodeType type = getCodeType(code);
-    if (type == null) throw new RFWValidationException("CÛdigo inv·lido ou n„o reconhecido pelo RFWDeprec!");
+    if (type == null) throw new RFWValidationException("C√≥digo inv√°lido ou n√£o reconhecido pelo RFWDeprec!");
     switch (type) {
       case BOLETO_BARCODE:
         isBoletoBarCodeValid(code);
@@ -376,11 +376,11 @@ public class RUBills {
   }
 
   /**
-   * Converte o cÛdigo de barras para o cÛdigo numÈrico.<br>
-   * Este mÈtodo espera receber um cÛdigo de barras v·lido. N√O CALCULA O DV GERAL (sÛ os intermedi·rios pois n„o existem no CÛdigo de Barras), copia ele do cÛdigo recebido. N√O VALIDA O RESULTADO!
+   * Converte o c√≥digo de barras para o c√≥digo num√©rico.<br>
+   * Este m√©todo espera receber um c√≥digo de barras v√°lido. N√ÉO CALCULA O DV GERAL (s√≥ os intermedi√°rios pois n√£o existem no C√≥digo de Barras), copia ele do c√≥digo recebido. N√ÉO VALIDA O RESULTADO!
    *
-   * @param barCode CÛdigo de Barras ser convertido.
-   * @return O cÛdigo de barras convertido em cÛdigo numÈrico.
+   * @param barCode C√≥digo de Barras ser convertido.
+   * @return O c√≥digo de barras convertido em c√≥digo num√©rico.
    * @throws RFWException
    */
   public static String convertBarCodeToNumericCode(String barCode) throws RFWException {
@@ -388,23 +388,23 @@ public class RUBills {
 
     String numericCode = null;
     final BankBillCodeType type = getCodeType(barCode);
-    if (type == null) throw new RFWValidationException("CÛdigo de Barras Inv·lido ou n„o conhecido pelo RFWDeprec!");
+    if (type == null) throw new RFWValidationException("C√≥digo de Barras Inv√°lido ou n√£o conhecido pelo RFWDeprec!");
 
     switch (type) {
       case SERVICE_BARCODE: {
 
         // Verifica qual Mod utilizar de acordo com o campo 'identificador do valor'
-        int modCalc; // 1 MÛdulo de 10, 2-MÛdulo de 11, 3-Mod11 para Guias de ArrecaÁ„o do Governo
+        int modCalc; // 1 M√≥dulo de 10, 2-M√≥dulo de 11, 3-Mod11 para Guias de Arreca√ß√£o do Governo
         if (barCode.charAt(2) == '6' || barCode.charAt(2) == '7') {
           modCalc = 1;
         } else if (barCode.charAt(2) == '8' || barCode.charAt(2) == '9') {
-          if (barCode.charAt(1) == '5' || barCode.charAt(1) == '1') { // 5 - Guias de ArrecadaÁ„o Governo / 1 - Prefeituras
+          if (barCode.charAt(1) == '5' || barCode.charAt(1) == '1') { // 5 - Guias de Arrecada√ß√£o Governo / 1 - Prefeituras
             modCalc = 3;
           } else {
             modCalc = 2;
           }
         } else {
-          throw new RFWValidationException("CÛdigo do Identificador desconhecido pelo RFWDeprec!");
+          throw new RFWValidationException("C√≥digo do Identificador desconhecido pelo RFWDeprec!");
         }
 
         numericCode = "";
@@ -447,7 +447,7 @@ public class RUBills {
       }
         break;
       case BOLETO_BARCODE: {
-        // Completa com zeros o cÛdigo caso ele n„o esteja no tamaho correto para facilitar a convers„o
+        // Completa com zeros o c√≥digo caso ele n√£o esteja no tamaho correto para facilitar a convers√£o
         barCode = RUString.completeUntilLengthRight("0", barCode, 47);
 
         String block = null;
@@ -469,7 +469,7 @@ public class RUBills {
         break;
       case BOLETO_NUMERICCODE:
       case SERVICE_NUMERICCODE:
-        // N„o converte neste mÈtodo
+        // N√£o converte neste m√©todo
         numericCode = barCode;
         break;
     }

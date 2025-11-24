@@ -8,7 +8,7 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 /**
  * Description: Classe que formata uma chave de acesso da NFe.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 4.1.0 (28/09/2011)
  */
 public class RFWNFeAccessKeyDataFormatter implements RFWDataFormatter<String, Object> {
@@ -48,7 +48,7 @@ public class RFWNFeAccessKeyDataFormatter implements RFWDataFormatter<String, Ob
       // Valida a chave
       String v = value.toString().replaceAll("[^0-9]", "");
       if (v.length() != 44) {
-        throw new RFWValidationException("Objeto inv·lido para uma entrada de item de NFe.");
+        throw new RFWValidationException("Objeto inv√°lido para uma entrada de item de NFe.");
       }
     }
   }

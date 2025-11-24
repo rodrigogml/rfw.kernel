@@ -10,23 +10,23 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 
 /**
- * Description: Classe utilit·ria para agrupar cÛdigo de obtenÁ„o de informaÁıes da m·quina, JVM, SO, etc..<br>
+ * Description: Classe utilit√°ria para agrupar c√≥digo de obten√ß√£o de informa√ß√µes da m√°quina, JVM, SO, etc..<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since (28 de ago. de 2024)
  */
 public class RUMachine {
 
   /**
-   * Construtor privado, classe estritamente est·tica.
+   * Construtor privado, classe estritamente est√°tica.
    */
   private RUMachine() {
   }
 
   /**
-   * Recupera em uma String de m˙ltiplas linhas as informaÁıes sobre o classloader de uma classe.
+   * Recupera em uma String de m√∫ltiplas linhas as informa√ß√µes sobre o classloader de uma classe.
    *
-   * @return String multilinhas (utiliza o {@link System#lineSeparator()} com as informaÁıes.
+   * @return String multilinhas (utiliza o {@link System#lineSeparator()} com as informa√ß√µes.
    */
   public static String getClassLoaderDetails(Class<?> clazz) {
     StringBuilder details = new StringBuilder();
@@ -70,7 +70,7 @@ public class RUMachine {
   /**
    * Retorna o nome/identificador geral do classloader da classe passada.
    *
-   * @return .toString() do Classloader da classe/mÈtodo passada como argumento ou nulo nos casos de classe carregadas do "Bootstrap ClassLoader" (como a classe String, por exemplo).
+   * @return .toString() do Classloader da classe/m√©todo passada como argumento ou nulo nos casos de classe carregadas do "Bootstrap ClassLoader" (como a classe String, por exemplo).
    */
   public static String getClassLoaderName(Class<?> clazz) throws RFWException {
     PreProcess.requiredNonNull(clazz);
@@ -89,20 +89,20 @@ public class RUMachine {
   }
 
   /**
-   * Recupera o MAC Address da primeira interface de rede considerada "v·lida".<br>
+   * Recupera o MAC Address da primeira interface de rede considerada "v√°lida".<br>
    * <br>
-   * CritÈrios da interface escolhida:
+   * Crit√©rios da interface escolhida:
    * <ul>
-   * <li>Interface est· "up" ({@link NetworkInterface#isUp()}).</li>
-   * <li>N„o È loopback ({@link NetworkInterface#isLoopback()}).</li>
-   * <li>N„o È virtual ({@link NetworkInterface#isVirtual()}).</li>
-   * <li>Possui endereÁo fÌsico ({@link NetworkInterface#getHardwareAddress()}) diferente de {@code null} e com tamanho &gt; 0.</li>
+   * <li>Interface est√° "up" ({@link NetworkInterface#isUp()}).</li>
+   * <li>N√£o √© loopback ({@link NetworkInterface#isLoopback()}).</li>
+   * <li>N√£o √© virtual ({@link NetworkInterface#isVirtual()}).</li>
+   * <li>Possui endere√ßo f√≠sico ({@link NetworkInterface#getHardwareAddress()}) diferente de {@code null} e com tamanho &gt; 0.</li>
    * </ul>
-   * O MAC È retornado no formato {@code "XX-XX-XX-XX-XX-XX"} em hexadecimal (mai˙sculo).<br>
-   * Se nenhuma interface v·lida for encontrada ou ocorrer erro ao obter as interfaces, È lanÁada {@link RFWCriticalException} com o cÛdigo {@code RFW_ERR_900004}.
+   * O MAC √© retornado no formato {@code "XX-XX-XX-XX-XX-XX"} em hexadecimal (mai√∫sculo).<br>
+   * Se nenhuma interface v√°lida for encontrada ou ocorrer erro ao obter as interfaces, √© lan√ßada {@link RFWCriticalException} com o c√≥digo {@code RFW_ERR_900004}.
    *
-   * @return MAC Address da m·quina no formato {@code XX-XX-XX-XX-XX-XX}.
-   * @throws RFWException Caso n„o consiga recuperar as informaÁıes necess·rias.
+   * @return MAC Address da m√°quina no formato {@code XX-XX-XX-XX-XX-XX}.
+   * @throws RFWException Caso n√£o consiga recuperar as informa√ß√µes necess√°rias.
    */
   public static String getLocalHostMacAddress() throws RFWException {
     try {
@@ -121,7 +121,7 @@ public class RUMachine {
             continue;
           }
         } catch (SocketException e) {
-          // Se n„o conseguir consultar o estado dessa interface, tenta as prÛximas.
+          // Se n√£o conseguir consultar o estado dessa interface, tenta as pr√≥ximas.
           continue;
         }
 
@@ -140,7 +140,7 @@ public class RUMachine {
         return sb.toString();
       }
 
-      // Nenhuma interface v·lida encontrada
+      // Nenhuma interface v√°lida encontrada
       throw new RFWCriticalException("7");
     } catch (SocketException e) {
       throw new RFWCriticalException("RFW_ERR_900004", e);
@@ -162,7 +162,7 @@ public class RUMachine {
   }
 
   /**
-   * Retorna o modelo da arquitetura em que o programa est· rodando.
+   * Retorna o modelo da arquitetura em que o programa est√° rodando.
    */
   public static String getJavaArchitetureModel() {
     return System.getProperty("sun.arch.data.model");

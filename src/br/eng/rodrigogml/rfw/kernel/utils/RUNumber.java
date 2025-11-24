@@ -6,33 +6,33 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 
 /**
- * Description: Classe de mÈtodos utilit·rios para tratamento de n˙meros.<br>
+ * Description: Classe de m√©todos utilit√°rios para tratamento de n√∫meros.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 3.1.0 (NOV / 2009)
- * @version 4.1.0 (23/06/2011) - rodrigogml - Trocou o nome, antes NumberUtils, para ficar no padr„o do Framework.
- * @deprecated Migrar os mÈtodos dessa classe para a {@link RUTypes}
+ * @version 4.1.0 (23/06/2011) - rodrigogml - Trocou o nome, antes NumberUtils, para ficar no padr√£o do Framework.
+ * @deprecated Migrar os m√©todos dessa classe para a {@link RUTypes}
  */
 @Deprecated
 public class RUNumber {
 
   /**
-   * Este mÈtodo abstrai os c·lculos que temos de fazer para gerar um n˙mero inteiro aleatÛrio. Simplificando o cÛdigo com uma chamada onde simplismente passamos os valores iniciais e final.<br>
-   * <B>ATEN«√O: </b> os valores passados s„o inclusivos, isto È, os valores passados podem ser retornados como resultado da funÁ„o.
+   * Este m√©todo abstrai os c√°lculos que temos de fazer para gerar um n√∫mero inteiro aleat√≥rio. Simplificando o c√≥digo com uma chamada onde simplismente passamos os valores iniciais e final.<br>
+   * <B>ATEN√á√ÉO: </b> os valores passados s√£o inclusivos, isto √©, os valores passados podem ser retornados como resultado da fun√ß√£o.
    *
    * @param min
    * @param max
-   * @return n˙mero aleatÛrio entre os valores min e max, inclusive.
+   * @return n√∫mero aleat√≥rio entre os valores min e max, inclusive.
    */
   public static int randomInt(int min, int max) {
     return (int) ((Math.random() * (max - min)) + min);
   }
 
   /**
-   * Converte um array de Bytes para uma String no formato "[01]*", sendo a posiÁ„o '0' do array impresso mais a esquerda.
+   * Converte um array de Bytes para uma String no formato "[01]*", sendo a posi√ß√£o '0' do array impresso mais a esquerda.
    *
-   * @param bytes Bytes que ser„o convertidos para uma String Bin·ria.
-   * @return Strig com os valores dos bytes em bin·rio. PosiÁ„o 0 do array = 8bits mais a esquerda, posiÁ„o 1 = prÛximos 8 bits, e assim por diante
+   * @param bytes Bytes que ser√£o convertidos para uma String Bin√°ria.
+   * @return Strig com os valores dos bytes em bin√°rio. Posi√ß√£o 0 do array = 8bits mais a esquerda, posi√ß√£o 1 = pr√≥ximos 8 bits, e assim por diante
    */
   public static String byteArrayToBinaryString(byte[] bytes) {
     StringBuilder buff = new StringBuilder();
@@ -43,10 +43,10 @@ public class RUNumber {
   }
 
   /**
-   * Converte um Bytes para uma String no formato "[01]*", sendo a posiÁ„o '0' do array impresso mais a esquerda.
+   * Converte um Bytes para uma String no formato "[01]*", sendo a posi√ß√£o '0' do array impresso mais a esquerda.
    *
-   * @param bytes Bytes que ser„o convertidos para uma String Bin·ria.
-   * @return Strig com os valores dos bytes em bin·rio. PosiÁ„o 0 do array = 8bits mais a esquerda, posiÁ„o 1 = prÛximos 8 bits, e assim por diante
+   * @param bytes Bytes que ser√£o convertidos para uma String Bin√°ria.
+   * @return Strig com os valores dos bytes em bin√°rio. Posi√ß√£o 0 do array = 8bits mais a esquerda, posi√ß√£o 1 = pr√≥ximos 8 bits, e assim por diante
    */
   public static String byteToBinaryString(byte bt) {
     return String.format("%8s", Integer.toBinaryString(bt & 0xFF)).replace(' ', '0');
@@ -56,12 +56,12 @@ public class RUNumber {
    * Transforma uma sequencia de bytes no formato String (Ex: "11101110111011101110111011101110") em um array de bytes.<br>
    * Faz o processo inverso do {@link #byteArrayToBinaryString(byte[])}
    *
-   * @param bytes String com a sequÍncia de bits para ser transformada em bytes.
-   * @return Array de bytes que representam os bytes (cada 8 bits) recebido. O tamanho do array ser· de 1/8 o tamanho da String.
+   * @param bytes String com a sequ√™ncia de bits para ser transformada em bytes.
+   * @return Array de bytes que representam os bytes (cada 8 bits) recebido. O tamanho do array ser√° de 1/8 o tamanho da String.
    * @throws RFWException
    */
   public static byte[] binaryStringToByteArray(String bytes) throws RFWException {
-    if (bytes.length() % 8 != 0) throw new RFWCriticalException("O valor bin·rio n„o tem m˙ltiplos de 8 bits! (Len: " + bytes.length() + ") - " + bytes);
+    if (bytes.length() % 8 != 0) throw new RFWCriticalException("O valor bin√°rio n√£o tem m√∫ltiplos de 8 bits! (Len: " + bytes.length() + ") - " + bytes);
 
     byte[] array = new byte[bytes.length() / 8];
     for (int i = 0; i < array.length; i++) {
@@ -72,11 +72,11 @@ public class RUNumber {
   }
 
   /**
-   * Este mÈtodo obtem um array de bytes e converte para uma string, utilizando os caretes que represemtam os bytes.
+   * Este m√©todo obtem um array de bytes e converte para uma string, utilizando os caretes que represemtam os bytes.
    *
    * @param bytes Array de bytes para serem transformados em HEX.
    *
-   * @return String contendo os valores do array transformados em dÌgitos Hexadecimal.
+   * @return String contendo os valores do array transformados em d√≠gitos Hexadecimal.
    */
   public static String byteArrayToHexString(byte[] bytes) {
     char[] hexArray = "0123456789ABCDEF".toCharArray();
@@ -106,10 +106,10 @@ public class RUNumber {
   }
 
   /**
-   * Retorna o maior n˙mero entre os valores passados.
+   * Retorna o maior n√∫mero entre os valores passados.
    *
-   * @param numbers n˙meros inteiros para retornar o maior
-   * @return O menor n˙mero encontrado. Retorna nulo caso n„o receba nenhum n˙mero, array nulo, ou array sÛ com valores nulos.
+   * @param numbers n√∫meros inteiros para retornar o maior
+   * @return O menor n√∫mero encontrado. Retorna nulo caso n√£o receba nenhum n√∫mero, array nulo, ou array s√≥ com valores nulos.
    */
   public static Integer max(Integer... numbers) {
     Integer v = null;
@@ -124,11 +124,11 @@ public class RUNumber {
   }
 
   /**
-   * Garante que o BigDecimal ter· no mÌnimo a escala desejada.
+   * Garante que o BigDecimal ter√° no m√≠nimo a escala desejada.
    *
    * @param value Valor para ter a escala corrigida
-   * @param minScale Quantidade de dÌgitos mÌnimos na escala.
-   * @return Retorna nulo se value for nulo. Retorna o value caso j· tenha uma precis„o maior ou igual ao minScale definido. Retorna o mesmo value com a a precis„o aumentada para para o minScale caso a precis„o atual seja menor que minScale.
+   * @param minScale Quantidade de d√≠gitos m√≠nimos na escala.
+   * @return Retorna nulo se value for nulo. Retorna o value caso j√° tenha uma precis√£o maior ou igual ao minScale definido. Retorna o mesmo value com a a precis√£o aumentada para para o minScale caso a precis√£o atual seja menor que minScale.
    */
   public static BigDecimal minScale(BigDecimal value, int minScale) {
     if (value == null) return null;

@@ -6,16 +6,16 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 
 /**
- * Description: DataFormatter para números de telefones.<br>
- * Atualmente formata para números no padrão nacional, no futuro podemos melhorar a implementação desta classe para receber um Location e formatar números de diferentes países.<br>
- * <br Referência: http://pt.wikipedia.org/wiki/N%C3%BAmeros_de_telefone_no_Brasil
+ * Description: DataFormatter para nÃºmeros de telefones.<br>
+ * Atualmente formata para nÃºmeros no padrÃ£o nacional, no futuro podemos melhorar a implementaÃ§Ã£o desta classe para receber um Location e formatar nÃºmeros de diferentes paÃ­ses.<br>
+ * <br ReferÃªncia: http://pt.wikipedia.org/wiki/N%C3%BAmeros_de_telefone_no_Brasil
  *
  * @deprecated Utilize a nova classe {@link RFWPhoneDataFormatter}
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 7.1.0 (12/05/2015)
  */
 @Deprecated
-// TODO rodrigogml me excluir quando não estiver mais em uso!
+// TODO rodrigogml me excluir quando nÃ£o estiver mais em uso!
 public class RFWPhoneDataFormatterOLD implements RFWDataFormatter<String, String> {
 
   /**
@@ -29,8 +29,8 @@ public class RFWPhoneDataFormatterOLD implements RFWDataFormatter<String, String
   boolean useDDD = true;
 
   /**
-   * Cria um DataFormatter para formatar números de telefones.<br>
-   * A informação de número de telefone deve ter o seguinte formado <DDI>|<DDD>|<Telefone>, sendo que os 2 pipes são sempre obrigatórios, mesmo que não haja informação do DDI ou DDD. Não deve haver nenhuma pontuação de formatação, apenas números.
+   * Cria um DataFormatter para formatar nÃºmeros de telefones.<br>
+   * A informaÃ§Ã£o de nÃºmero de telefone deve ter o seguinte formado <DDI>|<DDD>|<Telefone>, sendo que os 2 pipes sÃ£o sempre obrigatÃ³rios, mesmo que nÃ£o haja informaÃ§Ã£o do DDI ou DDD. NÃ£o deve haver nenhuma pontuaÃ§Ã£o de formataÃ§Ã£o, apenas nÃºmeros.
    *
    */
   public RFWPhoneDataFormatterOLD(boolean useDDI, boolean useDDD) {
@@ -39,7 +39,7 @@ public class RFWPhoneDataFormatterOLD implements RFWDataFormatter<String, String
   }
 
   /**
-   * Como os telefones são exibidos em campos especiais para tratar o telefone, este método apenas devolve o conteúdo como recebido no VO, toda a "formatação" é tratada pelo próprio campo. Para exibir o telfone de forma formata em uma String verifique o método {@link #format(String)}.
+   * Como os telefones sÃ£o exibidos em campos especiais para tratar o telefone, este mÃ©todo apenas devolve o conteÃºdo como recebido no VO, toda a "formataÃ§Ã£o" Ã© tratada pelo prÃ³prio campo. Para exibir o telfone de forma formata em uma String verifique o mÃ©todo {@link #format(String)}.
    */
   @Override
   public String toPresentation(String value, Locale locale) {
@@ -55,7 +55,7 @@ public class RFWPhoneDataFormatterOLD implements RFWDataFormatter<String, String
   public String format(String value) {
     String fValue = "";
     if (value != null) {
-      // Para formatar para a apresentação consideramos que o valor é sempre válido pois deve ter vindo do VO.
+      // Para formatar para a apresentaÃ§Ã£o consideramos que o valor Ã© sempre vÃ¡lido pois deve ter vindo do VO.
       String[] p = value.split("[\\|]");
 
       if (this.useDDI) fValue = formatDDI(p[0]) + ' ';
@@ -66,12 +66,12 @@ public class RFWPhoneDataFormatterOLD implements RFWDataFormatter<String, String
   }
 
   /**
-   * Aplica pontuação / formato em uma sequência de número que possa ser um telefone.
+   * Aplica pontuaÃ§Ã£o / formato em uma sequÃªncia de nÃºmero que possa ser um telefone.
    *
-   * @param ddi Código do País para que possaos distinguir os tipos de numeração de telefone usado em casa país.
-   * @param ddd Código de área da região. Em conjunto com o código de país, é utilizado para dar o formato adequado a uma região.
-   * @param number Número do telefone que seré formatado.
-   * @return Número do telefone formatado. Note que as informaçães de DDI e DDD são utilizadas apenas para identificar a região e como o número deve aparecer, mas esses valores não serão retornados junto. Para formatar esses dados utilize em conjunto as funções {@link #formatDDI(String)} e {@link #formatDDD(String, String)}.
+   * @param ddi CÃ³digo do PaÃ­s para que possaos distinguir os tipos de numeraÃ§Ã£o de telefone usado em casa paÃ­s.
+   * @param ddd CÃ³digo de Ã¡rea da regiÃ£o. Em conjunto com o cÃ³digo de paÃ­s, Ã© utilizado para dar o formato adequado a uma regiÃ£o.
+   * @param number NÃºmero do telefone que serÃ© formatado.
+   * @return NÃºmero do telefone formatado. Note que as informaÃ§Ã£es de DDI e DDD sÃ£o utilizadas apenas para identificar a regiÃ£o e como o nÃºmero deve aparecer, mas esses valores nÃ£o serÃ£o retornados junto. Para formatar esses dados utilize em conjunto as funÃ§Ãµes {@link #formatDDI(String)} e {@link #formatDDD(String, String)}.
    */
   public static String formatNumber(String ddi, String ddd, String number) {
     if (ddi == null) ddi = "";
@@ -85,16 +85,16 @@ public class RFWPhoneDataFormatterOLD implements RFWDataFormatter<String, String
     switch (ddi) {
       case "55": // BRASIL
         if (number.length() == 3) {
-          // Com 3 dígitos são telefones de serviço retornamos somente o número, independente da configuração de DDI e DDD
+          // Com 3 dÃ­gitos sÃ£o telefones de serviÃ§o retornamos somente o nÃºmero, independente da configuraÃ§Ã£o de DDI e DDD
           fValue = number;
         } else if (number.length() == 8) {
-          // Com 8 números é um telefone "local", fixo ou móvel, apenas formatamos no padrão XXXX-XXXX
+          // Com 8 nÃºmeros Ã© um telefone "local", fixo ou mÃ³vel, apenas formatamos no padrÃ£o XXXX-XXXX
           fValue = number.substring(0, 4) + "-" + number.substring(4, 8);
         } else if (number.length() == 9) {
-          // Com 9 números é o número dos celulares das regiões metropolitadas que tem o tal 9° dígito
+          // Com 9 nÃºmeros Ã© o nÃºmero dos celulares das regiÃµes metropolitadas que tem o tal 9Â° dÃ­gito
           fValue = number.substring(0, 5) + "-" + number.substring(5, 9);
         } else if (number.length() >= 4 && number.substring(0, 4).matches("0[3589]00")) {
-          // Com 11 dígitos também temos os números de 0800, 0300, 0500 e 0900 neste caso formatamos diferente
+          // Com 11 dÃ­gitos tambÃ©m temos os nÃºmeros de 0800, 0300, 0500 e 0900 neste caso formatamos diferente
           fValue = number.substring(0, 4) + " " + number.substring(4, 7) + " " + number.substring(7, 11);
         }
         break;
@@ -103,21 +103,21 @@ public class RFWPhoneDataFormatterOLD implements RFWDataFormatter<String, String
   }
 
   /**
-   * Formata um código de País para ser anexado em um telefone para ser exibido ao cliente.
+   * Formata um cÃ³digo de PaÃ­s para ser anexado em um telefone para ser exibido ao cliente.
    *
-   * @param ddi Código do país a ser formatado.
-   * @return Código do país formato.
+   * @param ddi CÃ³digo do paÃ­s a ser formatado.
+   * @return CÃ³digo do paÃ­s formato.
    */
   public static String formatDDI(String ddi) {
     return '+' + ddi;
   }
 
   /**
-   * Formata o código de área de um determinado país, para ser usado em conjunto com o restante do número para exibição ao usuário.
+   * Formata o cÃ³digo de Ã¡rea de um determinado paÃ­s, para ser usado em conjunto com o restante do nÃºmero para exibiÃ§Ã£o ao usuÃ¡rio.
    *
-   * @param ddi código do país. Utilizado apenas para identificar a área e formatar corretamente o DDD.
-   * @param ddd Código de área a ser formatado.
-   * @return Código de área formatado.
+   * @param ddi cÃ³digo do paÃ­s. Utilizado apenas para identificar a Ã¡rea e formatar corretamente o DDD.
+   * @param ddd CÃ³digo de Ã¡rea a ser formatado.
+   * @return CÃ³digo de Ã¡rea formatado.
    */
   public static String formatDDD(String ddi, String ddd) {
     return ddd;
@@ -126,9 +126,9 @@ public class RFWPhoneDataFormatterOLD implements RFWDataFormatter<String, String
   /**
    * Valida um DDD.
    *
-   * @param ddi DDI para detectar qual é o pais a qual pertence o DDD para que seja possível validar se é válido.
-   * @param ddd DDD código de área a ser validado.
-   * @throws RFWException Lançado em caso de erro ou se o valor for inválido.
+   * @param ddi DDI para detectar qual Ã© o pais a qual pertence o DDD para que seja possÃ­vel validar se Ã© vÃ¡lido.
+   * @param ddd DDD cÃ³digo de Ã¡rea a ser validado.
+   * @throws RFWException LanÃ§ado em caso de erro ou se o valor for invÃ¡lido.
    */
   public static void validateDDD(String ddi, String ddd) throws RFWException {
     switch (ddi) {
@@ -201,10 +201,10 @@ public class RFWPhoneDataFormatterOLD implements RFWDataFormatter<String, String
           case "97":
           case "98":
           case "99":
-            // DDDs válidos para o Brasi
+            // DDDs vÃ¡lidos para o Brasi
             break;
           default:
-            throw new RFWValidationException("DDD inválido!", new String[] { ddi, ddd });
+            throw new RFWValidationException("DDD invÃ¡lido!", new String[] { ddi, ddd });
         }
         break;
 
@@ -214,12 +214,12 @@ public class RFWPhoneDataFormatterOLD implements RFWDataFormatter<String, String
   }
 
   /**
-   * Faz a validação do número do telefone.
+   * Faz a validaÃ§Ã£o do nÃºmero do telefone.
    *
-   * @param ddi Indicador de país para validação do número.
-   * @param ddd Indicador de área do telefone. Utilizado para validar o número.
-   * @param number Número do telefone que será validado para o código de área e do país.
-   * @throws RFWException Lançado caso não seja um número válido para o País e área passados.
+   * @param ddi Indicador de paÃ­s para validaÃ§Ã£o do nÃºmero.
+   * @param ddd Indicador de Ã¡rea do telefone. Utilizado para validar o nÃºmero.
+   * @param number NÃºmero do telefone que serÃ¡ validado para o cÃ³digo de Ã¡rea e do paÃ­s.
+   * @throws RFWException LanÃ§ado caso nÃ£o seja um nÃºmero vÃ¡lido para o PaÃ­s e Ã¡rea passados.
    */
   public static void validateNumber(String ddi, String ddd, String number) throws RFWException {
     if (ddi == null) ddi = "";
@@ -231,21 +231,21 @@ public class RFWPhoneDataFormatterOLD implements RFWDataFormatter<String, String
 
     switch (ddi) {
       case "55": // BRASIL
-        // O Brasil não tem distinção de número de acordo com a área.
+        // O Brasil nÃ£o tem distinÃ§Ã£o de nÃºmero de acordo com a Ã¡rea.
         if ("".equals(ddd) && "".equals(number)) {
-          // Se ambos estão sem conteúdo, consideramos que o campo não está preenchido nada a validar
+          // Se ambos estÃ£o sem conteÃºdo, consideramos que o campo nÃ£o estÃ¡ preenchido nada a validar
         } else if ("".equals(ddd) && number.length() == 3 && number.charAt(0) == '1') {
-          // Considerado número de serviço: tipo 190, 102, etc. Aceita
+          // Considerado nÃºmero de serviÃ§o: tipo 190, 102, etc. Aceita
         } else if (number.length() < 8) {
-          // Tirando os números de serviços, não temos números menores que 8 dígitos no Brasil.
+          // Tirando os nÃºmeros de serviÃ§os, nÃ£o temos nÃºmeros menores que 8 dÃ­gitos no Brasil.
           throw new RFWValidationException("RFW_ERR_300063", new String[] { ddi, ddd, number });
         } else if (number.length() == 8 && (number.charAt(0) == '2' || number.charAt(0) == '3' || number.charAt(0) == '4' || number.charAt(0) == '5' || number.charAt(0) == '7' || number.charAt(0) == '8' || number.charAt(0) == '9')) {
-          // Telefone com 8 dígitos podem ser: de telefonia fixa e telefonia fixa rural (2, 3, 4 e 5) Exceto os teleofes que começam com 400; telefones de serviço com cobrança: começam com 400; telefones de celulares em cidades com menor população (8, 9); e Trunking ou radio (7);
+          // Telefone com 8 dÃ­gitos podem ser: de telefonia fixa e telefonia fixa rural (2, 3, 4 e 5) Exceto os teleofes que comeÃ§am com 400; telefones de serviÃ§o com cobranÃ§a: comeÃ§am com 400; telefones de celulares em cidades com menor populaÃ§Ã£o (8, 9); e Trunking ou radio (7);
         } else if (number.length() == 9 && (number.charAt(0) == '9')) {
-          // Telefones com 9 dígitos são celulares de algumas cidades metropolitanas do país que ganharam o 9° dígito no celular. Por isso só aceita telefone com 9 digitos se o primeiro for um 9
+          // Telefones com 9 dÃ­gitos sÃ£o celulares de algumas cidades metropolitanas do paÃ­s que ganharam o 9Â° dÃ­gito no celular. Por isso sÃ³ aceita telefone com 9 digitos se o primeiro for um 9
         } else if (number.length() == 11 && (number.charAt(0) == '0' && number.charAt(2) == '0')) {
-          // Existem números com 11 dígitos que são os de 0800 e 0900. Como o Número de Celular (9 digitos) + DDD (2 digitos) também dá 11.
-          // Verificamos já no if acima se for 11 e for no padrão 0?0... "aceitamos o número" deixando entrar nesse IF e não executando os próximos 'Elses'
+          // Existem nÃºmeros com 11 dÃ­gitos que sÃ£o os de 0800 e 0900. Como o NÃºmero de Celular (9 digitos) + DDD (2 digitos) tambÃ©m dÃ¡ 11.
+          // Verificamos jÃ¡ no if acima se for 11 e for no padrÃ£o 0?0... "aceitamos o nÃºmero" deixando entrar nesse IF e nÃ£o executando os prÃ³ximos 'Elses'
         } else if (number.length() >= 9) {
           throw new RFWValidationException("RFW_ERR_300063");
         }
@@ -267,11 +267,11 @@ public class RFWPhoneDataFormatterOLD implements RFWDataFormatter<String, String
       if (!value.matches("([1-9][0-9]{1,2})?\\|([1-9][0-9])?\\|[0-9]*")) {
         throw new RFWValidationException("RFW_ERR_200354");
       }
-      // Incluimos um último pipe com um conteúdo (o '.') para que o split crie obrigatoriamente todos os elementos do array. pois se recebermos algo como "55||" o resultado é um Array sí com a posição 0, os campos vazios no final não são criados no array.
+      // Incluimos um Ãºltimo pipe com um conteÃºdo (o '.') para que o split crie obrigatoriamente todos os elementos do array. pois se recebermos algo como "55||" o resultado Ã© um Array sÃ­ com a posiÃ§Ã£o 0, os campos vazios no final nÃ£o sÃ£o criados no array.
       String parts[] = (value + "|.").split("\\|");
 
       if ("".equals(parts[1])) {
-        // Se não tiver DDD, o telefone deve ser de serviço (3) ou um 0800 (11)
+        // Se nÃ£o tiver DDD, o telefone deve ser de serviÃ§o (3) ou um 0800 (11)
         if (!"".equals(parts[2]) && parts[2].length() != 3 && parts[2].length() != 11) {
           throw new RFWValidationException("RFW_ERR_200355");
         }
@@ -284,8 +284,8 @@ public class RFWPhoneDataFormatterOLD implements RFWDataFormatter<String, String
 
   @Override
   public String toVO(String formattedvalue, Locale locale) throws RFWException {
-    // Como esperamos que que na UI o campo gere o telefone já no formato que utilizamos no VO, não há nada para converter, só devolter o dado já pronto (que já deve ter sido validado pelo método validate()
-    // Só verificamos se recebemos tanto o DDD quando o Número vazios, neste caso retornamos nulo para otimizar o banco de dados.
+    // Como esperamos que que na UI o campo gere o telefone jÃ¡ no formato que utilizamos no VO, nÃ£o hÃ¡ nada para converter, sÃ³ devolter o dado jÃ¡ pronto (que jÃ¡ deve ter sido validado pelo mÃ©todo validate()
+    // SÃ³ verificamos se recebemos tanto o DDD quando o NÃºmero vazios, neste caso retornamos nulo para otimizar o banco de dados.
     formattedvalue = formattedvalue.replaceAll("[^\\|0-9]", "");
     String parts[] = (formattedvalue + "|.").split("\\|");
     if ("".equals(parts[1]) && "".equals(parts[2])) {
@@ -295,11 +295,11 @@ public class RFWPhoneDataFormatterOLD implements RFWDataFormatter<String, String
   }
 
   /**
-   * Este método valida o dado entrado pelo usuário na UI, como deve ser utilizado o RFWPhoneField já recebemos o valor correto do VO.
+   * Este mÃ©todo valida o dado entrado pelo usuÃ¡rio na UI, como deve ser utilizado o RFWPhoneField jÃ¡ recebemos o valor correto do VO.
    */
   @Override
   public void validate(Object value, Locale locale) throws RFWException {
-    // Como esperamos que que na UI o campo gere o telefone já no formato que utilizamos no VO, vamos validar como sendo o próprio dado do VO
+    // Como esperamos que que na UI o campo gere o telefone jÃ¡ no formato que utilizamos no VO, vamos validar como sendo o prÃ³prio dado do VO
     validateVOData((String) value);
   }
 

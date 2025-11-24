@@ -188,14 +188,14 @@ public interface MeasureUnit extends Serializable {
   }
 
   /**
-   * Raz„o de tamanho da unidade dentro da Dimens„o.
+   * Raz√£o de tamanho da unidade dentro da Dimens√£o.
    *
    * @return Ex: 1000 para Kg, 1 para g, 1 para m, 1000 para Km, etc.
    */
   BigDecimal getRatio();
 
   /**
-   * Retorna a Dimens„o da unidade atual.
+   * Retorna a Dimens√£o da unidade atual.
    *
    * @return {@link MeasureDimension} do {@link MeasureUnit} atual.
    */
@@ -210,7 +210,7 @@ public interface MeasureUnit extends Serializable {
 
   /**
    * Nome da Unidade de Medida.<br>
-   * Redund‚ncia em relaÁ„o ao mÈtodo {@link #name()}, para que seja possÌvel utilziar o padr„o de mÈtodos "get" com as classes do Framework.
+   * Redund√¢ncia em rela√ß√£o ao m√©todo {@link #name()}, para que seja poss√≠vel utilziar o padr√£o de m√©todos "get" com as classes do Framework.
    *
    * @return Retorna o .name() do Enum mascarado pela interface MeasureUnit.
    */
@@ -224,7 +224,7 @@ public interface MeasureUnit extends Serializable {
   String name();
 
   /**
-   * N˙mero Ordinal do item.
+   * N√∫mero Ordinal do item.
    *
    * @return Retorna o .orginal() do Enum mascarado pela interface MeasureUnit.
    */

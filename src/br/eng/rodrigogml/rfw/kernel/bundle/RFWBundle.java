@@ -16,42 +16,42 @@ import br.eng.rodrigogml.rfw.kernel.utils.RUReflex;
 import br.eng.rodrigogml.rfw.kernel.utils.RUString;
 
 /**
- * Description: Classe est·tica para operaÁıes com Bundle na aplicaÁ„o.<br>
+ * Description: Classe est√°tica para opera√ß√µes com Bundle na aplica√ß√£o.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 10.0.0 (25 de jul de 2018)
  */
 public class RFWBundle {
 
   /**
-   * ReferÍncia para o Bundle.
+   * Refer√™ncia para o Bundle.
    */
   private static Properties bundle = null;
 
   /**
-   * Construtor privado para Classe Est·tica
+   * Construtor privado para Classe Est√°tica
    */
   private RFWBundle() {
   }
 
   /**
-   * Recupera um bundle dos arquivos de properties carregas, e substitui seus par‚metros.
+   * Recupera um bundle dos arquivos de properties carregas, e substitui seus par√¢metros.
    *
    * @param key Chave do Bundle para recuperar mensagem.
-   * @param params Par„metros que ser„o substituidos na mensagem recuperada do arquivo de bundle. Os par‚metros ser„o substituidos na mensagem conforme o padr„o ${i}, onde i È o Ìndice do par‚metro recebido.
-   * @return Mengam do bundle com as substituiÁıes dos par‚metros.
+   * @param params Par√£metros que ser√£o substituidos na mensagem recuperada do arquivo de bundle. Os par√¢metros ser√£o substituidos na mensagem conforme o padr√£o ${i}, onde i √© o √≠ndice do par√¢metro recebido.
+   * @return Mengam do bundle com as substitui√ß√µes dos par√¢metros.
    */
   public static String get(String key, String... params) {
     return get(key, null, params);
   }
 
   /**
-   * Recupera um bundle dos arquivos de properties carregas, e substitui seus par‚metros.
+   * Recupera um bundle dos arquivos de properties carregas, e substitui seus par√¢metros.
    *
    * @param key Chave do Bundle para recuperar mensagem.
-   * @param locale Localidade do bundle a ser lido. Se passado nulo, ou se n„o forem encontrados bundle para o Locale passado, o bundle padr„o ser· utilizado.
-   * @param params Par„metros que ser„o substituidos na mensagem recuperada do arquivo de bundle. Os par‚metros ser„o substituidos na mensagem conforme o padr„o ${i}, onde i È o Ìndice do par‚metro recebido.
-   * @return Mengam do bundle com as substituiÁıes dos par‚metros.
+   * @param locale Localidade do bundle a ser lido. Se passado nulo, ou se n√£o forem encontrados bundle para o Locale passado, o bundle padr√£o ser√° utilizado.
+   * @param params Par√£metros que ser√£o substituidos na mensagem recuperada do arquivo de bundle. Os par√¢metros ser√£o substituidos na mensagem conforme o padr√£o ${i}, onde i √© o √≠ndice do par√¢metro recebido.
+   * @return Mengam do bundle com as substitui√ß√µes dos par√¢metros.
    */
   public static String get(String key, Locale locale, String... params) {
     String msg = null;
@@ -62,17 +62,17 @@ public class RFWBundle {
       msg = replaceParameters(msg, params);
     } catch (Throwable e) {
       RFWLogger.logException(e, "RFWLogger");
-      // N„o faz nada, sÛ garante que se falharmos em localizar a msg vamos garantir que o mÈtodo n„o falhe
+      // N√£o faz nada, s√≥ garante que se falharmos em localizar a msg vamos garantir que o m√©todo n√£o falhe
     }
     return msg;
   }
 
   /**
-   * Substitui os par‚metros recebidos pelos campos "${x}" da mensagem, onde x È o index do array.
+   * Substitui os par√¢metros recebidos pelos campos "${x}" da mensagem, onde x √© o index do array.
    *
-   * @param msg Mensagem original com os campos "${x}" para serem substituÌdos.
+   * @param msg Mensagem original com os campos "${x}" para serem substitu√≠dos.
    * @param params Valores para substituir os campos da mensagem.
-   * @return Mensagem com os campos substituÌdos, caso existam equivalentes no array.
+   * @return Mensagem com os campos substitu√≠dos, caso existam equivalentes no array.
    */
   private static String replaceParameters(String msg, String[] params) {
     // Substitui os parametros
@@ -92,7 +92,7 @@ public class RFWBundle {
    * Recupera a mensagem formatada a partir de uma RFWException.
    *
    * @param t Throwable para tecuperar a mensagem.
-   * @return Texto com a mensagem do Bundle j· decodificada para exibiÁ„o.
+   * @return Texto com a mensagem do Bundle j√° decodificada para exibi√ß√£o.
    */
   public static String get(Throwable t) {
     return get(t, null);
@@ -102,8 +102,8 @@ public class RFWBundle {
    * Recupera a mensagem formatada a partir de uma RFWException.
    *
    * @param t Throwable para tecuperar a mensagem.
-   * @param locale Localidade do bundle a ser lido. Se passado nulo, ou se n„o forem encontrados bundle para o Locale passado, o bundle padr„o ser· utilizado.
-   * @return Texto com a mensagem do Bundle j· decodificada para exibiÁ„o.
+   * @param locale Localidade do bundle a ser lido. Se passado nulo, ou se n√£o forem encontrados bundle para o Locale passado, o bundle padr√£o ser√° utilizado.
+   * @return Texto com a mensagem do Bundle j√° decodificada para exibi√ß√£o.
    */
   public static String get(Throwable t, Locale locale) {
     String msg = null;
@@ -130,7 +130,7 @@ public class RFWBundle {
         msg = replaceParameters(msg, e.getParams());
 
         if (msg != null) {
-          // Substitui vari·veis da exception de validaÁ„o
+          // Substitui vari√°veis da exception de valida√ß√£o
           if (e instanceof RFWValidationException) {
             final RFWValidationException ve = (RFWValidationException) e;
             if (ve.getClassName() != null && ve.getFieldName() != null) {
@@ -145,44 +145,44 @@ public class RFWBundle {
           msg = msg.replaceAll("\\$\\{cause\\}", cause.getClass().getCanonicalName());
         }
       } else {
-        // Se n„o È uma RFWException tentamos montar a melhos msg de erro que conseguirmos baseano na exception do JAVA
+        // Se n√£o √© uma RFWException tentamos montar a melhos msg de erro que conseguirmos baseano na exception do JAVA
         msg = cause.getClass().getCanonicalName() + (cause.getMessage() != null ? ": " + cause.getMessage() : "") + " at " + cause.getStackTrace()[0];
       }
       if (RFW.isDevelopmentEnvironment()) {
         // Se estamos no desenvolvimento vamos validar se a mensagem foi totalmente substituida e avisamos no console sobre o problema
         if (msg != null && msg.matches(".*(\\$\\{\\w*\\}).*")) {
-          RFW.pDev("N„o foi possÌvel encontrar valores para todos os campos na mensagem da Exception:");
+          RFW.pDev("N√£o foi poss√≠vel encontrar valores para todos os campos na mensagem da Exception:");
           RFW.pDev(t);
         }
       }
     } catch (Throwable e1) {
-      // N„o faz nada, sÛ garante que se falharmos em localizar a msg vamos garantir que o mÈtodo n„o falhe
+      // N√£o faz nada, s√≥ garante que se falharmos em localizar a msg vamos garantir que o m√©todo n√£o falhe
       e1.printStackTrace();
     }
     return msg;
   }
 
   /**
-   * Obtem a inst‚ncia do Leitor do arquivo de Bundle. Instanceia ela se for a primeira chamada.
+   * Obtem a inst√¢ncia do Leitor do arquivo de Bundle. Instanceia ela se for a primeira chamada.
    *
    * @throws RFWException
    */
   private static Properties getReader() throws RFWException {
     if (bundle == null) {
-      // Se ainda n„o temos o bundle inicializado, inicalizamos ele com os arquivos padr„o do RFW antes de carregar o bundle solicitado.
+      // Se ainda n√£o temos o bundle inicializado, inicalizamos ele com os arquivos padr√£o do RFW antes de carregar o bundle solicitado.
       if (bundle == null) {
         bundle = new Properties();
       }
       loadBundle("rfwkernelbundle.properties"); // garante que a primeira chamada seja sempre com o bundleName do arquivo principal do RFWKernel
-      loadBundle("rfwbundle.properties"); // garante que a primeira chamada inclua o arquivo anterior de bundle usado no base (antes da criaÁ„o do Kernel)
+      loadBundle("rfwbundle.properties"); // garante que a primeira chamada inclua o arquivo anterior de bundle usado no base (antes da cria√ß√£o do Kernel)
     }
     return RFWBundle.bundle;
   }
 
   /**
-   * Carrega um arquivo de Bundle para que o RFWBundle possa encontrar seu conte˙do chave/valor pelo sistema todo.
+   * Carrega um arquivo de Bundle para que o RFWBundle possa encontrar seu conte√∫do chave/valor pelo sistema todo.
    *
-   * @param bundleName nome do arquivo de bundle. Normalmente o arquivo de bundle È colocado na raiz do cÛdigo fonte, e se passa apenas o nome do arquivo e extenÁ„o. Ex: "bundle.properties".
+   * @param bundleName nome do arquivo de bundle. Normalmente o arquivo de bundle √© colocado na raiz do c√≥digo fonte, e se passa apenas o nome do arquivo e exten√ß√£o. Ex: "bundle.properties".
    * @throws RFWException
    */
   public static void loadBundle(String bundleName) throws RFWException {
@@ -200,25 +200,25 @@ public class RFWBundle {
   }
 
   /**
-   * Recupera um Bundle definido para uma enumeration. Note que a chave da enumeration È definida conforme seu package, class, nome da enum e valor da enum.<br>
-   * Para mais informaÁıes veja o mÈtodo {@link RUString#getEnumKey(Enum)} <br>
-   * Caso o conte˙do n„o seja encontrado no bundle, È registrado um {@link RFWLogger#logWarn(String)} com o cÛdigo "RFW_000007" e a chave do enumeration que n„o foi encontrada no bundle.
+   * Recupera um Bundle definido para uma enumeration. Note que a chave da enumeration √© definida conforme seu package, class, nome da enum e valor da enum.<br>
+   * Para mais informa√ß√µes veja o m√©todo {@link RUString#getEnumKey(Enum)} <br>
+   * Caso o conte√∫do n√£o seja encontrado no bundle, √© registrado um {@link RFWLogger#logWarn(String)} com o c√≥digo "RFW_000007" e a chave do enumeration que n√£o foi encontrada no bundle.
    *
    * @param value Enumeration
-   * @return Bundle do enumeration, ou a prÛpria enumeration (caminho completo do objeto) caso a chave n„o seja encontrada no bundle. Retorna null caso o par‚metro calue seja nulo.
+   * @return Bundle do enumeration, ou a pr√≥pria enumeration (caminho completo do objeto) caso a chave n√£o seja encontrada no bundle. Retorna null caso o par√¢metro calue seja nulo.
    */
   public static String get(Enum<?> value) {
     return get(value, null);
   }
 
   /**
-   * Recupera um Bundle definido para uma enumeration. Note que a chave da enumeration È definida conforme seu package, class, nome da enum e valor da enum.<br>
-   * Para mais informaÁıes veja o mÈtodo {@link RUString#getEnumKey(Enum)} <br>
-   * Caso o conte˙do n„o seja encontrado no bundle, È registrado um {@link RFWLogger#logWarn(String)} com o cÛdigo "RFW_000007" e a chave do enumeration que n„o foi encontrada no bundle.
+   * Recupera um Bundle definido para uma enumeration. Note que a chave da enumeration √© definida conforme seu package, class, nome da enum e valor da enum.<br>
+   * Para mais informa√ß√µes veja o m√©todo {@link RUString#getEnumKey(Enum)} <br>
+   * Caso o conte√∫do n√£o seja encontrado no bundle, √© registrado um {@link RFWLogger#logWarn(String)} com o c√≥digo "RFW_000007" e a chave do enumeration que n√£o foi encontrada no bundle.
    *
    * @param value Enumeration
-   * @param locale Localidade do bundle a ser lido. Se passado nulo, ou se n„o forem encontrados bundle para o Locale passado, o bundle padr„o ser· utilizado.
-   * @return Bundle do enumeration, ou a prÛpria enumeration (caminho completo do objeto) caso a chave n„o seja encontrada no bundle. Retorna null caso o par‚metro calue seja nulo.
+   * @param locale Localidade do bundle a ser lido. Se passado nulo, ou se n√£o forem encontrados bundle para o Locale passado, o bundle padr√£o ser√° utilizado.
+   * @return Bundle do enumeration, ou a pr√≥pria enumeration (caminho completo do objeto) caso a chave n√£o seja encontrada no bundle. Retorna null caso o par√¢metro calue seja nulo.
    */
   public static String get(Enum<?> value, Locale locale) {
     if (value == null) return null;
@@ -232,21 +232,21 @@ public class RFWBundle {
   }
 
   /**
-   * Recupera um Bundle definido para uma das enumeraÁıesd e MeasureUnit. De forma geral {@link MeasureUnit} funciona como uma enumeration, porÈm inst‚ncias do {@link CustomMeasureUnit} precisam de um tratamento diferente, seu texto È montado a partir das informaÁıes do prÛprio objeto.
+   * Recupera um Bundle definido para uma das enumera√ß√µesd e MeasureUnit. De forma geral {@link MeasureUnit} funciona como uma enumeration, por√©m inst√¢ncias do {@link CustomMeasureUnit} precisam de um tratamento diferente, seu texto √© montado a partir das informa√ß√µes do pr√≥prio objeto.
    *
    * @param measureUnit Valor da MeasureUnit para recuperar o Bundle.
-   * @return Texto para o usu·rio identificar a Unidade de medida.
+   * @return Texto para o usu√°rio identificar a Unidade de medida.
    */
   public static String get(MeasureUnit measureUnit) {
     return get(measureUnit, null);
   }
 
   /**
-   * Recupera um Bundle definido para uma das enumeraÁıesd e MeasureUnit. De forma geral {@link MeasureUnit} funciona como uma enumeration, porÈm inst‚ncias do {@link CustomMeasureUnit} precisam de um tratamento diferente, seu texto È montado a partir das informaÁıes do prÛprio objeto.
+   * Recupera um Bundle definido para uma das enumera√ß√µesd e MeasureUnit. De forma geral {@link MeasureUnit} funciona como uma enumeration, por√©m inst√¢ncias do {@link CustomMeasureUnit} precisam de um tratamento diferente, seu texto √© montado a partir das informa√ß√µes do pr√≥prio objeto.
    *
    * @param measureUnit Valor da MeasureUnit para recuperar o Bundle.
-   * @param locale Localidade do bundle a ser lido. Se passado nulo, ou se n„o forem encontrados bundle para o Locale passado, o bundle padr„o ser· utilizado.
-   * @return Texto para o usu·rio identificar a Unidade de medida.
+   * @param locale Localidade do bundle a ser lido. Se passado nulo, ou se n√£o forem encontrados bundle para o Locale passado, o bundle padr√£o ser√° utilizado.
+   * @return Texto para o usu√°rio identificar a Unidade de medida.
    */
   public static String get(MeasureUnit measureUnit, Locale locale) {
     if (measureUnit instanceof CustomMeasureUnit) {

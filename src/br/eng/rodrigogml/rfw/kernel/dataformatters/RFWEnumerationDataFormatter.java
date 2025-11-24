@@ -21,7 +21,7 @@ public class RFWEnumerationDataFormatter implements RFWDataFormatter<String, Enu
 
   @Override
   public Enum<?> toVO(String formattedvalue, Locale locale) throws RFWException {
-    throw new RFWRunTimeException("O RFWEnumerationDataFormatter n„o foi implementado para realizar o parser, apenas para formatar para relatÛrios e campos de exibiÁ„o (como Grids, etc.)");
+    throw new RFWRunTimeException("O RFWEnumerationDataFormatter n√£o foi implementado para realizar o parser, apenas para formatar para relat√≥rios e campos de exibi√ß√£o (como Grids, etc.)");
   }
 
   @Override
@@ -31,7 +31,7 @@ public class RFWEnumerationDataFormatter implements RFWDataFormatter<String, Enu
 
   @Override
   public void validate(Object value, Locale locale) throws RFWException {
-    throw new RFWRunTimeException("O RFWEnumerationDataFormatter n„o foi implementado para realizar o parser, apenas para formatar para relatÛrios e campos de exibiÁ„o (como Grids, etc.)");
+    throw new RFWRunTimeException("O RFWEnumerationDataFormatter n√£o foi implementado para realizar o parser, apenas para formatar para relat√≥rios e campos de exibi√ß√£o (como Grids, etc.)");
 
   }
 

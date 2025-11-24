@@ -24,37 +24,37 @@ import br.eng.rodrigogml.rfw.kernel.utils.RUString;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 
 /**
- * Description: Classe com mÈtodos de prÈ processamento de vari·veis para facilitar o processamento dos objetos.<br>
+ * Description: Classe com m√©todos de pr√© processamento de vari√°veis para facilitar o processamento dos objetos.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 2.0 (JUN / 2007)
  */
 public final class PreProcess {
 
   /**
-   * Esta Enum permite definir com uma constante o processimento a ser utilizado dentro das annotations e outras definiÁıes do validation.
+   * Esta Enum permite definir com uma constante o processimento a ser utilizado dentro das annotations e outras defini√ß√µes do validation.
    *
    * @author rodrigo
    *
    */
   public static enum PreProcessOption {
     /**
-     * N„o aplica nenhum prÈ-processamento no conte˙do.
+     * N√£o aplica nenhum pr√©-processamento no conte√∫do.
      */
     NONE,
     /**
-     * Passa o conte˙do da String para caixa alta.
+     * Passa o conte√∫do da String para caixa alta.
      */
     STRING_UPPERCASE,
     /**
      * Limpa a String:
-     * <li>remove todos os espaÁos m˙ltiplos dentro do texto deixando apenas um ˙nico;
-     * <li>remove espeÁos no comeÁo e no fim da string;
-     * <li>Caso a String resulte em "" o valor È convertido para NULO.
+     * <li>remove todos os espa√ßos m√∫ltiplos dentro do texto deixando apenas um √∫nico;
+     * <li>remove espe√ßos no come√ßo e no fim da string;
+     * <li>Caso a String resulte em "" o valor √© convertido para NULO.
      */
     STRING_SPACESCLEAN_TO_NULL,
     /**
-     * Caso a string seja maior que o valor permitido na RFWMetaAnotation, trunca o conte˙do no limite.
+     * Caso a string seja maior que o valor permitido na RFWMetaAnotation, trunca o conte√∫do no limite.
      */
     STRING_TRUNCATE,
     /**
@@ -64,17 +64,17 @@ public final class PreProcess {
   }
 
   /**
-   * Construtor privado para classe est·tica.
+   * Construtor privado para classe est√°tica.
    */
   private PreProcess() {
   }
 
   /**
-   * Processa o VO completamente e recursivamente procurando pelas RFWMetaAnnotations com definiÁ„o de atributo 'preProcess()' cujo tipo seja {@link PreProcessOption}.<br>
-   * Todo o processamento È feito diretamente no objeto recebido. Por isso n„o È retorno deste mÈtodo.
+   * Processa o VO completamente e recursivamente procurando pelas RFWMetaAnnotations com defini√ß√£o de atributo 'preProcess()' cujo tipo seja {@link PreProcessOption}.<br>
+   * Todo o processamento √© feito diretamente no objeto recebido. Por isso n√£o √© retorno deste m√©todo.
    *
-   * @param vo VO a ser preprocessado para a validaÁ„o.
-   * @throws RFWException Este mÈtodo n„o deve retornar exceptions pois n„o faz nenhum tipo de validaÁ„o, apenas prepara a informaÁ„o se ela existir. No entando devido as operaÁıes de reflex„o, as exceptions podem ser lanÁadas.
+   * @param vo VO a ser preprocessado para a valida√ß√£o.
+   * @throws RFWException Este m√©todo n√£o deve retornar exceptions pois n√£o faz nenhum tipo de valida√ß√£o, apenas prepara a informa√ß√£o se ela existir. No entando devido as opera√ß√µes de reflex√£o, as exceptions podem ser lan√ßadas.
    */
   public static <VO extends RFWVO> void processVO(VO vo) throws RFWException {
     if (vo != null) {
@@ -85,7 +85,7 @@ public final class PreProcess {
         try {
           value = RUReflex.getPropertyValue(vo, field.getName());
         } catch (Exception e) {
-          // Esta exception pode ocorrer quando a propriedade n„o tem o mÈtodo de GET! por isso sÛ ignoramos
+          // Esta exception pode ocorrer quando a propriedade n√£o tem o m√©todo de GET! por isso s√≥ ignoramos
         }
 
         final PreProcessOption[] ppList = RUReflex.getRFWMetaAnnotationPreProcess(vo.getClass(), field.getName());
@@ -96,27 +96,27 @@ public final class PreProcess {
             if (preProcess != PreProcessOption.NONE) {
               switch (preProcess) {
                 case NONE:
-                  // nada a fazer. Nem chega a entrar aqui pq o IF j· filtra, sÛ deixamos aqui para completar o switch. … importante que o NONE esteja no IF pq assim j· evitamos que o SET seja feito quando n„o h· alteraÁ„o, deixando o cÛdigo mais r·pido.
+                  // nada a fazer. Nem chega a entrar aqui pq o IF j√° filtra, s√≥ deixamos aqui para completar o switch. √â importante que o NONE esteja no IF pq assim j√° evitamos que o SET seja feito quando n√£o h√° altera√ß√£o, deixando o c√≥digo mais r√°pido.
                   break;
                 case STRING_SPACESCLEAN_TO_NULL:
-                  if (!String.class.isAssignableFrom(clazz)) throw new RFWCriticalException("O preProcess '${0}' n„o È v·lido para o tipo do atributo '${1}' da classe '${2}'", new String[] { preProcess.toString(), field.getName(), vo.getClass().getCanonicalName() });
+                  if (!String.class.isAssignableFrom(clazz)) throw new RFWCriticalException("O preProcess '${0}' n√£o √© v√°lido para o tipo do atributo '${1}' da classe '${2}'", new String[] { preProcess.toString(), field.getName(), vo.getClass().getCanonicalName() });
                   value = processStringToNull((String) value);
                   break;
                 case STRING_TRUNCATE:
-                  if (!String.class.isAssignableFrom(clazz)) throw new RFWCriticalException("O preProcess '${0}' n„o È v·lido para o tipo do atributo '${1}' da classe '${2}'", new String[] { preProcess.toString(), field.getName(), vo.getClass().getCanonicalName() });
+                  if (!String.class.isAssignableFrom(clazz)) throw new RFWCriticalException("O preProcess '${0}' n√£o √© v√°lido para o tipo do atributo '${1}' da classe '${2}'", new String[] { preProcess.toString(), field.getName(), vo.getClass().getCanonicalName() });
                   if (value != null) {
                     Annotation ann = RUReflex.getRFWMetaAnnotation(field);
                     int maxLength = 0;
                     if (ann instanceof RFWMetaStringField) {
                       maxLength = ((RFWMetaStringField) ann).maxLength();
                     } else {
-                      throw new RFWCriticalException("O preProcess '${0}' n„o È tem suporte para a annotation '${3}' do atributo '${1}' da classe '${2}'", new String[] { preProcess.toString(), field.getName(), vo.getClass().getCanonicalName(), ann.getClass().getCanonicalName() });
+                      throw new RFWCriticalException("O preProcess '${0}' n√£o √© tem suporte para a annotation '${3}' do atributo '${1}' da classe '${2}'", new String[] { preProcess.toString(), field.getName(), vo.getClass().getCanonicalName(), ann.getClass().getCanonicalName() });
                     }
                     value = RUString.truncate((String) value, maxLength);
                   }
                   break;
                 case STRING_UPPERCASE:
-                  if (!String.class.isAssignableFrom(clazz)) throw new RFWCriticalException("O preProcess '${0}' n„o È v·lido para o tipo do atributo '${1}' da classe '${2}'", new String[] { preProcess.toString(), field.getName(), vo.getClass().getCanonicalName() });
+                  if (!String.class.isAssignableFrom(clazz)) throw new RFWCriticalException("O preProcess '${0}' n√£o √© v√°lido para o tipo do atributo '${1}' da classe '${2}'", new String[] { preProcess.toString(), field.getName(), vo.getClass().getCanonicalName() });
                   if (value != null) {
                     value = ((String) value).toUpperCase();
                   }
@@ -130,23 +130,23 @@ public final class PreProcess {
                     value = RFW.getDateTime();
                   } else if (Date.class.isAssignableFrom(clazz)) {
                     // value = new Date();
-                    throw new RFWCriticalException("Por definiÁ„o o framework n„o permite mais utilizar o objeto 'java.util.Date'. Verifique seu cÛdigo e substituia por LocalDate, LocalTime ou LocalDateTime!");
+                    throw new RFWCriticalException("Por defini√ß√£o o framework n√£o permite mais utilizar o objeto 'java.util.Date'. Verifique seu c√≥digo e substituia por LocalDate, LocalTime ou LocalDateTime!");
                   } else {
-                    throw new RFWCriticalException("O preProcess '${0}' n„o È v·lido para o tipo do atributo '${1}' da classe '${2}'", new String[] { preProcess.toString(), field.getName(), vo.getClass().getCanonicalName() });
+                    throw new RFWCriticalException("O preProcess '${0}' n√£o √© v√°lido para o tipo do atributo '${1}' da classe '${2}'", new String[] { preProcess.toString(), field.getName(), vo.getClass().getCanonicalName() });
                   }
                   break;
               }
               try {
                 RUReflex.setPropertyValue(vo, field.getName(), value, false);
               } catch (Exception e) {
-                // Esta exception pode ocorrer quando n„o temos o mÈtodo de SET, sÛ ignoramos poide pode ser alguma propriedade sÛ de leitura
+                // Esta exception pode ocorrer quando n√£o temos o m√©todo de SET, s√≥ ignoramos poide pode ser alguma propriedade s√≥ de leitura
               }
             }
           }
         }
 
         if (value != null) {
-          // Verifica se temos a annotation de relationship, e se for um relacionamento de composiÁ„o (em que o objeto È manipulado junto) temos de processar suas informaÁıes tambÈm
+          // Verifica se temos a annotation de relationship, e se for um relacionamento de composi√ß√£o (em que o objeto √© manipulado junto) temos de processar suas informa√ß√µes tamb√©m
           final RFWMetaRelationshipField relAnn = field.getAnnotation(RFWMetaRelationshipField.class);
           if (relAnn != null && (relAnn.relationship() == RelationshipTypes.COMPOSITION || relAnn.relationship() == RelationshipTypes.MANY_TO_MANY)) {
             if (RFWVO.class.isAssignableFrom(value.getClass())) {
@@ -167,7 +167,7 @@ public final class PreProcess {
   }
 
   /**
-   * Processa a string passada, removendo espaÁos (do comeÁo, do final e espaÁos duplos entre as palavras) e convertendo para null quando a string for vazia.
+   * Processa a string passada, removendo espa√ßos (do come√ßo, do final e espa√ßos duplos entre as palavras) e convertendo para null quando a string for vazia.
    *
    * @param value valor a ser processado
    * @return valor processado
@@ -186,7 +186,7 @@ public final class PreProcess {
   }
 
   /**
-   * Processa a string passada, removendo espaÁos e convertendo para uma string em branco (tamanho zero) quando a string tiver apenas espaÁos em branco ou for nula.
+   * Processa a string passada, removendo espa√ßos e convertendo para uma string em branco (tamanho zero) quando a string tiver apenas espa√ßos em branco ou for nula.
    *
    * @param value valor a ser processado
    * @return valor processado
@@ -201,7 +201,7 @@ public final class PreProcess {
   }
 
   /**
-   * Processa qualquer n˙mero inteiro para nulo, caso seja menor ou igual a zero.
+   * Processa qualquer n√∫mero inteiro para nulo, caso seja menor ou igual a zero.
    *
    * @param value valor a ser processado
    * @return valor processado
@@ -214,7 +214,7 @@ public final class PreProcess {
   }
 
   /**
-   * Processa qualquer n˙mero inteiro para nulo, caso seja menor que zero.
+   * Processa qualquer n√∫mero inteiro para nulo, caso seja menor que zero.
    *
    * @param value valor a ser processado
    * @return valor processado
@@ -227,7 +227,7 @@ public final class PreProcess {
   }
 
   /**
-   * Processa qualquer n˙mero float para nulo, caso seja menor ou igual a zero.
+   * Processa qualquer n√∫mero float para nulo, caso seja menor ou igual a zero.
    *
    * @param value valor a ser processado
    * @return valor processado
@@ -240,7 +240,7 @@ public final class PreProcess {
   }
 
   /**
-   * Processa qualquer n˙mero BigDecimal para nulo, caso seja menor ou igual a zero.
+   * Processa qualquer n√∫mero BigDecimal para nulo, caso seja menor ou igual a zero.
    *
    * @param value valor a ser processado
    * @return valor processado
@@ -253,7 +253,7 @@ public final class PreProcess {
   }
 
   /**
-   * Processa qualquer n˙mero BigDecimal para Zero, caso seja nulo ou negativo.
+   * Processa qualquer n√∫mero BigDecimal para Zero, caso seja nulo ou negativo.
    *
    * @param value valor a ser processado
    * @return valor processado
@@ -266,7 +266,7 @@ public final class PreProcess {
   }
 
   /**
-   * Processa qualquer n˙mero double para nulo, caso seja menor ou igual a zero.
+   * Processa qualquer n√∫mero double para nulo, caso seja menor ou igual a zero.
    *
    * @param value valor a ser processado
    * @return valor processado
@@ -279,7 +279,7 @@ public final class PreProcess {
   }
 
   /**
-   * Processa qualquer n˙mero Long para nulo, caso seja menor ou igual a zero.
+   * Processa qualquer n√∫mero Long para nulo, caso seja menor ou igual a zero.
    *
    * @param value valor a ser processado
    * @return valor processado
@@ -292,7 +292,7 @@ public final class PreProcess {
   }
 
   /**
-   * Processa qualquer n˙mero Long para nulo, caso seja menor que zero.
+   * Processa qualquer n√∫mero Long para nulo, caso seja menor que zero.
    *
    * @param value valor a ser processado
    * @return valor processado
@@ -305,7 +305,7 @@ public final class PreProcess {
   }
 
   /**
-   * Processa qualquer n˙mero float para zero, caso seja nulo ou negativo.
+   * Processa qualquer n√∫mero float para zero, caso seja nulo ou negativo.
    *
    * @param value valor a ser processado
    * @return valor processado
@@ -318,7 +318,7 @@ public final class PreProcess {
   }
 
   /**
-   * Processa qualquer n˙mero double para zero, caso seja nulo ou negativo.
+   * Processa qualquer n√∫mero double para zero, caso seja nulo ou negativo.
    *
    * @param value valor a ser processado
    * @return valor processado
@@ -331,7 +331,7 @@ public final class PreProcess {
   }
 
   /**
-   * Processa qualquer n˙mero float para nulo, caso seja igual a zero.
+   * Processa qualquer n√∫mero float para nulo, caso seja igual a zero.
    *
    * @param value valor a ser processado
    * @return valor processado
@@ -344,7 +344,7 @@ public final class PreProcess {
   }
 
   /**
-   * Processa qualquer n˙mero float para nulo, caso seja menor que zero.
+   * Processa qualquer n√∫mero float para nulo, caso seja menor que zero.
    *
    * @param value valor a ser processado
    * @return valor processado
@@ -357,7 +357,7 @@ public final class PreProcess {
   }
 
   /**
-   * Processa qualquer n˙mero BigDecimal para nulo, caso seja menor que zero.
+   * Processa qualquer n√∫mero BigDecimal para nulo, caso seja menor que zero.
    *
    * @param value valor a ser processado
    * @return valor processado
@@ -370,7 +370,7 @@ public final class PreProcess {
   }
 
   /**
-   * Processa qualquer n˙mero double para nulo, caso seja igual a zero.
+   * Processa qualquer n√∫mero double para nulo, caso seja igual a zero.
    *
    * @param value valor a ser processado
    * @return valor processado
@@ -383,9 +383,9 @@ public final class PreProcess {
   }
 
   /**
-   * Processa qualquer n˙mero float para conter apenas duas casas decimais. Arredonda para o lado mais justo.
+   * Processa qualquer n√∫mero float para conter apenas duas casas decimais. Arredonda para o lado mais justo.
    *
-   * @param value Valor para formatar como monet·rio.
+   * @param value Valor para formatar como monet√°rio.
    * @return Valor arredondado para apenas 2 casas decimais.
    */
   public static Float processCurrency(Float value) {
@@ -396,7 +396,7 @@ public final class PreProcess {
   }
 
   /**
-   * Processa qualquer n˙mero BigDecimal para conter apenas duas casas decimais. Arredonda usando a definiÁ„o padr„o do sistema (classe {@link RFW}).
+   * Processa qualquer n√∫mero BigDecimal para conter apenas duas casas decimais. Arredonda usando a defini√ß√£o padr√£o do sistema (classe {@link RFW}).
    *
    * @param value Valor a ser arredondado.
    * @return Valor arredondado.
@@ -412,7 +412,7 @@ public final class PreProcess {
    * Processa um array de 'byte' para nulo, caso tenha tamanho zero.
    *
    * @param value Array para ser processado.
-   * @return prÛprio array, ou null caso o array tenha tamanho zero.
+   * @return pr√≥prio array, ou null caso o array tenha tamanho zero.
    */
   public static byte[] processByteArrayToNullIfZeroLength(byte[] value) {
     if (value != null) {
@@ -439,7 +439,7 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o objeto passado n„o È nulo. Caso seja lanÁa uma {@link RFWValidationException} com mensagem padr„o.
+   * Valida se o objeto passado n√£o √© nulo. Caso seja lan√ßa uma {@link RFWValidationException} com mensagem padr√£o.
    *
    * @param value Objeto a ser testado.
    */
@@ -448,20 +448,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o objeto passado n„o È nulo. Caso seja lanÁa {@link RFWValidationException} com mensagem personalizada.
+   * Valida se o objeto passado n√£o √© nulo. Caso seja lan√ßa {@link RFWValidationException} com mensagem personalizada.
    *
    * @param value Objeto a ser testado.
-   * @param msg Mensagem/CÛdigo da Exception a ser colocado na Exception
+   * @param msg Mensagem/C√≥digo da Exception a ser colocado na Exception
    */
   public static void requiredNonNull(Object value, String msg) throws RFWException {
     if (value == null) throw new RFWValidationException(msg);
   }
 
   /**
-   * Valida se o objeto passado n„o È nulo. Caso seja lanÁa {@link RFWValidationException} com mensagem personalizada.
+   * Valida se o objeto passado n√£o √© nulo. Caso seja lan√ßa {@link RFWValidationException} com mensagem personalizada.
    *
    * @param value Objeto a ser testado.
-   * @param msg Mensagem/CÛdigo da Exception a ser colocado na Exception
+   * @param msg Mensagem/C√≥digo da Exception a ser colocado na Exception
    * @param params Argumentos para serem usados como substitutos de campos ${i} na mensagem de erro.
    */
   public static void requiredNonNull(Object value, String msg, String[] params) throws RFWException {
@@ -469,8 +469,8 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o objeto passado n„o È nulo. Caso seja lanÁa exceÁ„o com mensagem padr„o.<br>
-   * LanÁa uma exception CrÌtica.
+   * Valida se o objeto passado n√£o √© nulo. Caso seja lan√ßa exce√ß√£o com mensagem padr√£o.<br>
+   * Lan√ßa uma exception Cr√≠tica.
    *
    * @param value Objeto a ser testado.
    */
@@ -479,22 +479,22 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o objeto passado n„o È nulo. Caso seja lanÁa exceÁ„o com mensagem personalizada.<br>
-   * LanÁa uma exception CrÌtica.
+   * Valida se o objeto passado n√£o √© nulo. Caso seja lan√ßa exce√ß√£o com mensagem personalizada.<br>
+   * Lan√ßa uma exception Cr√≠tica.
    *
    * @param value Objeto a ser testado.
-   * @param msg Mensagem/CÛdigo da Exception a ser colocado na Exception
+   * @param msg Mensagem/C√≥digo da Exception a ser colocado na Exception
    */
   public static void requiredNonNullCritical(Object value, String msg) throws RFWException {
     if (value == null) throw new RFWCriticalException(msg);
   }
 
   /**
-   * Valida se o objeto passado n„o È nulo. Caso seja lanÁa exceÁ„o com mensagem personalizada.<br>
-   * LanÁa uma exception CrÌtica.
+   * Valida se o objeto passado n√£o √© nulo. Caso seja lan√ßa exce√ß√£o com mensagem personalizada.<br>
+   * Lan√ßa uma exception Cr√≠tica.
    *
    * @param value Objeto a ser testado.
-   * @param msg Mensagem/CÛdigo da Exception a ser colocado na Exception
+   * @param msg Mensagem/C√≥digo da Exception a ser colocado na Exception
    * @param params Argumentos para serem usados como substitutos de campos ${i} na mensagem de erro.
    */
   public static void requiredNonNullCritical(Object value, String msg, String[] params) throws RFWException {
@@ -502,7 +502,7 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o objeto passado È nulo. Caso seja lanÁa uma {@link RFWValidationException} com mensagem padr„o.
+   * Valida se o objeto passado √© nulo. Caso seja lan√ßa uma {@link RFWValidationException} com mensagem padr√£o.
    *
    * @param value Objeto a ser testado.
    */
@@ -511,18 +511,18 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o objeto passado È nulo. Caso seja lanÁa {@link RFWValidationException} com mensagem personalizada.
+   * Valida se o objeto passado √© nulo. Caso seja lan√ßa {@link RFWValidationException} com mensagem personalizada.
    *
    * @param value Objeto a ser testado.
-   * @param msg Mensagem/CÛdigo da Exception a ser colocado na Exception
+   * @param msg Mensagem/C√≥digo da Exception a ser colocado na Exception
    */
   public static void requiredNull(Object value, String msg) throws RFWException {
     if (value != null) throw new RFWValidationException(msg);
   }
 
   /**
-   * Valida se o objeto passado È nulo. Caso seja lanÁa exceÁ„o com mensagem padr„o.<br>
-   * LanÁa uma exception CrÌtica.
+   * Valida se o objeto passado √© nulo. Caso seja lan√ßa exce√ß√£o com mensagem padr√£o.<br>
+   * Lan√ßa uma exception Cr√≠tica.
    *
    * @param value Objeto a ser testado.
    */
@@ -531,23 +531,23 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o objeto passado n„o È nulo. Caso seja lanÁa exceÁ„o com mensagem personalizada.<br>
-   * LanÁa uma exception CrÌtica.
+   * Valida se o objeto passado n√£o √© nulo. Caso seja lan√ßa exce√ß√£o com mensagem personalizada.<br>
+   * Lan√ßa uma exception Cr√≠tica.
    *
    * @param value Objeto a ser testado.
-   * @param msg Mensagem/CÛdigo da Exception a ser colocado na Exception
+   * @param msg Mensagem/C√≥digo da Exception a ser colocado na Exception
    */
   public static void requiredNullCritical(Object value, String msg) throws RFWException {
     if (value != null) throw new RFWCriticalException(msg);
   }
 
   /**
-   * Garante que o array recebido n„o È nulo e nem vazio, tem o tamanho maior ou igual a 1.<br>
-   * Note que este mÈtodo n„o verificar· se o conte˙do dentro do array È nulo, sÛ se o array È nulo e de tamanho maior que zero.
+   * Garante que o array recebido n√£o √© nulo e nem vazio, tem o tamanho maior ou igual a 1.<br>
+   * Note que este m√©todo n√£o verificar√° se o conte√∫do dentro do array √© nulo, s√≥ se o array √© nulo e de tamanho maior que zero.
    *
    *
-   * @param array Array para validaÁ„o
-   * @param msg Mensagem da Exception caso n„o passe na validaÁ„o.
+   * @param array Array para valida√ß√£o
+   * @param msg Mensagem da Exception caso n√£o passe na valida√ß√£o.
    * @throws RFWCriticalException
    */
   public static <T> void requiredNonEmpty(T[] array, String msg) throws RFWException {
@@ -555,11 +555,11 @@ public final class PreProcess {
   }
 
   /**
-   * Garante que o array recebido n„o È nulo e nem vazio, tem o tamanho maior ou igual a 1.<br>
-   * Note que este mÈtodo n„o verificar· se o conte˙do dentro do array È nulo, sÛ se o array È nulo e de tamanho maior que zero.
+   * Garante que o array recebido n√£o √© nulo e nem vazio, tem o tamanho maior ou igual a 1.<br>
+   * Note que este m√©todo n√£o verificar√° se o conte√∫do dentro do array √© nulo, s√≥ se o array √© nulo e de tamanho maior que zero.
    *
    *
-   * @param array Array para validaÁ„o
+   * @param array Array para valida√ß√£o
    * @throws RFWCriticalException
    */
   public static <T> void requiredNonEmpty(T[] array) throws RFWException {
@@ -567,11 +567,11 @@ public final class PreProcess {
   }
 
   /**
-   * Garante que o array recebido n„o È nulo e nem vazio, tem o tamanho maior ou igual a 1.<br>
-   * Note que este mÈtodo n„o verificar· se o conte˙do dentro do array È nulo, sÛ se o array È nulo e de tamanho maior que zero.
+   * Garante que o array recebido n√£o √© nulo e nem vazio, tem o tamanho maior ou igual a 1.<br>
+   * Note que este m√©todo n√£o verificar√° se o conte√∫do dentro do array √© nulo, s√≥ se o array √© nulo e de tamanho maior que zero.
    *
    *
-   * @param array Array para validaÁ„o
+   * @param array Array para valida√ß√£o
    * @throws RFWCriticalException
    */
   public static <T> void requiredNonEmptyCritical(T[] array) throws RFWException {
@@ -579,12 +579,12 @@ public final class PreProcess {
   }
 
   /**
-   * Garante que o array recebido n„o È nulo e nem vazio, tem o tamanho maior ou igual a 1.<br>
-   * Note que este mÈtodo n„o verificar· se o conte˙do dentro do array È nulo, sÛ se o array È nulo e de tamanho maior que zero.
+   * Garante que o array recebido n√£o √© nulo e nem vazio, tem o tamanho maior ou igual a 1.<br>
+   * Note que este m√©todo n√£o verificar√° se o conte√∫do dentro do array √© nulo, s√≥ se o array √© nulo e de tamanho maior que zero.
    *
    *
-   * @param array Array para validaÁ„o
-   * @param msg Mensagem da Exception caso n„o passe na validaÁ„o.
+   * @param array Array para valida√ß√£o
+   * @param msg Mensagem da Exception caso n√£o passe na valida√ß√£o.
    * @throws RFWCriticalException
    */
   public static <T> void requiredNonEmptyCritical(T[] array, String msg) throws RFWException {
@@ -592,12 +592,12 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se um valor est· entre dois valores INCLUSIVE, ou seja a condiÁ„o È "minValue <= value <= maxValue".<br>
-   * LanÁa uma exception CrÌtica.
+   * Valida se um valor est√° entre dois valores INCLUSIVE, ou seja a condi√ß√£o √© "minValue <= value <= maxValue".<br>
+   * Lan√ßa uma exception Cr√≠tica.
    *
-   * @param value Valor a ser verificado. Se nulo lanÁa a exception como se a condiÁ„o tivesse dado falso.
-   * @param minValue Menor valor aceito. N„o pode ser nulo.
-   * @param maxValue Maior valor aceito. N„o pode ser nulo.
+   * @param value Valor a ser verificado. Se nulo lan√ßa a exception como se a condi√ß√£o tivesse dado falso.
+   * @param minValue Menor valor aceito. N√£o pode ser nulo.
+   * @param maxValue Maior valor aceito. N√£o pode ser nulo.
    * @param msg Mensagem personalizada de erro.
    * @throws RFWException
    */
@@ -609,8 +609,8 @@ public final class PreProcess {
 
   /**
    *
-   * @param values Valores para an·lise.
-   * @return retorna o primeiro objeto n„o nulo do array
+   * @param values Valores para an√°lise.
+   * @return retorna o primeiro objeto n√£o nulo do array
    */
   @SafeVarargs
   public static <T> T coalesce(T... values) {
@@ -764,10 +764,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna o menor valor entre uma sÈrie de BigDecimals passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna o menor valor entre uma s√©rie de BigDecimals passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem comparados.
-   * @return o menor valor n„o nulo ou nulo se todos os valores forem nulos.
+   * @return o menor valor n√£o nulo ou nulo se todos os valores forem nulos.
    */
   public static BigDecimal min(BigDecimal... values) {
     return Arrays.stream(values)
@@ -777,10 +777,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna o menor valor entre uma sÈrie de Doubles passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna o menor valor entre uma s√©rie de Doubles passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem comparados.
-   * @return o menor valor n„o nulo ou nulo se todos os valores forem nulos.
+   * @return o menor valor n√£o nulo ou nulo se todos os valores forem nulos.
    */
   public static Double min(Double... values) {
     return Arrays.stream(values)
@@ -790,10 +790,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna o menor valor entre uma sÈrie de Integers passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna o menor valor entre uma s√©rie de Integers passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem comparados.
-   * @return o menor valor n„o nulo ou nulo se todos os valores forem nulos.
+   * @return o menor valor n√£o nulo ou nulo se todos os valores forem nulos.
    */
   public static Integer min(Integer... values) {
     return Arrays.stream(values)
@@ -803,10 +803,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna o menor valor entre uma sÈrie de Longs passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna o menor valor entre uma s√©rie de Longs passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem comparados.
-   * @return o menor valor n„o nulo ou nulo se todos os valores forem nulos.
+   * @return o menor valor n√£o nulo ou nulo se todos os valores forem nulos.
    */
   public static Long min(Long... values) {
     return Arrays.stream(values)
@@ -816,10 +816,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna o menor valor entre uma sÈrie de Floats passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna o menor valor entre uma s√©rie de Floats passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem comparados.
-   * @return o menor valor n„o nulo ou nulo se todos os valores forem nulos.
+   * @return o menor valor n√£o nulo ou nulo se todos os valores forem nulos.
    */
   public static Float min(Float... values) {
     return Arrays.stream(values)
@@ -829,10 +829,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna o menor valor entre uma sÈrie de Shorts passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna o menor valor entre uma s√©rie de Shorts passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem comparados.
-   * @return o menor valor n„o nulo ou nulo se todos os valores forem nulos.
+   * @return o menor valor n√£o nulo ou nulo se todos os valores forem nulos.
    */
   public static Short min(Short... values) {
     return Arrays.stream(values)
@@ -842,10 +842,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna o maior valor entre uma sÈrie de BigDecimals passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna o maior valor entre uma s√©rie de BigDecimals passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem comparados.
-   * @return o maior valor n„o nulo ou nulo se todos os valores forem nulos.
+   * @return o maior valor n√£o nulo ou nulo se todos os valores forem nulos.
    */
   public static BigDecimal max(BigDecimal... values) {
     return Arrays.stream(values)
@@ -855,10 +855,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna o maior valor entre uma sÈrie de Doubles passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna o maior valor entre uma s√©rie de Doubles passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem comparados.
-   * @return o maior valor n„o nulo ou nulo se todos os valores forem nulos.
+   * @return o maior valor n√£o nulo ou nulo se todos os valores forem nulos.
    */
   public static Double max(Double... values) {
     return Arrays.stream(values)
@@ -868,10 +868,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna o maior valor entre uma sÈrie de Integers passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna o maior valor entre uma s√©rie de Integers passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem comparados.
-   * @return o maior valor n„o nulo ou nulo se todos os valores forem nulos.
+   * @return o maior valor n√£o nulo ou nulo se todos os valores forem nulos.
    */
   public static Integer max(Integer... values) {
     return Arrays.stream(values)
@@ -881,10 +881,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna o maior valor entre uma sÈrie de Longs passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna o maior valor entre uma s√©rie de Longs passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem comparados.
-   * @return o maior valor n„o nulo ou nulo se todos os valores forem nulos.
+   * @return o maior valor n√£o nulo ou nulo se todos os valores forem nulos.
    */
   public static Long max(Long... values) {
     return Arrays.stream(values)
@@ -894,10 +894,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna o maior valor entre uma sÈrie de Floats passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna o maior valor entre uma s√©rie de Floats passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem comparados.
-   * @return o maior valor n„o nulo ou nulo se todos os valores forem nulos.
+   * @return o maior valor n√£o nulo ou nulo se todos os valores forem nulos.
    */
   public static Float max(Float... values) {
     return Arrays.stream(values)
@@ -907,10 +907,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna o maior valor entre uma sÈrie de Shorts passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna o maior valor entre uma s√©rie de Shorts passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem comparados.
-   * @return o maior valor n„o nulo ou nulo se todos os valores forem nulos.
+   * @return o maior valor n√£o nulo ou nulo se todos os valores forem nulos.
    */
   public static Short max(Short... values) {
     return Arrays.stream(values)
@@ -920,10 +920,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna a soma de uma sÈrie de BigDecimals passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna a soma de uma s√©rie de BigDecimals passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem somados.
-   * @return a soma dos valores n„o nulos ou nulo se todos os valores forem nulos.
+   * @return a soma dos valores n√£o nulos ou nulo se todos os valores forem nulos.
    */
   public static BigDecimal sum(BigDecimal... values) {
     return Arrays.stream(values)
@@ -932,10 +932,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna a soma de uma sÈrie de Doubles passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna a soma de uma s√©rie de Doubles passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem somados.
-   * @return a soma dos valores n„o nulos ou nulo se todos os valores forem nulos.
+   * @return a soma dos valores n√£o nulos ou nulo se todos os valores forem nulos.
    */
   public static Double sum(Double... values) {
     return Arrays.stream(values)
@@ -944,10 +944,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna a soma de uma sÈrie de Integers passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna a soma de uma s√©rie de Integers passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem somados.
-   * @return a soma dos valores n„o nulos ou nulo se todos os valores forem nulos.
+   * @return a soma dos valores n√£o nulos ou nulo se todos os valores forem nulos.
    */
   public static Integer sum(Integer... values) {
     return Arrays.stream(values)
@@ -956,10 +956,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna a soma de uma sÈrie de Longs passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna a soma de uma s√©rie de Longs passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem somados.
-   * @return a soma dos valores n„o nulos ou nulo se todos os valores forem nulos.
+   * @return a soma dos valores n√£o nulos ou nulo se todos os valores forem nulos.
    */
   public static Long sum(Long... values) {
     return Arrays.stream(values)
@@ -968,10 +968,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna a soma de uma sÈrie de Floats passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna a soma de uma s√©rie de Floats passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem somados.
-   * @return a soma dos valores n„o nulos ou nulo se todos os valores forem nulos.
+   * @return a soma dos valores n√£o nulos ou nulo se todos os valores forem nulos.
    */
   public static Float sum(Float... values) {
     return Arrays.stream(values)
@@ -980,10 +980,10 @@ public final class PreProcess {
   }
 
   /**
-   * Retorna a soma de uma sÈrie de Shorts passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
+   * Retorna a soma de uma s√©rie de Shorts passados como argumento, ignorando valores nulos. Se todos os valores forem nulos, retorna nulo.
    *
    * @param values os valores a serem somados.
-   * @return a soma dos valores n„o nulos ou nulo se todos os valores forem nulos.
+   * @return a soma dos valores n√£o nulos ou nulo se todos os valores forem nulos.
    */
   public static Short sum(Short... values) {
     return Arrays.stream(values)
@@ -992,25 +992,25 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se a coleÁ„o n„o È nula nem vazia. Caso a validaÁ„o falhe uma {@link RFWCriticalException} È lanÁada.
+   * Valida se a cole√ß√£o n√£o √© nula nem vazia. Caso a valida√ß√£o falhe uma {@link RFWCriticalException} √© lan√ßada.
    *
    * @param <T>
-   * @param list ColeÁ„o a ser validada.
+   * @param list Cole√ß√£o a ser validada.
    * @throws RFWValidationException
    */
   public static <T> void requiredNonNullNorEmpty(Collection<T> list) throws RFWValidationException {
     if (list == null) {
-      throw new RFWValidationException("A lista n„o pode ser nula ou vazia!");
+      throw new RFWValidationException("A lista n√£o pode ser nula ou vazia!");
     } else if (list.size() == 0) {
-      throw new RFWValidationException("A lista n„o pode ser vazia!");
+      throw new RFWValidationException("A lista n√£o pode ser vazia!");
     }
   }
 
   /**
-   * Valida se a coleÁ„o n„o È nula nem vazia. Caso a validaÁ„o falhe uma {@link RFWCriticalException} È lanÁada.
+   * Valida se a cole√ß√£o n√£o √© nula nem vazia. Caso a valida√ß√£o falhe uma {@link RFWCriticalException} √© lan√ßada.
    *
    * @param <T>
-   * @param list ColeÁ„o a ser validada.
+   * @param list Cole√ß√£o a ser validada.
    * @param message Mensagem para a Exception.
    * @throws RFWValidationException
    */
@@ -1021,25 +1021,25 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se a coleÁ„o n„o È nula nem vazia. Caso a validaÁ„o falhe uma {@link RFWCriticalException} È lanÁada.
+   * Valida se a cole√ß√£o n√£o √© nula nem vazia. Caso a valida√ß√£o falhe uma {@link RFWCriticalException} √© lan√ßada.
    *
    * @param <T>
-   * @param list ColeÁ„o a ser validada.
+   * @param list Cole√ß√£o a ser validada.
    * @throws RFWCriticalException
    */
   public static <T> void requiredNonNullNorEmptyCritical(Collection<T> list) throws RFWCriticalException {
     if (list == null) {
-      throw new RFWCriticalException("A lista n„o pode ser nula ou vazia!");
+      throw new RFWCriticalException("A lista n√£o pode ser nula ou vazia!");
     } else if (list.size() == 0) {
-      throw new RFWCriticalException("A lista n„o pode ser vazia!");
+      throw new RFWCriticalException("A lista n√£o pode ser vazia!");
     }
   }
 
   /**
-   * Valida se a coleÁ„o n„o È nula nem vazia. Caso a validaÁ„o falhe uma {@link RFWCriticalException} È lanÁada.
+   * Valida se a cole√ß√£o n√£o √© nula nem vazia. Caso a valida√ß√£o falhe uma {@link RFWCriticalException} √© lan√ßada.
    *
    * @param <T>
-   * @param list ColeÁ„o a ser validada.
+   * @param list Cole√ß√£o a ser validada.
    * @param message Mensagem para a Exception.
    * @throws RFWCriticalException
    */
@@ -1050,11 +1050,11 @@ public final class PreProcess {
   }
 
   /**
-   * Requer que os objetos A e B sejam iguais. Testa o equals com null safe (ambos nulos s„o considerados iguais).
+   * Requer que os objetos A e B sejam iguais. Testa o equals com null safe (ambos nulos s√£o considerados iguais).
    *
-   * @param a Objeto A para comparaÁ„o
-   * @param b Objeto B para comparaÁ„o
-   * @throws RFWValidationException LanÁado caso os objetos n„o satisfaÁ„o o equals.
+   * @param a Objeto A para compara√ß√£o
+   * @param b Objeto B para compara√ß√£o
+   * @throws RFWValidationException Lan√ßado caso os objetos n√£o satisfa√ß√£o o equals.
    */
   public static void requiredEquals(Object a, Object b) throws RFWValidationException {
     if (!Objects.equals(a, b)) {
@@ -1063,12 +1063,12 @@ public final class PreProcess {
   }
 
   /**
-   * Requer que os objetos A e B sejam iguais. Testa o equals com null safe (ambos nulos s„o considerados iguais).
+   * Requer que os objetos A e B sejam iguais. Testa o equals com null safe (ambos nulos s√£o considerados iguais).
    *
-   * @param a Objeto A para comparaÁ„o
-   * @param b Objeto B para comparaÁ„o
-   * @param message Mensagem/CÛdigo de Erro personalizado para a exceÁ„o.
-   * @throws RFWValidationException LanÁado caso os objetos n„o satisfaÁ„o o equals.
+   * @param a Objeto A para compara√ß√£o
+   * @param b Objeto B para compara√ß√£o
+   * @param message Mensagem/C√≥digo de Erro personalizado para a exce√ß√£o.
+   * @throws RFWValidationException Lan√ßado caso os objetos n√£o satisfa√ß√£o o equals.
    */
   public static void requiredEquals(Object a, Object b, String message) throws RFWException {
     if (!Objects.equals(a, b)) {
@@ -1077,12 +1077,12 @@ public final class PreProcess {
   }
 
   /**
-   * Requer que os objetos A e B sejam iguais. Testa o equals com null safe (ambos nulos s„o considerados iguais).
+   * Requer que os objetos A e B sejam iguais. Testa o equals com null safe (ambos nulos s√£o considerados iguais).
    *
-   * @param a Objeto A para comparaÁ„o
-   * @param b Objeto B para comparaÁ„o
-   * @param message Mensagem/CÛdigo de Erro personalizado para a exceÁ„o.
-   * @throws RFWValidationException LanÁado caso os objetos n„o satisfaÁ„o o equals.
+   * @param a Objeto A para compara√ß√£o
+   * @param b Objeto B para compara√ß√£o
+   * @param message Mensagem/C√≥digo de Erro personalizado para a exce√ß√£o.
+   * @throws RFWValidationException Lan√ßado caso os objetos n√£o satisfa√ß√£o o equals.
    */
   public static void requiredEqualsCritical(Object a, Object b, String message) throws RFWException {
     if (!Objects.equals(a, b)) {
@@ -1114,7 +1114,7 @@ public final class PreProcess {
 
   /**
    * Tenta converter uma String para {@link BigDecimal} utilizando o construtor BigDecimal(String), mas salvo de {@link NullPointerException}.<br>
-   * Em seguida, forÁa o tamanho do Scale utilizando o {@link RFW#getRoundingMode()} para arredondamento.
+   * Em seguida, for√ßa o tamanho do Scale utilizando o {@link RFW#getRoundingMode()} para arredondamento.
    *
    * @param value Valor em String para tentar converter para o {@link BigDecimal}
    * @param newScale Quantidade de casas decimais que o BigDecimal deve conter.
@@ -1148,11 +1148,11 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o conte˙do n„o È nulo e se satisfaz a express„o regular passada. Caso contr·io emite uma {@link RFWValidationException} com a mensagem passada.
+   * Valida se o conte√∫do n√£o √© nulo e se satisfaz a express√£o regular passada. Caso contr√°io emite uma {@link RFWValidationException} com a mensagem passada.
    *
-   * @param value Valor em String para tentar validar com a Express„o Regular
-   * @param regExp Express„o regulara para validaÁ„o
-   * @param msg Mensagem/CÛdigo da Exception a ser colocado na Exception
+   * @param value Valor em String para tentar validar com a Express√£o Regular
+   * @param regExp Express√£o regulara para valida√ß√£o
+   * @param msg Mensagem/C√≥digo da Exception a ser colocado na Exception
    * @throws RFWException
    */
   public static void requiredNonNullMatch(String value, String regExp) throws RFWException {
@@ -1160,11 +1160,11 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o conte˙do n„o È nulo e se satisfaz a express„o regular passada. Caso contr·io emite uma {@link RFWValidationException} com a mensagem passada.
+   * Valida se o conte√∫do n√£o √© nulo e se satisfaz a express√£o regular passada. Caso contr√°io emite uma {@link RFWValidationException} com a mensagem passada.
    *
-   * @param value Valor em String para tentar validar com a Express„o Regular
-   * @param regExp Express„o regulara para validaÁ„o
-   * @param msg Mensagem/CÛdigo da Exception a ser colocado na Exception
+   * @param value Valor em String para tentar validar com a Express√£o Regular
+   * @param regExp Express√£o regulara para valida√ß√£o
+   * @param msg Mensagem/C√≥digo da Exception a ser colocado na Exception
    * @throws RFWException
    */
   public static void requiredNonNullMatch(String value, String regExp, String msg) throws RFWException {
@@ -1177,12 +1177,12 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o conte˙do satisfaz a express„o regular passada. Caso contr·io emite uma {@link RFWValidationException} com a mensagem passada. <Br>
-   * Se o conte˙do for nulo, apenas ignora.
+   * Valida se o conte√∫do satisfaz a express√£o regular passada. Caso contr√°io emite uma {@link RFWValidationException} com a mensagem passada. <Br>
+   * Se o conte√∫do for nulo, apenas ignora.
    *
-   * @param value Valor em String para tentar validar com a Express„o Regular
-   * @param regExp Express„o regulara para validaÁ„o
-   * @param msg Mensagem/CÛdigo da Exception a ser colocado na Exception
+   * @param value Valor em String para tentar validar com a Express√£o Regular
+   * @param regExp Express√£o regulara para valida√ß√£o
+   * @param msg Mensagem/C√≥digo da Exception a ser colocado na Exception
    * @throws RFWException
    */
   public static void requiredMatch(String value, String regExp) throws RFWException {
@@ -1191,12 +1191,12 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o conte˙do satisfaz a express„o regular passada. Caso contr·io emite uma {@link RFWValidationException} com a mensagem passada. <Br>
-   * Se o conte˙do for nulo, apenas ignora.
+   * Valida se o conte√∫do satisfaz a express√£o regular passada. Caso contr√°io emite uma {@link RFWValidationException} com a mensagem passada. <Br>
+   * Se o conte√∫do for nulo, apenas ignora.
    *
-   * @param value Valor em String para tentar validar com a Express„o Regular
-   * @param regExp Express„o regulara para validaÁ„o
-   * @param msg Mensagem/CÛdigo da Exception a ser colocado na Exception
+   * @param value Valor em String para tentar validar com a Express√£o Regular
+   * @param regExp Express√£o regulara para valida√ß√£o
+   * @param msg Mensagem/C√≥digo da Exception a ser colocado na Exception
    * @throws RFWException
    */
   public static void requiredMatch(String value, String regExp, String msg) throws RFWException {
@@ -1210,20 +1210,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo.
+   * Valida se o valor passado n√£o √© nulo e √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositive(BigDecimal value) throws RFWValidationException {
-    requiredNonNullPositive(value, "Esperado um valor n„o nulo e positivo.");
+    requiredNonNullPositive(value, "Esperado um valor n√£o nulo e positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo.
+   * Valida se o valor passado n√£o √© nulo e √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositive(BigDecimal value, String message) throws RFWValidationException {
@@ -1231,7 +1231,7 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo.
+   * Valida se o valor passado √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for menor ou igual a zero.
@@ -1241,10 +1241,10 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo.
+   * Valida se o valor passado √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for menor ou igual a zero.
    */
   public static void requiredPositive(BigDecimal value, String message) throws RFWValidationException {
@@ -1252,20 +1252,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegative(BigDecimal value) throws RFWValidationException {
-    requiredNonNullNonNegative(value, "Esperado um valor n„o nulo e n„o negativo.");
+    requiredNonNullNonNegative(value, "Esperado um valor n√£o nulo e n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegative(BigDecimal value, String message) throws RFWValidationException {
@@ -1273,20 +1273,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È negativo.
+   * Valida se o valor passado n√£o √© negativo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for negativo.
    */
   public static void requiredNonNegative(BigDecimal value) throws RFWValidationException {
-    requiredNonNegative(value, "Esperado um valor n„o negativo.");
+    requiredNonNegative(value, "Esperado um valor n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È negativo.
+   * Valida se o valor passado n√£o √© negativo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for negativo.
    */
   public static void requiredNonNegative(BigDecimal value, String message) throws RFWValidationException {
@@ -1294,20 +1294,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositive(BigDecimal value) throws RFWValidationException {
-    requiredNonNullNonPositive(value, "Esperado um valor n„o nulo e n„o positivo.");
+    requiredNonNullNonPositive(value, "Esperado um valor n√£o nulo e n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositive(BigDecimal value, String message) throws RFWValidationException {
@@ -1315,20 +1315,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È positivo.
+   * Valida se o valor passado n√£o √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for positivo.
    */
   public static void requiredNonPositive(BigDecimal value) throws RFWValidationException {
-    requiredNonPositive(value, "Esperado um valor n„o positivo.");
+    requiredNonPositive(value, "Esperado um valor n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È positivo.
+   * Valida se o valor passado n√£o √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for positivo.
    */
   public static void requiredNonPositive(BigDecimal value, String message) throws RFWValidationException {
@@ -1336,20 +1336,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositiveCritical(BigDecimal value) throws RFWCriticalException {
-    requiredNonNullPositiveCritical(value, "Esperado um valor n„o nulo e positivo.");
+    requiredNonNullPositiveCritical(value, "Esperado um valor n√£o nulo e positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositiveCritical(BigDecimal value, String message) throws RFWCriticalException {
@@ -1357,7 +1357,7 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for menor ou igual a zero.
@@ -1367,10 +1367,10 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for menor ou igual a zero.
    */
   public static void requiredPositiveCritical(BigDecimal value, String message) throws RFWCriticalException {
@@ -1378,20 +1378,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegativeCritical(BigDecimal value) throws RFWCriticalException {
-    requiredNonNullNonNegativeCritical(value, "Esperado um valor n„o nulo e n„o negativo.");
+    requiredNonNullNonNegativeCritical(value, "Esperado um valor n√£o nulo e n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegativeCritical(BigDecimal value, String message) throws RFWCriticalException {
@@ -1399,20 +1399,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for negativo.
    */
   public static void requiredNonNegativeCritical(BigDecimal value) throws RFWCriticalException {
-    requiredNonNegativeCritical(value, "Esperado um valor n„o negativo.");
+    requiredNonNegativeCritical(value, "Esperado um valor n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for negativo.
    */
   public static void requiredNonNegativeCritical(BigDecimal value, String message) throws RFWCriticalException {
@@ -1420,20 +1420,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositiveCritical(BigDecimal value) throws RFWCriticalException {
-    requiredNonNullNonPositiveCritical(value, "Esperado um valor n„o nulo e n„o positivo.");
+    requiredNonNullNonPositiveCritical(value, "Esperado um valor n√£o nulo e n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositiveCritical(BigDecimal value, String message) throws RFWCriticalException {
@@ -1441,20 +1441,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for positivo.
    */
   public static void requiredNonPositiveCritical(BigDecimal value) throws RFWCriticalException {
-    requiredNonPositiveCritical(value, "Esperado um valor n„o positivo.");
+    requiredNonPositiveCritical(value, "Esperado um valor n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for positivo.
    */
   public static void requiredNonPositiveCritical(BigDecimal value, String message) throws RFWCriticalException {
@@ -1462,20 +1462,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo.
+   * Valida se o valor passado n√£o √© nulo e √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositive(Integer value) throws RFWValidationException {
-    requiredNonNullPositive(value, "Esperado um valor n„o nulo e positivo.");
+    requiredNonNullPositive(value, "Esperado um valor n√£o nulo e positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo.
+   * Valida se o valor passado n√£o √© nulo e √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositive(Integer value, String message) throws RFWValidationException {
@@ -1483,7 +1483,7 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo.
+   * Valida se o valor passado √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for menor ou igual a zero.
@@ -1493,10 +1493,10 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo.
+   * Valida se o valor passado √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for menor ou igual a zero.
    */
   public static void requiredPositive(Integer value, String message) throws RFWValidationException {
@@ -1504,20 +1504,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegative(Integer value) throws RFWValidationException {
-    requiredNonNullNonNegative(value, "Esperado um valor n„o nulo e n„o negativo.");
+    requiredNonNullNonNegative(value, "Esperado um valor n√£o nulo e n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegative(Integer value, String message) throws RFWValidationException {
@@ -1525,20 +1525,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È negativo.
+   * Valida se o valor passado n√£o √© negativo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for negativo.
    */
   public static void requiredNonNegative(Integer value) throws RFWValidationException {
-    requiredNonNegative(value, "Esperado um valor n„o negativo.");
+    requiredNonNegative(value, "Esperado um valor n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È negativo.
+   * Valida se o valor passado n√£o √© negativo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for negativo.
    */
   public static void requiredNonNegative(Integer value, String message) throws RFWValidationException {
@@ -1546,20 +1546,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositive(Integer value) throws RFWValidationException {
-    requiredNonNullNonPositive(value, "Esperado um valor n„o nulo e n„o positivo.");
+    requiredNonNullNonPositive(value, "Esperado um valor n√£o nulo e n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositive(Integer value, String message) throws RFWValidationException {
@@ -1567,20 +1567,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È positivo.
+   * Valida se o valor passado n√£o √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for positivo.
    */
   public static void requiredNonPositive(Integer value) throws RFWValidationException {
-    requiredNonPositive(value, "Esperado um valor n„o positivo.");
+    requiredNonPositive(value, "Esperado um valor n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È positivo.
+   * Valida se o valor passado n√£o √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for positivo.
    */
   public static void requiredNonPositive(Integer value, String message) throws RFWValidationException {
@@ -1588,20 +1588,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositiveCritical(Integer value) throws RFWCriticalException {
-    requiredNonNullPositiveCritical(value, "Esperado um valor n„o nulo e positivo.");
+    requiredNonNullPositiveCritical(value, "Esperado um valor n√£o nulo e positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositiveCritical(Integer value, String message) throws RFWCriticalException {
@@ -1609,7 +1609,7 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for menor ou igual a zero.
@@ -1619,10 +1619,10 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for menor ou igual a zero.
    */
   public static void requiredPositiveCritical(Integer value, String message) throws RFWCriticalException {
@@ -1630,20 +1630,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegativeCritical(Integer value) throws RFWCriticalException {
-    requiredNonNullNonNegativeCritical(value, "Esperado um valor n„o nulo e n„o negativo.");
+    requiredNonNullNonNegativeCritical(value, "Esperado um valor n√£o nulo e n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegativeCritical(Integer value, String message) throws RFWCriticalException {
@@ -1651,20 +1651,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for negativo.
    */
   public static void requiredNonNegativeCritical(Integer value) throws RFWCriticalException {
-    requiredNonNegativeCritical(value, "Esperado um valor n„o negativo.");
+    requiredNonNegativeCritical(value, "Esperado um valor n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for negativo.
    */
   public static void requiredNonNegativeCritical(Integer value, String message) throws RFWCriticalException {
@@ -1672,20 +1672,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositiveCritical(Integer value) throws RFWCriticalException {
-    requiredNonNullNonPositiveCritical(value, "Esperado um valor n„o nulo e n„o positivo.");
+    requiredNonNullNonPositiveCritical(value, "Esperado um valor n√£o nulo e n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositiveCritical(Integer value, String message) throws RFWCriticalException {
@@ -1693,20 +1693,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for positivo.
    */
   public static void requiredNonPositiveCritical(Integer value) throws RFWCriticalException {
-    requiredNonPositiveCritical(value, "Esperado um valor n„o positivo.");
+    requiredNonPositiveCritical(value, "Esperado um valor n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for positivo.
    */
   public static void requiredNonPositiveCritical(Integer value, String message) throws RFWCriticalException {
@@ -1714,20 +1714,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo.
+   * Valida se o valor passado n√£o √© nulo e √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositive(Float value) throws RFWValidationException {
-    requiredNonNullPositive(value, "Esperado um valor n„o nulo e positivo.");
+    requiredNonNullPositive(value, "Esperado um valor n√£o nulo e positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo.
+   * Valida se o valor passado n√£o √© nulo e √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositive(Float value, String message) throws RFWValidationException {
@@ -1735,7 +1735,7 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo.
+   * Valida se o valor passado √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for menor ou igual a zero.
@@ -1745,10 +1745,10 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo.
+   * Valida se o valor passado √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for menor ou igual a zero.
    */
   public static void requiredPositive(Float value, String message) throws RFWValidationException {
@@ -1756,20 +1756,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegative(Float value) throws RFWValidationException {
-    requiredNonNullNonNegative(value, "Esperado um valor n„o nulo e n„o negativo.");
+    requiredNonNullNonNegative(value, "Esperado um valor n√£o nulo e n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegative(Float value, String message) throws RFWValidationException {
@@ -1777,20 +1777,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È negativo.
+   * Valida se o valor passado n√£o √© negativo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for negativo.
    */
   public static void requiredNonNegative(Float value) throws RFWValidationException {
-    requiredNonNegative(value, "Esperado um valor n„o negativo.");
+    requiredNonNegative(value, "Esperado um valor n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È negativo.
+   * Valida se o valor passado n√£o √© negativo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for negativo.
    */
   public static void requiredNonNegative(Float value, String message) throws RFWValidationException {
@@ -1798,20 +1798,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositive(Float value) throws RFWValidationException {
-    requiredNonNullNonPositive(value, "Esperado um valor n„o nulo e n„o positivo.");
+    requiredNonNullNonPositive(value, "Esperado um valor n√£o nulo e n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositive(Float value, String message) throws RFWValidationException {
@@ -1819,20 +1819,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È positivo.
+   * Valida se o valor passado n√£o √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for positivo.
    */
   public static void requiredNonPositive(Float value) throws RFWValidationException {
-    requiredNonPositive(value, "Esperado um valor n„o positivo.");
+    requiredNonPositive(value, "Esperado um valor n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È positivo.
+   * Valida se o valor passado n√£o √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for positivo.
    */
   public static void requiredNonPositive(Float value, String message) throws RFWValidationException {
@@ -1840,20 +1840,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositiveCritical(Float value) throws RFWCriticalException {
-    requiredNonNullPositiveCritical(value, "Esperado um valor n„o nulo e positivo.");
+    requiredNonNullPositiveCritical(value, "Esperado um valor n√£o nulo e positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositiveCritical(Float value, String message) throws RFWCriticalException {
@@ -1861,7 +1861,7 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for menor ou igual a zero.
@@ -1871,10 +1871,10 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for menor ou igual a zero.
    */
   public static void requiredPositiveCritical(Float value, String message) throws RFWCriticalException {
@@ -1882,20 +1882,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegativeCritical(Float value) throws RFWCriticalException {
-    requiredNonNullNonNegativeCritical(value, "Esperado um valor n„o nulo e n„o negativo.");
+    requiredNonNullNonNegativeCritical(value, "Esperado um valor n√£o nulo e n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegativeCritical(Float value, String message) throws RFWCriticalException {
@@ -1903,20 +1903,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for negativo.
    */
   public static void requiredNonNegativeCritical(Float value) throws RFWCriticalException {
-    requiredNonNegativeCritical(value, "Esperado um valor n„o negativo.");
+    requiredNonNegativeCritical(value, "Esperado um valor n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for negativo.
    */
   public static void requiredNonNegativeCritical(Float value, String message) throws RFWCriticalException {
@@ -1924,20 +1924,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositiveCritical(Float value) throws RFWCriticalException {
-    requiredNonNullNonPositiveCritical(value, "Esperado um valor n„o nulo e n„o positivo.");
+    requiredNonNullNonPositiveCritical(value, "Esperado um valor n√£o nulo e n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositiveCritical(Float value, String message) throws RFWCriticalException {
@@ -1945,20 +1945,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for positivo.
    */
   public static void requiredNonPositiveCritical(Float value) throws RFWCriticalException {
-    requiredNonPositiveCritical(value, "Esperado um valor n„o positivo.");
+    requiredNonPositiveCritical(value, "Esperado um valor n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for positivo.
    */
   public static void requiredNonPositiveCritical(Float value, String message) throws RFWCriticalException {
@@ -1966,20 +1966,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositiveCritical(Long value) throws RFWCriticalException {
-    requiredNonNullPositiveCritical(value, "Esperado um valor n„o nulo e positivo.");
+    requiredNonNullPositiveCritical(value, "Esperado um valor n√£o nulo e positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositiveCritical(Long value, String message) throws RFWCriticalException {
@@ -1987,7 +1987,7 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for menor ou igual a zero.
@@ -1997,10 +1997,10 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for menor ou igual a zero.
    */
   public static void requiredPositiveCritical(Long value, String message) throws RFWCriticalException {
@@ -2008,20 +2008,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegativeCritical(Long value) throws RFWCriticalException {
-    requiredNonNullNonNegativeCritical(value, "Esperado um valor n„o nulo e n„o negativo.");
+    requiredNonNullNonNegativeCritical(value, "Esperado um valor n√£o nulo e n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegativeCritical(Long value, String message) throws RFWCriticalException {
@@ -2029,20 +2029,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for negativo.
    */
   public static void requiredNonNegativeCritical(Long value) throws RFWCriticalException {
-    requiredNonNegativeCritical(value, "Esperado um valor n„o negativo.");
+    requiredNonNegativeCritical(value, "Esperado um valor n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for negativo.
    */
   public static void requiredNonNegativeCritical(Long value, String message) throws RFWCriticalException {
@@ -2050,20 +2050,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositiveCritical(Long value) throws RFWCriticalException {
-    requiredNonNullNonPositiveCritical(value, "Esperado um valor n„o nulo e n„o positivo.");
+    requiredNonNullNonPositiveCritical(value, "Esperado um valor n√£o nulo e n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositiveCritical(Long value, String message) throws RFWCriticalException {
@@ -2071,20 +2071,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for positivo.
    */
   public static void requiredNonPositiveCritical(Long value) throws RFWCriticalException {
-    requiredNonPositiveCritical(value, "Esperado um valor n„o positivo.");
+    requiredNonPositiveCritical(value, "Esperado um valor n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for positivo.
    */
   public static void requiredNonPositiveCritical(Long value, String message) throws RFWCriticalException {
@@ -2092,20 +2092,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo.
+   * Valida se o valor passado n√£o √© nulo e √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositive(Long value) throws RFWValidationException {
-    requiredNonNullPositive(value, "Esperado um valor n„o nulo e positivo.");
+    requiredNonNullPositive(value, "Esperado um valor n√£o nulo e positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo.
+   * Valida se o valor passado n√£o √© nulo e √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositive(Long value, String message) throws RFWValidationException {
@@ -2113,7 +2113,7 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo.
+   * Valida se o valor passado √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for menor ou igual a zero.
@@ -2123,10 +2123,10 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo.
+   * Valida se o valor passado √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for menor ou igual a zero.
    */
   public static void requiredPositive(Long value, String message) throws RFWValidationException {
@@ -2134,20 +2134,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegative(Long value) throws RFWValidationException {
-    requiredNonNullNonNegative(value, "Esperado um valor n„o nulo e n„o negativo.");
+    requiredNonNullNonNegative(value, "Esperado um valor n√£o nulo e n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegative(Long value, String message) throws RFWValidationException {
@@ -2155,20 +2155,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È negativo.
+   * Valida se o valor passado n√£o √© negativo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for negativo.
    */
   public static void requiredNonNegative(Long value) throws RFWValidationException {
-    requiredNonNegative(value, "Esperado um valor n„o negativo.");
+    requiredNonNegative(value, "Esperado um valor n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È negativo.
+   * Valida se o valor passado n√£o √© negativo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for negativo.
    */
   public static void requiredNonNegative(Long value, String message) throws RFWValidationException {
@@ -2176,20 +2176,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositive(Long value) throws RFWValidationException {
-    requiredNonNullNonPositive(value, "Esperado um valor n„o nulo e n„o positivo.");
+    requiredNonNullNonPositive(value, "Esperado um valor n√£o nulo e n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositive(Long value, String message) throws RFWValidationException {
@@ -2197,20 +2197,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È positivo.
+   * Valida se o valor passado n√£o √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for positivo.
    */
   public static void requiredNonPositive(Long value) throws RFWValidationException {
-    requiredNonPositive(value, "Esperado um valor n„o positivo.");
+    requiredNonPositive(value, "Esperado um valor n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È positivo.
+   * Valida se o valor passado n√£o √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for positivo.
    */
   public static void requiredNonPositive(Long value, String message) throws RFWValidationException {
@@ -2218,20 +2218,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo.
+   * Valida se o valor passado n√£o √© nulo e √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositive(Double value) throws RFWValidationException {
-    requiredNonNullPositive(value, "Esperado um valor n„o nulo e positivo.");
+    requiredNonNullPositive(value, "Esperado um valor n√£o nulo e positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo.
+   * Valida se o valor passado n√£o √© nulo e √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositive(Double value, String message) throws RFWValidationException {
@@ -2239,7 +2239,7 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo.
+   * Valida se o valor passado √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for menor ou igual a zero.
@@ -2249,10 +2249,10 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo.
+   * Valida se o valor passado √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for menor ou igual a zero.
    */
   public static void requiredPositive(Double value, String message) throws RFWValidationException {
@@ -2260,20 +2260,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegative(Double value) throws RFWValidationException {
-    requiredNonNullNonNegative(value, "Esperado um valor n„o nulo e n„o negativo.");
+    requiredNonNullNonNegative(value, "Esperado um valor n√£o nulo e n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegative(Double value, String message) throws RFWValidationException {
@@ -2281,20 +2281,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È negativo.
+   * Valida se o valor passado n√£o √© negativo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for negativo.
    */
   public static void requiredNonNegative(Double value) throws RFWValidationException {
-    requiredNonNegative(value, "Esperado um valor n„o negativo.");
+    requiredNonNegative(value, "Esperado um valor n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È negativo.
+   * Valida se o valor passado n√£o √© negativo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for negativo.
    */
   public static void requiredNonNegative(Double value, String message) throws RFWValidationException {
@@ -2302,20 +2302,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositive(Double value) throws RFWValidationException {
-    requiredNonNullNonPositive(value, "Esperado um valor n„o nulo e n„o positivo.");
+    requiredNonNullNonPositive(value, "Esperado um valor n√£o nulo e n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositive(Double value, String message) throws RFWValidationException {
@@ -2323,20 +2323,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È positivo.
+   * Valida se o valor passado n√£o √© positivo.
    *
    * @param value O valor a ser validado.
    * @throws RFWValidationException Se o valor for positivo.
    */
   public static void requiredNonPositive(Double value) throws RFWValidationException {
-    requiredNonPositive(value, "Esperado um valor n„o positivo.");
+    requiredNonPositive(value, "Esperado um valor n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È positivo.
+   * Valida se o valor passado n√£o √© positivo.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWValidationException Se o valor for positivo.
    */
   public static void requiredNonPositive(Double value, String message) throws RFWValidationException {
@@ -2344,20 +2344,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositiveCritical(Double value) throws RFWCriticalException {
-    requiredNonNullPositiveCritical(value, "Esperado um valor n„o nulo e positivo.");
+    requiredNonNullPositiveCritical(value, "Esperado um valor n√£o nulo e positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for nulo ou menor ou igual a zero.
    */
   public static void requiredNonNullPositiveCritical(Double value, String message) throws RFWCriticalException {
@@ -2365,7 +2365,7 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for menor ou igual a zero.
@@ -2375,10 +2375,10 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for menor ou igual a zero.
    */
   public static void requiredPositiveCritical(Double value, String message) throws RFWCriticalException {
@@ -2386,20 +2386,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegativeCritical(Double value) throws RFWCriticalException {
-    requiredNonNullNonNegativeCritical(value, "Esperado um valor n„o nulo e n„o negativo.");
+    requiredNonNullNonNegativeCritical(value, "Esperado um valor n√£o nulo e n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for nulo ou negativo.
    */
   public static void requiredNonNullNonNegativeCritical(Double value, String message) throws RFWCriticalException {
@@ -2407,20 +2407,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for negativo.
    */
   public static void requiredNonNegativeCritical(Double value) throws RFWCriticalException {
-    requiredNonNegativeCritical(value, "Esperado um valor n„o negativo.");
+    requiredNonNegativeCritical(value, "Esperado um valor n√£o negativo.");
   }
 
   /**
-   * Valida se o valor passado n„o È negativo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© negativo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for negativo.
    */
   public static void requiredNonNegativeCritical(Double value, String message) throws RFWCriticalException {
@@ -2428,20 +2428,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositiveCritical(Double value) throws RFWCriticalException {
-    requiredNonNullNonPositiveCritical(value, "Esperado um valor n„o nulo e n„o positivo.");
+    requiredNonNullNonPositiveCritical(value, "Esperado um valor n√£o nulo e n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È nulo e n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© nulo e n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for nulo ou positivo.
    */
   public static void requiredNonNullNonPositiveCritical(Double value, String message) throws RFWCriticalException {
@@ -2449,20 +2449,20 @@ public final class PreProcess {
   }
 
   /**
-   * Valida se o valor passado n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
    * @throws RFWCriticalException Se o valor for positivo.
    */
   public static void requiredNonPositiveCritical(Double value) throws RFWCriticalException {
-    requiredNonPositiveCritical(value, "Esperado um valor n„o positivo.");
+    requiredNonPositiveCritical(value, "Esperado um valor n√£o positivo.");
   }
 
   /**
-   * Valida se o valor passado n„o È positivo. LanÁa RFWCriticalException se inv·lido.
+   * Valida se o valor passado n√£o √© positivo. Lan√ßa RFWCriticalException se inv√°lido.
    *
    * @param value O valor a ser validado.
-   * @param message Mensagem personalizada da exceÁ„o.
+   * @param message Mensagem personalizada da exce√ß√£o.
    * @throws RFWCriticalException Se o valor for positivo.
    */
   public static void requiredNonPositiveCritical(Double value, String message) throws RFWCriticalException {
