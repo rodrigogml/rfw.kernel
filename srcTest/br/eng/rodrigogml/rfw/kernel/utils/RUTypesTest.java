@@ -2,8 +2,8 @@ package br.eng.rodrigogml.rfw.kernel.utils;
 
 import static br.eng.rodrigogml.rfw.kernel.utils.RUTypes.formatMillis;
 import static br.eng.rodrigogml.rfw.kernel.utils.RUTypes.formatMillisToHuman;
-import static br.eng.rodrigogml.rfw.kernel.utils.RUTypes.toInteger;
-import static br.eng.rodrigogml.rfw.kernel.utils.RUTypes.toLong;
+import static br.eng.rodrigogml.rfw.kernel.utils.RUTypes.parseInteger;
+import static br.eng.rodrigogml.rfw.kernel.utils.RUTypes.parseLong;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
@@ -28,206 +28,206 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 /**
  * Description: Classe de testes da classe {@link RUTypesTest}.<br>
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since (21 de fev. de 2025)
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RUTypesTest {
 
   /**
-   * Testa o método {@code formatMillisToHuman}, garantindo a formatação correta.
+   * Testa o mtodo {@code parseInteger(String)} para valores nulos e vazios.
    */
   @Test
-  public void t00_formatMillisToHuman() {
-    assertEquals("60.500 ms devem ser '01:00'500\"", "01:00'500\"", formatMillisToHuman(60500));
-    assertEquals("3.600.000 ms devem ser '01:00:00'000\"", "01:00:00'000\"", formatMillisToHuman(3600000));
-    assertEquals("500 ms devem ser '00'500\"", "00'500\"", formatMillisToHuman(500));
+  public void t10_parseIntegerStringNullAndEmpty() throws RFWException {
+    assertNull("null deve resultar em null", parseInteger((String) null));
+    assertNull("String vazia deve resultar em null", parseInteger(""));
+    assertNull("String em branco deve resultar em null", parseInteger("   "));
   }
 
   /**
-   * Testa o método {@code formatMillis}, garantindo que a formatação seja aplicada corretamente.
+   * Testa o mtodo {@code parseInteger(String)} para valores vlidos, incluindo limites de {@link Integer}.
    */
   @Test
-  public void t00_formatMillis() {
-    assertEquals("Timestamp 0 deve ser '00:00:00' em UTC.", "00:00:00", formatMillis("HH:mm:ss", 0));
-    assertEquals("3600000 ms devem ser '01:00:00'.", "01:00:00", formatMillis("HH:mm:ss", 3600000));
-  }
+  public void t11_parseIntegerStringValidValues() throws RFWException {
+    assertEquals("0 deve ser convertido corretamente", Integer.valueOf(0), parseInteger("0"));
+    assertEquals("Valor positivo simples", Integer.valueOf(123), parseInteger("123"));
+    assertEquals("Valor negativo simples", Integer.valueOf(-456), parseInteger("-456"));
+    assertEquals("Valor com sinal positivo explcito", Integer.valueOf(789), parseInteger("+789"));
+    assertEquals("Valor com zeros  esquerda", Integer.valueOf(7), parseInteger("0007"));
 
-  // NOVOS MÉTODOS PARA ADICIONAR NA CLASSE RUTypesTest
-
+    assertEquals("Limite superior de Integer", Integer.valueOf(Integer.MAX_VALUE), parseInteger(String.valueOf(Integer.MAX_VALUE)));
+    assertEquals("Limite inferior de Integer", Integer.valueOf(Integer.MIN_VALUE), parseInteger(String.valueOf(Integer.MIN_VALUE)));
+   * Testa o mtodo {@code parseInteger(String)} para formatos invlidos, garantindo que seja lanada {@link RFWValidationException}.
+  @Test
+  public void t12_parseIntegerStringInvalidFormat() {
+   * Testa o mtodo {@code parseInteger(String)} para valores numricos fora da faixa de {@link Integer}, garantindo que seja lanada {@link RFWValidationException}.
+  public void t13_parseIntegerStringOutOfRange() {
+   * Testa o mtodo {@code parseInteger(String)} com um nmero extremamente grande, garantindo que uma {@link RFWCriticalException} seja lanada por falha interna no parser numrico.
+  public void t14_parseIntegerStringHugeNumberCausesCritical() throws RFWException {
+    parseInteger(sb.toString());
   /**
-   * Testa o método {@code toInteger(String)} para valores nulos e vazios.
+   * Testa o mtodo {@code parseInteger(Number)} para tipos integrais simples ({@link Integer}, {@link Long}, {@link Short}, {@link Byte}), incluindo tratamento de nulo.
    */
   @Test
-  public void t10_toIntegerStringNullAndEmpty() throws RFWException {
-    assertNull("null deve resultar em null", toInteger((String) null));
-    assertNull("String vazia deve resultar em null", toInteger(""));
-    assertNull("String em branco deve resultar em null", toInteger("   "));
+  public void t20_parseIntegerNumberIntegralTypes() throws RFWException {
+    assertNull("null Number deve resultar em null", parseInteger((Number) null));
+    assertEquals("Integer deve ser retornado diretamente", Integer.valueOf(10), parseInteger(Integer.valueOf(10)));
+    assertEquals("Long dentro da faixa deve ser convertido", Integer.valueOf(123), parseInteger(Long.valueOf(123L)));
+    assertEquals("Short deve ser convertido corretamente", Integer.valueOf(5), parseInteger(Short.valueOf((short) 5)));
+    assertEquals("Byte deve ser convertido corretamente", Integer.valueOf(-8), parseInteger(Byte.valueOf((byte) -8)));
+
+   * Testa o mtodo {@code parseInteger(Number)} para valores integrais fora da faixa de {@link Integer}, garantindo que seja lanada {@link RFWValidationException}.
+  public void t21_parseIntegerNumberIntegralOutOfRange() {
   }
 
   /**
-   * Testa o método {@code toInteger(String)} para valores válidos, incluindo limites de {@link Integer}.
+   * Testa o mtodo {@code parseInteger(Number)} para {@link BigDecimal} com valores inteiros, incluindo zeros  direita e sinais.
    */
   @Test
-  public void t11_toIntegerStringValidValues() throws RFWException {
-    assertEquals("0 deve ser convertido corretamente", Integer.valueOf(0), toInteger("0"));
-    assertEquals("Valor positivo simples", Integer.valueOf(123), toInteger("123"));
-    assertEquals("Valor negativo simples", Integer.valueOf(-456), toInteger("-456"));
-    assertEquals("Valor com sinal positivo explícito", Integer.valueOf(789), toInteger("+789"));
-    assertEquals("Valor com zeros à esquerda", Integer.valueOf(7), toInteger("0007"));
-
-    assertEquals("Limite superior de Integer", Integer.valueOf(Integer.MAX_VALUE), toInteger(String.valueOf(Integer.MAX_VALUE)));
-    assertEquals("Limite inferior de Integer", Integer.valueOf(Integer.MIN_VALUE), toInteger(String.valueOf(Integer.MIN_VALUE)));
-  }
+  public void t22_parseIntegerNumberBigDecimalIntegral() throws RFWException {
+    assertEquals("BigDecimal inteiro simples", Integer.valueOf(10), parseInteger(new BigDecimal("10")));
+    assertEquals("BigDecimal com zeros  direita", Integer.valueOf(10), parseInteger(new BigDecimal("10.00")));
+    assertEquals("BigDecimal negativo inteiro", Integer.valueOf(-5), parseInteger(new BigDecimal("-5")));
+   * Testa o mtodo {@code parseInteger(Number)} para {@link BigDecimal} fracionrio, garantindo que seja lanada {@link RFWValidationException}.
+  public void t23_parseIntegerNumberBigDecimalFractional() {
+   * Testa o mtodo {@code parseInteger(Number)} para {@link BigDecimal} fora da faixa de {@link Integer}, garantindo que seja lanada {@link RFWValidationException}.
+  public void t24_parseIntegerNumberBigDecimalOutOfRange() {
 
   /**
-   * Testa o método {@code toInteger(String)} para formatos inválidos, garantindo que seja lançada {@link RFWValidationException}.
+   * Testa o mtodo {@code parseInteger(Number)} para {@link Double} e {@link Float} representando inteiros exatos.
    */
   @Test
-  public void t12_toIntegerStringInvalidFormat() {
-    assertToIntegerStringValidationFailure("12.3");
-    assertToIntegerStringValidationFailure("abc");
-    assertToIntegerStringValidationFailure("1,000");
-    assertToIntegerStringValidationFailure("+");
-    assertToIntegerStringValidationFailure("-");
-    assertToIntegerStringValidationFailure("++1");
+  public void t25_parseIntegerNumberFloatingIntegral() throws RFWException {
+    assertEquals("Double inteiro exato", Integer.valueOf(10), parseInteger(Double.valueOf(10.0)));
+    assertEquals("Float inteiro exato negativo", Integer.valueOf(-5), parseInteger(Float.valueOf(-5.0f)));
   }
 
   /**
-   * Testa o método {@code toInteger(String)} para valores numéricos fora da faixa de {@link Integer}, garantindo que seja lançada {@link RFWValidationException}.
+   * Testa o mtodo {@code parseInteger(Number)} para {@link Double} e {@link Float} fracionrios, garantindo que seja lanada {@link RFWValidationException}.
+   */
+  public void t26_parseIntegerNumberFloatingFractional() {
+   * Testa o mtodo {@code parseInteger(Number)} para valores especiais de ponto flutuante ({@link Double#NaN}, {@link Double#POSITIVE_INFINITY}), garantindo que sejam rejeitados.
+  public void t27_parseIntegerNumberFloatingSpecials() {
+   * Testa o mtodo {@code parseInteger(Object)} para valores nulos e para delegao correta a outros mtodos sobrecarregados ({@link Integer}, {@link Long}, {@link String}).
+  public void t30_parseIntegerObjectNullAndDelegates() throws RFWException {
+    assertNull("null deve resultar em null", parseInteger((Object) null));
+    assertEquals("Integer via Object deve ser convertido corretamente", Integer.valueOf(10), parseInteger((Object) Integer.valueOf(10)));
+    assertEquals("Long via Object deve ser delegado para parseInteger(Number)", Integer.valueOf(20), parseInteger((Object) Long.valueOf(20L)));
+
+    assertEquals("String via Object deve ser delegado para parseInteger(String)", Integer.valueOf(30), parseInteger((Object) "30"));
+   * Testa o mtodo {@code parseInteger(Object)} para valores booleanos, garantindo a converso {@code true -> 1} e {@code false -> 0}.
    */
   @Test
-  public void t13_toIntegerStringOutOfRange() {
-    assertToIntegerStringValidationFailure("2147483648"); // Integer.MAX_VALUE + 1
-    assertToIntegerStringValidationFailure("-2147483649"); // Integer.MIN_VALUE - 1
-  }
+  public void t31_parseIntegerObjectBoolean() throws RFWException {
+    assertEquals("Boolean TRUE deve resultar em 1", Integer.valueOf(1), parseInteger(Boolean.TRUE));
+    assertEquals("Boolean FALSE deve resultar em 0", Integer.valueOf(0), parseInteger(Boolean.FALSE));
+   * Testa o mtodo {@code parseInteger(Object)} para um tipo no suportado, garantindo que seja lanada {@link RFWValidationException}.
+  public void t32_parseIntegerObjectUnsupportedType() throws RFWException {
+    parseInteger(new Date());
+   * Mtodo utilitrio para validar que {@link RUTypes#parseInteger(String)} lana {@link RFWValidationException} para o valor informado.
+      parseInteger(value);
 
   /**
-   * Testa o método {@code toInteger(String)} com um número extremamente grande, garantindo que uma {@link RFWCriticalException} seja lançada por falha interna no parser numérico.
+   * Mtodo utilitrio para validar que {@link RUTypes#parseInteger(Number)} lana {@link RFWValidationException} para o valor informado.
    */
-  @Test(expected = RFWCriticalException.class)
-  public void t14_toIntegerStringHugeNumberCausesCritical() throws RFWException {
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < 40; i++) {
-      sb.append('9');
-    }
-    toInteger(sb.toString());
+      parseInteger(value);
+   * Testa o mtodo {@code parseLong(String)} para valores nulos e vazios.
+  public void t60_parseLongStringNullAndEmpty() throws RFWException {
+    assertNull("null deve resultar em null", parseLong((String) null));
+    assertNull("String vazia deve resultar em null", parseLong(""));
+    assertNull("String em branco deve resultar em null", parseLong("   "));
+   * Testa o mtodo {@code parseLong(String)} para valores vlidos, incluindo limites de {@link Long}.
+  public void t61_parseLongStringValidValues() throws RFWException {
+    assertEquals("0 deve ser convertido corretamente", Long.valueOf(0L), parseLong("0"));
+    assertEquals("Valor positivo simples", Long.valueOf(123L), parseLong("123"));
+    assertEquals("Valor negativo simples", Long.valueOf(-456L), parseLong("-456"));
+    assertEquals("Valor com sinal positivo explcito", Long.valueOf(789L), parseLong("+789"));
+    assertEquals("Valor com zeros  esquerda", Long.valueOf(7L), parseLong("0007"));
+    assertEquals("Limite superior de Long", Long.valueOf(Long.MAX_VALUE), parseLong(String.valueOf(Long.MAX_VALUE)));
+    assertEquals("Limite inferior de Long", Long.valueOf(Long.MIN_VALUE), parseLong(String.valueOf(Long.MIN_VALUE)));
+   * Testa o mtodo {@code parseLong(String)} para formatos invlidos.
+  public void t62_parseLongStringInvalidFormat() {
   }
 
   /**
-   * Testa o método {@code toInteger(Number)} para tipos integrais simples ({@link Integer}, {@link Long}, {@link Short}, {@link Byte}), incluindo tratamento de nulo.
-   */
-  @Test
-  public void t20_toIntegerNumberIntegralTypes() throws RFWException {
-    assertNull("null Number deve resultar em null", toInteger((Number) null));
-
-    assertEquals("Integer deve ser retornado diretamente", Integer.valueOf(10), toInteger(Integer.valueOf(10)));
-    assertEquals("Long dentro da faixa deve ser convertido", Integer.valueOf(123), toInteger(Long.valueOf(123L)));
-    assertEquals("Short deve ser convertido corretamente", Integer.valueOf(5), toInteger(Short.valueOf((short) 5)));
-    assertEquals("Byte deve ser convertido corretamente", Integer.valueOf(-8), toInteger(Byte.valueOf((byte) -8)));
-  }
-
-  /**
-   * Testa o método {@code toInteger(Number)} para valores integrais fora da faixa de {@link Integer}, garantindo que seja lançada {@link RFWValidationException}.
-   */
-  @Test
-  public void t21_toIntegerNumberIntegralOutOfRange() {
-    long aboveMax = Integer.MAX_VALUE + 1L;
-    long belowMin = Integer.MIN_VALUE - 1L;
-
-    assertToIntegerNumberValidationFailure(Long.valueOf(aboveMax));
-    assertToIntegerNumberValidationFailure(Long.valueOf(belowMin));
-  }
-
-  /**
-   * Testa o método {@code toInteger(Number)} para {@link BigDecimal} com valores inteiros, incluindo zeros à direita e sinais.
+   * Testa o mtodo {@code parseLong(String)} para valores fora da faixa de {@link Long}.
    */
   @Test
-  public void t22_toIntegerNumberBigDecimalIntegral() throws RFWException {
-    assertEquals("BigDecimal inteiro simples", Integer.valueOf(10), toInteger(new BigDecimal("10")));
-    assertEquals("BigDecimal com zeros à direita", Integer.valueOf(10), toInteger(new BigDecimal("10.00")));
-    assertEquals("BigDecimal negativo inteiro", Integer.valueOf(-5), toInteger(new BigDecimal("-5")));
-  }
+  public void t63_parseLongStringOutOfRange() {
+   * Testa o mtodo {@code parseLong(Number)} para tipos integrais simples.
+  public void t70_parseLongNumberIntegralTypes() throws RFWException {
+    assertNull("null Number deve resultar em null", parseLong((Number) null));
+    assertEquals("Long deve ser retornado diretamente", Long.valueOf(10L), parseLong(Long.valueOf(10L)));
+    assertEquals("Integer deve ser convertido corretamente", Long.valueOf(123L), parseLong(Integer.valueOf(123)));
+    assertEquals("Short deve ser convertido corretamente", Long.valueOf(5L), parseLong(Short.valueOf((short) 5)));
+    assertEquals("Byte deve ser convertido corretamente", Long.valueOf(-8L), parseLong(Byte.valueOf((byte) -8)));
+   * Testa o mtodo {@code parseLong(Number)} para {@link BigDecimal} inteiros.
+  public void t71_parseLongNumberBigDecimalIntegral() throws RFWException {
+    assertEquals("BigDecimal inteiro simples", Long.valueOf(10L), parseLong(new BigDecimal("10")));
+    assertEquals("BigDecimal com zeros  direita", Long.valueOf(10L), parseLong(new BigDecimal("10.000")));
+    assertEquals("BigDecimal negativo inteiro", Long.valueOf(-5L), parseLong(new BigDecimal("-5")));
 
   /**
-   * Testa o método {@code toInteger(Number)} para {@link BigDecimal} fracionário, garantindo que seja lançada {@link RFWValidationException}.
+   * Testa o mtodo {@code parseLong(Number)} para {@link BigDecimal} fracionrios.
    */
   @Test
-  public void t23_toIntegerNumberBigDecimalFractional() {
-    assertToIntegerNumberValidationFailure(new BigDecimal("10.5"));
-    assertToIntegerNumberValidationFailure(new BigDecimal("-3.14159"));
+  public void t72_parseLongNumberBigDecimalFractional() {
+   * Testa o mtodo {@code parseLong(Number)} para {@link BigDecimal} fora da faixa de {@link Long}.
+  public void t73_parseLongNumberBigDecimalOutOfRange() {
   }
 
   /**
-   * Testa o método {@code toInteger(Number)} para {@link BigDecimal} fora da faixa de {@link Integer}, garantindo que seja lançada {@link RFWValidationException}.
+   * Testa o mtodo {@code parseLong(Number)} para {@link Double} e {@link Float} inteiros exatos.
    */
   @Test
-  public void t24_toIntegerNumberBigDecimalOutOfRange() {
-    assertToIntegerNumberValidationFailure(new BigDecimal("2147483648"));
-    assertToIntegerNumberValidationFailure(new BigDecimal("-2147483649"));
+  public void t74_parseLongNumberFloatingIntegral() throws RFWException {
+    assertEquals("Double inteiro exato", Long.valueOf(10L), parseLong(Double.valueOf(10.0)));
+    assertEquals("Float inteiro exato negativo", Long.valueOf(-5L), parseLong(Float.valueOf(-5.0f)));
   }
 
   /**
-   * Testa o método {@code toInteger(Number)} para {@link Double} e {@link Float} representando inteiros exatos.
+   * Testa o mtodo {@code parseLong(Number)} para {@link Double} e {@link Float} fracionrios.
    */
   @Test
-  public void t25_toIntegerNumberFloatingIntegral() throws RFWException {
-    assertEquals("Double inteiro exato", Integer.valueOf(10), toInteger(Double.valueOf(10.0)));
-    assertEquals("Float inteiro exato negativo", Integer.valueOf(-5), toInteger(Float.valueOf(-5.0f)));
-  }
+  public void t75_parseLongNumberFloatingFractional() {
+   * Testa o mtodo {@code parseLong(Number)} para valores especiais de ponto flutuante.
+  public void t76_parseLongNumberFloatingSpecials() {
+   * Testa o mtodo {@code parseLong(Number)} para um tipo {@link Number} no suportado explicitamente.
+  public void t77_parseLongNumberUnsupportedType() {
 
   /**
-   * Testa o método {@code toInteger(Number)} para {@link Double} e {@link Float} fracionários, garantindo que seja lançada {@link RFWValidationException}.
+   * Testa o mtodo {@code parseLong(Object)} para nulo e delegaes para outros tipos.
    */
   @Test
-  public void t26_toIntegerNumberFloatingFractional() {
-    assertToIntegerNumberValidationFailure(Double.valueOf(10.5));
-    assertToIntegerNumberValidationFailure(Float.valueOf(3.14f));
+  public void t80_parseLongObjectNullAndDelegates() throws RFWException {
+    assertNull("null deve resultar em null", parseLong((Object) null));
+    assertEquals("Long via Object deve ser convertido corretamente", Long.valueOf(10L), parseLong((Object) Long.valueOf(10L)));
+    assertEquals("Integer via Object deve ser delegado para parseLong(Number)", Long.valueOf(20L), parseLong((Object) Integer.valueOf(20)));
+    assertEquals("String via Object deve ser delegado para parseLong(String)", Long.valueOf(30L), parseLong((Object) "30"));
+   * Testa o mtodo {@code parseLong(Object)} para valores booleanos.
+  public void t81_parseLongObjectBoolean() throws RFWException {
+    assertEquals("Boolean TRUE deve resultar em 1L", Long.valueOf(1L), parseLong(Boolean.TRUE));
+    assertEquals("Boolean FALSE deve resultar em 0L", Long.valueOf(0L), parseLong(Boolean.FALSE));
+
+  /**
+   * Testa o mtodo {@code parseLong(Object)} para tipo no suportado.
+   */
+  public void t82_parseLongObjectUnsupportedType() throws RFWException {
+    parseLong(new java.util.Date());
+   * Helper: valida que {@link RUTypes#parseLong(String)} lana {@link RFWValidationException}.
+      parseLong(value);
   }
 
   /**
-   * Testa o método {@code toInteger(Number)} para valores especiais de ponto flutuante ({@link Double#NaN}, {@link Double#POSITIVE_INFINITY}), garantindo que sejam rejeitados.
+   * Helper: valida que {@link RUTypes#parseLong(Number)} lana {@link RFWValidationException}.
    */
-  @Test
-  public void t27_toIntegerNumberFloatingSpecials() {
-    assertToIntegerNumberValidationFailure(Double.valueOf(Double.NaN));
-    assertToIntegerNumberValidationFailure(Double.valueOf(Double.POSITIVE_INFINITY));
-    assertToIntegerNumberValidationFailure(Double.valueOf(Double.NEGATIVE_INFINITY));
-  }
-
-  /**
-   * Testa o método {@code toInteger(Object)} para valores nulos e para delegação correta a outros métodos sobrecarregados ({@link Integer}, {@link Long}, {@link String}).
-   */
-  @Test
-  public void t30_toIntegerObjectNullAndDelegates() throws RFWException {
-    assertNull("null deve resultar em null", toInteger((Object) null));
-
-    assertEquals("Integer via Object deve ser convertido corretamente", Integer.valueOf(10), toInteger((Object) Integer.valueOf(10)));
-
-    assertEquals("Long via Object deve ser delegado para toInteger(Number)", Integer.valueOf(20), toInteger((Object) Long.valueOf(20L)));
-
-    assertEquals("String via Object deve ser delegado para toInteger(String)", Integer.valueOf(30), toInteger((Object) "30"));
-  }
-
-  /**
-   * Testa o método {@code toInteger(Object)} para valores booleanos, garantindo a conversão {@code true -> 1} e {@code false -> 0}.
-   */
-  @Test
-  public void t31_toIntegerObjectBoolean() throws RFWException {
-    assertEquals("Boolean TRUE deve resultar em 1", Integer.valueOf(1), toInteger(Boolean.TRUE));
-    assertEquals("Boolean FALSE deve resultar em 0", Integer.valueOf(0), toInteger(Boolean.FALSE));
-  }
-
-  /**
-   * Testa o método {@code toInteger(Object)} para um tipo não suportado, garantindo que seja lançada {@link RFWValidationException}.
-   */
-  @Test(expected = RFWValidationException.class)
+      parseLong(value);
   public void t32_toIntegerObjectUnsupportedType() throws RFWException {
     toInteger(new Date());
   }
 
   /**
-   * Método utilitário para validar que {@link RUTypes#toInteger(String)} lança {@link RFWValidationException} para o valor informado.
+   * MÃ©todo utilitÃ¡rio para validar que {@link RUTypes#toInteger(String)} lanÃ§a {@link RFWValidationException} para o valor informado.
    *
    * @param value Valor textual a ser testado.
    */
@@ -238,14 +238,14 @@ public class RUTypesTest {
     } catch (RFWValidationException e) {
       // esperado
     } catch (RFWException e) {
-      fail("Era esperada RFWValidationException, mas foi lançada: " + e.getClass().getSimpleName());
+      fail("Era esperada RFWValidationException, mas foi lanÃ§ada: " + e.getClass().getSimpleName());
     }
   }
 
   /**
-   * Método utilitário para validar que {@link RUTypes#toInteger(Number)} lança {@link RFWValidationException} para o valor informado.
+   * MÃ©todo utilitÃ¡rio para validar que {@link RUTypes#toInteger(Number)} lanÃ§a {@link RFWValidationException} para o valor informado.
    *
-   * @param value Valor numérico a ser testado.
+   * @param value Valor numÃ©rico a ser testado.
    */
   private void assertToIntegerNumberValidationFailure(Number value) {
     try {
@@ -254,12 +254,12 @@ public class RUTypesTest {
     } catch (RFWValidationException e) {
       // esperado
     } catch (RFWException e) {
-      fail("Era esperada RFWValidationException, mas foi lançada: " + e.getClass().getSimpleName());
+      fail("Era esperada RFWValidationException, mas foi lanÃ§ada: " + e.getClass().getSimpleName());
     }
   }
 
   /**
-   * Testa o método {@code toLong(String)} para valores nulos e vazios.
+   * Testa o mÃ©todo {@code toLong(String)} para valores nulos e vazios.
    */
   @Test
   public void t60_toLongStringNullAndEmpty() throws RFWException {
@@ -269,21 +269,21 @@ public class RUTypesTest {
   }
 
   /**
-   * Testa o método {@code toLong(String)} para valores válidos, incluindo limites de {@link Long}.
+   * Testa o mÃ©todo {@code toLong(String)} para valores vÃ¡lidos, incluindo limites de {@link Long}.
    */
   @Test
   public void t61_toLongStringValidValues() throws RFWException {
     assertEquals("0 deve ser convertido corretamente", Long.valueOf(0L), toLong("0"));
     assertEquals("Valor positivo simples", Long.valueOf(123L), toLong("123"));
     assertEquals("Valor negativo simples", Long.valueOf(-456L), toLong("-456"));
-    assertEquals("Valor com sinal positivo explícito", Long.valueOf(789L), toLong("+789"));
-    assertEquals("Valor com zeros à esquerda", Long.valueOf(7L), toLong("0007"));
+    assertEquals("Valor com sinal positivo explÃ­cito", Long.valueOf(789L), toLong("+789"));
+    assertEquals("Valor com zeros Ã  esquerda", Long.valueOf(7L), toLong("0007"));
     assertEquals("Limite superior de Long", Long.valueOf(Long.MAX_VALUE), toLong(String.valueOf(Long.MAX_VALUE)));
     assertEquals("Limite inferior de Long", Long.valueOf(Long.MIN_VALUE), toLong(String.valueOf(Long.MIN_VALUE)));
   }
 
   /**
-   * Testa o método {@code toLong(String)} para formatos inválidos.
+   * Testa o mÃ©todo {@code toLong(String)} para formatos invÃ¡lidos.
    */
   @Test
   public void t62_toLongStringInvalidFormat() {
@@ -296,7 +296,7 @@ public class RUTypesTest {
   }
 
   /**
-   * Testa o método {@code toLong(String)} para valores fora da faixa de {@link Long}.
+   * Testa o mÃ©todo {@code toLong(String)} para valores fora da faixa de {@link Long}.
    */
   @Test
   public void t63_toLongStringOutOfRange() {
@@ -305,7 +305,7 @@ public class RUTypesTest {
   }
 
   /**
-   * Testa o método {@code toLong(Number)} para tipos integrais simples.
+   * Testa o mÃ©todo {@code toLong(Number)} para tipos integrais simples.
    */
   @Test
   public void t70_toLongNumberIntegralTypes() throws RFWException {
@@ -317,17 +317,17 @@ public class RUTypesTest {
   }
 
   /**
-   * Testa o método {@code toLong(Number)} para {@link BigDecimal} inteiros.
+   * Testa o mÃ©todo {@code toLong(Number)} para {@link BigDecimal} inteiros.
    */
   @Test
   public void t71_toLongNumberBigDecimalIntegral() throws RFWException {
     assertEquals("BigDecimal inteiro simples", Long.valueOf(10L), toLong(new BigDecimal("10")));
-    assertEquals("BigDecimal com zeros à direita", Long.valueOf(10L), toLong(new BigDecimal("10.000")));
+    assertEquals("BigDecimal com zeros Ã  direita", Long.valueOf(10L), toLong(new BigDecimal("10.000")));
     assertEquals("BigDecimal negativo inteiro", Long.valueOf(-5L), toLong(new BigDecimal("-5")));
   }
 
   /**
-   * Testa o método {@code toLong(Number)} para {@link BigDecimal} fracionários.
+   * Testa o mÃ©todo {@code toLong(Number)} para {@link BigDecimal} fracionÃ¡rios.
    */
   @Test
   public void t72_toLongNumberBigDecimalFractional() {
@@ -336,7 +336,7 @@ public class RUTypesTest {
   }
 
   /**
-   * Testa o método {@code toLong(Number)} para {@link BigDecimal} fora da faixa de {@link Long}.
+   * Testa o mÃ©todo {@code toLong(Number)} para {@link BigDecimal} fora da faixa de {@link Long}.
    */
   @Test
   public void t73_toLongNumberBigDecimalOutOfRange() {
@@ -345,7 +345,7 @@ public class RUTypesTest {
   }
 
   /**
-   * Testa o método {@code toLong(Number)} para {@link Double} e {@link Float} inteiros exatos.
+   * Testa o mÃ©todo {@code toLong(Number)} para {@link Double} e {@link Float} inteiros exatos.
    */
   @Test
   public void t74_toLongNumberFloatingIntegral() throws RFWException {
@@ -354,7 +354,7 @@ public class RUTypesTest {
   }
 
   /**
-   * Testa o método {@code toLong(Number)} para {@link Double} e {@link Float} fracionários.
+   * Testa o mÃ©todo {@code toLong(Number)} para {@link Double} e {@link Float} fracionÃ¡rios.
    */
   @Test
   public void t75_toLongNumberFloatingFractional() {
@@ -363,7 +363,7 @@ public class RUTypesTest {
   }
 
   /**
-   * Testa o método {@code toLong(Number)} para valores especiais de ponto flutuante.
+   * Testa o mÃ©todo {@code toLong(Number)} para valores especiais de ponto flutuante.
    */
   @Test
   public void t76_toLongNumberFloatingSpecials() {
@@ -373,7 +373,7 @@ public class RUTypesTest {
   }
 
   /**
-   * Testa o método {@code toLong(Number)} para um tipo {@link Number} não suportado explicitamente.
+   * Testa o mÃ©todo {@code toLong(Number)} para um tipo {@link Number} nÃ£o suportado explicitamente.
    */
   @Test
   public void t77_toLongNumberUnsupportedType() {
@@ -404,7 +404,7 @@ public class RUTypesTest {
   }
 
   /**
-   * Testa o método {@code toLong(Object)} para nulo e delegações para outros tipos.
+   * Testa o mÃ©todo {@code toLong(Object)} para nulo e delegaÃ§Ãµes para outros tipos.
    */
   @Test
   public void t80_toLongObjectNullAndDelegates() throws RFWException {
@@ -415,7 +415,7 @@ public class RUTypesTest {
   }
 
   /**
-   * Testa o método {@code toLong(Object)} para valores booleanos.
+   * Testa o mÃ©todo {@code toLong(Object)} para valores booleanos.
    */
   @Test
   public void t81_toLongObjectBoolean() throws RFWException {
@@ -424,7 +424,7 @@ public class RUTypesTest {
   }
 
   /**
-   * Testa o método {@code toLong(Object)} para tipo não suportado.
+   * Testa o mÃ©todo {@code toLong(Object)} para tipo nÃ£o suportado.
    */
   @Test(expected = RFWValidationException.class)
   public void t82_toLongObjectUnsupportedType() throws RFWException {
@@ -432,7 +432,7 @@ public class RUTypesTest {
   }
 
   /**
-   * Helper: valida que {@link RUTypes#toLong(String)} lança {@link RFWValidationException}.
+   * Helper: valida que {@link RUTypes#toLong(String)} lanÃ§a {@link RFWValidationException}.
    */
   private void assertToLongStringValidationFailure(String value) {
     try {
@@ -441,12 +441,12 @@ public class RUTypesTest {
     } catch (RFWValidationException e) {
       // esperado
     } catch (RFWException e) {
-      fail("Era esperada RFWValidationException, mas foi lançada: " + e.getClass().getSimpleName());
+      fail("Era esperada RFWValidationException, mas foi lanÃ§ada: " + e.getClass().getSimpleName());
     }
   }
 
   /**
-   * Helper: valida que {@link RUTypes#toLong(Number)} lança {@link RFWValidationException}.
+   * Helper: valida que {@link RUTypes#toLong(Number)} lanÃ§a {@link RFWValidationException}.
    */
   private void assertToLongNumberValidationFailure(Number value) {
     try {
@@ -455,7 +455,7 @@ public class RUTypesTest {
     } catch (RFWValidationException e) {
       // esperado
     } catch (RFWException e) {
-      fail("Era esperada RFWValidationException, mas foi lançada: " + e.getClass().getSimpleName());
+      fail("Era esperada RFWValidationException, mas foi lanÃ§ada: " + e.getClass().getSimpleName());
     }
   }
 
@@ -482,7 +482,7 @@ public class RUTypesTest {
     String withOffset = "2024-02-20T15:30:00-07:00";
     Date parsedDate = RUTypes.parseDate(withOffset, zoneSP);
 
-    // Cálculo esperado com a API java.time
+    // CÃ¡lculo esperado com a API java.time
     OffsetDateTime odt = OffsetDateTime.parse(withOffset);
     Date expectedDate = Date.from(odt.atZoneSameInstant(zoneSP).toInstant());
 
