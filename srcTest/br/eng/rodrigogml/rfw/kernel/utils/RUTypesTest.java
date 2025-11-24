@@ -1,491 +1,439 @@
 package br.eng.rodrigogml.rfw.kernel.utils;
 
-import static br.eng.rodrigogml.rfw.kernel.utils.RUTypes.formatMillis;
-import static br.eng.rodrigogml.rfw.kernel.utils.RUTypes.formatMillisToHuman;
-import static br.eng.rodrigogml.rfw.kernel.utils.RUTypes.parseInteger;
-import static br.eng.rodrigogml.rfw.kernel.utils.RUTypes.parseLong;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import br.eng.rodrigogml.rfw.kernel.RFW;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 
-/**
- * Description: Classe de testes da classe {@link RUTypesTest}.<br>
- *
- * @author Rodrigo Leitão
- * @since (21 de fev. de 2025)
- */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RUTypesTest {
 
-  /**
-   * Testa o mtodo {@code parseInteger(String)} para valores nulos e vazios.
-   */
   @Test
-  public void t10_parseIntegerStringNullAndEmpty() throws RFWException {
-    assertNull("null deve resultar em null", parseInteger((String) null));
-    assertNull("String vazia deve resultar em null", parseInteger(""));
-    assertNull("String em branco deve resultar em null", parseInteger("   "));
+  public void t00_formatTo235959() {
+    Date date = new Date(0);
+    assertEquals("00:00:00", RUTypes.formatTo235959(date));
+
+    long millis = 23 * 60 * 60 * 1000L + 59 * 60 * 1000L + 59 * 1000L;
+    assertEquals("23:59:59", RUTypes.formatTo235959(millis));
   }
 
-  /**
-   * Testa o mtodo {@code parseInteger(String)} para valores vlidos, incluindo limites de {@link Integer}.
-   */
   @Test
-  public void t11_parseIntegerStringValidValues() throws RFWException {
-    assertEquals("0 deve ser convertido corretamente", Integer.valueOf(0), parseInteger("0"));
-    assertEquals("Valor positivo simples", Integer.valueOf(123), parseInteger("123"));
-    assertEquals("Valor negativo simples", Integer.valueOf(-456), parseInteger("-456"));
-    assertEquals("Valor com sinal positivo explcito", Integer.valueOf(789), parseInteger("+789"));
-    assertEquals("Valor com zeros  esquerda", Integer.valueOf(7), parseInteger("0007"));
-
-    assertEquals("Limite superior de Integer", Integer.valueOf(Integer.MAX_VALUE), parseInteger(String.valueOf(Integer.MAX_VALUE)));
-    assertEquals("Limite inferior de Integer", Integer.valueOf(Integer.MIN_VALUE), parseInteger(String.valueOf(Integer.MIN_VALUE)));
-   * Testa o mtodo {@code parseInteger(String)} para formatos invlidos, garantindo que seja lanada {@link RFWValidationException}.
-  @Test
-  public void t12_parseIntegerStringInvalidFormat() {
-   * Testa o mtodo {@code parseInteger(String)} para valores numricos fora da faixa de {@link Integer}, garantindo que seja lanada {@link RFWValidationException}.
-  public void t13_parseIntegerStringOutOfRange() {
-   * Testa o mtodo {@code parseInteger(String)} com um nmero extremamente grande, garantindo que uma {@link RFWCriticalException} seja lanada por falha interna no parser numrico.
-  public void t14_parseIntegerStringHugeNumberCausesCritical() throws RFWException {
-    parseInteger(sb.toString());
-  /**
-   * Testa o mtodo {@code parseInteger(Number)} para tipos integrais simples ({@link Integer}, {@link Long}, {@link Short}, {@link Byte}), incluindo tratamento de nulo.
-   */
-  @Test
-  public void t20_parseIntegerNumberIntegralTypes() throws RFWException {
-    assertNull("null Number deve resultar em null", parseInteger((Number) null));
-    assertEquals("Integer deve ser retornado diretamente", Integer.valueOf(10), parseInteger(Integer.valueOf(10)));
-    assertEquals("Long dentro da faixa deve ser convertido", Integer.valueOf(123), parseInteger(Long.valueOf(123L)));
-    assertEquals("Short deve ser convertido corretamente", Integer.valueOf(5), parseInteger(Short.valueOf((short) 5)));
-    assertEquals("Byte deve ser convertido corretamente", Integer.valueOf(-8), parseInteger(Byte.valueOf((byte) -8)));
-
-   * Testa o mtodo {@code parseInteger(Number)} para valores integrais fora da faixa de {@link Integer}, garantindo que seja lanada {@link RFWValidationException}.
-  public void t21_parseIntegerNumberIntegralOutOfRange() {
+  public void t01_formatToyyyyMMddHHmmss() {
+    Date date = new Date(1700000000000L);
+    assertEquals(new SimpleDateFormat("yyyyMMddHHmmss").format(date), RUTypes.formatToyyyyMMddHHmmss(date));
   }
 
-  /**
-   * Testa o mtodo {@code parseInteger(Number)} para {@link BigDecimal} com valores inteiros, incluindo zeros  direita e sinais.
-   */
   @Test
-  public void t22_parseIntegerNumberBigDecimalIntegral() throws RFWException {
-    assertEquals("BigDecimal inteiro simples", Integer.valueOf(10), parseInteger(new BigDecimal("10")));
-    assertEquals("BigDecimal com zeros  direita", Integer.valueOf(10), parseInteger(new BigDecimal("10.00")));
-    assertEquals("BigDecimal negativo inteiro", Integer.valueOf(-5), parseInteger(new BigDecimal("-5")));
-   * Testa o mtodo {@code parseInteger(Number)} para {@link BigDecimal} fracionrio, garantindo que seja lanada {@link RFWValidationException}.
-  public void t23_parseIntegerNumberBigDecimalFractional() {
-   * Testa o mtodo {@code parseInteger(Number)} para {@link BigDecimal} fora da faixa de {@link Integer}, garantindo que seja lanada {@link RFWValidationException}.
-  public void t24_parseIntegerNumberBigDecimalOutOfRange() {
-
-  /**
-   * Testa o mtodo {@code parseInteger(Number)} para {@link Double} e {@link Float} representando inteiros exatos.
-   */
-  @Test
-  public void t25_parseIntegerNumberFloatingIntegral() throws RFWException {
-    assertEquals("Double inteiro exato", Integer.valueOf(10), parseInteger(Double.valueOf(10.0)));
-    assertEquals("Float inteiro exato negativo", Integer.valueOf(-5), parseInteger(Float.valueOf(-5.0f)));
+  public void t02_formatToyyyyMMdd() {
+    Date date = new Date(1700000000000L);
+    assertEquals(new SimpleDateFormat("yyyyMMdd").format(date), RUTypes.formatToyyyyMMdd(date));
   }
 
-  /**
-   * Testa o mtodo {@code parseInteger(Number)} para {@link Double} e {@link Float} fracionrios, garantindo que seja lanada {@link RFWValidationException}.
-   */
-  public void t26_parseIntegerNumberFloatingFractional() {
-   * Testa o mtodo {@code parseInteger(Number)} para valores especiais de ponto flutuante ({@link Double#NaN}, {@link Double#POSITIVE_INFINITY}), garantindo que sejam rejeitados.
-  public void t27_parseIntegerNumberFloatingSpecials() {
-   * Testa o mtodo {@code parseInteger(Object)} para valores nulos e para delegao correta a outros mtodos sobrecarregados ({@link Integer}, {@link Long}, {@link String}).
-  public void t30_parseIntegerObjectNullAndDelegates() throws RFWException {
-    assertNull("null deve resultar em null", parseInteger((Object) null));
-    assertEquals("Integer via Object deve ser convertido corretamente", Integer.valueOf(10), parseInteger((Object) Integer.valueOf(10)));
-    assertEquals("Long via Object deve ser delegado para parseInteger(Number)", Integer.valueOf(20), parseInteger((Object) Long.valueOf(20L)));
-
-    assertEquals("String via Object deve ser delegado para parseInteger(String)", Integer.valueOf(30), parseInteger((Object) "30"));
-   * Testa o mtodo {@code parseInteger(Object)} para valores booleanos, garantindo a converso {@code true -> 1} e {@code false -> 0}.
-   */
   @Test
-  public void t31_parseIntegerObjectBoolean() throws RFWException {
-    assertEquals("Boolean TRUE deve resultar em 1", Integer.valueOf(1), parseInteger(Boolean.TRUE));
-    assertEquals("Boolean FALSE deve resultar em 0", Integer.valueOf(0), parseInteger(Boolean.FALSE));
-   * Testa o mtodo {@code parseInteger(Object)} para um tipo no suportado, garantindo que seja lanada {@link RFWValidationException}.
-  public void t32_parseIntegerObjectUnsupportedType() throws RFWException {
-    parseInteger(new Date());
-   * Mtodo utilitrio para validar que {@link RUTypes#parseInteger(String)} lana {@link RFWValidationException} para o valor informado.
-      parseInteger(value);
-
-  /**
-   * Mtodo utilitrio para validar que {@link RUTypes#parseInteger(Number)} lana {@link RFWValidationException} para o valor informado.
-   */
-      parseInteger(value);
-   * Testa o mtodo {@code parseLong(String)} para valores nulos e vazios.
-  public void t60_parseLongStringNullAndEmpty() throws RFWException {
-    assertNull("null deve resultar em null", parseLong((String) null));
-    assertNull("String vazia deve resultar em null", parseLong(""));
-    assertNull("String em branco deve resultar em null", parseLong("   "));
-   * Testa o mtodo {@code parseLong(String)} para valores vlidos, incluindo limites de {@link Long}.
-  public void t61_parseLongStringValidValues() throws RFWException {
-    assertEquals("0 deve ser convertido corretamente", Long.valueOf(0L), parseLong("0"));
-    assertEquals("Valor positivo simples", Long.valueOf(123L), parseLong("123"));
-    assertEquals("Valor negativo simples", Long.valueOf(-456L), parseLong("-456"));
-    assertEquals("Valor com sinal positivo explcito", Long.valueOf(789L), parseLong("+789"));
-    assertEquals("Valor com zeros  esquerda", Long.valueOf(7L), parseLong("0007"));
-    assertEquals("Limite superior de Long", Long.valueOf(Long.MAX_VALUE), parseLong(String.valueOf(Long.MAX_VALUE)));
-    assertEquals("Limite inferior de Long", Long.valueOf(Long.MIN_VALUE), parseLong(String.valueOf(Long.MIN_VALUE)));
-   * Testa o mtodo {@code parseLong(String)} para formatos invlidos.
-  public void t62_parseLongStringInvalidFormat() {
+  public void t03_formatToddMMyyyy() {
+    Date date = new Date(1700000000000L);
+    assertEquals(new SimpleDateFormat("ddMMyyyy").format(date), RUTypes.formatToddMMyyyy(date));
   }
 
-  /**
-   * Testa o mtodo {@code parseLong(String)} para valores fora da faixa de {@link Long}.
-   */
   @Test
-  public void t63_parseLongStringOutOfRange() {
-   * Testa o mtodo {@code parseLong(Number)} para tipos integrais simples.
-  public void t70_parseLongNumberIntegralTypes() throws RFWException {
-    assertNull("null Number deve resultar em null", parseLong((Number) null));
-    assertEquals("Long deve ser retornado diretamente", Long.valueOf(10L), parseLong(Long.valueOf(10L)));
-    assertEquals("Integer deve ser convertido corretamente", Long.valueOf(123L), parseLong(Integer.valueOf(123)));
-    assertEquals("Short deve ser convertido corretamente", Long.valueOf(5L), parseLong(Short.valueOf((short) 5)));
-    assertEquals("Byte deve ser convertido corretamente", Long.valueOf(-8L), parseLong(Byte.valueOf((byte) -8)));
-   * Testa o mtodo {@code parseLong(Number)} para {@link BigDecimal} inteiros.
-  public void t71_parseLongNumberBigDecimalIntegral() throws RFWException {
-    assertEquals("BigDecimal inteiro simples", Long.valueOf(10L), parseLong(new BigDecimal("10")));
-    assertEquals("BigDecimal com zeros  direita", Long.valueOf(10L), parseLong(new BigDecimal("10.000")));
-    assertEquals("BigDecimal negativo inteiro", Long.valueOf(-5L), parseLong(new BigDecimal("-5")));
-
-  /**
-   * Testa o mtodo {@code parseLong(Number)} para {@link BigDecimal} fracionrios.
-   */
-  @Test
-  public void t72_parseLongNumberBigDecimalFractional() {
-   * Testa o mtodo {@code parseLong(Number)} para {@link BigDecimal} fora da faixa de {@link Long}.
-  public void t73_parseLongNumberBigDecimalOutOfRange() {
+  public void t04_formatToddMMyyyyHHmmss() {
+    Date date = new Date(1700000000000L);
+    assertEquals(new SimpleDateFormat("ddMMyyyyHHmmss").format(date), RUTypes.formatToddMMyyyyHHmmss(date));
   }
 
-  /**
-   * Testa o mtodo {@code parseLong(Number)} para {@link Double} e {@link Float} inteiros exatos.
-   */
   @Test
-  public void t74_parseLongNumberFloatingIntegral() throws RFWException {
-    assertEquals("Double inteiro exato", Long.valueOf(10L), parseLong(Double.valueOf(10.0)));
-    assertEquals("Float inteiro exato negativo", Long.valueOf(-5L), parseLong(Float.valueOf(-5.0f)));
+  public void t05_formatTodd_MM_yyyy_HH_mm_ss() {
+    Date date = new Date(1700000000000L);
+    String expected = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
+    assertEquals(expected, RUTypes.formatTodd_MM_yyyy_HH_mm_ss(date));
+
+    LocalDateTime ldt = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+    assertEquals(expected, RUTypes.formatTodd_MM_yyyy_HH_mm_ss(ldt));
   }
 
-  /**
-   * Testa o mtodo {@code parseLong(Number)} para {@link Double} e {@link Float} fracionrios.
-   */
   @Test
-  public void t75_parseLongNumberFloatingFractional() {
-   * Testa o mtodo {@code parseLong(Number)} para valores especiais de ponto flutuante.
-  public void t76_parseLongNumberFloatingSpecials() {
-   * Testa o mtodo {@code parseLong(Number)} para um tipo {@link Number} no suportado explicitamente.
-  public void t77_parseLongNumberUnsupportedType() {
-
-  /**
-   * Testa o mtodo {@code parseLong(Object)} para nulo e delegaes para outros tipos.
-   */
-  @Test
-  public void t80_parseLongObjectNullAndDelegates() throws RFWException {
-    assertNull("null deve resultar em null", parseLong((Object) null));
-    assertEquals("Long via Object deve ser convertido corretamente", Long.valueOf(10L), parseLong((Object) Long.valueOf(10L)));
-    assertEquals("Integer via Object deve ser delegado para parseLong(Number)", Long.valueOf(20L), parseLong((Object) Integer.valueOf(20)));
-    assertEquals("String via Object deve ser delegado para parseLong(String)", Long.valueOf(30L), parseLong((Object) "30"));
-   * Testa o mtodo {@code parseLong(Object)} para valores booleanos.
-  public void t81_parseLongObjectBoolean() throws RFWException {
-    assertEquals("Boolean TRUE deve resultar em 1L", Long.valueOf(1L), parseLong(Boolean.TRUE));
-    assertEquals("Boolean FALSE deve resultar em 0L", Long.valueOf(0L), parseLong(Boolean.FALSE));
-
-  /**
-   * Testa o mtodo {@code parseLong(Object)} para tipo no suportado.
-   */
-  public void t82_parseLongObjectUnsupportedType() throws RFWException {
-    parseLong(new java.util.Date());
-   * Helper: valida que {@link RUTypes#parseLong(String)} lana {@link RFWValidationException}.
-      parseLong(value);
+  public void t06_formatLocalDate() {
+    LocalDate date = LocalDate.of(2024, 2, 20);
+    assertEquals("20-02-2024", RUTypes.formatLocalDate(date, "dd-MM-yyyy"));
   }
 
-  /**
-   * Helper: valida que {@link RUTypes#parseLong(Number)} lana {@link RFWValidationException}.
-   */
-      parseLong(value);
-  public void t32_toIntegerObjectUnsupportedType() throws RFWException {
-    toInteger(new Date());
+  @Test
+  public void t07_formatLocalDateTime() {
+    LocalDateTime date = LocalDateTime.of(2024, 2, 20, 15, 30, 0);
+    assertEquals("20/02/2024 15:30", RUTypes.formatLocalDateTime(date, "dd/MM/yyyy HH:mm"));
   }
 
-  /**
-   * Método utilitário para validar que {@link RUTypes#toInteger(String)} lança {@link RFWValidationException} para o valor informado.
-   *
-   * @param value Valor textual a ser testado.
-   */
-  private void assertToIntegerStringValidationFailure(String value) {
+  @Test
+  public void t08_formatToddMMyyyyLocalDate() {
+    LocalDate date = LocalDate.of(2024, 2, 20);
+    assertEquals("20022024", RUTypes.formatToddMMyyyy(date));
+  }
+
+  @Test
+  public void t09_formatMillisToHuman() {
+    assertEquals("10'500\"", RUTypes.formatMillisToHuman(10500));
+    assertEquals("01:00:10'004\"", RUTypes.formatMillisToHuman(3610004));
+  }
+
+  @Test
+  public void t10_formatMillis() {
+    String pattern = "HH:mm:ss";
+    long millis = 3661000;
+    SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+    assertEquals(sdf.format(new Date(millis)), RUTypes.formatMillis(pattern, millis));
+  }
+
+  @Test
+  public void t11_parseLocalDateTime() throws RFWException {
+    ZoneId zone = ZoneId.of("UTC");
+    LocalDateTime base = LocalDateTime.of(2024, 2, 20, 15, 30, 0);
+
+    assertNull(RUTypes.parseLocalDateTime((String) null));
+    assertNull(RUTypes.parseLocalDateTime("   "));
+
+    assertEquals(base, RUTypes.parseLocalDateTime("2024-02-20T15:30:00"));
+    assertEquals(base, RUTypes.parseLocalDateTime("2024-02-20"));
+    assertEquals(base, RUTypes.parseLocalDateTime("20/02/2024"));
+
+    OffsetDateTime odt = OffsetDateTime.of(base, ZoneOffset.ofHours(-3));
+    assertEquals(base, RUTypes.parseLocalDateTime(odt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)));
+
+    LocalDateTime converted = RUTypes.parseLocalDateTime(odt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), zone);
+    assertEquals(odt.atZoneSameInstant(zone).toLocalDateTime(), converted);
+
     try {
-      toInteger(value);
-      fail("Era esperada RFWValidationException para o valor: " + value);
-    } catch (RFWValidationException e) {
-      // esperado
-    } catch (RFWException e) {
-      fail("Era esperada RFWValidationException, mas foi lançada: " + e.getClass().getSimpleName());
-    }
-  }
-
-  /**
-   * Método utilitário para validar que {@link RUTypes#toInteger(Number)} lança {@link RFWValidationException} para o valor informado.
-   *
-   * @param value Valor numérico a ser testado.
-   */
-  private void assertToIntegerNumberValidationFailure(Number value) {
-    try {
-      toInteger(value);
-      fail("Era esperada RFWValidationException para o valor: " + value);
-    } catch (RFWValidationException e) {
-      // esperado
-    } catch (RFWException e) {
-      fail("Era esperada RFWValidationException, mas foi lançada: " + e.getClass().getSimpleName());
-    }
-  }
-
-  /**
-   * Testa o método {@code toLong(String)} para valores nulos e vazios.
-   */
-  @Test
-  public void t60_toLongStringNullAndEmpty() throws RFWException {
-    assertNull("null deve resultar em null", toLong((String) null));
-    assertNull("String vazia deve resultar em null", toLong(""));
-    assertNull("String em branco deve resultar em null", toLong("   "));
-  }
-
-  /**
-   * Testa o método {@code toLong(String)} para valores válidos, incluindo limites de {@link Long}.
-   */
-  @Test
-  public void t61_toLongStringValidValues() throws RFWException {
-    assertEquals("0 deve ser convertido corretamente", Long.valueOf(0L), toLong("0"));
-    assertEquals("Valor positivo simples", Long.valueOf(123L), toLong("123"));
-    assertEquals("Valor negativo simples", Long.valueOf(-456L), toLong("-456"));
-    assertEquals("Valor com sinal positivo explícito", Long.valueOf(789L), toLong("+789"));
-    assertEquals("Valor com zeros à esquerda", Long.valueOf(7L), toLong("0007"));
-    assertEquals("Limite superior de Long", Long.valueOf(Long.MAX_VALUE), toLong(String.valueOf(Long.MAX_VALUE)));
-    assertEquals("Limite inferior de Long", Long.valueOf(Long.MIN_VALUE), toLong(String.valueOf(Long.MIN_VALUE)));
-  }
-
-  /**
-   * Testa o método {@code toLong(String)} para formatos inválidos.
-   */
-  @Test
-  public void t62_toLongStringInvalidFormat() {
-    assertToLongStringValidationFailure("12.3");
-    assertToLongStringValidationFailure("abc");
-    assertToLongStringValidationFailure("1,000");
-    assertToLongStringValidationFailure("+");
-    assertToLongStringValidationFailure("-");
-    assertToLongStringValidationFailure("++1");
-  }
-
-  /**
-   * Testa o método {@code toLong(String)} para valores fora da faixa de {@link Long}.
-   */
-  @Test
-  public void t63_toLongStringOutOfRange() {
-    assertToLongStringValidationFailure("9223372036854775808"); // Long.MAX_VALUE + 1
-    assertToLongStringValidationFailure("-9223372036854775809"); // Long.MIN_VALUE - 1
-  }
-
-  /**
-   * Testa o método {@code toLong(Number)} para tipos integrais simples.
-   */
-  @Test
-  public void t70_toLongNumberIntegralTypes() throws RFWException {
-    assertNull("null Number deve resultar em null", toLong((Number) null));
-    assertEquals("Long deve ser retornado diretamente", Long.valueOf(10L), toLong(Long.valueOf(10L)));
-    assertEquals("Integer deve ser convertido corretamente", Long.valueOf(123L), toLong(Integer.valueOf(123)));
-    assertEquals("Short deve ser convertido corretamente", Long.valueOf(5L), toLong(Short.valueOf((short) 5)));
-    assertEquals("Byte deve ser convertido corretamente", Long.valueOf(-8L), toLong(Byte.valueOf((byte) -8)));
-  }
-
-  /**
-   * Testa o método {@code toLong(Number)} para {@link BigDecimal} inteiros.
-   */
-  @Test
-  public void t71_toLongNumberBigDecimalIntegral() throws RFWException {
-    assertEquals("BigDecimal inteiro simples", Long.valueOf(10L), toLong(new BigDecimal("10")));
-    assertEquals("BigDecimal com zeros à direita", Long.valueOf(10L), toLong(new BigDecimal("10.000")));
-    assertEquals("BigDecimal negativo inteiro", Long.valueOf(-5L), toLong(new BigDecimal("-5")));
-  }
-
-  /**
-   * Testa o método {@code toLong(Number)} para {@link BigDecimal} fracionários.
-   */
-  @Test
-  public void t72_toLongNumberBigDecimalFractional() {
-    assertToLongNumberValidationFailure(new BigDecimal("10.5"));
-    assertToLongNumberValidationFailure(new BigDecimal("-3.14159"));
-  }
-
-  /**
-   * Testa o método {@code toLong(Number)} para {@link BigDecimal} fora da faixa de {@link Long}.
-   */
-  @Test
-  public void t73_toLongNumberBigDecimalOutOfRange() {
-    assertToLongNumberValidationFailure(new BigDecimal("9223372036854775808"));
-    assertToLongNumberValidationFailure(new BigDecimal("-9223372036854775809"));
-  }
-
-  /**
-   * Testa o método {@code toLong(Number)} para {@link Double} e {@link Float} inteiros exatos.
-   */
-  @Test
-  public void t74_toLongNumberFloatingIntegral() throws RFWException {
-    assertEquals("Double inteiro exato", Long.valueOf(10L), toLong(Double.valueOf(10.0)));
-    assertEquals("Float inteiro exato negativo", Long.valueOf(-5L), toLong(Float.valueOf(-5.0f)));
-  }
-
-  /**
-   * Testa o método {@code toLong(Number)} para {@link Double} e {@link Float} fracionários.
-   */
-  @Test
-  public void t75_toLongNumberFloatingFractional() {
-    assertToLongNumberValidationFailure(Double.valueOf(10.5));
-    assertToLongNumberValidationFailure(Float.valueOf(3.14f));
-  }
-
-  /**
-   * Testa o método {@code toLong(Number)} para valores especiais de ponto flutuante.
-   */
-  @Test
-  public void t76_toLongNumberFloatingSpecials() {
-    assertToLongNumberValidationFailure(Double.valueOf(Double.NaN));
-    assertToLongNumberValidationFailure(Double.valueOf(Double.POSITIVE_INFINITY));
-    assertToLongNumberValidationFailure(Double.valueOf(Double.NEGATIVE_INFINITY));
-  }
-
-  /**
-   * Testa o método {@code toLong(Number)} para um tipo {@link Number} não suportado explicitamente.
-   */
-  @Test
-  public void t77_toLongNumberUnsupportedType() {
-    Number customNumber = new Number() {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public int intValue() {
-        return 0;
-      }
-
-      @Override
-      public long longValue() {
-        return 0L;
-      }
-
-      @Override
-      public float floatValue() {
-        return 0.0f;
-      }
-
-      @Override
-      public double doubleValue() {
-        return 0.0;
-      }
-    };
-    assertToLongNumberValidationFailure(customNumber);
-  }
-
-  /**
-   * Testa o método {@code toLong(Object)} para nulo e delegações para outros tipos.
-   */
-  @Test
-  public void t80_toLongObjectNullAndDelegates() throws RFWException {
-    assertNull("null deve resultar em null", toLong((Object) null));
-    assertEquals("Long via Object deve ser convertido corretamente", Long.valueOf(10L), toLong((Object) Long.valueOf(10L)));
-    assertEquals("Integer via Object deve ser delegado para toLong(Number)", Long.valueOf(20L), toLong((Object) Integer.valueOf(20)));
-    assertEquals("String via Object deve ser delegado para toLong(String)", Long.valueOf(30L), toLong((Object) "30"));
-  }
-
-  /**
-   * Testa o método {@code toLong(Object)} para valores booleanos.
-   */
-  @Test
-  public void t81_toLongObjectBoolean() throws RFWException {
-    assertEquals("Boolean TRUE deve resultar em 1L", Long.valueOf(1L), toLong(Boolean.TRUE));
-    assertEquals("Boolean FALSE deve resultar em 0L", Long.valueOf(0L), toLong(Boolean.FALSE));
-  }
-
-  /**
-   * Testa o método {@code toLong(Object)} para tipo não suportado.
-   */
-  @Test(expected = RFWValidationException.class)
-  public void t82_toLongObjectUnsupportedType() throws RFWException {
-    toLong(new java.util.Date());
-  }
-
-  /**
-   * Helper: valida que {@link RUTypes#toLong(String)} lança {@link RFWValidationException}.
-   */
-  private void assertToLongStringValidationFailure(String value) {
-    try {
-      toLong(value);
-      fail("Era esperada RFWValidationException para o valor: " + value);
-    } catch (RFWValidationException e) {
-      // esperado
-    } catch (RFWException e) {
-      fail("Era esperada RFWValidationException, mas foi lançada: " + e.getClass().getSimpleName());
-    }
-  }
-
-  /**
-   * Helper: valida que {@link RUTypes#toLong(Number)} lança {@link RFWValidationException}.
-   */
-  private void assertToLongNumberValidationFailure(Number value) {
-    try {
-      toLong(value);
-      fail("Era esperada RFWValidationException para o valor: " + value);
-    } catch (RFWValidationException e) {
-      // esperado
-    } catch (RFWException e) {
-      fail("Era esperada RFWValidationException, mas foi lançada: " + e.getClass().getSimpleName());
+      RUTypes.parseLocalDateTime("invalid");
+      fail("Era esperada RFWValidationException");
+    } catch (RFWValidationException expected) {
+      // ok
     }
   }
 
   @Test
-  public void t01_formatAndParseDateMethods() throws RFWException {
-    ZoneId zoneSP = ZoneId.of("America/Sao_Paulo");
+  public void t12_parseDate() throws RFWException {
+    ZoneId zone = RFW.getZoneId();
+    String isoDate = "2024-02-20T15:30:00-03:00";
+    Date parsed = RUTypes.parseDate(isoDate, zone);
+    Date expected = Date.from(OffsetDateTime.parse(isoDate).atZoneSameInstant(zone).toInstant());
+    assertEquals(expected, parsed);
+
+    String onlyDate = "2024-02-20";
+    Date parsedDefault = RUTypes.parseDate(onlyDate);
+    assertEquals(Date.from(LocalDate.parse(onlyDate).atStartOfDay(zone).toInstant()), parsedDefault);
+
+    Date patternParsed = RUTypes.parseDate("dd/MM/yyyy", "21/02/2024");
+    assertEquals(LocalDate.of(2024, 2, 21), patternParsed.toInstant().atZone(zone).toLocalDate());
+
+    try {
+      RUTypes.parseDate("31-01-2024");
+      fail("Era esperada RFWValidationException");
+    } catch (RFWValidationException expectedValidation) {
+      // ok
+    }
+  }
+
+  @Test
+  public void t13_parseFromyyyyMMddHHmmss() throws RFWException {
+    Date parsed = RUTypes.parseFromyyyyMMddHHmmss("20240220123045");
+    String formatted = new SimpleDateFormat("yyyyMMddHHmmss").format(parsed);
+    assertEquals("20240220123045", formatted);
+
+    try {
+      RUTypes.parseFromyyyyMMddHHmmss("invalid");
+      fail("Era esperada RFWCriticalException");
+    } catch (RFWCriticalException expected) {
+      // ok
+    }
+  }
+
+  @Test
+  public void t14_parseLocalDateWithPattern() throws RFWException {
+    LocalDate parsed = RUTypes.parseLocalDate("20-02-2024", "dd-MM-yyyy");
+    assertEquals(LocalDate.of(2024, 2, 20), parsed);
+  }
+
+  @Test
+  public void t15_parseLocalDate() throws RFWException {
+    ZoneId zone = ZoneId.of("UTC");
+    assertEquals(LocalDate.of(2024, 2, 20), RUTypes.parseLocalDate("2024-02-20"));
+    assertEquals(LocalDate.of(2024, 2, 20), RUTypes.parseLocalDate("20/02/2024"));
+
+    String isoWithZone = "2024-02-20T15:30:00-03:00";
+    assertEquals(LocalDate.of(2024, 2, 20), RUTypes.parseLocalDate(isoWithZone));
+    assertEquals(LocalDate.of(2024, 2, 20), RUTypes.parseLocalDate(isoWithZone, zone));
+
+    try {
+      RUTypes.parseLocalDate("2024-13-01");
+      fail("Era esperada RFWValidationException");
+    } catch (RFWValidationException expected) {
+      // ok
+    }
+  }
+
+  @Test
+  public void t16_parseDateFromLocalDate() {
+    LocalDate date = LocalDate.of(2024, 2, 20);
+    Date parsed = RUTypes.parseDate(date);
+    assertEquals(date, parsed.toInstant().atZone(RFW.getZoneId()).toLocalDate());
+
+    ZoneId utc = ZoneId.of("UTC");
+    assertEquals(date, RUTypes.parseDate(date, utc).toInstant().atZone(utc).toLocalDate());
+  }
+
+  @Test
+  public void t17_parseDateFromLocalDateTime() {
     LocalDateTime ldt = LocalDateTime.of(2024, 2, 20, 15, 30, 0);
+    Date parsed = RUTypes.parseDate(ldt);
+    assertEquals(ldt, parsed.toInstant().atZone(RFW.getZoneId()).toLocalDateTime());
 
-    // ---- formatToyyyy_MM_dd_T_HH_mm_ssXXX(LocalDateTime, ZoneOffset) (UTC) ----
-    String formattedUtc = RUTypes.formatToyyyy_MM_dd_T_HH_mm_ssXXX(ldt, ZoneOffset.UTC);
-    assertEquals("2024-02-20T15:30:00Z", formattedUtc);
+    ZoneId utc = ZoneId.of("UTC");
+    assertEquals(ldt, RUTypes.parseDate(ldt, utc).toInstant().atZone(utc).toLocalDateTime());
+    assertNull(RUTypes.parseDate((LocalDateTime) null));
+  }
 
-    // ---- formatToyyyy_MM_dd_T_HH_mm_ssXXX(LocalDateTime, ZoneId) ----
-    String formattedSp = RUTypes.formatToyyyy_MM_dd_T_HH_mm_ssXXX(ldt, zoneSP);
-    ZonedDateTime zdtSp = ldt.atZone(zoneSP);
-    String expectedSp = zdtSp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"));
-    assertEquals(expectedSp, formattedSp);
+  @Test
+  public void t18_parseLocalDateFromTemporal() throws RFWException {
+    Date date = new Date();
+    assertEquals(date.toInstant().atZone(RFW.getZoneId()).toLocalDate(), RUTypes.parseLocalDate(date));
 
-    // ---- parseLocalDateTime(String) - ISO local sem timezone ----
-    LocalDateTime parsedLocal = RUTypes.parseLocalDateTime("2024-02-20T15:30:00");
-    assertEquals(ldt, parsedLocal);
+    ZoneId utc = ZoneId.of("UTC");
+    assertEquals(date.toInstant().atZone(utc).toLocalDate(), RUTypes.parseLocalDate(date, utc));
 
-    // ---- parseDate(String, ZoneId) - ISO com timezone ----
-    String withOffset = "2024-02-20T15:30:00-07:00";
-    Date parsedDate = RUTypes.parseDate(withOffset, zoneSP);
+    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+    assertEquals(sqlDate.toLocalDate(), RUTypes.parseLocalDate(sqlDate));
 
-    // Cálculo esperado com a API java.time
-    OffsetDateTime odt = OffsetDateTime.parse(withOffset);
-    Date expectedDate = Date.from(odt.atZoneSameInstant(zoneSP).toInstant());
+    LocalDateTime ldt = LocalDateTime.of(2024, 2, 20, 15, 30, 0);
+    assertEquals(ldt.toLocalDate(), RUTypes.parseLocalDate(ldt));
 
-    assertEquals(expectedDate.toInstant(), parsedDate.toInstant());
+    Timestamp ts = Timestamp.valueOf(ldt);
+    assertEquals(ldt.toLocalDate(), RUTypes.parseLocalDate(ts));
+    assertNull(RUTypes.parseLocalDate((Timestamp) null));
+  }
+
+  @Test
+  public void t19_parseLocalDateTimeFromTemporal() throws RFWException {
+    Date date = new Date();
+    assertEquals(date.toInstant().atZone(RFW.getZoneId()).toLocalDateTime(), RUTypes.parseLocalDateTime(date));
+
+    ZoneId utc = ZoneId.of("UTC");
+    assertEquals(date.toInstant().atZone(utc).toLocalDateTime(), RUTypes.parseLocalDateTime(date, utc));
+
+    Timestamp ts = Timestamp.valueOf(LocalDateTime.of(2024, 2, 20, 15, 30, 0));
+    assertEquals(ts.toLocalDateTime(), RUTypes.parseLocalDateTime(ts));
+    assertNull(RUTypes.parseLocalDateTime((Timestamp) null));
+  }
+
+  @Test
+  public void t20_formatDecimalWithoutTrailingZeros() {
+    Locale previous = Locale.getDefault();
+    Locale.setDefault(Locale.US);
+    try {
+      assertEquals("", RUTypes.formatDecimalWithoutTrailingZeros(null, Locale.US, 2));
+      assertEquals("10.5", RUTypes.formatDecimalWithoutTrailingZeros(new BigDecimal("10.5000"), Locale.US, 3));
+      assertEquals("0.1234", RUTypes.formatDecimalWithoutTrailingZeros(new BigDecimal("0.123400"), Locale.US, 4));
+    } finally {
+      Locale.setDefault(previous);
+    }
+  }
+
+  @Test
+  public void t21_parseInteger() throws RFWException {
+    assertNull(RUTypes.parseInteger((Object) null));
+    assertEquals(Integer.valueOf(10), RUTypes.parseInteger(Integer.valueOf(10)));
+    assertEquals(Integer.valueOf(5), RUTypes.parseInteger("5"));
+    assertEquals(Integer.valueOf(-2), RUTypes.parseInteger(Long.valueOf(-2)));
+    assertEquals(Integer.valueOf(1), RUTypes.parseInteger(Boolean.TRUE));
+    assertEquals(Integer.valueOf(0), RUTypes.parseInteger(Boolean.FALSE));
+
+    try {
+      RUTypes.parseInteger("12.3");
+      fail("Era esperada RFWValidationException");
+    } catch (RFWValidationException expected) {
+      // ok
+    }
+
+    try {
+      RUTypes.parseInteger(Long.valueOf(Long.MAX_VALUE));
+      fail("Era esperada RFWValidationException");
+    } catch (RFWValidationException expected) {
+      // ok
+    }
+
+    try {
+      RUTypes.parseInteger(new Date());
+      fail("Era esperada RFWValidationException");
+    } catch (RFWValidationException expected) {
+      // ok
+    }
+  }
+
+  @Test
+  public void t22_toLong() throws RFWException {
+    assertNull(RUTypes.toLong((Object) null));
+    assertEquals(Long.valueOf(10L), RUTypes.toLong("10"));
+    assertEquals(Long.valueOf(-5L), RUTypes.toLong(Integer.valueOf(-5)));
+    assertEquals(Long.valueOf(1L), RUTypes.toLong(Boolean.TRUE));
+
+    assertEquals(Long.valueOf(20L), RUTypes.toLong(Long.valueOf(20L)));
+    assertEquals(Long.valueOf(30L), RUTypes.toLong(new BigDecimal("30.00")));
+
+    try {
+      RUTypes.toLong("12.3");
+      fail("Era esperada RFWValidationException");
+    } catch (RFWValidationException expected) {
+      // ok
+    }
+
+    try {
+      RUTypes.toLong(Double.NaN);
+      fail("Era esperada RFWValidationException");
+    } catch (RFWValidationException expected) {
+      // ok
+    }
+
+    try {
+      RUTypes.toLong(new Object());
+      fail("Era esperada RFWValidationException");
+    } catch (RFWValidationException expected) {
+      // ok
+    }
+  }
+
+  @Test
+  public void t23_formatToPercentage() {
+    Locale previous = Locale.getDefault();
+    Locale.setDefault(Locale.US);
+    try {
+      assertEquals("0%", RUTypes.formatToPercentage(null));
+      assertEquals("12.3%", RUTypes.formatToPercentage(0.123));
+      assertEquals("12.30%", RUTypes.formatToPercentage(0.123, 2));
+    } finally {
+      Locale.setDefault(previous);
+    }
+  }
+
+  @Test
+  public void t24_roundDouble() {
+    assertEquals(Double.valueOf(1.23), RUTypes.round(1.234, 2));
+  }
+
+  @Test
+  public void t25_roundFloorDouble() {
+    assertEquals(Double.valueOf(1.23), RUTypes.roundFloor(1.239, 2));
+  }
+
+  @Test
+  public void t26_roundCeilDouble() {
+    assertEquals(Double.valueOf(1.24), RUTypes.roundCeil(1.231, 2));
+  }
+
+  @Test
+  public void t27_roundFloat() {
+    assertEquals(Float.valueOf(1.23f), RUTypes.round(1.234f, 2));
+  }
+
+  @Test
+  public void t28_roundFloorFloat() {
+    assertEquals(Float.valueOf(1.23f), RUTypes.roundFloor(1.239f, 2));
+  }
+
+  @Test
+  public void t29_roundCeilFloat() {
+    assertEquals(Float.valueOf(1.24f), RUTypes.roundCeil(1.231f, 2));
+  }
+
+  @Test
+  public void t30_formatToyyyy_MM_dd_T_HH_mm_ssXXX() {
+    ZoneId utc = ZoneId.of("UTC");
+    ZoneId previous = RFW.getZoneId();
+    RFW.initializeZoneID(utc);
+    try {
+      LocalDateTime ldt = LocalDateTime.of(2024, 2, 20, 15, 30, 0);
+
+      assertEquals("2024-02-20T15:30:00Z", RUTypes.formatToyyyy_MM_dd_T_HH_mm_ssXXX(ldt, ZoneOffset.UTC));
+
+      Date date = Date.from(ldt.atZone(utc).toInstant());
+      assertEquals("2024-02-20T15:30:00Z", RUTypes.formatToyyyy_MM_dd_T_HH_mm_ssXXX(date));
+      assertEquals("2024-02-20T15:30:00Z", RUTypes.formatToyyyy_MM_dd_T_HH_mm_ssXXX(date, utc));
+
+      assertEquals("2024-02-20T12:30:00-03:00", RUTypes.formatToyyyy_MM_dd_T_HH_mm_ssXXX(ldt, ZoneId.of("America/Sao_Paulo")));
+      assertEquals("2024-02-20T15:30:00Z", RUTypes.formatToyyyy_MM_dd_T_HH_mm_ssXXX(ldt));
+    } finally {
+      RFW.initializeZoneID(previous);
+    }
+  }
+
+  @Test
+  public void t31_formatDate() {
+    Date date = new Date(1700000000000L);
+    assertEquals(new SimpleDateFormat("dd/MM/yyyy").format(date), RUTypes.formatDate(date, "dd/MM/yyyy"));
+
+    try {
+      RUTypes.formatDate(date, " ");
+      fail("Era esperado IllegalArgumentException");
+    } catch (IllegalArgumentException expected) {
+      // ok
+    }
+
+    assertNull(RUTypes.formatDate(null, "dd/MM/yyyy"));
+  }
+
+  @Test
+  public void t32_toStringConversions() {
+    assertEquals("10.5", RUTypes.toString(new BigDecimal("10.5")));
+    assertEquals("10", RUTypes.toString(Long.valueOf(10)));
+    assertEquals("5", RUTypes.toString(Integer.valueOf(5)));
+    assertEquals("1.5", RUTypes.toString(Float.valueOf(1.5f)));
+    assertEquals("2.5", RUTypes.toString(Double.valueOf(2.5)));
+
+    assertNull(RUTypes.toString((BigDecimal) null));
+    assertNull(RUTypes.toString((Long) null));
+    assertNull(RUTypes.toString((Integer) null));
+    assertNull(RUTypes.toString((Float) null));
+    assertNull(RUTypes.toString((Double) null));
+  }
+
+  @Test
+  public void t33_toBigDecimal() throws RFWException {
+    assertNull(RUTypes.toBigDecimal(null));
+    assertNull(RUTypes.toBigDecimal("   "));
+    assertEquals(new BigDecimal("10.50"), RUTypes.toBigDecimal("10.50"));
+    assertEquals(new BigDecimal("-5"), RUTypes.toBigDecimal("-5"));
+
+    try {
+      RUTypes.toBigDecimal("1,5");
+      fail("Era esperada RFWValidationException");
+    } catch (RFWValidationException expected) {
+      // ok
+    }
+
+    try {
+      RUTypes.toBigDecimal("not a number");
+      fail("Era esperada RFWValidationException");
+    } catch (RFWValidationException expected) {
+      // ok
+    }
   }
 }
