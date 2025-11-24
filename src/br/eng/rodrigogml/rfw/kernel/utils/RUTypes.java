@@ -26,9 +26,9 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 /**
  * Description: Classe utilitária utilizada para conversão entre tipos de dados.<br>
  * Os métodos dessa classe são organizados da seguinte forma de acordo com seu prefixo:<br>
- * <li><b>parse</b> - Indica métodos que estraem o tipo a partir de uma String, podendo ou não conter o Locale do usuário para uma correta interpretação dos dados.
+ * <li><b>parse</b> - Indica métodos que extraem o tipo a partir de uma String, podendo ou não conter o Locale do usuário para uma correta interpretação dos dados.
  * <li><b>format</b> - Faz o inverso do método 'parse'. Converte o valor de um tipo de dado em uma string formata para leitura do usuário, podendo considerar o Locale ou não.
- * <li><b>to</b> - Métodos que convertem de forma 'segura' (prevendo nulo e outras condições) um tipo em outro tipo compatível. <br>
+ * <li><b>to</b> - Métodos que convertem tipos de forma 'segura' (prevendo nulo e outras condições) um tipo em outro tipo compatível. <br>
  * <br>
  * Para métodos de geração de valores verifique {@link RUGenerators}.
  *
