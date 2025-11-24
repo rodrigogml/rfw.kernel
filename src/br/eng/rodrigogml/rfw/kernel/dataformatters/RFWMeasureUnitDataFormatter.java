@@ -37,11 +37,11 @@ public class RFWMeasureUnitDataFormatter implements RFWDataFormatter<String, Mea
     try {
       if (value instanceof String) {
         MeasureRuler.valueOf((String) value);
-        return; // se não deu erro, não lança a exception
+        return; // se nÃ£o deu erro, nÃ£o lanÃ§a a exception
       }
     } catch (Exception e) {
     }
-    throw new RFWValidationException("O valor ${0} não pode ser convertido em uma MeasureUnit válida!", new String[] { "" + value });
+    throw new RFWValidationException("O valor ${0} nÃ£o pode ser convertido em uma MeasureUnit vÃ¡lida!", new String[] { "" + value });
   }
 
 }

@@ -8,39 +8,39 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 
 /**
- * Description: Classe com mÈtodos utilit·rios de validaÁ„o de valores (documentos, emails, n˙meros, padrıes, etc.) e c·lculos de Digitos Verificadores (DVs).<br>
- * Os mÈtodos dessa classe s„o organizados de acordo com seu prefixo da seguinte forma: <br>
- * <li><b>validate</b> - faz a validaÁ„o de um valor. Deve receber o valor completo, incluindo o DV, e lanÁar exception caso n„o seja um valor v·lido. Normalmente este mÈtodo È 'void'.
- * <li><b>isValid</b> - valida o conte˙do mas retorna apenas um true/false impedindo qualquer exception de sair. Em geral encapsula o mesmo mÈtodo com o prefixo validate e trata a exception.
- * <li><b>calcDV</b> - Faz o c·lculo do DÌgito verificador de acordo com os documento passado. Veja a documentaÁ„o de cada mÈtodo para saber como passar os valores com ou sem o DV.
+ * Description: Classe com m√©todos utilit√°rios de valida√ß√£o de valores (documentos, emails, n√∫meros, padr√µes, etc.) e c√°lculos de Digitos Verificadores (DVs).<br>
+ * Os m√©todos dessa classe s√£o organizados de acordo com seu prefixo da seguinte forma: <br>
+ * <li><b>validate</b> - faz a valida√ß√£o de um valor. Deve receber o valor completo, incluindo o DV, e lan√ßar exception caso n√£o seja um valor v√°lido. Normalmente este m√©todo √© 'void'.
+ * <li><b>isValid</b> - valida o conte√∫do mas retorna apenas um true/false impedindo qualquer exception de sair. Em geral encapsula o mesmo m√©todo com o prefixo validate e trata a exception.
+ * <li><b>calcDV</b> - Faz o c√°lculo do D√≠gito verificador de acordo com os documento passado. Veja a documenta√ß√£o de cada m√©todo para saber como passar os valores com ou sem o DV.
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since (21 de fev. de 2025)
  */
 public class RUValueValidation {
 
   /**
-   * Valida se o valor informado representa uma porta TCP/IP v·lida.<br>
+   * Valida se o valor informado representa uma porta TCP/IP v√°lida.<br>
    * <p>
    * Regras:
    * <ul>
-   * <li>O valor n„o pode ser {@code null} ó nesse caso lanÁa {@link RFWValidationException} com cÛdigo {@code RFW_ERR_900002}.</li>
-   * <li>O valor deve representar um n˙mero inteiro entre {@code 1} e {@code 65535} ó caso contr·rio lanÁa {@link RFWValidationException} com cÛdigo {@code RFW_ERR_900003}.</li>
-   * <li>Valores numÈricos fora da faixa ou com formato incorreto (ex: letras, decimais, sinais) s„o inv·lidos.</li>
+   * <li>O valor n√£o pode ser {@code null} ‚Äî nesse caso lan√ßa {@link RFWValidationException} com c√≥digo {@code RFW_ERR_900002}.</li>
+   * <li>O valor deve representar um n√∫mero inteiro entre {@code 1} e {@code 65535} ‚Äî caso contr√°rio lan√ßa {@link RFWValidationException} com c√≥digo {@code RFW_ERR_900003}.</li>
+   * <li>Valores num√©ricos fora da faixa ou com formato incorreto (ex: letras, decimais, sinais) s√£o inv√°lidos.</li>
    * </ul>
    *
    * @param port Valor da porta em formato {@link String}.
-   * @throws RFWException Quando o valor È nulo ou n„o representa uma porta v·lida.
+   * @throws RFWException Quando o valor √© nulo ou n√£o representa uma porta v√°lida.
    */
   public static void validateTcpPort(String port) throws RFWException {
-    // Porta nula -> erro obrigatÛrio
+    // Porta nula -> erro obrigat√≥rio
     if (port == null) {
       throw new RFWValidationException("RFW_ERR_900002");
     }
 
     String trimmed = port.trim();
 
-    // Deve conter apenas dÌgitos
+    // Deve conter apenas d√≠gitos
     if (!trimmed.matches("^[0-9]{1,5}$")) {
       throw new RFWValidationException("RFW_ERR_900003", new String[] { port });
     }
@@ -56,41 +56,41 @@ public class RUValueValidation {
   }
 
   /**
-   * Calcula o DÌgito Verificador (DV) da Chave de Acesso da NF-e vers„o 4.00 utilizando o algoritmo do MÛdulo 11, conforme especificado no Manual da NF-e.
+   * Calcula o D√≠gito Verificador (DV) da Chave de Acesso da NF-e vers√£o 4.00 utilizando o algoritmo do M√≥dulo 11, conforme especificado no Manual da NF-e.
    *
-   * @param keyPrefix String contendo os 43 primeiros dÌgitos da chave de acesso.
-   * @return String contendo o dÌgito verificador calculado.
-   * @throws RFWException Se a entrada for nula, vazia ou n„o conter exatamente 43 dÌgitos numÈricos.
+   * @param keyPrefix String contendo os 43 primeiros d√≠gitos da chave de acesso.
+   * @return String contendo o d√≠gito verificador calculado.
+   * @throws RFWException Se a entrada for nula, vazia ou n√£o conter exatamente 43 d√≠gitos num√©ricos.
    */
   public static int calcDVDANFeV400(String keyPrefix) throws RFWException {
-    // Remover caracteres n„o numÈricos
+    // Remover caracteres n√£o num√©ricos
     keyPrefix = RUString.removeNonDigits(keyPrefix);
 
-    // Validar se a chave possui exatamente 43 dÌgitos
+    // Validar se a chave possui exatamente 43 d√≠gitos
     if (keyPrefix == null || keyPrefix.length() != 43 || !keyPrefix.matches("[0-9]+")) {
       throw new RFWValidationException("RFW_000047", new String[] { keyPrefix });
     }
 
-    // Pesos definidos no manual da NF-e (sequÍncia cÌclica de 2 a 9)
+    // Pesos definidos no manual da NF-e (sequ√™ncia c√≠clica de 2 a 9)
     int[] weights = { 2, 3, 4, 5, 6, 7, 8, 9 };
 
     long sum = 0;
     int weightIndex = 0;
 
-    // Percorrer os dÌgitos da direita para a esquerda
+    // Percorrer os d√≠gitos da direita para a esquerda
     for (int i = 42; i >= 0; i--) {
       int digit = Character.getNumericValue(keyPrefix.charAt(i));
       sum += digit * weights[weightIndex];
 
-      // Incrementar o Ìndice do peso e reiniciar quando atingir o final do array
+      // Incrementar o √≠ndice do peso e reiniciar quando atingir o final do array
       weightIndex = (weightIndex + 1) % weights.length;
     }
 
-    // Aplicar a regra do MÛdulo 11
+    // Aplicar a regra do M√≥dulo 11
     long remainder = sum % 11;
     long checkDigit = 11 - remainder;
 
-    // Se o resultado for 0 ou 1, o dÌgito verificador deve ser 0
+    // Se o resultado for 0 ou 1, o d√≠gito verificador deve ser 0
     if (checkDigit >= 10) {
       checkDigit = 0;
     }
@@ -99,51 +99,51 @@ public class RUValueValidation {
   }
 
   /**
-   * Valida um endereÁo IPv4 no formato textual.<br>
+   * Valida um endere√ßo IPv4 no formato textual.<br>
    * <p>
    * Regras:
    * <ul>
-   * <li>Se {@code ip} for {@code null}, È lanÁado exceÁ„o de valor nulo cÛdigo {@code RFW_ERR_900000}.</li>
-   * <li>Formato obrigatÛrio: {@code "x.x.x.x"} com quatro octetos decimais.</li>
+   * <li>Se {@code ip} for {@code null}, √© lan√ßado exce√ß√£o de valor nulo c√≥digo {@code RFW_ERR_900000}.</li>
+   * <li>Formato obrigat√≥rio: {@code "x.x.x.x"} com quatro octetos decimais.</li>
    * <li>Cada octeto deve estar entre {@code 0} e {@code 255}.</li>
-   * <li>N„o s„o permitidos zeros ‡ esquerda, exceto o valor {@code "0"} isolado.</li>
+   * <li>N√£o s√£o permitidos zeros √† esquerda, exceto o valor {@code "0"} isolado.</li>
    * </ul>
-   * Em caso de valor inv·lido, È lanÁada {@link RFWValidationException} com o cÛdigo {@code RFW_ERR_900001}.
+   * Em caso de valor inv√°lido, √© lan√ßada {@link RFWValidationException} com o c√≥digo {@code RFW_ERR_900001}.
    *
-   * @param ip EndereÁo IPv4 em formato textual.
-   * @throws RFWException Quando o valor n„o representa um IPv4 v·lido.
+   * @param ip Endere√ßo IPv4 em formato textual.
+   * @throws RFWException Quando o valor n√£o representa um IPv4 v√°lido.
    */
   public static void validateIPv4Address(String ip) throws RFWException {
-    // Se o valor for nulo, nenhuma validaÁ„o È realizada conforme regra informada.
+    // Se o valor for nulo, nenhuma valida√ß√£o √© realizada conforme regra informada.
     if (ip == null) {
       throw new RFWValidationException("RFW_ERR_900000");
     }
 
-    String value = ip.trim(); // Remove espaÁos em branco nas extremidades para evitar falsos negativos.
+    String value = ip.trim(); // Remove espa√ßos em branco nas extremidades para evitar falsos negativos.
 
-    // Padr„o para um octeto IPv4:
+    // Padr√£o para um octeto IPv4:
     // - "0"
     // - 1 a 9
     // - 10 a 99
     // - 100 a 199
     // - 200 a 249
     // - 250 a 255
-    // Sem zeros ‡ esquerda (exceto o "0" isolado).
+    // Sem zeros √† esquerda (exceto o "0" isolado).
     String octetPattern = "(0|[1-9][0-9]?|1[0-9]{2}|2[0-4][0-9]|25[0-5])";
 
     // IPv4 completo: quatro octetos separados por ponto.
     String ipv4Regex = "^" + octetPattern + "(\\." + octetPattern + "){3}$";
 
-    // Caso n„o atenda ao padr„o, lanÁa erro de validaÁ„o.
+    // Caso n√£o atenda ao padr√£o, lan√ßa erro de valida√ß√£o.
     if (!value.matches(ipv4Regex)) {
       throw new RFWValidationException("RFW_ERR_900001", new String[] { ip });
     }
   }
 
   /**
-   * Valida um n˙mero de CNPJ (Cadastro Nacional de Pessoa JurÌdica).
+   * Valida um n√∫mero de CNPJ (Cadastro Nacional de Pessoa Jur√≠dica).
    *
-   * @param cnpj N˙mero do CNPJ contendo apenas dÌgitos (sem pontos, traÁos, etc.), incluindo o dÌgito verificador.
+   * @param cnpj N√∫mero do CNPJ contendo apenas d√≠gitos (sem pontos, tra√ßos, etc.), incluindo o d√≠gito verificador.
    * @throws RFWException
    */
   public static void validateCNPJ(String cnpj) throws RFWException {
@@ -155,13 +155,13 @@ public class RUValueValidation {
   }
 
   /**
-   * Calcula os dÌgitos verificadores do CNPJ.
+   * Calcula os d√≠gitos verificadores do CNPJ.
    * <p>
-   * O c·lculo È feito pelo mÛdulo 11, primeiro para o primeiro dÌgito verificador e depois para o segundo, deslocando a matriz multiplicadora.
+   * O c√°lculo √© feito pelo m√≥dulo 11, primeiro para o primeiro d√≠gito verificador e depois para o segundo, deslocando a matriz multiplicadora.
    * </p>
    *
-   * @param cnpj SequÍncia de 12 dÌgitos numÈricos do CNPJ, sem os dois dÌgitos verificadores.
-   * @return String contendo os dois dÌgitos verificadores calculados.
+   * @param cnpj Sequ√™ncia de 12 d√≠gitos num√©ricos do CNPJ, sem os dois d√≠gitos verificadores.
+   * @return String contendo os dois d√≠gitos verificadores calculados.
    * @throws RFWException
    */
   public static String calcDVCNPJ(String cnpj) throws RFWException {
@@ -186,9 +186,9 @@ public class RUValueValidation {
   }
 
   /**
-   * Valida um n˙mero de CPF (Cadastro de Pessoa FÌsica).
+   * Valida um n√∫mero de CPF (Cadastro de Pessoa F√≠sica).
    *
-   * @param cpf N˙mero do CPF contendo apenas dÌgitos (sem pontos, traÁos, etc.), incluindo o dÌgito verificador.
+   * @param cpf N√∫mero do CPF contendo apenas d√≠gitos (sem pontos, tra√ßos, etc.), incluindo o d√≠gito verificador.
    * @throws RFWException
    */
   public static void validateCPF(String cpf) throws RFWException {
@@ -199,13 +199,13 @@ public class RUValueValidation {
   }
 
   /**
-   * Calcula o dÌgito verificador usado no CPF.
+   * Calcula o d√≠gito verificador usado no CPF.
    * <p>
-   * O c·lculo È feito pelo mÛdulo 11, primeiro para o primeiro dÌgito verificador e depois para o segundo, deslocando a matriz multiplicadora.
+   * O c√°lculo √© feito pelo m√≥dulo 11, primeiro para o primeiro d√≠gito verificador e depois para o segundo, deslocando a matriz multiplicadora.
    * </p>
    *
-   * @param cpf 9 algarismos que compıem o CPF.
-   * @return Os dois dÌgitos verificadores concatenados.
+   * @param cpf 9 algarismos que comp√µem o CPF.
+   * @return Os dois d√≠gitos verificadores concatenados.
    * @throws RFWException
    */
   public static String calcDVCPF(String cpf) throws RFWException {
@@ -230,10 +230,10 @@ public class RUValueValidation {
   }
 
   /**
-   * Valida um n˙mero de CPF ou CNPJ, garantindo que tenha um formato v·lido e que os dÌgitos verificadores sejam corretos.
+   * Valida um n√∫mero de CPF ou CNPJ, garantindo que tenha um formato v√°lido e que os d√≠gitos verificadores sejam corretos.
    *
-   * @param cpfOrCnpj N˙mero do CPF (11 dÌgitos) ou CNPJ (14 dÌgitos), contendo apenas n˙meros, sem pontos ou traÁos.
-   * @throws RFWException Se o CPF ou CNPJ for inv·lido.
+   * @param cpfOrCnpj N√∫mero do CPF (11 d√≠gitos) ou CNPJ (14 d√≠gitos), contendo apenas n√∫meros, sem pontos ou tra√ßos.
+   * @throws RFWException Se o CPF ou CNPJ for inv√°lido.
    */
   public static void validateCPFOrCNPJ(String cpfOrCnpj) throws RFWException {
     if (cpfOrCnpj == null) throw new RFWValidationException("RFW_ERR_200018", new String[] { cpfOrCnpj });
@@ -248,25 +248,25 @@ public class RUValueValidation {
   }
 
   /**
-   * Valida se a string recebida È uma UF v·lida do Brasil.
+   * Valida se a string recebida √© uma UF v√°lida do Brasil.
    * <p>
-   * O mÈtodo verifica se a UF contÈm exatamente 2 letras, ignorando case, e se est· na lista de UFs v·lidas.
+   * O m√©todo verifica se a UF cont√©m exatamente 2 letras, ignorando case, e se est√° na lista de UFs v√°lidas.
    * </p>
    *
    * @param uf UF a ser validada.
-   * @throws RFWValidationException Se a UF for inv·lida.
+   * @throws RFWValidationException Se a UF for inv√°lida.
    */
   public static void validateUF(String uf) throws RFWException {
     if (uf == null || uf.length() != 2) throw new RFWValidationException("BISERP_000417");
 
-    // Lista otimizada de UFs v·lidas para Java 1.8
+    // Lista otimizada de UFs v√°lidas para Java 1.8
     final List<String> validUFs = Arrays.asList("AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SE", "SP", "TO");
 
     if (!validUFs.contains(uf.toUpperCase())) throw new RFWValidationException("BISERP_000417");
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado do Tocantins.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado do Tocantins.
    *
    * @param ie
    * @throws RFWValidationException
@@ -301,10 +301,10 @@ public class RUValueValidation {
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado de Sergipe.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado de Sergipe.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonSE(String ie) throws RFWException {
     if (ie == null || !ie.matches("\\d{9}")) {
@@ -314,65 +314,65 @@ public class RUValueValidation {
     int soma = 0;
     int peso = 9;
 
-    // C·lculo da soma ponderada
-    for (int i = 0; i < 8; i++) { // Apenas os 8 primeiros dÌgitos
+    // C√°lculo da soma ponderada
+    for (int i = 0; i < 8; i++) { // Apenas os 8 primeiros d√≠gitos
       soma += Character.getNumericValue(ie.charAt(i)) * peso;
       peso--;
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int dvCalculado = 11 - (soma % 11);
     if (dvCalculado >= 10) {
       dvCalculado = 0;
     }
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(8)) != dvCalculado) {
       throw new RFWValidationException("BISERP_100068");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado de S„o Paulo.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado de S√£o Paulo.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonSP(String ie) throws RFWException {
     if (ie == null || !ie.matches("\\d{12}")) {
       throw new RFWValidationException("BISERP_000299");
     }
 
-    // Pesos para o primeiro e segundo dÌgito verificador
+    // Pesos para o primeiro e segundo d√≠gito verificador
     int[] weights1 = { 1, 3, 4, 5, 6, 7, 8, 10 };
     int[] weights2 = { 3, 2, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
 
-    // C·lculo do primeiro dÌgito verificador
+    // C√°lculo do primeiro d√≠gito verificador
     int sum = 0;
     for (int i = 0; i < weights1.length; i++) {
       sum += Character.getNumericValue(ie.charAt(i)) * weights1[i];
     }
     char dv1 = Character.forDigit(sum % 11 % 10, 10);
 
-    // ValidaÁ„o do primeiro dÌgito verificador
+    // Valida√ß√£o do primeiro d√≠gito verificador
     if (ie.charAt(8) != dv1) throw new RFWValidationException("BISERP_000300");
 
-    // C·lculo do segundo dÌgito verificador
+    // C√°lculo do segundo d√≠gito verificador
     sum = 0;
     for (int i = 0; i < weights2.length; i++) {
       sum += Character.getNumericValue(ie.charAt(i)) * weights2[i];
     }
     char dv2 = Character.forDigit(sum % 11 % 10, 10);
 
-    // ValidaÁ„o do segundo dÌgito verificador
+    // Valida√ß√£o do segundo d√≠gito verificador
     if (ie.charAt(11) != dv2) throw new RFWValidationException("BISERP_000300");
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado de Santa Catarina.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado de Santa Catarina.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonSC(String ie) throws RFWException {
     if (ie == null || !ie.matches("\\d{9}")) {
@@ -382,36 +382,36 @@ public class RUValueValidation {
     int soma = 0;
     int peso = 9;
 
-    // C·lculo da soma ponderada
-    for (int i = 0; i < 8; i++) { // Apenas os 8 primeiros dÌgitos
+    // C√°lculo da soma ponderada
+    for (int i = 0; i < 8; i++) { // Apenas os 8 primeiros d√≠gitos
       soma += Character.getNumericValue(ie.charAt(i)) * peso;
       peso--;
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int dvCalculado = 11 - (soma % 11);
     if (dvCalculado == 10 || dvCalculado == 11) {
       dvCalculado = 0;
     }
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(8)) != dvCalculado) {
       throw new RFWValidationException("BISERP_100066");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado de Roraima.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado de Roraima.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonRR(String ie) throws RFWException {
     if (ie == null || !ie.matches("\\d{9}")) {
       throw new RFWValidationException("BISERP_100062");
     }
 
-    // ValidaÁ„o dos dois primeiros dÌgitos
+    // Valida√ß√£o dos dois primeiros d√≠gitos
     if (!ie.startsWith("24")) {
       throw new RFWValidationException("BISERP_100063");
     }
@@ -419,26 +419,26 @@ public class RUValueValidation {
     int soma = 0;
     int peso = 1;
 
-    // C·lculo da soma ponderada
-    for (int i = 0; i < 8; i++) { // Apenas os 8 primeiros dÌgitos
+    // C√°lculo da soma ponderada
+    for (int i = 0; i < 8; i++) { // Apenas os 8 primeiros d√≠gitos
       soma += Character.getNumericValue(ie.charAt(i)) * peso;
       peso++;
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int dvCalculado = soma % 9;
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(8)) != dvCalculado) {
       throw new RFWValidationException("BISERP_100064");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado de RondÙnia.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado de Rond√¥nia.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonRO(String ie) throws RFWException {
     if (ie == null || !ie.matches("\\d{14}")) {
@@ -449,8 +449,8 @@ public class RUValueValidation {
     int pesoInicio = 6;
     int pesoFim = 9;
 
-    // C·lculo da soma ponderada
-    for (int i = 0; i < 13; i++) { // Apenas os 13 primeiros dÌgitos
+    // C√°lculo da soma ponderada
+    for (int i = 0; i < 13; i++) { // Apenas os 13 primeiros d√≠gitos
       int num = Character.getNumericValue(ie.charAt(i));
       if (i < 5) {
         soma += num * pesoInicio--;
@@ -459,23 +459,23 @@ public class RUValueValidation {
       }
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int dvCalculado = 11 - (soma % 11);
     if (dvCalculado >= 10) {
       dvCalculado -= 10;
     }
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(13)) != dvCalculado) {
       throw new RFWValidationException("BISERP_100061");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado do Rio Grande do Sul.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado do Rio Grande do Sul.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonRS(String ie) throws RFWException {
     if (ie == null || !ie.matches("\\d{10}")) {
@@ -485,36 +485,36 @@ public class RUValueValidation {
     int soma = Character.getNumericValue(ie.charAt(0)) * 2;
     int peso = 9;
 
-    // C·lculo da soma ponderada
-    for (int i = 1; i < 9; i++) { // Apenas os primeiros 9 dÌgitos
+    // C√°lculo da soma ponderada
+    for (int i = 1; i < 9; i++) { // Apenas os primeiros 9 d√≠gitos
       soma += Character.getNumericValue(ie.charAt(i)) * peso;
       peso--;
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int dvCalculado = 11 - (soma % 11);
     if (dvCalculado >= 10) {
       dvCalculado = 0;
     }
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(9)) != dvCalculado) {
       throw new RFWValidationException("BISERP_100059");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado do Rio Grande do Norte.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado do Rio Grande do Norte.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonRN(String ie) throws RFWException {
     if (ie == null || !(ie.matches("\\d{9}") || ie.matches("\\d{10}"))) {
       throw new RFWValidationException("BISERP_100055");
     }
 
-    // ValidaÁ„o dos dois primeiros dÌgitos
+    // Valida√ß√£o dos dois primeiros d√≠gitos
     if (!ie.startsWith("20")) {
       throw new RFWValidationException("BISERP_100056");
     }
@@ -522,29 +522,29 @@ public class RUValueValidation {
     int soma = 0;
     int peso = ie.length() == 9 ? 9 : 10; // Define o peso inicial com base no tamanho
 
-    // C·lculo da soma ponderada
+    // C√°lculo da soma ponderada
     for (int i = 0; i < ie.length() - 1; i++) {
       soma += Character.getNumericValue(ie.charAt(i)) * peso;
       peso--;
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int dvCalculado = (soma * 10) % 11;
     if (dvCalculado == 10) {
       dvCalculado = 0;
     }
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(ie.length() - 1)) != dvCalculado) {
       throw new RFWValidationException("BISERP_100057");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado do Rio de Janeiro.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado do Rio de Janeiro.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonRJ(String ie) throws RFWException {
     if (ie == null || !ie.matches("\\d{8}")) {
@@ -554,29 +554,29 @@ public class RUValueValidation {
     int soma = Character.getNumericValue(ie.charAt(0)) * 2;
     int peso = 7;
 
-    // C·lculo da soma ponderada
-    for (int i = 1; i < 7; i++) { // Apenas os primeiros 7 dÌgitos
+    // C√°lculo da soma ponderada
+    for (int i = 1; i < 7; i++) { // Apenas os primeiros 7 d√≠gitos
       soma += Character.getNumericValue(ie.charAt(i)) * peso;
       peso--;
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int dvCalculado = 11 - (soma % 11);
     if (dvCalculado <= 1) {
       dvCalculado = 0;
     }
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(7)) != dvCalculado) {
       throw new RFWValidationException("BISERP_100054");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado do PiauÌ.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado do Piau√≠.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonPI(String ie) throws RFWException {
     if (ie == null || !ie.matches("\\d{9}")) {
@@ -586,29 +586,29 @@ public class RUValueValidation {
     int soma = 0;
     int peso = 9;
 
-    // C·lculo da soma ponderada
-    for (int i = 0; i < 8; i++) { // Apenas os primeiros 8 dÌgitos
+    // C√°lculo da soma ponderada
+    for (int i = 0; i < 8; i++) { // Apenas os primeiros 8 d√≠gitos
       soma += Character.getNumericValue(ie.charAt(i)) * peso;
       peso--;
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int dvCalculado = 11 - (soma % 11);
     if (dvCalculado >= 10) {
       dvCalculado = 0;
     }
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(8)) != dvCalculado) {
       throw new RFWValidationException("BISERP_100052");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado de Pernambuco.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado de Pernambuco.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonPE(String ie) throws RFWException {
     if (ie == null || !(ie.matches("\\d{9}") || ie.matches("\\d{14}"))) {
@@ -616,14 +616,14 @@ public class RUValueValidation {
     }
 
     if (ie.length() == 9) {
-      // ValidaÁ„o para IE de 9 dÌgitos (modelo antigo)
+      // Valida√ß√£o para IE de 9 d√≠gitos (modelo antigo)
       int[] numero = new int[9];
 
       for (int i = 0; i < 7; i++) {
         numero[i] = Character.getNumericValue(ie.charAt(i));
       }
 
-      // C·lculo do primeiro dÌgito verificador
+      // C√°lculo do primeiro d√≠gito verificador
       int soma1 = 0;
       for (int i = 0; i < 7; i++) {
         soma1 += numero[i] * (8 - i);
@@ -631,7 +631,7 @@ public class RUValueValidation {
       int resto1 = soma1 % 11;
       numero[7] = (resto1 == 0 || resto1 == 1) ? 0 : 11 - resto1;
 
-      // C·lculo do segundo dÌgito verificador
+      // C√°lculo do segundo d√≠gito verificador
       int soma2 = (numero[7] * 2);
       for (int i = 0; i < 7; i++) {
         soma2 += numero[i] * (9 - i);
@@ -639,30 +639,30 @@ public class RUValueValidation {
       int resto2 = soma2 % 11;
       numero[8] = (resto2 == 0 || resto2 == 1) ? 0 : 11 - resto2;
 
-      // ValidaÁ„o dos dÌgitos verificadores
+      // Valida√ß√£o dos d√≠gitos verificadores
       String dvCalculado = "" + numero[7] + numero[8];
       if (!ie.substring(7).equals(dvCalculado)) {
         throw new RFWValidationException("BISERP_100050");
       }
     } else {
-      // ValidaÁ„o para IE de 14 dÌgitos (modelo novo)
+      // Valida√ß√£o para IE de 14 d√≠gitos (modelo novo)
       int soma = 0;
       int pesoInicio = 5;
       int pesoFim = 9;
 
-      // C·lculo da soma ponderada
+      // C√°lculo da soma ponderada
       for (int i = 0; i < 13; i++) {
         int num = Character.getNumericValue(ie.charAt(i));
         soma += (i < 5) ? num * pesoInicio-- : num * pesoFim--;
       }
 
-      // C·lculo do dÌgito verificador
+      // C√°lculo do d√≠gito verificador
       int dvCalculado = 11 - (soma % 11);
       if (dvCalculado > 9) {
         dvCalculado -= 10;
       }
 
-      // ValidaÁ„o do dÌgito verificador
+      // Valida√ß√£o do d√≠gito verificador
       if (Character.getNumericValue(ie.charAt(13)) != dvCalculado) {
         throw new RFWValidationException("BISERP_100050");
       }
@@ -670,17 +670,17 @@ public class RUValueValidation {
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado do Paran·.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado do Paran√°.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonPR(String ie) throws RFWException {
     if (ie == null || !ie.matches("\\d{10}")) {
       throw new RFWValidationException("BISERP_100047");
     }
 
-    // C·lculo do primeiro dÌgito verificador
+    // C√°lculo do primeiro d√≠gito verificador
     int soma = 0;
     int pesoInicio = 3;
     int pesoFim = 7;
@@ -695,7 +695,7 @@ public class RUValueValidation {
       d1 = 0;
     }
 
-    // C·lculo do segundo dÌgito verificador
+    // C√°lculo do segundo d√≠gito verificador
     soma = d1 * 2;
     pesoInicio = 4;
     pesoFim = 7;
@@ -710,17 +710,17 @@ public class RUValueValidation {
       d2 = 0;
     }
 
-    // ValidaÁ„o dos dÌgitos verificadores
+    // Valida√ß√£o dos d√≠gitos verificadores
     if (Character.getNumericValue(ie.charAt(8)) != d1 || Character.getNumericValue(ie.charAt(9)) != d2) {
       throw new RFWValidationException("BISERP_100048");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado da ParaÌba.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado da Para√≠ba.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonPB(String ie) throws RFWException {
     if (ie == null || !ie.matches("\\d{9}")) {
@@ -730,36 +730,36 @@ public class RUValueValidation {
     int soma = 0;
     int peso = 9;
 
-    // C·lculo da soma ponderada
-    for (int i = 0; i < 8; i++) { // Apenas os primeiros 8 dÌgitos
+    // C√°lculo da soma ponderada
+    for (int i = 0; i < 8; i++) { // Apenas os primeiros 8 d√≠gitos
       soma += Character.getNumericValue(ie.charAt(i)) * peso;
       peso--;
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int dvCalculado = 11 - (soma % 11);
     if (dvCalculado >= 10) {
       dvCalculado = 0;
     }
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(8)) != dvCalculado) {
       throw new RFWValidationException("BISERP_100046");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado do Par·.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado do Par√°.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonPA(String ie) throws RFWException {
     if (ie == null || !ie.matches("\\d{9}")) {
       throw new RFWValidationException("BISERP_100042");
     }
 
-    // ValidaÁ„o dos dois primeiros dÌgitos
+    // Valida√ß√£o dos dois primeiros d√≠gitos
     if (!ie.startsWith("15")) {
       throw new RFWValidationException("BISERP_100043");
     }
@@ -767,55 +767,55 @@ public class RUValueValidation {
     int soma = 0;
     int peso = 9;
 
-    // C·lculo da soma ponderada
-    for (int i = 0; i < 8; i++) { // Apenas os primeiros 8 dÌgitos
+    // C√°lculo da soma ponderada
+    for (int i = 0; i < 8; i++) { // Apenas os primeiros 8 d√≠gitos
       soma += Character.getNumericValue(ie.charAt(i)) * peso;
       peso--;
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int dvCalculado = 11 - (soma % 11);
     if (dvCalculado <= 1) {
       dvCalculado = 0;
     }
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(8)) != dvCalculado) {
       throw new RFWValidationException("BISERP_100044");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado de Minas Gerais.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado de Minas Gerais.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonMG(String ie) throws RFWException {
     if (ie == null || !ie.matches("\\d{13}")) {
       throw new RFWValidationException("BISERP_100040");
     }
 
-    // TODO o CÛdigo de validaÁ„o a seguir precisa ser revisto, pois ele n„o validou a IE 460037914500, que È confirmada pelo sintegra a IE v·lida do CNPJ: 07.599.349/0001-30 Agroindustria Quinta Sao Jose Ltda
+    // TODO o C√≥digo de valida√ß√£o a seguir precisa ser revisto, pois ele n√£o validou a IE 460037914500, que √© confirmada pelo sintegra a IE v√°lida do CNPJ: 07.599.349/0001-30 Agroindustria Quinta Sao Jose Ltda
 
-    // // Inserir "0" apÛs o cÛdigo do municÌpio para normalizar o formato
+    // // Inserir "0" ap√≥s o c√≥digo do munic√≠pio para normalizar o formato
     // StringBuilder str = new StringBuilder();
-    // for (int i = 0; i < 11; i++) { // Apenas os primeiros 11 dÌgitos (sem os dÌgitos verificadores)
-    // if (i == 3) str.append("0"); // Adiciona o zero apÛs o cÛdigo do municÌpio
+    // for (int i = 0; i < 11; i++) { // Apenas os primeiros 11 d√≠gitos (sem os d√≠gitos verificadores)
+    // if (i == 3) str.append("0"); // Adiciona o zero ap√≥s o c√≥digo do munic√≠pio
     // str.append(ie.charAt(i));
     // }
     //
-    // // C·lculo do primeiro dÌgito verificador
+    // // C√°lculo do primeiro d√≠gito verificador
     // int soma = 0;
     // for (int i = 0; i < str.length(); i++) {
     // int num = Character.getNumericValue(str.charAt(i));
     // int produto = num * (i % 2 == 0 ? 1 : 2); // Alterna entre multiplicadores 1 e 2
-    // soma += (produto >= 10) ? (produto / 10) + (produto % 10) : produto; // Soma os dÌgitos do produto
+    // soma += (produto >= 10) ? (produto / 10) + (produto % 10) : produto; // Soma os d√≠gitos do produto
     // }
     //
-    // int d1 = (10 - (soma % 10)) % 10; // ObtÈm o primeiro dÌgito verificador
+    // int d1 = (10 - (soma % 10)) % 10; // Obt√©m o primeiro d√≠gito verificador
     //
-    // // C·lculo do segundo dÌgito verificador
+    // // C√°lculo do segundo d√≠gito verificador
     // soma = d1 * 2;
     // int peso = 3;
     // for (int i = 0; i < 11; i++) {
@@ -823,26 +823,26 @@ public class RUValueValidation {
     // peso = (peso == 3) ? 11 : peso - 1;
     // }
     //
-    // int d2 = (11 - (soma % 11)) % 10; // ObtÈm o segundo dÌgito verificador
+    // int d2 = (11 - (soma % 11)) % 10; // Obt√©m o segundo d√≠gito verificador
     //
-    // // ValidaÁ„o dos dÌgitos verificadores
+    // // Valida√ß√£o dos d√≠gitos verificadores
     // if (Character.getNumericValue(ie.charAt(11)) != d1 || Character.getNumericValue(ie.charAt(12)) != d2) {
     // throw new RFWValidationException("BISERP_100041");
     // }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado do Mato Grosso do Sul.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado do Mato Grosso do Sul.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonMS(String ie) throws RFWException {
     if (ie == null || !ie.matches("\\d{9}")) {
       throw new RFWValidationException("BISERP_100037");
     }
 
-    // ValidaÁ„o dos dois primeiros dÌgitos
+    // Valida√ß√£o dos dois primeiros d√≠gitos
     if (!ie.startsWith("28")) {
       throw new RFWValidationException("BISERP_100038");
     }
@@ -850,27 +850,27 @@ public class RUValueValidation {
     int soma = 0;
     int peso = 9;
 
-    // C·lculo da soma ponderada
-    for (int i = 0; i < 8; i++) { // Apenas os primeiros 8 dÌgitos
+    // C√°lculo da soma ponderada
+    for (int i = 0; i < 8; i++) { // Apenas os primeiros 8 d√≠gitos
       soma += Character.getNumericValue(ie.charAt(i)) * peso;
       peso--;
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int resto = soma % 11;
     int dvCalculado = (resto == 0 || 11 - resto > 9) ? 0 : 11 - resto;
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(8)) != dvCalculado) {
       throw new RFWValidationException("BISERP_100039");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado do Mato Grosso.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado do Mato Grosso.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonMT(String ie) throws RFWException {
     if (ie == null || !ie.matches("\\d{11}")) {
@@ -881,34 +881,34 @@ public class RUValueValidation {
     int pesoInicial = 3;
     int pesoFinal = 9;
 
-    // C·lculo da soma ponderada
-    for (int i = 0; i < 10; i++) { // Apenas os primeiros 10 dÌgitos
+    // C√°lculo da soma ponderada
+    for (int i = 0; i < 10; i++) { // Apenas os primeiros 10 d√≠gitos
       int num = Character.getNumericValue(ie.charAt(i));
       soma += (i < 2) ? num * pesoInicial-- : num * pesoFinal--;
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int resto = soma % 11;
     int dvCalculado = (resto == 0 || resto == 1) ? 0 : 11 - resto;
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(10)) != dvCalculado) {
       throw new RFWValidationException("BISERP_100036");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado do Maranh„o.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado do Maranh√£o.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonMA(String ie) throws RFWException {
     if (ie == null || !ie.matches("\\d{9}")) {
       throw new RFWValidationException("BISERP_100032");
     }
 
-    // ValidaÁ„o dos dois primeiros dÌgitos
+    // Valida√ß√£o dos dois primeiros d√≠gitos
     if (!ie.startsWith("12")) {
       throw new RFWValidationException("BISERP_100033");
     }
@@ -916,40 +916,40 @@ public class RUValueValidation {
     int soma = 0;
     int peso = 9;
 
-    // C·lculo da soma ponderada
-    for (int i = 0; i < 8; i++) { // Apenas os primeiros 8 dÌgitos
+    // C√°lculo da soma ponderada
+    for (int i = 0; i < 8; i++) { // Apenas os primeiros 8 d√≠gitos
       soma += Character.getNumericValue(ie.charAt(i)) * peso;
       peso--;
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int resto = soma % 11;
     int dvCalculado = (resto == 0 || resto == 1) ? 0 : 11 - resto;
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(8)) != dvCalculado) {
       throw new RFWValidationException("BISERP_100034");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado de Goi·s.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado de Goi√°s.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonGO(String ie) throws RFWValidationException {
     if (ie == null || !ie.matches("\\d{9}")) {
       throw new RFWValidationException("BISERP_100029");
     }
 
-    // ValidaÁ„o dos dois primeiros dÌgitos
+    // Valida√ß√£o dos dois primeiros d√≠gitos
     String prefix = ie.substring(0, 2);
     if (!prefix.equals("10") && !prefix.equals("11") && !prefix.equals("15")) {
       throw new RFWValidationException("BISERP_100030");
     }
 
-    // Caso especial: a inscriÁ„o 11094402 pode ter DV 0 ou 1
+    // Caso especial: a inscri√ß√£o 11094402 pode ter DV 0 ou 1
     if (ie.startsWith("11094402")) {
       char lastDigit = ie.charAt(8);
       if (lastDigit != '0' && lastDigit != '1') {
@@ -958,11 +958,11 @@ public class RUValueValidation {
       return;
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int soma = 0;
     int peso = 9;
 
-    for (int i = 0; i < 8; i++) { // Apenas os primeiros 8 dÌgitos
+    for (int i = 0; i < 8; i++) { // Apenas os primeiros 8 d√≠gitos
       soma += Character.getNumericValue(ie.charAt(i)) * peso--;
     }
 
@@ -980,17 +980,17 @@ public class RUValueValidation {
       dvCalculado = 11 - resto;
     }
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(8)) != dvCalculado) {
       throw new RFWValidationException("BISERP_100031");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado do EspÌrito Santo.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado do Esp√≠rito Santo.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonES(String ie) throws RFWValidationException {
     if (ie == null || !ie.matches("\\d{9}")) {
@@ -1000,33 +1000,33 @@ public class RUValueValidation {
     int soma = 0;
     int peso = 9;
 
-    // C·lculo da soma ponderada
-    for (int i = 0; i < 8; i++) { // Apenas os primeiros 8 dÌgitos
+    // C√°lculo da soma ponderada
+    for (int i = 0; i < 8; i++) { // Apenas os primeiros 8 d√≠gitos
       soma += Character.getNumericValue(ie.charAt(i)) * peso--;
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int resto = soma % 11;
     int dvCalculado = (resto < 2) ? 0 : 11 - resto;
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(8)) != dvCalculado) {
       throw new RFWValidationException("BISERP_100028");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado do Distrito Federal.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado do Distrito Federal.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonDF(String ie) throws RFWValidationException {
     if (ie == null || !ie.matches("\\d{13}")) {
       throw new RFWValidationException("BISERP_100025");
     }
 
-    // C·lculo do primeiro dÌgito verificador
+    // C√°lculo do primeiro d√≠gito verificador
     int soma = 0;
     int peso = 4;
     for (int i = 0; i < 3; i++)
@@ -1038,7 +1038,7 @@ public class RUValueValidation {
     int d1 = 11 - (soma % 11);
     if (d1 >= 10) d1 = 0;
 
-    // C·lculo do segundo dÌgito verificador
+    // C√°lculo do segundo d√≠gito verificador
     soma = d1 * 2;
     peso = 5;
     for (int i = 0; i < 4; i++)
@@ -1050,17 +1050,17 @@ public class RUValueValidation {
     int d2 = 11 - (soma % 11);
     if (d2 >= 10) d2 = 0;
 
-    // ValidaÁ„o dos dÌgitos verificadores
+    // Valida√ß√£o dos d√≠gitos verificadores
     if (!ie.endsWith("" + d1 + d2)) {
       throw new RFWValidationException("BISERP_100026");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado do Cear·.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado do Cear√°.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonCE(String ie) throws RFWValidationException {
     if (ie == null || !ie.matches("\\d{9}")) {
@@ -1070,37 +1070,37 @@ public class RUValueValidation {
     int soma = 0;
     int peso = 9;
 
-    // C·lculo da soma ponderada
+    // C√°lculo da soma ponderada
     for (int i = 0; i < 8; i++) {
       soma += Character.getNumericValue(ie.charAt(i)) * peso--;
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int resto = soma % 11;
     int dvCalculado = (resto == 10 || resto == 11) ? 0 : 11 - resto;
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(8)) != dvCalculado) {
       throw new RFWValidationException("BISERP_100024");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado da Bahia.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado da Bahia.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonBA(String ie) throws RFWValidationException {
     if (ie == null || !ie.matches("\\d{8}|\\d{9}")) {
       throw new RFWValidationException("BISERP_100021");
     }
 
-    // Determina o mÛdulo com base no primeiro dÌgito
+    // Determina o m√≥dulo com base no primeiro d√≠gito
     int firstDigit = Character.getNumericValue(ie.charAt(ie.length() == 8 ? 0 : 1));
     int modulo = (firstDigit == 6 || firstDigit == 7 || firstDigit == 9) ? 11 : 10;
 
-    // C·lculo do segundo dÌgito verificador
+    // C√°lculo do segundo d√≠gito verificador
     int soma = 0, peso = (ie.length() == 8) ? 7 : 8;
     for (int i = 0; i < ie.length() - 2; i++)
       soma += Character.getNumericValue(ie.charAt(i)) * peso--;
@@ -1108,7 +1108,7 @@ public class RUValueValidation {
     int resto = soma % modulo;
     int d2 = (resto == 0 || (modulo == 11 && resto == 1)) ? 0 : modulo - resto;
 
-    // C·lculo do primeiro dÌgito verificador
+    // C√°lculo do primeiro d√≠gito verificador
     soma = d2 * 2;
     peso = (ie.length() == 8) ? 8 : 9;
     for (int i = 0; i < ie.length() - 2; i++)
@@ -1117,17 +1117,17 @@ public class RUValueValidation {
     resto = soma % modulo;
     int d1 = (resto == 0 || (modulo == 11 && resto == 1)) ? 0 : modulo - resto;
 
-    // ValidaÁ„o dos dÌgitos verificadores
+    // Valida√ß√£o dos d√≠gitos verificadores
     if (!ie.endsWith("" + d1 + d2)) {
       throw new RFWValidationException("BISERP_100022");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado do Amazonas.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado do Amazonas.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonAM(String ie) throws RFWValidationException {
     if (ie == null || !ie.matches("\\d{9}")) {
@@ -1136,80 +1136,80 @@ public class RUValueValidation {
 
     int soma = 0, peso = 9;
 
-    // C·lculo da soma ponderada
+    // C√°lculo da soma ponderada
     for (int i = 0; i < 8; i++) {
       soma += Character.getNumericValue(ie.charAt(i)) * peso--;
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int dvCalculado = (soma < 11) ? (11 - soma) : ((soma % 11) <= 1 ? 0 : 11 - (soma % 11));
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(8)) != dvCalculado) {
       throw new RFWValidationException("BISERP_100020");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado do Amap·.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado do Amap√°.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonAP(String ie) throws RFWValidationException {
     if (ie == null || !ie.matches("\\d{9}")) {
       throw new RFWValidationException("BISERP_100016");
     }
 
-    // Verifica os dois primeiros dÌgitos - deve ser igual a "03"
+    // Verifica os dois primeiros d√≠gitos - deve ser igual a "03"
     if (!ie.startsWith("03")) {
       throw new RFWValidationException("BISERP_100017");
     }
 
-    // Define os valores de soma e d1 com base na faixa da inscriÁ„o estadual
-    long x = Long.parseLong(ie.substring(0, 8)); // x = inscriÁ„o estadual sem o dÌgito verificador
+    // Define os valores de soma e d1 com base na faixa da inscri√ß√£o estadual
+    long x = Long.parseLong(ie.substring(0, 8)); // x = inscri√ß√£o estadual sem o d√≠gito verificador
     int d1 = (x >= 3017001L && x <= 3019022L) ? 1 : 0;
     int soma = (x >= 3000001L && x <= 3017000L) ? 5 : (x >= 3019023L ? 0 : 9);
 
-    // C·lculo da soma ponderada
+    // C√°lculo da soma ponderada
     int peso = 9;
     for (int i = 0; i < 8; i++) {
       soma += Character.getNumericValue(ie.charAt(i)) * peso--;
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int d = 11 - (soma % 11);
     d = (d == 10) ? 0 : (d == 11 ? d1 : d);
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(8)) != d) {
       throw new RFWValidationException("BISERP_100018");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado de Alagoas.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado de Alagoas.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonAL(String ie) throws RFWValidationException {
     if (ie == null || !ie.matches("\\d{9}")) {
       throw new RFWValidationException("BISERP_100013");
     }
 
-    // Valida os dois primeiros dÌgitos - deve ser "24"
+    // Valida os dois primeiros d√≠gitos - deve ser "24"
     if (!ie.startsWith("24")) {
       throw new RFWValidationException("BISERP_100014");
     }
 
-    // Valida o terceiro dÌgito - deve ser 0,3,5,7,8
+    // Valida o terceiro d√≠gito - deve ser 0,3,5,7,8
     char terceiroDigito = ie.charAt(2);
     if ("03578".indexOf(terceiroDigito) == -1) {
       throw new RFWValidationException("BISERP_100015");
     }
 
-    // C·lculo do dÌgito verificador
+    // C√°lculo do d√≠gito verificador
     int soma = 0, peso = 9;
     for (int i = 0; i < 8; i++) {
       soma += Character.getNumericValue(ie.charAt(i)) * peso--;
@@ -1218,29 +1218,29 @@ public class RUValueValidation {
     int d = (soma * 10) % 11;
     if (d == 10) d = 0;
 
-    // ValidaÁ„o do dÌgito verificador
+    // Valida√ß√£o do d√≠gito verificador
     if (Character.getNumericValue(ie.charAt(8)) != d) {
       throw new RFWValidationException("BISERP_100015");
     }
   }
 
   /**
-   * Valida se o valor entrado È uma IE (InscriÁ„o Estadual) v·lida de acordo com a validaÁ„o do estado do Acre.
+   * Valida se o valor entrado √© uma IE (Inscri√ß√£o Estadual) v√°lida de acordo com a valida√ß√£o do estado do Acre.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a IE for inv·lida.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a IE for inv√°lida.
    */
   public static void validateIEonAC(String ie) throws RFWValidationException {
     if (ie == null || !ie.matches("\\d{13}")) {
       throw new RFWValidationException("BISERP_100010");
     }
 
-    // Valida os dois primeiros dÌgitos - devem ser "01"
+    // Valida os dois primeiros d√≠gitos - devem ser "01"
     if (!ie.startsWith("01")) {
       throw new RFWValidationException("BISERP_100012");
     }
 
-    // C·lculo do primeiro dÌgito verificador
+    // C√°lculo do primeiro d√≠gito verificador
     int soma = 0, peso = 4;
     for (int i = 0; i < 3; i++)
       soma += Character.getNumericValue(ie.charAt(i)) * peso--;
@@ -1251,7 +1251,7 @@ public class RUValueValidation {
     int d1 = 11 - (soma % 11);
     if (d1 >= 10) d1 = 0;
 
-    // C·lculo do segundo dÌgito verificador
+    // C√°lculo do segundo d√≠gito verificador
     soma = d1 * 2;
     peso = 5;
     for (int i = 0; i < 4; i++)
@@ -1263,17 +1263,17 @@ public class RUValueValidation {
     int d2 = 11 - (soma % 11);
     if (d2 >= 10) d2 = 0;
 
-    // ValidaÁ„o dos dÌgitos verificadores
+    // Valida√ß√£o dos d√≠gitos verificadores
     if (Character.getNumericValue(ie.charAt(11)) != d1 || Character.getNumericValue(ie.charAt(12)) != d2) {
       throw new RFWValidationException("BISERP_100011");
     }
   }
 
   /**
-   * Valida uma InscriÁ„o Estadual sem saber o estado. Testa a inscriÁ„o estadual para cada UF disponÌvel, aceitando-a se for v·lida em pelo menos um estado.
+   * Valida uma Inscri√ß√£o Estadual sem saber o estado. Testa a inscri√ß√£o estadual para cada UF dispon√≠vel, aceitando-a se for v√°lida em pelo menos um estado.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
-   * @throws RFWValidationException Se a inscriÁ„o n„o for v·lida em nenhum estado.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
+   * @throws RFWValidationException Se a inscri√ß√£o n√£o for v√°lida em nenhum estado.
    */
   public static void validateIE(String ie) throws RFWException {
     try {
@@ -1416,16 +1416,16 @@ public class RUValueValidation {
   }
 
   /**
-   * Valida a InscriÁ„o Estadual de acordo com a UF informada. Este mÈtodo delega a validaÁ„o para o mÈtodo correto de cada estado.
+   * Valida a Inscri√ß√£o Estadual de acordo com a UF informada. Este m√©todo delega a valida√ß√£o para o m√©todo correto de cada estado.
    *
-   * @param ie InscriÁ„o Estadual a ser validada.
+   * @param ie Inscri√ß√£o Estadual a ser validada.
    * @param acronym UF (sigla de 2 letras) do estado correspondente. Ex: "SP", "RJ", "MG", etc.
-   * @throws RFWValidationException Se a UF n„o for v·lida ou a IE for inv·lida para a UF.
+   * @throws RFWValidationException Se a UF n√£o for v√°lida ou a IE for inv√°lida para a UF.
    */
   public static void validateIE(String ie, String acronym) throws RFWException {
     if (ie == null || acronym == null) throw new RFWValidationException("BISERP_000304");
 
-    acronym = acronym.toUpperCase(); // Garante que a sigla esteja em mai˙sculas
+    acronym = acronym.toUpperCase(); // Garante que a sigla esteja em mai√∫sculas
     switch (acronym) {
       case "SP":
         validateIEonSP(ie);
@@ -1509,18 +1509,18 @@ public class RUValueValidation {
         validateIEonTO(ie);
         break;
       default:
-        throw new RFWValidationException("BISERP_000305"); // UF inv·lida
+        throw new RFWValidationException("BISERP_000305"); // UF inv√°lida
     }
   }
 
   /**
-   * Este mÈtodo calcula um DÌgito Verificador baseado no mÛdulo de 11 com uma implementaÁ„o genÈrica para ser utilizada pelo sistema.<Br>
-   * Muitos documentos utilizam a validaÁ„o com o mÛdulo de 11 (que se refere a utlizaÁ„o do resto da divis„o por onze), no entando muitas diferem nas regras de definiÁ„o do DV.<br>
-   * N√O ALTERE O FUNCIONAMENTO DESTE M…TODO, pois ele j· È utilizado no sistema para diversos c·lculos de seguranÁa. Para validaÁ„o de DV de documentos especÌficos, crie mÈtodos prÛprios.
+   * Este m√©todo calcula um D√≠gito Verificador baseado no m√≥dulo de 11 com uma implementa√ß√£o gen√©rica para ser utilizada pelo sistema.<Br>
+   * Muitos documentos utilizam a valida√ß√£o com o m√≥dulo de 11 (que se refere a utliza√ß√£o do resto da divis√£o por onze), no entando muitas diferem nas regras de defini√ß√£o do DV.<br>
+   * N√ÉO ALTERE O FUNCIONAMENTO DESTE M√âTODO, pois ele j√° √© utilizado no sistema para diversos c√°lculos de seguran√ßa. Para valida√ß√£o de DV de documentos espec√≠ficos, crie m√©todos pr√≥prios.
    *
-   * @param value valor contendo apenas dÌgitos para que seja calculado o DV.
-   * @return String contendo apenas 1 caracter que ser· o DV.
-   * @throws RFWException LanÁado caso o valor n„o tenha apenas n˙meros, ou seja um valor nulo/vazio.
+   * @param value valor contendo apenas d√≠gitos para que seja calculado o DV.
+   * @return String contendo apenas 1 caracter que ser√° o DV.
+   * @throws RFWException Lan√ßado caso o valor n√£o tenha apenas n√∫meros, ou seja um valor nulo/vazio.
    */
   public static String calcDVGenericMod11(String value) throws RFWException {
     value = RUString.removeNonDigits(value);
@@ -1543,9 +1543,9 @@ public class RUValueValidation {
   }
 
   /**
-   * Valida se o endereÁo de e-mail tem uma sintaxe v·lida.
+   * Valida se o endere√ßo de e-mail tem uma sintaxe v√°lida.
    *
-   * @param email endereÁo de email.
+   * @param email endere√ßo de email.
    * @throws RFWException
    */
   public static void validateEmailAddress(String email) throws RFWException {
@@ -1555,39 +1555,39 @@ public class RUValueValidation {
   }
 
   /**
-   * Valida um cÛdigo GTIN completo (8, 12, 13 ou 14 dÌgitos).
+   * Valida um c√≥digo GTIN completo (8, 12, 13 ou 14 d√≠gitos).
    *
    * <p>
-   * Este mÈtodo verifica:
+   * Este m√©todo verifica:
    * </p>
    * <ul>
-   * <li>Se o valor È totalmente numÈrico;</li>
+   * <li>Se o valor √© totalmente num√©rico;</li>
    * <li>Se possui tamanho permitido (8, 12, 13 ou 14);</li>
-   * <li>Se o dÌgito verificador È consistente com o c·lculo oficial.</li>
+   * <li>Se o d√≠gito verificador √© consistente com o c√°lculo oficial.</li>
    * </ul>
    *
    * <p>
-   * Se qualquer validaÁ„o falhar, uma exceÁ„o clara e descritiva ser· lanÁada.
+   * Se qualquer valida√ß√£o falhar, uma exce√ß√£o clara e descritiva ser√° lan√ßada.
    * </p>
    *
    * @param value GTIN completo a ser validado
-   * @throws RFWValidationException se o GTIN n„o for v·lido
+   * @throws RFWValidationException se o GTIN n√£o for v√°lido
    */
   public static void validateGTIN(String value) throws RFWValidationException {
     if (!isValidGTIN(value)) {
-      throw new RFWValidationException("O cÛdigo '" + value + "' n„o È um GTIN v·lido.");
+      throw new RFWValidationException("O c√≥digo '" + value + "' n√£o √© um GTIN v√°lido.");
     }
   }
 
   /**
-   * Verifica se um valor È um GTIN v·lido.
+   * Verifica se um valor √© um GTIN v√°lido.
    *
    * <p>
-   * Este mÈtodo n„o lanÁa exceÁıes. Ele apenas retorna true/false.
+   * Este m√©todo n√£o lan√ßa exce√ß√µes. Ele apenas retorna true/false.
    * </p>
    *
    * @param value GTIN completo
-   * @return true se o valor for v·lido; false caso contr·rio
+   * @return true se o valor for v√°lido; false caso contr√°rio
    */
   public static boolean isValidGTIN(String value) {
     if (value == null || !value.matches("\\d+")) return false;
@@ -1608,30 +1608,30 @@ public class RUValueValidation {
   /**
    * Valida um GTIN-8 completo.
    *
-   * @param value cÛdigo GTIN-8 com 8 dÌgitos
-   * @throws RFWValidationException se o cÛdigo for inv·lido
+   * @param value c√≥digo GTIN-8 com 8 d√≠gitos
+   * @throws RFWValidationException se o c√≥digo for inv√°lido
    */
   public static void validateGTIN8(String value) throws RFWValidationException {
     if (!isValidGTIN8(value)) {
-      throw new RFWValidationException("GTIN-8 inv·lido: '" + value + "'.");
+      throw new RFWValidationException("GTIN-8 inv√°lido: '" + value + "'.");
     }
   }
 
   /**
-   * Verifica se um GTIN-8 È v·lido.
+   * Verifica se um GTIN-8 √© v√°lido.
    *
    * @param value GTIN-8 completo
-   * @return true se v·lido; false caso contr·rio
+   * @return true se v√°lido; false caso contr√°rio
    */
   public static boolean isValidGTIN8(String value) {
     return validateLengthAndDV(value, 8);
   }
 
   /**
-   * Calcula o dÌgito verificador de um GTIN-8 a partir dos 7 primeiros dÌgitos.
+   * Calcula o d√≠gito verificador de um GTIN-8 a partir dos 7 primeiros d√≠gitos.
    *
-   * @param baseValue sequÍncia numÈrica de 7 dÌgitos
-   * @return dÌgito verificador calculado
+   * @param baseValue sequ√™ncia num√©rica de 7 d√≠gitos
+   * @return d√≠gito verificador calculado
    */
   public static int calcDVGTIN8(String baseValue) {
     return calcDV(baseValue);
@@ -1640,30 +1640,30 @@ public class RUValueValidation {
   /**
    * Valida um GTIN-12 completo.
    *
-   * @param value cÛdigo GTIN-12 com 12 dÌgitos
-   * @throws RFWValidationException se o cÛdigo for inv·lido
+   * @param value c√≥digo GTIN-12 com 12 d√≠gitos
+   * @throws RFWValidationException se o c√≥digo for inv√°lido
    */
   public static void validateGTIN12(String value) throws RFWValidationException {
     if (!isValidGTIN12(value)) {
-      throw new RFWValidationException("GTIN-12 inv·lido: '" + value + "'.");
+      throw new RFWValidationException("GTIN-12 inv√°lido: '" + value + "'.");
     }
   }
 
   /**
-   * Verifica se um GTIN-12 È v·lido.
+   * Verifica se um GTIN-12 √© v√°lido.
    *
    * @param value GTIN-12 completo
-   * @return true se v·lido; false caso contr·rio
+   * @return true se v√°lido; false caso contr√°rio
    */
   public static boolean isValidGTIN12(String value) {
     return validateLengthAndDV(value, 12);
   }
 
   /**
-   * Calcula o dÌgito verificador de um GTIN-12 a partir dos 11 primeiros dÌgitos.
+   * Calcula o d√≠gito verificador de um GTIN-12 a partir dos 11 primeiros d√≠gitos.
    *
-   * @param baseValue sequÍncia de 11 dÌgitos sem o DV
-   * @return dÌgito verificador calculado
+   * @param baseValue sequ√™ncia de 11 d√≠gitos sem o DV
+   * @return d√≠gito verificador calculado
    */
   public static int calcDVGTIN12(String baseValue) {
     return calcDV(baseValue);
@@ -1672,30 +1672,30 @@ public class RUValueValidation {
   /**
    * Valida um GTIN-13 completo.
    *
-   * @param value cÛdigo GTIN-13 com 13 dÌgitos
-   * @throws RFWValidationException se o valor for inv·lido
+   * @param value c√≥digo GTIN-13 com 13 d√≠gitos
+   * @throws RFWValidationException se o valor for inv√°lido
    */
   public static void validateGTIN13(String value) throws RFWValidationException {
     if (!isValidGTIN13(value)) {
-      throw new RFWValidationException("GTIN-13 inv·lido: '" + value + "'.");
+      throw new RFWValidationException("GTIN-13 inv√°lido: '" + value + "'.");
     }
   }
 
   /**
-   * Verifica se um GTIN-13 È v·lido.
+   * Verifica se um GTIN-13 √© v√°lido.
    *
    * @param value GTIN-13 completo
-   * @return true se v·lido; false caso contr·rio
+   * @return true se v√°lido; false caso contr√°rio
    */
   public static boolean isValidGTIN13(String value) {
     return validateLengthAndDV(value, 13);
   }
 
   /**
-   * Calcula o dÌgito verificador de um GTIN-13 a partir dos 12 primeiros dÌgitos.
+   * Calcula o d√≠gito verificador de um GTIN-13 a partir dos 12 primeiros d√≠gitos.
    *
-   * @param baseValue sequÍncia de 12 dÌgitos sem o DV
-   * @return dÌgito verificador calculado
+   * @param baseValue sequ√™ncia de 12 d√≠gitos sem o DV
+   * @return d√≠gito verificador calculado
    */
   public static int calcDVGTIN13(String baseValue) {
     return calcDV(baseValue);
@@ -1704,30 +1704,30 @@ public class RUValueValidation {
   /**
    * Valida um GTIN-14 completo.
    *
-   * @param value cÛdigo GTIN-14 com 14 dÌgitos
-   * @throws RFWValidationException se o cÛdigo for inv·lido
+   * @param value c√≥digo GTIN-14 com 14 d√≠gitos
+   * @throws RFWValidationException se o c√≥digo for inv√°lido
    */
   public static void validateGTIN14(String value) throws RFWValidationException {
     if (!isValidGTIN14(value)) {
-      throw new RFWValidationException("GTIN-14 inv·lido: '" + value + "'.");
+      throw new RFWValidationException("GTIN-14 inv√°lido: '" + value + "'.");
     }
   }
 
   /**
-   * Verifica se um GTIN-14 È v·lido.
+   * Verifica se um GTIN-14 √© v√°lido.
    *
    * @param value GTIN-14 completo
-   * @return true se v·lido; false caso contr·rio
+   * @return true se v√°lido; false caso contr√°rio
    */
   public static boolean isValidGTIN14(String value) {
     return validateLengthAndDV(value, 14);
   }
 
   /**
-   * Calcula o dÌgito verificador de um GTIN-14 a partir dos 13 primeiros dÌgitos.
+   * Calcula o d√≠gito verificador de um GTIN-14 a partir dos 13 primeiros d√≠gitos.
    *
-   * @param baseValue sequÍncia de 13 dÌgitos sem o DV
-   * @return dÌgito verificador calculado
+   * @param baseValue sequ√™ncia de 13 d√≠gitos sem o DV
+   * @return d√≠gito verificador calculado
    */
   public static int calcDVGTIN14(String baseValue) {
     return calcDV(baseValue);
@@ -1737,11 +1737,11 @@ public class RUValueValidation {
    */
 
   /**
-   * Verifica se o valor possui o tamanho esperado, contÈm apenas dÌgitos e se o dÌgito verificador informado corresponde ao c·lculo oficial do GTIN.
+   * Verifica se o valor possui o tamanho esperado, cont√©m apenas d√≠gitos e se o d√≠gito verificador informado corresponde ao c√°lculo oficial do GTIN.
    *
    * @param value GTIN completo
    * @param expectedLength tamanho esperado (8, 12, 13 ou 14)
-   * @return true se todas as validaÁıes forem atendidas
+   * @return true se todas as valida√ß√µes forem atendidas
    */
   private static boolean validateLengthAndDV(String value, int expectedLength) {
     if (value == null || value.length() != expectedLength || !value.matches("\\d+")) {
@@ -1755,22 +1755,22 @@ public class RUValueValidation {
   }
 
   /**
-   * Calcula o dÌgito verificador de valores GTIN utilizando o algoritmo mÛdulo 10.
+   * Calcula o d√≠gito verificador de valores GTIN utilizando o algoritmo m√≥dulo 10.
    *
    * <p>
-   * O processo È:
+   * O processo √©:
    * </p>
    * <ol>
-   * <li>Ler os dÌgitos da direita para a esquerda;</li>
-   * <li>Multiplicar cada dÌgito por 3 e 1 alternadamente;</li>
+   * <li>Ler os d√≠gitos da direita para a esquerda;</li>
+   * <li>Multiplicar cada d√≠gito por 3 e 1 alternadamente;</li>
    * <li>Somar os resultados;</li>
-   * <li>Obter o resto da divis„o por 10;</li>
+   * <li>Obter o resto da divis√£o por 10;</li>
    * <li>Subtrair esse resto de 10;</li>
-   * <li>Aplicar mÛdulo 10 novamente para evitar retornar 10.</li>
+   * <li>Aplicar m√≥dulo 10 novamente para evitar retornar 10.</li>
    * </ol>
    *
-   * @param baseValue sequÍncia numÈrica sem o dÌgito verificador
-   * @return dÌgito verificador calculado
+   * @param baseValue sequ√™ncia num√©rica sem o d√≠gito verificador
+   * @return d√≠gito verificador calculado
    */
   private static int calcDV(String baseValue) {
     int sum = 0;

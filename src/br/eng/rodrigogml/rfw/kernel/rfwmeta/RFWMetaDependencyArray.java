@@ -7,9 +7,9 @@ import java.lang.annotation.Target;
 
 /**
  * Description: Permite o agrupamento de {@link RFWMetaUsedBy}.<br>
- * Esta classe È utilizada apenas para permitir que sejam usadas uma coleÁ„o da classe {@link RFWMetaDependencyArray} quando necess·rio, montrando um array diretamente.
+ * Esta classe √© utilizada apenas para permitir que sejam usadas uma cole√ß√£o da classe {@link RFWMetaDependencyArray} quando necess√°rio, montrando um array diretamente.
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.1.0 (16/07/2015)
  */
 @Retention(RetentionPolicy.RUNTIME)

@@ -10,26 +10,26 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 
 /**
- * Description: Classe utilit·ria com mÈtodos para acessos e operaÁıes via JNDI.<br>
+ * Description: Classe utilit√°ria com m√©todos para acessos e opera√ß√µes via JNDI.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since (5 de set. de 2024)
  */
 public class RUJNDI {
 
   /**
-   * Construtor privado para classe utilit·ria exclusivamente stat·tica.
+   * Construtor privado para classe utilit√°ria exclusivamente stat√°tica.
    */
   private RUJNDI() {
   }
 
   /**
    * Faz o lookup por uma fachada utilizando um Context Local.<br>
-   * Este mÈtodo pode ser usado por exemplo para um mÛdulo encontrar a fachada de outro quando est„o deployed no mesmo servidor.
+   * Este m√©todo pode ser usado por exemplo para um m√≥dulo encontrar a fachada de outro quando est√£o deployed no mesmo servidor.
    *
    * @param jndiName JNDI Name para lookup.
    * @return Interface para o recurso solicitado se encontrado com sucesso.
-   * @throws RFWException LanÁado caso o mÈtodo falhe em encontrar o recurso pelo JNDI name.
+   * @throws RFWException Lan√ßado caso o m√©todo falhe em encontrar o recurso pelo JNDI name.
    */
   public static Object lookup(String jndiName) throws RFWException {
     Object facade = null;
@@ -42,13 +42,13 @@ public class RUJNDI {
   }
 
   /**
-   * Recupera o contexto remoto passando um host e porta especÌficos.
+   * Recupera o contexto remoto passando um host e porta espec√≠ficos.
    *
    * @param host host do servidor
    * @param port porta do servidor
-   * @param user usu·rio para autenticaÁ„o JNDI remota.
-   * @param password senha para autenticaÁ„o JNDI remota.
-   * @return Contexto Remoto usado para recupear as fachadas dos EJBs dos mÛdulos.
+   * @param user usu√°rio para autentica√ß√£o JNDI remota.
+   * @param password senha para autentica√ß√£o JNDI remota.
+   * @return Contexto Remoto usado para recupear as fachadas dos EJBs dos m√≥dulos.
    * @throws RFWException
    */
   public static InitialContext getRemoteContextWildFly24(String host, Integer port, String user, String password) throws RFWException {
@@ -58,8 +58,8 @@ public class RUJNDI {
     props.put("jboss.naming.client.ejb.context", true);
     // props.put("jboss.naming.client.connect.options.org.xnio.Options.CONNECT_TIMEOUT", "60000");
     // props.put("jboss.naming.client.connect.options.org.xnio.Options.READ_TIMEOUT", "60000");
-    // props.put("jboss.ejb.client.connection.timeout", "60000"); // Timeout de conex„o (ms)
-    // props.put("jboss.ejb.client.invocation.timeout", "60000"); // Timeout de invocaÁ„o (ms)
+    // props.put("jboss.ejb.client.connection.timeout", "60000"); // Timeout de conex√£o (ms)
+    // props.put("jboss.ejb.client.invocation.timeout", "60000"); // Timeout de invoca√ß√£o (ms)
 
     if (user != null) props.put(Context.SECURITY_PRINCIPAL, user);
     if (password != null) props.put(Context.SECURITY_CREDENTIALS, password);
@@ -74,11 +74,11 @@ public class RUJNDI {
   }
 
   /**
-   * Recupera o contexto remoto passando um host e porta especÌficos.
+   * Recupera o contexto remoto passando um host e porta espec√≠ficos.
    *
    * @param host host do servidor
    * @param port porta do servidor
-   * @return Contexto Remoto usado para recupear as fachadas dos EJBs dos mÛdulos.
+   * @return Contexto Remoto usado para recupear as fachadas dos EJBs dos m√≥dulos.
    * @throws RFWException
    */
   public static InitialContext getRemoteContextWildFly24(String host, Integer port) throws RFWException {
@@ -86,11 +86,11 @@ public class RUJNDI {
   }
 
   /**
-   * Recupera a interface a partir de um contexto remoto passando um host e porta especÌficos e o JNDI name.
+   * Recupera a interface a partir de um contexto remoto passando um host e porta espec√≠ficos e o JNDI name.
    *
    * @param host host do servidor
    * @param port porta do servidor
-   * @param jndiName Nome do JNDI para o looup do EJB. Normalmente ao levantar um EJB o WildFly d· uma coleÁ„o de nomes no seu log, por exemplo:<br>
+   * @param jndiName Nome do JNDI para o looup do EJB. Normalmente ao levantar um EJB o WildFly d√° uma cole√ß√£o de nomes no seu log, por exemplo:<br>
    *          <ul>
    *          2024-08-19 20:55:57,524 INFO [org.jboss.as.ejb3.deployment] (MSC service thread 1-8) WFLYEJB0473: JNDI bindings for session bean named 'APPKernelFacade' in deployment unit 'subdeployment "APPCoreEJB.jar" of deployment "APPEAR-8.0.0.ear"' are as follows:<br>
    *          <ul>
@@ -103,7 +103,7 @@ public class RUJNDI {
    *          java:app/APPCoreEJB/APPKernelFacade<br>
    *          java:module/APPKernelFacade<br>
    *          </ul>
-   *          Este mÈtodo funcionar· com o nome completo, incluindo a definiÁ„o da interface remota (o nome da classe depois do !). Considerando os exemplos acima, o valor a ser passado neste argumento seria:<br>
+   *          Este m√©todo funcionar√° com o nome completo, incluindo a defini√ß√£o da interface remota (o nome da classe depois do !). Considerando os exemplos acima, o valor a ser passado neste argumento seria:<br>
    *          <ul>
    *          <li>/APPERP/APPCoreEJB/APPKernelFacade!br.com.app.kernel.facade.APPKernelFacadeRemote</li>
    *          </ul>
@@ -122,13 +122,13 @@ public class RUJNDI {
   }
 
   /**
-   * Recupera a interface a partir de um contexto remoto passando um host e porta especÌficos e o JNDI name.
+   * Recupera a interface a partir de um contexto remoto passando um host e porta espec√≠ficos e o JNDI name.
    *
    * @param host host do servidor
    * @param port porta do servidor
-   * @param user usu·rio para autenticaÁ„o JNDI remota.
-   * @param password senha para autenticaÁ„o JNDI remota.
-   * @param jndiName Nome do JNDI para o looup do EJB. Normalmente ao levantar um EJB o WildFly d· uma coleÁ„o de nomes no seu log, por exemplo:<br>
+   * @param user usu√°rio para autentica√ß√£o JNDI remota.
+   * @param password senha para autentica√ß√£o JNDI remota.
+   * @param jndiName Nome do JNDI para o looup do EJB. Normalmente ao levantar um EJB o WildFly d√° uma cole√ß√£o de nomes no seu log, por exemplo:<br>
    *          <ul>
    *          2024-08-19 20:55:57,524 INFO [org.jboss.as.ejb3.deployment] (MSC service thread 1-8) WFLYEJB0473: JNDI bindings for session bean named 'APPKernelFacade' in deployment unit 'subdeployment "APPCoreEJB.jar" of deployment "APPEAR-8.0.0.ear"' are as follows:<br>
    *          <ul>
@@ -141,7 +141,7 @@ public class RUJNDI {
    *          java:app/APPCoreEJB/APPKernelFacade<br>
    *          java:module/APPKernelFacade<br>
    *          </ul>
-   *          Este mÈtodo funcionar· com o nome completo, incluindo a definiÁ„o da interface remota (o nome da classe depois do !). Considerando os exemplos acima, o valor a ser passado neste argumento seria:<br>
+   *          Este m√©todo funcionar√° com o nome completo, incluindo a defini√ß√£o da interface remota (o nome da classe depois do !). Considerando os exemplos acima, o valor a ser passado neste argumento seria:<br>
    *          <ul>
    *          <li>/APPERP/APPCoreEJB/APPKernelFacade!br.com.app.kernel.facade.APPKernelFacadeRemote</li>
    *          </ul>
@@ -160,11 +160,11 @@ public class RUJNDI {
   }
 
   /**
-   * Recupera o contexto remoto passando um host e porta especÌficos.
+   * Recupera o contexto remoto passando um host e porta espec√≠ficos.
    *
    * @param host host do servidor
    * @param port porta do servidor
-   * @return Contexto Remoto usado para recupear as fachadas dos EJBs dos mÛdulos.
+   * @return Contexto Remoto usado para recupear as fachadas dos EJBs dos m√≥dulos.
    * @throws RFWException
    */
   public static InitialContext getRemoteContextGlassFish5(String host, Integer port) throws RFWException {

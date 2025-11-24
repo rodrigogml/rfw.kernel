@@ -8,9 +8,9 @@ import java.lang.annotation.Target;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess.PreProcessOption;
 
 /**
- * Description: Annotation usada para definir um atributo do tipo String que funcionar· como um Email.<BR>
+ * Description: Annotation usada para definir um atributo do tipo String que funcionar√° como um Email.<BR>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.1.0 (13/08/2015)
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -18,41 +18,41 @@ import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess.PreProcessOption;
 public @interface RFWMetaStringEmailField {
 
   /**
-   * Define o nome da coluna na tabela do banco de dados. Caso deixado em branco, ser· utilizado o nome da propriedade.
+   * Define o nome da coluna na tabela do banco de dados. Caso deixado em branco, ser√° utilizado o nome da propriedade.
    */
   String column() default "";
 
   /**
-   * Define o nome do atributo/campo. Este nome È usado para facilitar mensagens de erros, validaÁıes, em UIs, etc.<br>
-   * N„o utilize ":" no final ou outras formataÁıes especÌficas do local de uso. Aqui deve ser definido apenas o nome, como "Caixa", "Nome do Usu·rio", etc.
+   * Define o nome do atributo/campo. Este nome √© usado para facilitar mensagens de erros, valida√ß√µes, em UIs, etc.<br>
+   * N√£o utilize ":" no final ou outras formata√ß√µes espec√≠ficas do local de uso. Aqui deve ser definido apenas o nome, como "Caixa", "Nome do Usu√°rio", etc.
    */
   String caption();
 
   /**
-   * Define se o atributo È obrigatÛrio ou n„o na entidade.
+   * Define se o atributo √© obrigat√≥rio ou n√£o na entidade.
    */
   boolean required();
 
   /**
-   * Define o tamanho m·ximo da String.
+   * Define o tamanho m√°ximo da String.
    */
   int maxLength() default -1;
 
   /**
-   * Define se o atributo È ˙nico.
+   * Define se o atributo √© √∫nico.
    */
   boolean unique() default false;
 
   /**
-   * Define o padr„o de prÈ-processamento a ser aplicado na String antes da validaÁ„o.<br>
-   * Note que o preprocessamento È aplicado na ordem que for definido!
+   * Define o padr√£o de pr√©-processamento a ser aplicado na String antes da valida√ß√£o.<br>
+   * Note que o preprocessamento √© aplicado na ordem que for definido!
    */
   PreProcessOption[] preProcess() default { PreProcessOption.NONE };
 
   /**
-   * Define se o padr„o do endereÁo de e-mail segue a especificaÁ„o do RFC822.<br>
-   * Caso false o valor dever· ser sempre "sÛ" o endereÁo de e-mail. Ex: nome@dominio.com.br<Br>
-   * Caso true o valor poder· ser "sÛ" o endereÁo e-mail, como em caso de falso, mas tambÈm aceita o formato:<br>
+   * Define se o padr√£o do endere√ßo de e-mail segue a especifica√ß√£o do RFC822.<br>
+   * Caso false o valor dever√° ser sempre "s√≥" o endere√ßo de e-mail. Ex: nome@dominio.com.br<Br>
+   * Caso true o valor poder√° ser "s√≥" o endere√ßo e-mail, como em caso de falso, mas tamb√©m aceita o formato:<br>
    * <li>"Nome e Sobrenome" <nome@dominio.com.br>
    */
   boolean useRFC822() default false;

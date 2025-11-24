@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * Description: Listener de eventos do EventDispatcher.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.1.0 (27 de set de 2018)
  */
 public interface EventDispatcherListener {
@@ -13,10 +13,10 @@ public interface EventDispatcherListener {
   /**
    * Chamado sempre que alguma parte do sistema disparar um evento.
    *
-   * <b>ATEN«√O:</B> O mÈtodo n„o lanÁa nenhuma exceÁ„o pois elas devem ser totalmente tratadas dentro dos listeners. Qualquer exception que vaze (como {@link RuntimeException} ser· logada como erro crÌtico e n„o atrapalhar· o processo de notificaÁ„o dos outros listeners nem desfar· a aÁ„o atual.
+   * <b>ATEN√á√ÉO:</B> O m√©todo n√£o lan√ßa nenhuma exce√ß√£o pois elas devem ser totalmente tratadas dentro dos listeners. Qualquer exception que vaze (como {@link RuntimeException} ser√° logada como erro cr√≠tico e n√£o atrapalhar√° o processo de notifica√ß√£o dos outros listeners nem desfar√° a a√ß√£o atual.
    *
    * @param eventID Identificador do Evento. Normalmente uma STRING definida como constante na classe Framework com o prefixo "EVENT_".
-   * @param params Hash com os parametros do evento. O primeiro argumento È uma chave String (como se fosse o nome da vari·vel) e o conte˙do da Hash È qualquer objeto que o evento deseje passar. Para mais informaÁıes È necess·rio verificar a documentaÁ„o do evento.
+   * @param params Hash com os parametros do evento. O primeiro argumento √© uma chave String (como se fosse o nome da vari√°vel) e o conte√∫do da Hash √© qualquer objeto que o evento deseje passar. Para mais informa√ß√µes √© necess√°rio verificar a documenta√ß√£o do evento.
    */
   public void event(String eventID, HashMap<String, Object> params);
 

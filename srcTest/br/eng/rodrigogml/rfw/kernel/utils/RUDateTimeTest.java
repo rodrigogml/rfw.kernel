@@ -39,16 +39,16 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 
 /**
- * Description: Classe de Teste dos métodos da {@link RUDateTime}.<br>
+ * Description: Classe de Teste dos mÃ©todos da {@link RUDateTime}.<br>
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since (21 de fev. de 2025)
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RUDateTimeTest {
 
   /**
-   * Testa o método {@code compareDateWithoutTime}, garantindo que apenas a data (dia, mês e ano) seja considerada.
+   * Testa o mÃ©todo {@code compareDateWithoutTime}, garantindo que apenas a data (dia, mÃªs e ano) seja considerada.
    */
   @Test
   public void t00_compareDateWithoutTime() {
@@ -58,7 +58,7 @@ public class RUDateTimeTest {
     cal.set(2024, Calendar.FEBRUARY, 20, 10, 30, 45);
     Date date1 = cal.getTime();
 
-    // Criando date2: 2024-02-20 23:59:59 (mesmo dia, mas horário diferente)
+    // Criando date2: 2024-02-20 23:59:59 (mesmo dia, mas horÃ¡rio diferente)
     cal.set(2024, Calendar.FEBRUARY, 20, 23, 59, 59);
     Date date2 = cal.getTime();
 
@@ -72,7 +72,7 @@ public class RUDateTimeTest {
   }
 
   /**
-   * Testa o método {@code countMinutesFrom}, garantindo que o cálculo do tempo decorrido esteja correto.
+   * Testa o mÃ©todo {@code countMinutesFrom}, garantindo que o cÃ¡lculo do tempo decorrido esteja correto.
    */
   @Test
   public void t00_countMinutesFrom() {
@@ -86,66 +86,66 @@ public class RUDateTimeTest {
   }
 
   /**
-   * Testa o método {@code calcDifferenceInMonths}, garantindo que a contagem de meses esteja correta.
+   * Testa o mÃ©todo {@code calcDifferenceInMonths}, garantindo que a contagem de meses esteja correta.
    */
   @Test
   public void t00_calcDifferenceInMonths() {
-    assertEquals("Mesmo mês deve retornar 0.", 0, calcDifferenceInMonths(LocalDate.of(2024, 2, 10), LocalDate.of(2024, 2, 28)));
-    assertEquals("Dois meses de diferença.", 2, calcDifferenceInMonths(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 1)));
+    assertEquals("Mesmo mÃªs deve retornar 0.", 0, calcDifferenceInMonths(LocalDate.of(2024, 2, 10), LocalDate.of(2024, 2, 28)));
+    assertEquals("Dois meses de diferenÃ§a.", 2, calcDifferenceInMonths(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 1)));
     assertEquals("Ano novo deve contar corretamente.", -3, calcDifferenceInMonths(LocalDate.of(2024, 6, 1), LocalDate.of(2024, 3, 1)));
   }
 
   /**
-   * Testa o método {@code calcDifferenceInDays} para {@code LocalDate}.
+   * Testa o mÃ©todo {@code calcDifferenceInDays} para {@code LocalDate}.
    */
   @Test
   public void t00_calcDifferenceInDays_LocalDate() {
     assertEquals("Mesma data deve retornar 0.", 0, calcDifferenceInDays(LocalDate.of(2024, 2, 20), LocalDate.of(2024, 2, 20)));
-    assertEquals("Um dia de diferença.", 1, calcDifferenceInDays(LocalDate.of(2024, 2, 20), LocalDate.of(2024, 2, 21)));
-    assertEquals("Diferença de cinco dias.", 5, calcDifferenceInDays(LocalDate.of(2024, 2, 20), LocalDate.of(2024, 2, 25)));
+    assertEquals("Um dia de diferenÃ§a.", 1, calcDifferenceInDays(LocalDate.of(2024, 2, 20), LocalDate.of(2024, 2, 21)));
+    assertEquals("DiferenÃ§a de cinco dias.", 5, calcDifferenceInDays(LocalDate.of(2024, 2, 20), LocalDate.of(2024, 2, 25)));
   }
 
   /**
-   * Testa o método {@code calcDifferenceInDays} para {@code LocalDateTime}.
+   * Testa o mÃ©todo {@code calcDifferenceInDays} para {@code LocalDateTime}.
    */
   @Test
   public void t00_calcDifferenceInDays_LocalDateTime() {
-    assertEquals("Menos de 24h não deve contar como um dia.", 0, calcDifferenceInDays(LocalDateTime.of(2024, 2, 20, 10, 0), LocalDateTime.of(2024, 2, 21, 9, 59)));
+    assertEquals("Menos de 24h nÃ£o deve contar como um dia.", 0, calcDifferenceInDays(LocalDateTime.of(2024, 2, 20, 10, 0), LocalDateTime.of(2024, 2, 21, 9, 59)));
     assertEquals("Exatamente 24h deve contar um dia.", 1, calcDifferenceInDays(LocalDateTime.of(2024, 2, 20, 10, 0), LocalDateTime.of(2024, 2, 21, 10, 0)));
   }
 
   /**
-   * Testa o método {@code calcDifferenceInDays} para {@code Date}.
+   * Testa o mÃ©todo {@code calcDifferenceInDays} para {@code Date}.
    */
   @Test
   public void t00_calcDifferenceInDays_Date() {
     long now = System.currentTimeMillis();
     assertEquals("Mesma data deve retornar 0.", 0.0, calcDifferenceInDays(new Date(now), new Date(now)), 0.1);
-    assertEquals("Um dia de diferença.", 1.0, calcDifferenceInDays(new Date(now - 86400000), new Date(now)), 0.1);
+    assertEquals("Um dia de diferenÃ§a.", 1.0, calcDifferenceInDays(new Date(now - 86400000), new Date(now)), 0.1);
   }
 
   /**
-   * Testa o método {@code calcDifferenceInHours} para {@code Date}.
+   * Testa o mÃ©todo {@code calcDifferenceInHours} para {@code Date}.
    */
   @Test
   public void t00_calcDifferenceInHours_Date() {
     long now = System.currentTimeMillis();
-    assertEquals("Sem diferença de horas deve retornar 0.", 0.0, calcDifferenceInHours(new Date(now), new Date(now)), 0.1);
-    assertEquals("Uma hora de diferença.", 1.0, calcDifferenceInHours(new Date(now - 3600000), new Date(now)), 0.1);
+    assertEquals("Sem diferenÃ§a de horas deve retornar 0.", 0.0, calcDifferenceInHours(new Date(now), new Date(now)), 0.1);
+    assertEquals("Uma hora de diferenÃ§a.", 1.0, calcDifferenceInHours(new Date(now - 3600000), new Date(now)), 0.1);
   }
 
   /**
-   * Testa o método {@code calcDifferenceInMinutes}, garantindo que a diferença em minutos seja calculada corretamente.
+   * Testa o mÃ©todo {@code calcDifferenceInMinutes}, garantindo que a diferenÃ§a em minutos seja calculada corretamente.
    */
   @Test
   public void t00_calcDifferenceInMinutes() {
     long now = System.currentTimeMillis();
-    assertEquals("Sem diferença deve retornar 0.", 0.0, calcDifferenceInMinutes(new Date(now), new Date(now)), 0.1);
-    assertEquals("Dez minutos de diferença.", 10.0, calcDifferenceInMinutes(new Date(now - 600000), new Date(now)), 0.1);
+    assertEquals("Sem diferenÃ§a deve retornar 0.", 0.0, calcDifferenceInMinutes(new Date(now), new Date(now)), 0.1);
+    assertEquals("Dez minutos de diferenÃ§a.", 10.0, calcDifferenceInMinutes(new Date(now - 600000), new Date(now)), 0.1);
   }
 
   /**
-   * Testa o método {@code calcDateAdd}, garantindo que a soma e subtração de períodos seja correta.
+   * Testa o mÃ©todo {@code calcDateAdd}, garantindo que a soma e subtraÃ§Ã£o de perÃ­odos seja correta.
    */
   @Test
   public void t00_calcDateAdd() {
@@ -163,7 +163,7 @@ public class RUDateTimeTest {
   }
 
   /**
-   * Testa o método {@code getMonth}, garantindo que o mês seja extraído corretamente.
+   * Testa o mÃ©todo {@code getMonth}, garantindo que o mÃªs seja extraÃ­do corretamente.
    */
   @Test
   public void t00_getMonth() {
@@ -173,93 +173,93 @@ public class RUDateTimeTest {
   }
 
   /**
-   * Testa o método {@code getYear}, garantindo que o ano seja extraído corretamente.
+   * Testa o mÃ©todo {@code getYear}, garantindo que o ano seja extraÃ­do corretamente.
    */
   @Test
   public void t00_getYear() {
     Calendar cal = Calendar.getInstance();
     cal.set(2024, Calendar.FEBRUARY, 20); // 20/02/2024
-    assertEquals("O ano deve ser extraído corretamente.", 2024, getYear(cal.getTime()));
+    assertEquals("O ano deve ser extraÃ­do corretamente.", 2024, getYear(cal.getTime()));
   }
 
   /**
-   * Testa o método {@code getLastLocalDateOfMonth} para {@code LocalDateTime} e {@code LocalDate}.
+   * Testa o mÃ©todo {@code getLastLocalDateOfMonth} para {@code LocalDateTime} e {@code LocalDate}.
    */
   @Test
   public void t00_getLastLocalDateOfMonth() {
-    assertEquals("Último dia de fevereiro 2024 deve ser 29.", LocalDate.of(2024, 2, 29), getLastLocalDateOfMonth(LocalDateTime.of(2024, 2, 15, 12, 0)));
-    assertEquals("Último dia de abril 2024 deve ser 30.", LocalDate.of(2024, 4, 30), getLastLocalDateOfMonth(LocalDate.of(2024, 4, 10)));
+    assertEquals("Ãšltimo dia de fevereiro 2024 deve ser 29.", LocalDate.of(2024, 2, 29), getLastLocalDateOfMonth(LocalDateTime.of(2024, 2, 15, 12, 0)));
+    assertEquals("Ãšltimo dia de abril 2024 deve ser 30.", LocalDate.of(2024, 4, 30), getLastLocalDateOfMonth(LocalDate.of(2024, 4, 10)));
   }
 
   /**
-   * Testa o método {@code getMonthName}, garantindo que o nome do mês seja retornado corretamente.
+   * Testa o mÃ©todo {@code getMonthName}, garantindo que o nome do mÃªs seja retornado corretamente.
    */
   @Test
   public void t00_getMonthName() {
-    assertEquals("Janeiro deve ser 'January' em inglês.", "January", getMonthName(Locale.ENGLISH, 1));
-    assertEquals("Janeiro deve ser 'Janeiro' em português.", "Janeiro", getMonthName(new Locale("pt", "BR"), 1));
+    assertEquals("Janeiro deve ser 'January' em inglÃªs.", "January", getMonthName(Locale.ENGLISH, 1));
+    assertEquals("Janeiro deve ser 'Janeiro' em portuguÃªs.", "Janeiro", getMonthName(new Locale("pt", "BR"), 1));
   }
 
   /**
-   * Testa o método {@code getMonthShortName}, garantindo que o nome curto do mês seja retornado corretamente.
+   * Testa o mÃ©todo {@code getMonthShortName}, garantindo que o nome curto do mÃªs seja retornado corretamente.
    */
   @Test
   public void t00_getMonthShortName() {
-    assertEquals("Janeiro deve ser 'Jan' em inglês.", "Jan", getMonthShortName(Locale.ENGLISH, 1));
-    assertEquals("Janeiro deve ser 'jan' em português.", "jan", getMonthShortName(new Locale("pt", "BR"), 1));
+    assertEquals("Janeiro deve ser 'Jan' em inglÃªs.", "Jan", getMonthShortName(Locale.ENGLISH, 1));
+    assertEquals("Janeiro deve ser 'jan' em portuguÃªs.", "jan", getMonthShortName(new Locale("pt", "BR"), 1));
   }
 
   /**
-   * Testa o método {@code getWeekDay}, garantindo que o dia da semana seja retornado corretamente.
+   * Testa o mÃ©todo {@code getWeekDay}, garantindo que o dia da semana seja retornado corretamente.
    */
   @Test
   public void t00_getWeekDay() {
     Calendar cal = Calendar.getInstance();
     cal.set(2024, Calendar.FEBRUARY, 19); // Segunda-feira
     assertEquals("19/02/2024 deve ser uma segunda-feira.", Calendar.MONDAY, getWeekDay(cal.getTime()));
-    cal.set(2024, Calendar.FEBRUARY, 20); // Terça-feira
-    assertEquals("20/02/2024 deve ser uma terça-feira.", Calendar.TUESDAY, getWeekDay(cal.getTime()));
+    cal.set(2024, Calendar.FEBRUARY, 20); // TerÃ§a-feira
+    assertEquals("20/02/2024 deve ser uma terÃ§a-feira.", Calendar.TUESDAY, getWeekDay(cal.getTime()));
   }
 
   /**
-   * Testa o método {@code calcOverlappingDays}, garantindo que a sobreposição de períodos seja correta.
+   * Testa o mÃ©todo {@code calcOverlappingDays}, garantindo que a sobreposiÃ§Ã£o de perÃ­odos seja correta.
    */
   @Test
   public void t00_calcOverlappingDays() throws RFWValidationException {
-    assertEquals("Períodos idênticos devem ter sobreposição total.", 10, calcOverlappingDays(LocalDate.of(2024, 2, 1), LocalDate.of(2024, 2, 10), LocalDate.of(2024, 2, 1), LocalDate.of(2024, 2, 10)));
-    assertEquals("Períodos sem sobreposição devem retornar 0.", 0, calcOverlappingDays(LocalDate.of(2024, 2, 1), LocalDate.of(2024, 2, 10), LocalDate.of(2024, 2, 11), LocalDate.of(2024, 2, 20)));
-    assertEquals("Sobreposição parcial deve ser calculada corretamente.", 5, calcOverlappingDays(LocalDate.of(2024, 2, 1), LocalDate.of(2024, 2, 10), LocalDate.of(2024, 2, 6), LocalDate.of(2024, 2, 15)));
+    assertEquals("PerÃ­odos idÃªnticos devem ter sobreposiÃ§Ã£o total.", 10, calcOverlappingDays(LocalDate.of(2024, 2, 1), LocalDate.of(2024, 2, 10), LocalDate.of(2024, 2, 1), LocalDate.of(2024, 2, 10)));
+    assertEquals("PerÃ­odos sem sobreposiÃ§Ã£o devem retornar 0.", 0, calcOverlappingDays(LocalDate.of(2024, 2, 1), LocalDate.of(2024, 2, 10), LocalDate.of(2024, 2, 11), LocalDate.of(2024, 2, 20)));
+    assertEquals("SobreposiÃ§Ã£o parcial deve ser calculada corretamente.", 5, calcOverlappingDays(LocalDate.of(2024, 2, 1), LocalDate.of(2024, 2, 10), LocalDate.of(2024, 2, 6), LocalDate.of(2024, 2, 15)));
   }
 
   @Test
   public void t00_dateAdd() {
     Date baseDate = new GregorianCalendar(2025, Calendar.FEBRUARY, 22).getTime();
 
-    // Testa adição de um dia
+    // Testa adiÃ§Ã£o de um dia
     Date expectedDate = new GregorianCalendar(2025, Calendar.FEBRUARY, 23).getTime();
     assertEquals(expectedDate, dateAdd(baseDate, Calendar.DAY_OF_MONTH, 1));
 
-    // Testa subtração de um mês
+    // Testa subtraÃ§Ã£o de um mÃªs
     expectedDate = new GregorianCalendar(2025, Calendar.JANUARY, 22).getTime();
     assertEquals(expectedDate, dateAdd(baseDate, Calendar.MONTH, -1));
 
-    // Testa adição de 10 minutos
+    // Testa adiÃ§Ã£o de 10 minutos
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(baseDate);
     calendar.add(Calendar.MINUTE, 10);
     assertEquals(calendar.getTime(), dateAdd(baseDate, Calendar.MINUTE, 10));
 
-    // Testa exceção com data nula
+    // Testa exceÃ§Ã£o com data nula
     try {
       dateAdd(null, Calendar.DAY_OF_MONTH, 1);
       fail("Esperava IllegalArgumentException para data nula.");
     } catch (IllegalArgumentException e) {
-      assertEquals("A data base não pode ser nula.", e.getMessage());
+      assertEquals("A data base nÃ£o pode ser nula.", e.getMessage());
     }
   }
 
   /**
-   * Testa o método timeTo000000 para garantir que ele ajusta corretamente a hora de uma data.
+   * Testa o mÃ©todo timeTo000000 para garantir que ele ajusta corretamente a hora de uma data.
    *
    * @throws RFWException
    */
@@ -281,7 +281,7 @@ public class RUDateTimeTest {
   }
 
   /**
-   * Testa a diferença de dias entre duas datas.
+   * Testa a diferenÃ§a de dias entre duas datas.
    */
   @Test
   public void t00_dateDifferenceInDays_validDates() {
@@ -297,7 +297,7 @@ public class RUDateTimeTest {
   }
 
   /**
-   * Testa a diferença de dias quando a data inicial é posterior à final.
+   * Testa a diferenÃ§a de dias quando a data inicial Ã© posterior Ã  final.
    */
   @Test
   public void t01_dateDifferenceInDays_negativeDifference() {
@@ -313,7 +313,7 @@ public class RUDateTimeTest {
   }
 
   /**
-   * Testa a diferença de dias entre duas datas idênticas.
+   * Testa a diferenÃ§a de dias entre duas datas idÃªnticas.
    */
   @Test
   public void t02_dateDifferenceInDays_sameDate() {
@@ -326,22 +326,22 @@ public class RUDateTimeTest {
   }
 
   /**
-   * Testa os métodos de cálculo de diferença de tempo em horas e minutos. Valida resultados positivos, negativos e casos com datas idênticas.
+   * Testa os mÃ©todos de cÃ¡lculo de diferenÃ§a de tempo em horas e minutos. Valida resultados positivos, negativos e casos com datas idÃªnticas.
    */
   @Test
   public void t00_dateDifferenceInHours() {
     Date date1 = new Date(1700000000000L); // Timestamp fixo
     Date date2 = new Date(1700003600000L); // +1 hora depois
 
-    // Testa diferença positiva
+    // Testa diferenÃ§a positiva
     assertEquals(1.0, dateDifferenceInHours(date1, date2), 0.0001);
     assertEquals(1.0, dateDifferenceInHours(date1.getTime(), date2.getTime()), 0.0001);
 
-    // Testa diferença negativa
+    // Testa diferenÃ§a negativa
     assertEquals(-1.0, dateDifferenceInHours(date2, date1), 0.0001);
     assertEquals(-1.0, dateDifferenceInHours(date2.getTime(), date1.getTime()), 0.0001);
 
-    // Testa quando as datas são iguais
+    // Testa quando as datas sÃ£o iguais
     assertEquals(0.0, dateDifferenceInHours(date1, date1), 0.0001);
   }
 
@@ -350,25 +350,25 @@ public class RUDateTimeTest {
     Date date1 = new Date(1700000000000L); // Timestamp fixo
     Date date2 = new Date(1700000600000L); // +10 minutos depois
 
-    // Testa diferença positiva
+    // Testa diferenÃ§a positiva
     assertEquals(10.0, dateDifferenceInMinutes(date1, date2), 0.0001);
     assertEquals(10.0, dateDifferenceInMinutes(date1.getTime(), date2.getTime()), 0.0001);
 
-    // Testa diferença negativa
+    // Testa diferenÃ§a negativa
     assertEquals(-10.0, dateDifferenceInMinutes(date2, date1), 0.0001);
     assertEquals(-10.0, dateDifferenceInMinutes(date2.getTime(), date1.getTime()), 0.0001);
 
-    // Testa quando as datas são iguais
+    // Testa quando as datas sÃ£o iguais
     assertEquals(0.0, dateDifferenceInMinutes(date1, date1), 0.0001);
   }
 
   /**
-   * Teste unitário para o método {@link #getNameByDate(Date, Date)}.
+   * Teste unitÃ¡rio para o mÃ©todo {@link #getNameByDate(Date, Date)}.
    * <ul>
-   * <li>Verifica a geração correta do sufixo para períodos mensais completos.</li>
-   * <li>Verifica a geração correta do sufixo para intervalos de datas distintos.</li>
-   * <li>Testa se datas iguais geram um único valor no formato "ddMMyyyy".</li>
-   * <li>Testa a exceção ao passar datas nulas.</li>
+   * <li>Verifica a geraÃ§Ã£o correta do sufixo para perÃ­odos mensais completos.</li>
+   * <li>Verifica a geraÃ§Ã£o correta do sufixo para intervalos de datas distintos.</li>
+   * <li>Testa se datas iguais geram um Ãºnico valor no formato "ddMMyyyy".</li>
+   * <li>Testa a exceÃ§Ã£o ao passar datas nulas.</li>
    * </ul>
    */
   @Test
@@ -377,7 +377,7 @@ public class RUDateTimeTest {
 
     Calendar cal = Calendar.getInstance();
 
-    // Caso: Mês completo (01/08/2017 a 31/08/2017) -> "Agosto-2017"
+    // Caso: MÃªs completo (01/08/2017 a 31/08/2017) -> "Agosto-2017"
     cal.set(2017, Calendar.AUGUST, 1);
     Date startFullMonth = cal.getTime();
     cal.set(2017, Calendar.AUGUST, 31);
@@ -399,19 +399,19 @@ public class RUDateTimeTest {
 
     assertEquals("15022023", getNameByDate(sameDate, sameDate));
 
-    // Caso: Exceção para datas nulas
+    // Caso: ExceÃ§Ã£o para datas nulas
     try {
       getNameByDate(null, endRange);
       fail("Esperado IllegalArgumentException para startDate nulo.");
     } catch (IllegalArgumentException e) {
-      assertEquals("As datas não podem ser nulas.", e.getMessage());
+      assertEquals("As datas nÃ£o podem ser nulas.", e.getMessage());
     }
 
     try {
       getNameByDate(startRange, null);
       fail("Esperado IllegalArgumentException para endDate nulo.");
     } catch (IllegalArgumentException e) {
-      assertEquals("As datas não podem ser nulas.", e.getMessage());
+      assertEquals("As datas nÃ£o podem ser nulas.", e.getMessage());
     }
   }
 

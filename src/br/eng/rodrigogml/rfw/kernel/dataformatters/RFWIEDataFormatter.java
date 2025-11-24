@@ -7,9 +7,9 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 import br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation;
 
 /**
- * Description: Classe que formata e valida um número de IE (Inscrição Estadual) de forma genérica. Isto é, tenta dar formato e validar a IE para qualquer estado nacional.<br>
+ * Description: Classe que formata e valida um nÃºmero de IE (InscriÃ§Ã£o Estadual) de forma genÃ©rica. Isto Ã©, tenta dar formato e validar a IE para qualquer estado nacional.<br>
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 7.1.0 (05/05/2015)
  */
 public class RFWIEDataFormatter implements RFWDataFormatter<String, String> {
@@ -29,7 +29,7 @@ public class RFWIEDataFormatter implements RFWDataFormatter<String, String> {
     if (value != null && !"".equals(value.toString().trim())) {
       result = value.toString().trim();
       result = result.replaceAll("[^0-9]", "");
-      // Inscrições Estaduais tem tamanhos diferentes para cada estado. De acordo com o tamanho formatamos de modo diferente
+      // InscriÃ§Ãµes Estaduais tem tamanhos diferentes para cada estado. De acordo com o tamanho formatamos de modo diferente
       if (result.length() == 12) { // SP
         result = result.substring(0, 3) + "." + result.substring(3, 6) + "." + result.substring(6, 9) + "." + result.substring(9, 12);
       }

@@ -10,9 +10,9 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 
 /**
  * Description: Classe usada para formatar valores BigDecimal.<BR>
- * Esta classe È muito similar (praticamente uma sÛsia) da {@link RFWNumberDataFormatter}, sÛ n„o pudemos estender aquela classe por o processamento dela È todo baseado em Double, o que continuaria causando os problemas de arredondamento evitados na implementaÁ„o do BigDecimal.
+ * Esta classe √© muito similar (praticamente uma s√≥sia) da {@link RFWNumberDataFormatter}, s√≥ n√£o pudemos estender aquela classe por o processamento dela √© todo baseado em Double, o que continuaria causando os problemas de arredondamento evitados na implementa√ß√£o do BigDecimal.
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 5.1.0 (20/10/2012)
  */
 public class RFWBigDecimalDataFormatter implements RFWDataFormatter<String, Object> {
@@ -38,32 +38,32 @@ public class RFWBigDecimalDataFormatter implements RFWDataFormatter<String, Obje
   }
 
   /**
-   * n˙mero de dÌgitos fracion·rios.
+   * n√∫mero de d√≠gitos fracion√°rios.
    */
   private Integer decimals = null;
 
   /**
-   * n˙mero m·ximo de dÌgitos fracion·rios.
+   * n√∫mero m√°ximo de d√≠gitos fracion√°rios.
    */
   private Integer maxDecimals = null;
 
   /**
-   * Define a polÌtica de arredondamento do n˙mero.
+   * Define a pol√≠tica de arredondamento do n√∫mero.
    */
   private RoundingMode roundingmode = null;
 
   /**
-   * Caso true, retornar· sempre um valor positivo, simplesmente ignorando e arrancando o sinal. Como se fosse o mÛdulo (ou valor absoluto) do n˙mero.<br>
+   * Caso true, retornar√° sempre um valor positivo, simplesmente ignorando e arrancando o sinal. Como se fosse o m√≥dulo (ou valor absoluto) do n√∫mero.<br>
    */
   private Boolean ignoresignal = null;
 
   /**
-   * Valor mÌnimo aceito.
+   * Valor m√≠nimo aceito.
    */
   private BigDecimal minvalue = null;
 
   /**
-   * Valor m·ximo aceito.
+   * Valor m√°ximo aceito.
    */
   private BigDecimal maxvalue = null;
 
@@ -129,14 +129,14 @@ public class RFWBigDecimalDataFormatter implements RFWDataFormatter<String, Obje
   }
 
   /**
-   * Faz as modificaÁıes necess·rias ao n˙mero, como remover o sinal e arredondamentos. n„o faz validaÁıes, apenas correÁıes.
+   * Faz as modifica√ß√µes necess√°rias ao n√∫mero, como remover o sinal e arredondamentos. n√£o faz valida√ß√µes, apenas corre√ß√µes.
    *
    * @param value
    * @return
    * @throws RFWException
    */
   protected BigDecimal processValue(String value, Locale locale) throws RFWException {
-    // Verifica se È objeto numÈrico tentando convertelo em double
+    // Verifica se √© objeto num√©rico tentando convertelo em double
     BigDecimal nv = null;
     if (value != null && !"".equals(value)) {
       try {

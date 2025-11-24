@@ -5,9 +5,9 @@ import java.util.Locale;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 
 /**
- * Description: Classe utilizada para formar valores booleanos utilizando os valores "Sim" para true e "N„o" para false.<br>
+ * Description: Classe utilizada para formar valores booleanos utilizando os valores "Sim" para true e "N√£o" para false.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.3.0 (20 de ago de 2017)
  */
 public class RFWBooleanYesNoDataFormatter implements RFWDataFormatter<String, Boolean> {
@@ -22,7 +22,7 @@ public class RFWBooleanYesNoDataFormatter implements RFWDataFormatter<String, Bo
       if (value) {
         result = "Sim";
       } else {
-        result = "N„o";
+        result = "N√£o";
       }
     }
     return result;
@@ -32,7 +32,7 @@ public class RFWBooleanYesNoDataFormatter implements RFWDataFormatter<String, Bo
   public Boolean toVO(String formattedvalue, Locale locale) throws RFWException {
     if ("SIM".equalsIgnoreCase(formattedvalue)) {
       return Boolean.TRUE;
-    } else if ("N√O".equalsIgnoreCase(formattedvalue)) {
+    } else if ("N√ÉO".equalsIgnoreCase(formattedvalue)) {
       return Boolean.TRUE;
     } else {
       return null;

@@ -4,10 +4,10 @@ import br.eng.rodrigogml.rfw.kernel.bundle.RFWBundle;
 import br.eng.rodrigogml.rfw.kernel.utils.RUGenerators;
 
 /**
- * Description: Classe de exceÁ„o principal do framework. Todas as demais classes de exceÁ„o devem derivar desta.<br>
- * Esta classe È abstrata propositalmente, para evitar que seja instanciada diretamente.
+ * Description: Classe de exce√ß√£o principal do framework. Todas as demais classes de exce√ß√£o devem derivar desta.<br>
+ * Esta classe √© abstrata propositalmente, para evitar que seja instanciada diretamente.
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 10.0.0 (11 de jul de 2018)
  */
 public abstract class RFWException extends Exception {
@@ -16,17 +16,17 @@ public abstract class RFWException extends Exception {
 
   /**
    * Identificador universal para cara exception gerada.<br>
-   * ⁄til para mÛdulos identificarem se È a mesma exception e evitar reprocessamento.
+   * √ötil para m√≥dulos identificarem se √© a mesma exception e evitar reprocessamento.
    */
   private final String uuid = RUGenerators.UUID_REGEXP;
 
   /**
-   * CÛdigo de identificaÁ„o do erro, ou mensagem de erro (n„o recomendado).
+   * C√≥digo de identifica√ß√£o do erro, ou mensagem de erro (n√£o recomendado).
    */
   private String exceptionCode = null;
 
   /**
-   * Par‚metros para substituir na mensagem de bundle ou para registro no Log.
+   * Par√¢metros para substituir na mensagem de bundle ou para registro no Log.
    */
   private String[] params = null;
 
@@ -42,7 +42,7 @@ public abstract class RFWException extends Exception {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
    */
   public RFWException(String exceptionCode) {
     this.exceptionCode = exceptionCode;
@@ -51,7 +51,7 @@ public abstract class RFWException extends Exception {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
    * @param ex Exception causadora anteriore. Sempre que houver uma exception anterior ela deve ser passada aqui para que o dev tenha a pilha completa do problema.
    */
   public RFWException(String exceptionCode, Throwable ex) {
@@ -62,8 +62,8 @@ public abstract class RFWException extends Exception {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
-   * @param params Par‚metros que ser„o substituÌdos na mensagem do Bundle com o padr„o ${0}, ${1} ...
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
+   * @param params Par√¢metros que ser√£o substitu√≠dos na mensagem do Bundle com o padr√£o ${0}, ${1} ...
    */
   public RFWException(String exceptionCode, String[] params) {
     this(exceptionCode);
@@ -73,8 +73,8 @@ public abstract class RFWException extends Exception {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
-   * @param params Par‚metros que ser„o substituÌdos na mensagem do Bundle com o padr„o ${0}, ${1} ...
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
+   * @param params Par√¢metros que ser√£o substitu√≠dos na mensagem do Bundle com o padr√£o ${0}, ${1} ...
    * @param ex Exception causadora anteriore. Sempre que houver uma exception anterior ela deve ser passada aqui para que o dev tenha a pilha completa do problema.
    */
   public RFWException(String exceptionCode, String[] params, Throwable ex) {
@@ -83,27 +83,27 @@ public abstract class RFWException extends Exception {
   }
 
   /**
-   * # cÛdigo de identificaÁ„o do erro, ou mensagem de erro (n„o recomendado).
+   * # c√≥digo de identifica√ß√£o do erro, ou mensagem de erro (n√£o recomendado).
    *
-   * @return cÛdigo de identificaÁ„o do erro, ou mensagem de erro (n„o recomendado)
+   * @return c√≥digo de identifica√ß√£o do erro, ou mensagem de erro (n√£o recomendado)
    */
   public String getExceptionCode() {
     return exceptionCode;
   }
 
   /**
-   * # cÛdigo de identificaÁ„o do erro, ou mensagem de erro (n„o recomendado).
+   * # c√≥digo de identifica√ß√£o do erro, ou mensagem de erro (n√£o recomendado).
    *
-   * @param exceptionCode cÛdigo de identificaÁ„o do erro, ou mensagem de erro (n„o recomendado)
+   * @param exceptionCode c√≥digo de identifica√ß√£o do erro, ou mensagem de erro (n√£o recomendado)
    */
   protected void setExceptionCode(String exceptionCode) {
     this.exceptionCode = exceptionCode;
   }
 
   /**
-   * # par‚metros para substituir na mensagem de bundle ou para registro no Log.
+   * # par√¢metros para substituir na mensagem de bundle ou para registro no Log.
    *
-   * @return par‚metros para substituir na mensagem de bundle ou para registro no Log
+   * @return par√¢metros para substituir na mensagem de bundle ou para registro no Log
    */
   public String[] getParams() {
     return params;
@@ -119,7 +119,7 @@ public abstract class RFWException extends Exception {
   }
 
   /**
-   * Sobrescreve este mÈtodo para que seja exibido no console a mensagem de erro
+   * Sobrescreve este m√©todo para que seja exibido no console a mensagem de erro
    */
   @Override
   public String getMessage() {

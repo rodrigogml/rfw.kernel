@@ -12,9 +12,9 @@ import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaStringField;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 
 /**
- * Description: Objeto que representa um endereço físico de imóvel.<br>
+ * Description: Objeto que representa um endereÃ§o fÃ­sico de imÃ³vel.<br>
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 10.0.0 (7 de ago de 2018)
  */
 public class LocationAddressVO extends RFWVO {
@@ -22,8 +22,8 @@ public class LocationAddressVO extends RFWVO {
   private static final long serialVersionUID = -2735534535038218202L;
 
   /**
-   * Código de Endereço Postal (CEP). Sempre no formato "#####-###".<br>
-   * CEP não é um valor 'unique' no banco de dados. Isso porque ruas muito compridas podem ter o mesmo cep e pertencer a bairros diferentes, ou mesmo no cadastro dos correios algumas vezes as ruas vem com abreviações diferentes e o registro duplicado.
+   * CÃ³digo de EndereÃ§o Postal (CEP). Sempre no formato "#####-###".<br>
+   * CEP nÃ£o Ã© um valor 'unique' no banco de dados. Isso porque ruas muito compridas podem ter o mesmo cep e pertencer a bairros diferentes, ou mesmo no cadastro dos correios algumas vezes as ruas vem com abreviaÃ§Ãµes diferentes e o registro duplicado.
    */
   @RFWMetaStringCEPField(caption = "CEP", required = true)
   private String cep = null;
@@ -41,33 +41,33 @@ public class LocationAddressVO extends RFWVO {
   private String neighborhood = null;
 
   /**
-   * Cidade à qual este endereço pertence.
+   * Cidade Ã  qual este endereÃ§o pertence.
    */
   @RFWMetaRelationshipField(caption = "Cidade", required = true, relationship = RelationshipTypes.ASSOCIATION)
   private LocationCityVO locationCityVO = null;
 
   /**
-   * Data da última alteração do objeto. Esta data é utilizada para o controle de sincronia dos dados com sistemas externos.<br>
-   * Toda vez que o objeto sofrer qualquer alteração esta data deve ser aualizada para a data corrente.
+   * Data da Ãºltima alteraÃ§Ã£o do objeto. Esta data Ã© utilizada para o controle de sincronia dos dados com sistemas externos.<br>
+   * Toda vez que o objeto sofrer qualquer alteraÃ§Ã£o esta data deve ser aualizada para a data corrente.
    */
-  @RFWMetaDateField(caption = "Última Alteração", required = true, resolution = DateResolution.SECOND)
+  @RFWMetaDateField(caption = "Ãšltima AlteraÃ§Ã£o", required = true, resolution = DateResolution.SECOND)
   private LocalDate lastChange = null;
 
   /**
-   * Recupera o código de Endereço Postal (CEP). Sempre no formato "#####-###".<br>
-   * CEP não é um valor 'unique' no banco de dados. Isso porque ruas muito compridas podem ter o mesmo cep e pertencer a bairros diferentes, ou mesmo no cadastro dos correios algumas vezes as ruas vem com abreviações diferentes e o registro duplicado.
+   * Recupera o cÃ³digo de EndereÃ§o Postal (CEP). Sempre no formato "#####-###".<br>
+   * CEP nÃ£o Ã© um valor 'unique' no banco de dados. Isso porque ruas muito compridas podem ter o mesmo cep e pertencer a bairros diferentes, ou mesmo no cadastro dos correios algumas vezes as ruas vem com abreviaÃ§Ãµes diferentes e o registro duplicado.
    *
-   * @return the código de Endereço Postal (CEP)
+   * @return the cÃ³digo de EndereÃ§o Postal (CEP)
    */
   public String getCep() {
     return cep;
   }
 
   /**
-   * Define o código de Endereço Postal (CEP). Sempre no formato "#####-###".<br>
-   * CEP não é um valor 'unique' no banco de dados. Isso porque ruas muito compridas podem ter o mesmo cep e pertencer a bairros diferentes, ou mesmo no cadastro dos correios algumas vezes as ruas vem com abreviações diferentes e o registro duplicado.
+   * Define o cÃ³digo de EndereÃ§o Postal (CEP). Sempre no formato "#####-###".<br>
+   * CEP nÃ£o Ã© um valor 'unique' no banco de dados. Isso porque ruas muito compridas podem ter o mesmo cep e pertencer a bairros diferentes, ou mesmo no cadastro dos correios algumas vezes as ruas vem com abreviaÃ§Ãµes diferentes e o registro duplicado.
    *
-   * @param cep the new código de Endereço Postal (CEP)
+   * @param cep the new cÃ³digo de EndereÃ§o Postal (CEP)
    */
   public void setCep(String cep) {
     this.cep = cep;
@@ -110,38 +110,38 @@ public class LocationAddressVO extends RFWVO {
   }
 
   /**
-   * Recupera o cidade à qual este endereço pertence.
+   * Recupera o cidade Ã  qual este endereÃ§o pertence.
    *
-   * @return the cidade à qual este endereço pertence
+   * @return the cidade Ã  qual este endereÃ§o pertence
    */
   public LocationCityVO getLocationCityVO() {
     return locationCityVO;
   }
 
   /**
-   * Define o cidade à qual este endereço pertence.
+   * Define o cidade Ã  qual este endereÃ§o pertence.
    *
-   * @param locationCityVO the new cidade à qual este endereço pertence
+   * @param locationCityVO the new cidade Ã  qual este endereÃ§o pertence
    */
   public void setLocationCityVO(LocationCityVO locationCityVO) {
     this.locationCityVO = locationCityVO;
   }
 
   /**
-   * Recupera o data da última alteração do objeto. Esta data é utilizada para o controle de sincronia dos dados com sistemas externos.<br>
-   * Toda vez que o objeto sofrer qualquer alteração esta data deve ser aualizada para a data corrente.
+   * Recupera o data da Ãºltima alteraÃ§Ã£o do objeto. Esta data Ã© utilizada para o controle de sincronia dos dados com sistemas externos.<br>
+   * Toda vez que o objeto sofrer qualquer alteraÃ§Ã£o esta data deve ser aualizada para a data corrente.
    *
-   * @return the data da última alteração do objeto
+   * @return the data da Ãºltima alteraÃ§Ã£o do objeto
    */
   public LocalDate getLastChange() {
     return lastChange;
   }
 
   /**
-   * Define o data da última alteração do objeto. Esta data é utilizada para o controle de sincronia dos dados com sistemas externos.<br>
-   * Toda vez que o objeto sofrer qualquer alteração esta data deve ser aualizada para a data corrente.
+   * Define o data da Ãºltima alteraÃ§Ã£o do objeto. Esta data Ã© utilizada para o controle de sincronia dos dados com sistemas externos.<br>
+   * Toda vez que o objeto sofrer qualquer alteraÃ§Ã£o esta data deve ser aualizada para a data corrente.
    *
-   * @param lastChange the new data da última alteração do objeto
+   * @param lastChange the new data da Ãºltima alteraÃ§Ã£o do objeto
    */
   public void setLastChange(LocalDate lastChange) {
     this.lastChange = lastChange;

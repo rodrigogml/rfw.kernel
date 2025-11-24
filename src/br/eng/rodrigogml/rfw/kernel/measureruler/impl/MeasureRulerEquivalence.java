@@ -9,8 +9,8 @@ import br.eng.rodrigogml.rfw.kernel.measureruler.interfaces.MeasureRulerEquivale
 import br.eng.rodrigogml.rfw.kernel.measureruler.interfaces.MeasureUnit;
 
 /**
- * Description: Implementação padrão da interface {@link MeasureRulerEquivalenceInterface}. Utilizado para criar as regras de equivalências entre as dimenões (grandezas de medidas).<br>
- * O sistema pode utilizar sua própria classe, como por exemplo um VO caso queira persistir sua equivalência, bastando que sua classe implemente a interface {@link MeasureRulerEquivalenceInterface} para ser repassada para o {@link MeasureRuler}.
+ * Description: ImplementaÃ§Ã£o padrÃ£o da interface {@link MeasureRulerEquivalenceInterface}. Utilizado para criar as regras de equivalÃªncias entre as dimenÃµes (grandezas de medidas).<br>
+ * O sistema pode utilizar sua prÃ³pria classe, como por exemplo um VO caso queira persistir sua equivalÃªncia, bastando que sua classe implemente a interface {@link MeasureRulerEquivalenceInterface} para ser repassada para o {@link MeasureRuler}.
  *
  * @author Rodrigo GML
  * @since 1.0.0 (26 de jul. de 2023)
@@ -19,14 +19,14 @@ import br.eng.rodrigogml.rfw.kernel.measureruler.interfaces.MeasureUnit;
 public class MeasureRulerEquivalence implements MeasureRulerEquivalenceInterface {
 
   /**
-   * Hash com os valores de Equivalência
+   * Hash com os valores de EquivalÃªncia
    */
   private HashMap<MeasureUnit, BigDecimal> measureUnitHash = new HashMap<MeasureUnit, BigDecimal>();
 
   /**
-   * # hash com os valores de Equivalência.
+   * # hash com os valores de EquivalÃªncia.
    *
-   * @return # hash com os valores de Equivalência
+   * @return # hash com os valores de EquivalÃªncia
    */
   @Override
   public HashMap<MeasureUnit, BigDecimal> getMeasureUnitHash() throws RFWException {

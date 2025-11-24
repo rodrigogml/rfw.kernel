@@ -40,7 +40,7 @@ import br.eng.rodrigogml.rfw.kernel.logger.RFWLogger;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 
 /**
- * Description: Classe utilit·ria com mÈtodos para manipulaÁ„o e utilizaÁ„o de certificados digitais.<br>
+ * Description: Classe utilit√°ria com m√©todos para manipula√ß√£o e utiliza√ß√£o de certificados digitais.<br>
  *
  * @author Rodrigo GML
  * @since 1.0.0 (24 de ago. de 2023)
@@ -49,7 +49,7 @@ import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 public class RUCert {
 
   /**
-   * Construtor privado para classe exclusivamente est·tica.
+   * Construtor privado para classe exclusivamente est√°tica.
    */
   private RUCert() {
   }
@@ -60,13 +60,13 @@ public class RUCert {
    * @param filePath arquivo do certificado (geralmente .pfx).
    * @param password Senha para abertura do arquivo.
    * @return KeyStore com o certificado pronto para uso.
-   * @throws RFWException LanÁado em casa de qualquer falha ao carregar o certificado.
+   * @throws RFWException Lan√ßado em casa de qualquer falha ao carregar o certificado.
    */
   public static KeyStore loadKeyStoreA1Certificate(String filePath, String password) throws RFWException {
     try {
       return loadKeyStoreA1Certificate(new FileInputStream(filePath), password);
     } catch (FileNotFoundException e) {
-      throw new RFWCriticalException("Falha ao lÍr o arquivo do certificado!", e);
+      throw new RFWCriticalException("Falha ao l√™r o arquivo do certificado!", e);
     }
   }
 
@@ -76,23 +76,23 @@ public class RUCert {
    * @param file arquivo do certificado (geralmente .pfx).
    * @param password Senha para abertura do arquivo.
    * @return KeyStore com o certificado pronto para uso.
-   * @throws RFWException LanÁado em casa de qualquer falha ao carregar o certificado.
+   * @throws RFWException Lan√ßado em casa de qualquer falha ao carregar o certificado.
    */
   public static KeyStore loadKeyStoreA1Certificate(File file, String password) throws RFWException {
     try {
       return loadKeyStoreA1Certificate(new FileInputStream(file), password);
     } catch (FileNotFoundException e) {
-      throw new RFWCriticalException("Falha ao lÍr o arquivo do certificado!", e);
+      throw new RFWCriticalException("Falha ao l√™r o arquivo do certificado!", e);
     }
   }
 
   /**
    * Carrega um arquivo de certificado A1 (geralmente arquivo .pfx) dentro de um KeyStore para ser utilizado.
    *
-   * @param bytes conte˙do do arquivo j· em array de bytes.
+   * @param bytes conte√∫do do arquivo j√° em array de bytes.
    * @param password Senha para abertura do arquivo.
    * @return KeyStore com o certificado pronto para uso.
-   * @throws RFWException LanÁado em casa de qualquer falha ao carregar o certificado.
+   * @throws RFWException Lan√ßado em casa de qualquer falha ao carregar o certificado.
    */
   public static KeyStore loadKeyStoreA1Certificate(byte[] bytes, String password) throws RFWException {
     return loadKeyStoreA1Certificate(new ByteArrayInputStream(bytes), password);
@@ -101,71 +101,71 @@ public class RUCert {
   /**
    * Carrega um arquivo de certificado A1 (geralmente arquivo .pfx) dentro de um KeyStore para ser utilizado.
    *
-   * @param bytes conte˙do do arquivo j· em array de bytes.
-   * @param in InputStream com o conte˙do do certificado.
+   * @param bytes conte√∫do do arquivo j√° em array de bytes.
+   * @param in InputStream com o conte√∫do do certificado.
    * @param password Senha para abertura do arquivo.
    * @return KeyStore com o certificado pronto para uso.
-   * @throws RFWException LanÁado em casa de qualquer falha ao carregar o certificado.
+   * @throws RFWException Lan√ßado em casa de qualquer falha ao carregar o certificado.
    */
   public static KeyStore loadKeyStoreA1Certificate(InputStream in, String password) throws RFWException {
     return loadKeyStore(in, password, "PKCS12");
   }
 
   /**
-   * LÍ um arquivo de keyStore.<Br>
+   * L√™ um arquivo de keyStore.<Br>
    * Repassa a chamada para {@link #loadKeyStore(InputStream, String, String)} utilizando o {@link KeyStore#getDefaultType()}.
    *
    * @param filePath Arquivo do certificado para leitura.
    * @param password Senha do arquivo para abertura.
    * @return Keystore com o certificado pronto para uso.
-   * @throws RFWException LanÁado em casa de qualquer falha ao carregar o certificado.
+   * @throws RFWException Lan√ßado em casa de qualquer falha ao carregar o certificado.
    */
   public static KeyStore loadKeyStore(String filePath, String password) throws RFWException {
     try {
       return loadKeyStore(new FileInputStream(filePath), password, KeyStore.getDefaultType());
     } catch (FileNotFoundException e) {
-      throw new RFWCriticalException("Falha ao lÍr o arquivo do certificado!", e);
+      throw new RFWCriticalException("Falha ao l√™r o arquivo do certificado!", e);
     }
   }
 
   /**
-   * LÍ um arquivo de keyStore.<Br>
+   * L√™ um arquivo de keyStore.<Br>
    * Repassa a chamada para {@link #loadKeyStore(InputStream, String, String)} utilizando o {@link KeyStore#getDefaultType()}.
    *
    * @param filePath Arquivo do certificado para leitura.
    * @param password Senha do arquivo para abertura.
    * @return Keystore com o certificado pronto para uso.
-   * @throws RFWException LanÁado em casa de qualquer falha ao carregar o certificado.
+   * @throws RFWException Lan√ßado em casa de qualquer falha ao carregar o certificado.
    */
   public static KeyStore loadKeyStore(byte[] fileContent, String password) throws RFWException {
     return loadKeyStore(new ByteArrayInputStream(fileContent), password, KeyStore.getDefaultType());
   }
 
   /**
-   * LÍ um arquivo de keyStore.<Br>
+   * L√™ um arquivo de keyStore.<Br>
    * Repassa a chamada para {@link #loadKeyStore(InputStream, String, String)} utilizando o {@link KeyStore#getDefaultType()}.
    *
    * @param file Arquivo do certificado para leitura.
    * @param password Senha do arquivo para abertura.
    * @return Keystore com o certificado pronto para uso.
-   * @throws RFWException LanÁado em casa de qualquer falha ao carregar o certificado.
+   * @throws RFWException Lan√ßado em casa de qualquer falha ao carregar o certificado.
    */
   public static KeyStore loadKeyStore(File file, String password) throws RFWException {
     try {
       return loadKeyStore(new FileInputStream(file), password, KeyStore.getDefaultType());
     } catch (FileNotFoundException e) {
-      throw new RFWCriticalException("Falha ao lÍr o arquivo do certificado!", e);
+      throw new RFWCriticalException("Falha ao l√™r o arquivo do certificado!", e);
     }
   }
 
   /**
-   * LÍ um arquivo de keyStore.<Br>
+   * L√™ um arquivo de keyStore.<Br>
    * Repassa a chamada para {@link #loadKeyStore(InputStream, String, String)} utilizando o {@link KeyStore#getDefaultType()}.
    *
-   * @param in {@link InputStream} com o conte˙do do arquivo
+   * @param in {@link InputStream} com o conte√∫do do arquivo
    * @param password Senha do arquivo para abertura.
    * @return Keystore com o certificado pronto para uso.
-   * @throws RFWException LanÁado em casa de qualquer falha ao carregar o certificado.
+   * @throws RFWException Lan√ßado em casa de qualquer falha ao carregar o certificado.
    */
   public static KeyStore loadKeyStore(InputStream in, String password) throws RFWException {
     return loadKeyStore(in, password, KeyStore.getDefaultType());
@@ -174,11 +174,11 @@ public class RUCert {
   /**
    * Carrega um arquivo de keyStore ou certificado dentro de um KeyStore para ser utilizado.
    *
-   * @param in InputStream com o conte˙do do certificado.
+   * @param in InputStream com o conte√∫do do certificado.
    * @param password Senha para abertura do arquivo.
    * @param keyStoreType Tipo do KeyStore a ser lido.
    * @return KeyStore com o certificado pronto para uso.
-   * @throws RFWException LanÁado em casa de qualquer falha ao carregar o certificado.
+   * @throws RFWException Lan√ßado em casa de qualquer falha ao carregar o certificado.
    */
   public static KeyStore loadKeyStore(InputStream in, String password, String keyStoreType) throws RFWException {
     try {
@@ -188,19 +188,19 @@ public class RUCert {
     } catch (KeyStoreException e) {
       throw new RFWCriticalException("Falha ao criar o KeyStore do certificado!", e);
     } catch (NoSuchAlgorithmException e) {
-      throw new RFWCriticalException("AlgorÌtimo desconhecido para criaÁ„o Store do certificado!", e);
+      throw new RFWCriticalException("Algor√≠timo desconhecido para cria√ß√£o Store do certificado!", e);
     } catch (CertificateException e) {
       throw new RFWCriticalException("Falha ao carregar o certificado!", e);
     } catch (IOException e) {
-      throw new RFWCriticalException("Falha ao ler o conte˙do do certificado!", e);
+      throw new RFWCriticalException("Falha ao ler o conte√∫do do certificado!", e);
     }
   }
 
   /**
    * Gera uma String contendo os detalhes dos certificados dentro do KeyStore.<br>
-   * Itera todos os certificados encontrados e passa para o mÈtodo {@link #writeCertDetails(Certificate)}, verifique os tipos de certificados suportados pelo mÈtodo.
+   * Itera todos os certificados encontrados e passa para o m√©todo {@link #writeCertDetails(Certificate)}, verifique os tipos de certificados suportados pelo m√©todo.
    *
-   * @param keyStore KeyStore com os certificados para obtenÁ„o dos detalhes.
+   * @param keyStore KeyStore com os certificados para obten√ß√£o dos detalhes.
    * @return String contento os detalhes do certificado.
    * @throws RFWException
    */
@@ -224,11 +224,11 @@ public class RUCert {
 
   /**
    * Criar um texto com os detalhes do certificado.<br>
-   * Este mÈtodo verifica o tipo de certificado para conseguir extrair as informaÁıes, atualmente o mÈtodo tem suporte aos certificados do tipo:<br>
+   * Este m√©todo verifica o tipo de certificado para conseguir extrair as informa√ß√µes, atualmente o m√©todo tem suporte aos certificados do tipo:<br>
    * <li>X509Certificate
    *
-   * @param certificate Certificado para impress„o de seus atributos
-   * @return String com seu conte˙do.
+   * @param certificate Certificado para impress√£o de seus atributos
+   * @return String com seu conte√∫do.
    */
   public static String writeCertDetails(Certificate certificate) {
     StringWriter buff = new StringWriter();
@@ -245,10 +245,10 @@ public class RUCert {
 
   /**
    * Coloca a KeyStore dentro da KeyManager do java.<br>
-   * Essas Keymanager podem ser usadas nas conexıes SSL para autenticar a origem da conex„o.<br>
-   * Utiliza o Algoritimo "SunX509" como padr„o do certificado.
+   * Essas Keymanager podem ser usadas nas conex√µes SSL para autenticar a origem da conex√£o.<br>
+   * Utiliza o Algoritimo "SunX509" como padr√£o do certificado.
    *
-   * @param keyStore KeyStore contendo os certificados para serem utilizados na conex„o.
+   * @param keyStore KeyStore contendo os certificados para serem utilizados na conex√£o.
    * @param password Senha da KeyStore.
    * @return Array com as KeyManager criados.
    * @throws RFWException
@@ -267,10 +267,10 @@ public class RUCert {
 
   /**
    * Cria um TrustManager a partir dos certificados de um KeyStore.<br>
-   * Utiliza o Algoritimo "SunX509" como padr„o do certificado.
+   * Utiliza o Algoritimo "SunX509" como padr√£o do certificado.
    *
-   * @param keyStore KeyStore contendo os certificados que ser„o confi·veis durante o HandShake da comunicaÁ„o.
-   * @return TrustManager pronto para ser utilizado durante a comunicaÁ„o.
+   * @param keyStore KeyStore contendo os certificados que ser√£o confi√°veis durante o HandShake da comunica√ß√£o.
+   * @return TrustManager pronto para ser utilizado durante a comunica√ß√£o.
    * @throws RFWException
    *           <li>RFW_ERR_000002 - Falha ao abrir certificado. Verifique o arquivo e a senha.
    */
@@ -285,21 +285,21 @@ public class RUCert {
   }
 
   /**
-   * Cria um TrustManager para ser usado em conexıes SSL a partir de cadeias de certificados carregados de um arquivo criado pelo keytool (KeyStore).<Br>
-   * Melhor explicaÁ„o de como usar o keytool na documentaÁ„o do BISERP.
+   * Cria um TrustManager para ser usado em conex√µes SSL a partir de cadeias de certificados carregados de um arquivo criado pelo keytool (KeyStore).<Br>
+   * Melhor explica√ß√£o de como usar o keytool na documenta√ß√£o do BISERP.
    *
    * @param in arquivo com uma ou mais cadeias de certificados para serem confiados.
-   * @param pass senha do arquivo para importaÁ„o dos certificados.
+   * @param pass senha do arquivo para importa√ß√£o dos certificados.
    * @return
    * @throws RFWException
    */
   public static TrustManager[] createTrustManager(final InputStream in, final String pass) throws RFWException {
     try {
-      // Cria um novo KeyStore com o tipo de algorÌtimo JKS
+      // Cria um novo KeyStore com o tipo de algor√≠timo JKS
       KeyStore truststore = KeyStore.getInstance("JKS");
       truststore.load(in, pass.toCharArray());
       try {
-        // Uma vez que j· foi lido, forÁamos seu fechamento para garantir que n„o teremos vazamento de recurso, mas se falhar n„o ligamos, logamos mas continuamos o mÈtodo.
+        // Uma vez que j√° foi lido, for√ßamos seu fechamento para garantir que n√£o teremos vazamento de recurso, mas se falhar n√£o ligamos, logamos mas continuamos o m√©todo.
         in.close();
       } catch (Exception e) {
         RFWLogger.logException(e);
@@ -324,14 +324,14 @@ public class RUCert {
   }
 
   /**
-   * Carrega o {@link RFWCertificate} em um KeyStore baseando-se nas configuraÁıes padr„o para cada tipo de certificado suportado.
+   * Carrega o {@link RFWCertificate} em um KeyStore baseando-se nas configura√ß√µes padr√£o para cada tipo de certificado suportado.
    *
-   * @param certificate Objeto com as definiÁıes do certificado.
+   * @param certificate Objeto com as defini√ß√µes do certificado.
    * @return KeyStore com o certificado inserido.
-   * @throws RFWException LanÁado em casa de falha ao criar o KeyStore.
+   * @throws RFWException Lan√ßado em casa de falha ao criar o KeyStore.
    */
   public static KeyStore loadKeyStore(RFWCertificate certificate) throws RFWException {
-    PreProcess.requiredNonNull(certificate, "Certificado n„o pode ser nulo!");
+    PreProcess.requiredNonNull(certificate, "Certificado n√£o pode ser nulo!");
 
     KeyStore ks = null;
     switch (certificate.getType()) {
@@ -343,19 +343,19 @@ public class RUCert {
         break;
     }
 
-    if (ks == null) throw new RFWCriticalException("N„o foi possÌvel criar o KeyStore para o Certificado passado!", new String[] { RUReflex.printObject(certificate) });
+    if (ks == null) throw new RFWCriticalException("N√£o foi poss√≠vel criar o KeyStore para o Certificado passado!", new String[] { RUReflex.printObject(certificate) });
     return ks;
   }
 
   /**
    * Recupera a chave privada e o certificado X.509 a partir de um {@link RFWCertificate}.
    *
-   * @param certificate Inst‚ncia do certificado contendo o arquivo e senha.
+   * @param certificate Inst√¢ncia do certificado contendo o arquivo e senha.
    * @return Um {@link KeyStore.PrivateKeyEntry} contendo a chave privada e o certificado.
    * @throws RFWException Se houver falha ao carregar o certificado ou se nenhuma chave privada for encontrada.
    */
   public static KeyStore.PrivateKeyEntry extractPrivateKey(RFWCertificate certificate) throws RFWException {
-    PreProcess.requiredNonNull(certificate, "Certificado n„o pode ser nulo!");
+    PreProcess.requiredNonNull(certificate, "Certificado n√£o pode ser nulo!");
 
     KeyStore keyStore = loadKeyStore(certificate);
 
@@ -375,8 +375,8 @@ public class RUCert {
   }
 
   /**
-   * Este mÈtodo retorna uma string com as informaÁıes coletadas do Certificado montadas em um Array BiDimensional String[x][y].<br>
-   * Onde x tem tamanho indefinido de acordo com a quantidade de parametros encontratos no certificado; e y vai de 0 ‡ 1, sendo 0 o tÌtulo do atributo e 1 o valor do atributo.
+   * Este m√©todo retorna uma string com as informa√ß√µes coletadas do Certificado montadas em um Array BiDimensional String[x][y].<br>
+   * Onde x tem tamanho indefinido de acordo com a quantidade de parametros encontratos no certificado; e y vai de 0 √† 1, sendo 0 o t√≠tulo do atributo e 1 o valor do atributo.
    *
    * @return
    * @throws RFWException
@@ -427,15 +427,15 @@ public class RUCert {
   }
 
   /**
-   * Este mÈtodo retorna o fingerprint MD5 do certificado.
+   * Este m√©todo retorna o fingerprint MD5 do certificado.
    *
    * @param certificate instancia do certificado.
    * @return retorna o fingerprint do certificado, Ex: '1A:DE:60:21:DE:B1:BF:C3:D1:AD:11:F1:21:22:D7:9E'
-   * @throws RFWException LanÁado caso o certificado n„o possua algorÌtimo MD5, ou ocorra algum erro ao decodificar o certificado.
+   * @throws RFWException Lan√ßado caso o certificado n√£o possua algor√≠timo MD5, ou ocorra algum erro ao decodificar o certificado.
    */
   public static String getMD5FingerPrintFromCertificate(Certificate certificate) throws RFWException {
     /*
-     * Este cÛdigo foi criado com base no cÛdigo fonte da ferramenta keytool fornecida junto com o java. N„o sei explicar exatamente seu funcionamento nem hoje, que estou implementando, n„o me pergunte no futuro! Link do SourceCode usado de Base: http://www.docjar.com/html/api/sun/security/tools/KeyTool.java.html
+     * Este c√≥digo foi criado com base no c√≥digo fonte da ferramenta keytool fornecida junto com o java. N√£o sei explicar exatamente seu funcionamento nem hoje, que estou implementando, n√£o me pergunte no futuro! Link do SourceCode usado de Base: http://www.docjar.com/html/api/sun/security/tools/KeyTool.java.html
      */
     try {
       byte[] digest = MessageDigest.getInstance("MD5").digest(certificate.getEncoded());
@@ -455,21 +455,21 @@ public class RUCert {
     } catch (NoSuchAlgorithmException e) {
       throw new RFWValidationException("BISERP_000219", e);
     } catch (CertificateEncodingException e) {
-      // LanÁado como erro crÌtico porque n„o sei quando esse erro ocorrer·, a medida que for acontecendo vamos melhorando o tratamento do erro
+      // Lan√ßado como erro cr√≠tico porque n√£o sei quando esse erro ocorrer√°, a medida que for acontecendo vamos melhorando o tratamento do erro
       throw new RFWCriticalException("BISERP_000220", e);
     }
   }
 
   /**
-   * Este mÈtodo retorna o fingerprint SHA1 do certificado.
+   * Este m√©todo retorna o fingerprint SHA1 do certificado.
    *
    * @param certificate instancia do certificado.
    * @return retorna o fingerprint do certificado, Ex: '72:3A:D9:2E:1A:DE:60:21:DE:B1:BF:C3:D1:AD:11:F1:21:22:D7:9E'
-   * @throws RFWException LanÁado caso o certificado n„o possua algorÌtimo SHA1, ou ocorra algum erro ao decodificar o certificado.
+   * @throws RFWException Lan√ßado caso o certificado n√£o possua algor√≠timo SHA1, ou ocorra algum erro ao decodificar o certificado.
    */
   public static String getSHA1FingerPrintFromCertificate(Certificate certificate) throws RFWException {
     /*
-     * Este cÛdigo foi criado com base no cÛdigo fonte da ferramenta keytool fornecida junto com o java. N„o sei explicar exatamente seu funcionamento nem hoje, que estou implementando, n„o me pergunte no futuro! Link do SourceCode usado de Base: http://www.docjar.com/html/api/sun/security/tools/KeyTool.java.html
+     * Este c√≥digo foi criado com base no c√≥digo fonte da ferramenta keytool fornecida junto com o java. N√£o sei explicar exatamente seu funcionamento nem hoje, que estou implementando, n√£o me pergunte no futuro! Link do SourceCode usado de Base: http://www.docjar.com/html/api/sun/security/tools/KeyTool.java.html
      */
     try {
       byte[] digest = MessageDigest.getInstance("SHA1").digest(certificate.getEncoded());
@@ -489,13 +489,13 @@ public class RUCert {
     } catch (NoSuchAlgorithmException e) {
       throw new RFWValidationException("BISERP_000219", e);
     } catch (CertificateEncodingException e) {
-      // LanÁado como erro crÌtico porque n„o sei quando esse erro ocorrer·, a medida que for acontecendo vamos melhorando o tratamento do erro
+      // Lan√ßado como erro cr√≠tico porque n√£o sei quando esse erro ocorrer√°, a medida que for acontecendo vamos melhorando o tratamento do erro
       throw new RFWCriticalException("BISERP_000220", e);
     }
   }
 
   /**
-   * Este mÈtodo retorna a data de inÌcio de vigÍncia (validade) do certificado.
+   * Este m√©todo retorna a data de in√≠cio de vig√™ncia (validade) do certificado.
    *
    * @return
    * @throws RFWException
@@ -513,7 +513,7 @@ public class RUCert {
   }
 
   /**
-   * Este mÈtodo retorna a data de fim de vigÍncia (validade) do certificado.
+   * Este m√©todo retorna a data de fim de vig√™ncia (validade) do certificado.
    *
    * @return
    * @throws RFWException
@@ -531,7 +531,7 @@ public class RUCert {
   }
 
   /**
-   * Este mÈtodo retorna uma string com as informaÁıes coletadas do Certificado.
+   * Este m√©todo retorna uma string com as informa√ß√µes coletadas do Certificado.
    *
    * @return
    * @throws RFWException
@@ -557,12 +557,12 @@ public class RUCert {
       try {
         buff.append("\tMD5:").append(RUCert.getMD5FingerPrintFromCertificate(certificate)).append('\n');
       } catch (Exception e) {
-        // SÛ n„o escreve se n„o tiver fingerprint md5
+        // S√≥ n√£o escreve se n√£o tiver fingerprint md5
       }
       try {
         buff.append("\tSHA1:").append(RUCert.getSHA1FingerPrintFromCertificate(certificate)).append('\n');
       } catch (Exception e) {
-        // SÛ n„o escreve se n„o tiver fingerprint sha1
+        // S√≥ n√£o escreve se n√£o tiver fingerprint sha1
       }
       buff.append("\tSignature algorithm name: ").append(x509.getSigAlgName()).append('\n');
       buff.append("\tVersion: ").append(x509.getVersion()).append('\n');
@@ -582,9 +582,9 @@ public class RUCert {
   /**
    * Procura pelos Alias de chaves privadas dentro de um certificado.
    *
-   * @param keyStore Certificado j· carregado em um KeyStore.
+   * @param keyStore Certificado j√° carregado em um KeyStore.
    * @return Lista com os alias de chaves privadas encontradas, ou uma lista vazia se nenhuma chave for encontrada.
-   * @throws RFWException LanÁado caso n„o seja possÌvel recuperar os alias ou abrir o KeyStore.
+   * @throws RFWException Lan√ßado caso n√£o seja poss√≠vel recuperar os alias ou abrir o KeyStore.
    */
   public static List<String> searchPrivateKeyAlias(KeyStore keyStore) throws RFWException {
     LinkedList<String> list = new LinkedList<String>();
@@ -606,11 +606,11 @@ public class RUCert {
    * Assina um array de bytes utilizando o algoritmo SHA1withRSA, a partir de um {@link RFWCertificate}.
    *
    * <p>
-   * Este mÈtodo È ˙til para cen·rios em que È necess·rio assinar um conte˙do textual ou bin·rio que n„o est· em formato XML, como por exemplo o payload do QR-Code v3 OFFLINE da NFC-e.
+   * Este m√©todo √© √∫til para cen√°rios em que √© necess√°rio assinar um conte√∫do textual ou bin√°rio que n√£o est√° em formato XML, como por exemplo o payload do QR-Code v3 OFFLINE da NFC-e.
    * </p>
    *
-   * @param data Conte˙do a ser assinado, em bytes.
-   * @param certificate Certificado que contÈm a chave privada para assinatura.
+   * @param data Conte√∫do a ser assinado, em bytes.
+   * @param certificate Certificado que cont√©m a chave privada para assinatura.
    * @return Array de bytes contendo a assinatura gerada.
    * @throws RFWException Se ocorrer qualquer falha ao extrair a chave privada ou ao gerar a assinatura.
    */
@@ -635,12 +635,12 @@ public class RUCert {
    * Assina um texto utilizando o algoritmo SHA1withRSA e retorna o resultado em Base64.
    *
    * <p>
-   * Este mÈtodo È uma conveniÍncia para cen·rios como o QR-Code v3 OFFLINE da NFC-e, onde a especificaÁ„o exige a assinatura digital (RSA-SHA1) em Base64 da string formada pelos par‚metros do QR-Code.
+   * Este m√©todo √© uma conveni√™ncia para cen√°rios como o QR-Code v3 OFFLINE da NFC-e, onde a especifica√ß√£o exige a assinatura digital (RSA-SHA1) em Base64 da string formada pelos par√¢metros do QR-Code.
    * </p>
    *
    * @param text Texto a ser assinado.
    * @param charset Charset utilizado para converter o texto em bytes (ex.: UTF-8).
-   * @param certificate Certificado que contÈm a chave privada para assinatura.
+   * @param certificate Certificado que cont√©m a chave privada para assinatura.
    * @return Assinatura digital em Base64 (sem quebras de linha).
    * @throws RFWException Se ocorrer falha ao assinar o texto.
    */
@@ -651,10 +651,10 @@ public class RUCert {
   }
 
   /**
-   * Vers„o conveniente de {@link #signTextSHA1withRSA(String, Charset, RFWCertificate)} usando UTF-8.
+   * Vers√£o conveniente de {@link #signTextSHA1withRSA(String, Charset, RFWCertificate)} usando UTF-8.
    *
    * @param text Texto a ser assinado.
-   * @param certificate Certificado que contÈm a chave privada para assinatura.
+   * @param certificate Certificado que cont√©m a chave privada para assinatura.
    * @return Assinatura digital em Base64 (sem quebras de linha).
    * @throws RFWException Se ocorrer falha ao assinar o texto.
    */

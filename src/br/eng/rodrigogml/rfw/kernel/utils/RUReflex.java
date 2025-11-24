@@ -45,22 +45,22 @@ import br.eng.rodrigogml.rfw.kernel.vo.RFWMO;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 
 /**
- * Description: Classe com utilit·rios para tratar objetos apartir de reflex„o.<br>
+ * Description: Classe com utilit√°rios para tratar objetos apartir de reflex√£o.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 3.0.0 (SET / 2009)
  */
 public class RUReflex {
 
   /**
-   * Construtor privado para classe utilit·ria com mÈtodos exclusivamente est·ticos.
+   * Construtor privado para classe utilit√°ria com m√©todos exclusivamente est√°ticos.
    */
   private RUReflex() {
   }
 
   /**
    * Imprime os valores de um objeto simulando uma estrutura XML.<br>
-   * Recupera os mÈtodos Get para imprimir os objetos.
+   * Recupera os m√©todos Get para imprimir os objetos.
    */
   public static String printObject(Object obj) {
     StringBuilder buff = new StringBuilder();
@@ -84,7 +84,7 @@ public class RUReflex {
     if (obj != null) {
 
       if (printedobjects.contains(obj)) {
-        buff.append("Objeto j· impresso! ").append(objclass.getName()).append(" hashCode: \"").append(obj.hashCode()).append("\"");
+        buff.append("Objeto j√° impresso! ").append(objclass.getName()).append(" hashCode: \"").append(obj.hashCode()).append("\"");
       } else {
         if (obj.getClass().isPrimitive()) {
           buff.append(obj);
@@ -133,13 +133,13 @@ public class RUReflex {
         } else {
           printedobjects.add(obj);
           buff.append("\n<").append(objclass.getName()).append(" hashCode=\"").append(obj.hashCode()).append("\">");
-          // Itera os mÈtodos do Objeto
+          // Itera os m√©todos do Objeto
           Method[] methods = objclass.getMethods();
           for (Method method : methods) {
-            // Verifica se È um mÈtodo de "get" ou "is" para pegar o valor e imprimir
+            // Verifica se √© um m√©todo de "get" ou "is" para pegar o valor e imprimir
             if ((method.getName().startsWith("get") || method.getName().startsWith("is")) && !method.getName().equals("getClass")) {
               buff.append("\n<").append(method.getName()).append(">");
-              // Recupera o retorno do mÈtodo
+              // Recupera o retorno do m√©todo
               try {
                 Object ret = method.invoke(obj);
                 if (ret != null) {
@@ -164,9 +164,9 @@ public class RUReflex {
   /**
    * Recupera o valor de uma propriedade do bean passado. Caso a propriedade tenha varios nomes separados por pontos ".", estes serao divididos e recuperados recusivamente.
    *
-   * @param bean Object objeto o qual o metodo GET ser· chamado
+   * @param bean Object objeto o qual o metodo GET ser√° chamado
    * @param propertyname String nome da propriedade que deseja-se obter o valor
-   * @return Object objeto retornado pelo mÈtodo get do atributo.
+   * @return Object objeto retornado pelo m√©todo get do atributo.
    *
    */
   public static Object getPropertyValue(Object bean, String propertyname) throws RFWException {
@@ -178,7 +178,7 @@ public class RUReflex {
         Object tmpobj = getPropertyValue(bean, firstproperty);
         if (tmpobj != null) returned = getPropertyValue(tmpobj, propertyname.substring(index + 1, propertyname.length()));
       } else {
-        // Verifica se temos Ìndice/chave, se tivermos mas È a ˙ltima propriedade tornamos o objeto dentro da lista/hash
+        // Verifica se temos √≠ndice/chave, se tivermos mas √© a √∫ltima propriedade tornamos o objeto dentro da lista/hash
         int indexkey = propertyname.indexOf("[");
         String key;
         if (indexkey > -1) {
@@ -188,7 +188,7 @@ public class RUReflex {
           if (tmpobj != null) {
             if (tmpobj instanceof List<?>) {
               List<?> list = (List<?>) tmpobj;
-              // Se È uma lista validamos que o index seja numÈrico
+              // Se √© uma lista validamos que o index seja num√©rico
               if (key == null || !key.matches("[0-9]*")) {
                 throw new RFWCriticalException("RFW_ERR_200395", new String[] { propertyname });
               }
@@ -205,7 +205,7 @@ public class RUReflex {
                 clazz = key.substring(classIndex + 1, key.length() - 1);
                 key = key.substring(0, classIndex);
               }
-              // Com a classe verificamos se È algum tipo conhecido
+              // Com a classe verificamos se √© algum tipo conhecido
               Object hashKey = null;
               if ("String".equals(clazz)) {
                 hashKey = key;
@@ -238,37 +238,37 @@ public class RUReflex {
   }
 
   /**
-   * Define o valor de uma propriedade em um bean. Para recuperar o mÈtodo de set, procuramos um que receba um objeto da mesma classe que È retornado pelo get.<Br>
-   * Caso a propriedade tenha varios nomes separados por pontos ".", estes serao divididos e recuperados recusivamente atÈ encontrar a propriedade a definir.
+   * Define o valor de uma propriedade em um bean. Para recuperar o m√©todo de set, procuramos um que receba um objeto da mesma classe que √© retornado pelo get.<Br>
+   * Caso a propriedade tenha varios nomes separados por pontos ".", estes serao divididos e recuperados recusivamente at√© encontrar a propriedade a definir.
    *
-   * @param bean Object objeto o qual o metodo SET ser· chamado
+   * @param bean Object objeto o qual o metodo SET ser√° chamado
    * @param propertyname String nome da propriedade que deseja-se definir o valor
-   * @param instantiatenullobjs tenta instanciar objetos que sejam nulos no caminho para definir a propriedade. Para que esta funÁ„o funcione, os objetos devem ter um construtor sem argumentos.
+   * @param instantiatenullobjs tenta instanciar objetos que sejam nulos no caminho para definir a propriedade. Para que esta fun√ß√£o funcione, os objetos devem ter um construtor sem argumentos.
    */
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public static void setPropertyValue(Object bean, String propertyname, Object value, boolean instantiatenullobjs) throws RFWException {
     try {
       if (bean == null) {
-        throw new NullPointerException("O objeto bean recebido n„o pode ser nulo!");
+        throw new NullPointerException("O objeto bean recebido n√£o pode ser nulo!");
       }
       int index = propertyname.indexOf(".");
       if (index > -1) {
         String firstproperty = propertyname.substring(0, index);
         Object tmpobj = getPropertyValue(bean, firstproperty);
 
-        // Verifica se a propriedade tem colchetes com a chave/index de coleÁıes e os separa
+        // Verifica se a propriedade tem colchetes com a chave/index de cole√ß√µes e os separa
         int indexkey = firstproperty.indexOf("[");
-        // Verifica se o tmpobj È nulo, e se devemos tentar criar o novo objeto
+        // Verifica se o tmpobj √© nulo, e se devemos tentar criar o novo objeto
         if (tmpobj == null) {
           if (!instantiatenullobjs) {
-            throw new NullPointerException("Foi encontrado um objeto nulo ao tentar reflex„o para definir o valor de uma propriedade!");
+            throw new NullPointerException("Foi encontrado um objeto nulo ao tentar reflex√£o para definir o valor de uma propriedade!");
           } else {
-            // Se temos Ìndices ou chaves nem tentamos criar, n„o temos como criar uma hash ou lista adequadamente
+            // Se temos √≠ndices ou chaves nem tentamos criar, n√£o temos como criar uma hash ou lista adequadamente
             if (indexkey > -1) throw new RFWCriticalException("RFW_ERR_200398", new String[] { propertyname });
-            Class<?> tmpclass = getPropertyTypeByType(bean.getClass(), firstproperty); // Basta procurar pelo type de retorno, pois j· sabemos que o objeto È nulo!
+            Class<?> tmpclass = getPropertyTypeByType(bean.getClass(), firstproperty); // Basta procurar pelo type de retorno, pois j√° sabemos que o objeto √© nulo!
             Constructor<?> constructor = tmpclass.getConstructor();
             if (constructor == null) {
-              throw new NullPointerException("N„o foi possÌvel encontrar um construtor sem argumentos para o objeto: " + tmpclass.toString());
+              throw new NullPointerException("N√£o foi poss√≠vel encontrar um construtor sem argumentos para o objeto: " + tmpclass.toString());
             }
             tmpobj = constructor.newInstance();
             setPropertyValue(bean, firstproperty, tmpobj, instantiatenullobjs);
@@ -277,7 +277,7 @@ public class RUReflex {
         setPropertyValue(tmpobj, propertyname.substring(index + 1, propertyname.length()), value, instantiatenullobjs);
       } else {
         String key = null;
-        // Verifica se a propriedade tem colchetes com a chave/index de coleÁıes e os separa
+        // Verifica se a propriedade tem colchetes com a chave/index de cole√ß√µes e os separa
         int indexkey = propertyname.indexOf("[");
         if (indexkey > -1) {
           key = propertyname.substring(indexkey + 1, propertyname.length() - 1);
@@ -316,14 +316,14 @@ public class RUReflex {
 
   /**
    * Recupera a classe de uma propriedade do bean passado.<br>
-   * Caso a propriedade tenha varios nomes separados por pontos ".", estes serao divididos e recuperados recusivamente. Neste caso, ser· usado o mÈtodo "get" da propriedade para descobrir sua classe. <b>Este mÈtodo usar· sempre a classe de retorno do mÈtodo, ignorando a classe retornada pela inst‚ncia passada!</b>
+   * Caso a propriedade tenha varios nomes separados por pontos ".", estes serao divididos e recuperados recusivamente. Neste caso, ser√° usado o m√©todo "get" da propriedade para descobrir sua classe. <b>Este m√©todo usar√° sempre a classe de retorno do m√©todo, ignorando a classe retornada pela inst√¢ncia passada!</b>
    *
-   * @param beanclass Object objeto o qual o metodo GET ser· chamado
+   * @param beanclass Object objeto o qual o metodo GET ser√° chamado
    * @param propertyname String nome da propriedade que deseja-se obter o valor
-   * @return Class objeto retornado pelo mÈtodo get do atributo. Null caso algum algum mÈtodo GET retorne null.
+   * @return Class objeto retornado pelo m√©todo get do atributo. Null caso algum algum m√©todo GET retorne null.
    */
   public static Class<?> getPropertyTypeByType(Class<?> beanclass, String propertyname) throws RFWException {
-    Objects.requireNonNull(beanclass, "O objeto beanclass recebido n„o pode ser nulo!");
+    Objects.requireNonNull(beanclass, "O objeto beanclass recebido n√£o pode ser nulo!");
 
     Class<?> returned;
     try {
@@ -334,7 +334,7 @@ public class RUReflex {
         Class<?> tmpclass = getPropertyTypeByType(beanclass, firstproperty);
         if (tmpclass != null) returned = getPropertyTypeByType(tmpclass, propertyname.substring(index + 1, propertyname.length()));
       } else {
-        // Verifica se temos Ìndice/chave, se tivermos mas È a ˙ltima propriedade tornamos o objeto dentro da lista/hash
+        // Verifica se temos √≠ndice/chave, se tivermos mas √© a √∫ltima propriedade tornamos o objeto dentro da lista/hash
         int indexkey = propertyname.indexOf("[");
         if (indexkey > -1) {
           propertyname = propertyname.substring(0, indexkey);
@@ -366,13 +366,13 @@ public class RUReflex {
   }
 
   /**
-   * Este mÈtodo procura as definiÁıes dos Generics no retorn do mÈtodo get da propriedade passada.<br>
-   * Por exemplo, caso a propriedade da classe passada retorne uma List ou HashMap os Generics definidos ser„o encontrados e suas classes retornadas.
+   * Este m√©todo procura as defini√ß√µes dos Generics no retorn do m√©todo get da propriedade passada.<br>
+   * Por exemplo, caso a propriedade da classe passada retorne uma List ou HashMap os Generics definidos ser√£o encontrados e suas classes retornadas.
    *
    * @param beanclass Classe do Bean
-   * @param propertyName nome da propriedade cujo retorno ser· avaliado.
-   * @return Lista das classes dos generics ro retorno do mÈtoco.
-   * @throws RFWException LanÁado em caso de exceÁ„o
+   * @param propertyName nome da propriedade cujo retorno ser√° avaliado.
+   * @return Lista das classes dos generics ro retorno do m√©toco.
+   * @throws RFWException Lan√ßado em caso de exce√ß√£o
    */
   @SuppressWarnings("rawtypes")
   public static Class<?>[] getGenericFromReturnType(Class<?> beanclass, String propertyName) throws RFWException {
@@ -406,15 +406,15 @@ public class RUReflex {
 
   /**
    * Recupera a classe de uma propriedade do bean passado.<br>
-   * Caso a propriedade tenha varios nomes separados por pontos ".", estes serao divididos e recuperados recusivamente. Neste caso, ser· usado o mÈtodo "get" da propriedade para descobrir sua classe. <b>Este mÈtodo usar· sempre o tipo do objeto retornado pela inst‚ncia. Logo, se a inst‚ncia do objeto retornar null este mÈtodo ser· incapaz de descobrir a classe da propriedade.</b>
+   * Caso a propriedade tenha varios nomes separados por pontos ".", estes serao divididos e recuperados recusivamente. Neste caso, ser√° usado o m√©todo "get" da propriedade para descobrir sua classe. <b>Este m√©todo usar√° sempre o tipo do objeto retornado pela inst√¢ncia. Logo, se a inst√¢ncia do objeto retornar null este m√©todo ser√° incapaz de descobrir a classe da propriedade.</b>
    *
-   * @param bean Object objeto o qual o metodo GET ser· chamado
+   * @param bean Object objeto o qual o metodo GET ser√° chamado
    * @param propertyname String nome da propriedade que deseja-se obter o valor
-   * @return Class objeto retornado pelo mÈtodo get do atributo. Null caso algum algum mÈtodo GET retorne null.
+   * @return Class objeto retornado pelo m√©todo get do atributo. Null caso algum algum m√©todo GET retorne null.
    */
   public static Class<?> getPropertyTypeByObject(Object bean, String propertyname) throws RFWException {
     if (bean == null) {
-      throw new NullPointerException("O objeto bean recebido n„o pode ser nulo!");
+      throw new NullPointerException("O objeto bean recebido n√£o pode ser nulo!");
     }
     try {
       Class<?> returned = null;
@@ -457,16 +457,16 @@ public class RUReflex {
 
   /**
    * Recupera a classe de uma propriedade do bean passado. Caso a propriedade tenha varios nomes separados por pontos ".", estes serao divididos e recuperados recusivamente.<br>
-   * Este mÈtodo È semelhante ao {@link RUReflex#getPropertyTypeByObject(Object, String)}, a diferenÁa È que se uma propriedade retornar nula, ele continua explorando o objeto pela classes de retorno do objeto (como feito pela classe {@link RUReflex#getPropertyTypeByType(Class, String)}.<br>
+   * Este m√©todo √© semelhante ao {@link RUReflex#getPropertyTypeByObject(Object, String)}, a diferen√ßa √© que se uma propriedade retornar nula, ele continua explorando o objeto pela classes de retorno do objeto (como feito pela classe {@link RUReflex#getPropertyTypeByType(Class, String)}.<br>
    *
    *
-   * @param bean objeto o qual o metodo GET ser· chamado
+   * @param bean objeto o qual o metodo GET ser√° chamado
    * @param propertyname String nome da propriedade que deseja-se obter o valor
-   * @return Class objeto retornado pelo mÈtodo get do atributo. Null caso algum algum mÈtodo GET retorne null.
+   * @return Class objeto retornado pelo m√©todo get do atributo. Null caso algum algum m√©todo GET retorne null.
    */
   public static Class<?> getPropertyTypeByObjectAndType(Object bean, String propertyname) throws RFWException {
     if (bean == null) {
-      throw new NullPointerException("O objeto bean recebido n„o pode ser nulo!");
+      throw new NullPointerException("O objeto bean recebido n√£o pode ser nulo!");
     }
     Class<?> returned;
     try {
@@ -474,16 +474,16 @@ public class RUReflex {
       int index = propertyname.indexOf(".");
       if (index > -1) {
         Object tmpobj = getPropertyValue(bean, propertyname.substring(0, index));
-        if (tmpobj == null) { // Se o objeto de retorno È nulo, apelamos para usar o tipo de retorno do mÈtodo
+        if (tmpobj == null) { // Se o objeto de retorno √© nulo, apelamos para usar o tipo de retorno do m√©todo
           returned = getPropertyTypeByType(bean.getClass(), propertyname);
-        } else { // Caso contr·rio, continuamos usando o objeto
+        } else { // Caso contr√°rio, continuamos usando o objeto
           returned = getPropertyTypeByObjectAndType(tmpobj, propertyname.substring(index + 1, propertyname.length()));
         }
       } else {
         Object tmpobj = getPropertyValue(bean, propertyname);
-        if (tmpobj == null) { // Se o objeto de retorno È nulo, apelamos para usar o tipo de retorno do mÈtodo
+        if (tmpobj == null) { // Se o objeto de retorno √© nulo, apelamos para usar o tipo de retorno do m√©todo
           returned = getPropertyTypeByType(bean.getClass(), propertyname);
-        } else { // Caso contr·rio, continuamos usando o objeto
+        } else { // Caso contr√°rio, continuamos usando o objeto
           returned = tmpobj.getClass();
         }
       }
@@ -493,19 +493,19 @@ public class RUReflex {
     return returned;
   }
 
-  // TODO 20250221 - Apagar depois que o BIS2 estiver bem validado, a seguir est· o mÈtodo original do BIS2, acima uma vers„o do BIS10 que reaproveita outros mÈtodos da classe
+  // TODO 20250221 - Apagar depois que o BIS2 estiver bem validado, a seguir est√° o m√©todo original do BIS2, acima uma vers√£o do BIS10 que reaproveita outros m√©todos da classe
   // /**
   // * Recupera a classe de uma propriedade do bean passado. Caso a propriedade tenha varios nomes separados por pontos ".", estes serao divididos e recuperados recusivamente.<br>
-  // * Este mÈtodo È semelhante ao {@link BISUtilsReflex#getPropertyTypeByObject(Class, String)}, a diferenÁa È que se uma propriedade retornar nula, ele continua explorando o objeto pela classes de retorno do objeto (como feito pela classe {@link BISUtilsReflex#getPropertyTypeByType(Class, String)}.<br>
+  // * Este m√©todo √© semelhante ao {@link BISUtilsReflex#getPropertyTypeByObject(Class, String)}, a diferen√ßa √© que se uma propriedade retornar nula, ele continua explorando o objeto pela classes de retorno do objeto (como feito pela classe {@link BISUtilsReflex#getPropertyTypeByType(Class, String)}.<br>
   // *
   // *
-  // * @param bean objeto o qual o metodo GET ser· chamado
+  // * @param bean objeto o qual o metodo GET ser√° chamado
   // * @param propertyname String nome da propriedade que deseja-se obter o valor
-  // * @return Class objeto retornado pelo mÈtodo get do atributo. Null caso algum algum mÈtodo GET retorne null.
+  // * @return Class objeto retornado pelo m√©todo get do atributo. Null caso algum algum m√©todo GET retorne null.
   // */
   // public static Class<?> getPropertyTypeByObjectAndType(Object bean, String propertyname) throws RFWException {
   // if (bean == null) {
-  // throw new NullPointerException("O objeto bean recebido n„o pode ser nulo!");
+  // throw new NullPointerException("O objeto bean recebido n√£o pode ser nulo!");
   // }
   // Class<?> returned;
   // try {
@@ -523,9 +523,9 @@ public class RUReflex {
   // tmpobj = bean.getClass().getMethod("are" + firstproperty.substring(0, 1).toUpperCase() + firstproperty.substring(1, firstproperty.length()), (Class[]) null).invoke(bean, new Object[0]);
   // }
   // }
-  // if (tmpobj == null) { // Se o objeto de retorno È nulo, apelamos para usar o tipo de retorno do mÈtodo
+  // if (tmpobj == null) { // Se o objeto de retorno √© nulo, apelamos para usar o tipo de retorno do m√©todo
   // returned = getPropertyTypeByType(bean.getClass(), propertyname);
-  // } else { // Caso contr·rio, continuamos usando o objeto
+  // } else { // Caso contr√°rio, continuamos usando o objeto
   // returned = getPropertyTypeByObjectAndType(tmpobj, propertyname.substring(index + 1, propertyname.length()));
   // }
   // } else {
@@ -539,9 +539,9 @@ public class RUReflex {
   // tmpobj = bean.getClass().getMethod("are" + propertyname.substring(0, 1).toUpperCase() + propertyname.substring(1, propertyname.length()), (Class[]) null).invoke(bean, new Object[0]);
   // }
   // }
-  // if (tmpobj == null) { // Se o objeto de retorno È nulo, apelamos para usar o tipo de retorno do mÈtodo
+  // if (tmpobj == null) { // Se o objeto de retorno √© nulo, apelamos para usar o tipo de retorno do m√©todo
   // returned = getPropertyTypeByType(bean.getClass(), propertyname);
-  // } else { // Caso contr·rio, continuamos usando o objeto
+  // } else { // Caso contr√°rio, continuamos usando o objeto
   // returned = tmpobj.getClass();
   // }
   // }
@@ -552,28 +552,28 @@ public class RUReflex {
   // }
 
   /**
-   * Este mÈtodo vasculha o caminho de propriedades recebido em "propertyPath" e verifica se algum dos atributos retorna uma estrutura de conjunto de objetos (tipicamente uma lista, hashMap, collection, etc.). Caso encontre alguma e que no prÛprio caminho n„o especifique o Ìndice ou chave (definidos com os caracteres "[]") o mÈtodo retornar· o caminho atÈ o ponto em que o objeto de
-   * "coleÁ„o/map/list" foi encontrado.<br>
-   * Normalmente, este mÈtodo retorna o caminho atÈ onde o mÈtodo {@link #getPropertyValue(Object, String)} funciona, retornando objetos, j· que o {@link #getPropertyValue(Object, String)} retorna exception quando se depara com algum desses objetos sem a definiÁ„o de Ìndice ou que n„o seja o final do caminho.<br>
+   * Este m√©todo vasculha o caminho de propriedades recebido em "propertyPath" e verifica se algum dos atributos retorna uma estrutura de conjunto de objetos (tipicamente uma lista, hashMap, collection, etc.). Caso encontre alguma e que no pr√≥prio caminho n√£o especifique o √≠ndice ou chave (definidos com os caracteres "[]") o m√©todo retornar√° o caminho at√© o ponto em que o objeto de
+   * "cole√ß√£o/map/list" foi encontrado.<br>
+   * Normalmente, este m√©todo retorna o caminho at√© onde o m√©todo {@link #getPropertyValue(Object, String)} funciona, retornando objetos, j√° que o {@link #getPropertyValue(Object, String)} retorna exception quando se depara com algum desses objetos sem a defini√ß√£o de √≠ndice ou que n√£o seja o final do caminho.<br>
    * <br>
    * Exemplo:<br>
-   * Imagine o caminho "vo1.vo2.vo3.list1.vo5.map1.vo7", onde lista1 sem uma lista de vo4 e map1 È uma hash de vo6. <br>
+   * Imagine o caminho "vo1.vo2.vo3.list1.vo5.map1.vo7", onde lista1 sem uma lista de vo4 e map1 √© uma hash de vo6. <br>
    * <br>
-   * Caso seja passado um objeto vo1, com uma cadeia completa de objetos (nenhum objeto nulo), este mÈtodo retornar· o caminho "vo1.vo2.vo3.list1", j· que n„o sabemos em qual dos vo4 (dentro da list1) devemos continuar a percorrer o caminho.<br>
+   * Caso seja passado um objeto vo1, com uma cadeia completa de objetos (nenhum objeto nulo), este m√©todo retornar√° o caminho "vo1.vo2.vo3.list1", j√° que n√£o sabemos em qual dos vo4 (dentro da list1) devemos continuar a percorrer o caminho.<br>
    * <bR>
-   * No entanto, se passad o caminho "vo1.vo2.vo3.list1[2].vo5.map1.vo7" para a mesma estrutura de objetos, este mÈtodo retornar· o caminho "vo1.vo2.vo3.list1[2].vo5.map1", j· que agora o mÈtodo sabe que ao se deparar com a list1 devemos continuar navegando dentro do objeto de Ìndice 2. <br>
+   * No entanto, se passad o caminho "vo1.vo2.vo3.list1[2].vo5.map1.vo7" para a mesma estrutura de objetos, este m√©todo retornar√° o caminho "vo1.vo2.vo3.list1[2].vo5.map1", j√° que agora o m√©todo sabe que ao se deparar com a list1 devemos continuar navegando dentro do objeto de √≠ndice 2. <br>
    * <Br>
-   * <b>ATEN«√O:</B> Note que este mÈtodo, assim como o {@link #getPropertyValue(Object, String)} utiliza as inst‚ncias dos objetos para navegar o caminho passado, logo se algum mÈtodo retornar um objeto nulo o mÈtodo n„o continuar· navegando pelo caminho informado (retornando nulo).
+   * <b>ATEN√á√ÉO:</B> Note que este m√©todo, assim como o {@link #getPropertyValue(Object, String)} utiliza as inst√¢ncias dos objetos para navegar o caminho passado, logo se algum m√©todo retornar um objeto nulo o m√©todo n√£o continuar√° navegando pelo caminho informado (retornando nulo).
    *
    * @param bean Objeto raiz por onde devemos procurar os objetos.
-   * @param propertyPath Caminho a ser percorrido no objeto em busca de alguma estrutura de m˙ltiplos objetos.
-   * @return Caminho atÈ onde foi encontramos uma estrutura em que n„o pudemos navegar mais, ou NULL caso em algum ponto do caminho nos deparemos com um objeto nulo impedindo de continuar a percorrer o caminho, ou se algum objeto retornou nulo no meio do caminho, nos impedindo de encontrar uma estrutura.
-   * @throws RFWException LanÁado caso ocorra algum problema durante a execuÁ„o do mÈtodo.
+   * @param propertyPath Caminho a ser percorrido no objeto em busca de alguma estrutura de m√∫ltiplos objetos.
+   * @return Caminho at√© onde foi encontramos uma estrutura em que n√£o pudemos navegar mais, ou NULL caso em algum ponto do caminho nos deparemos com um objeto nulo impedindo de continuar a percorrer o caminho, ou se algum objeto retornou nulo no meio do caminho, nos impedindo de encontrar uma estrutura.
+   * @throws RFWException Lan√ßado caso ocorra algum problema durante a execu√ß√£o do m√©todo.
    */
   public static String findIterableInPath(Object bean, String propertyPath) throws RFWException {
     // Quebramos o caminho de acordo com os "."
-    final String[] properties = propertyPath.split("\\."); // Cada properties j· inclui seus prÛprios "[...]"
-    // Iteramos o caminho para tentar obter o valor parte a parte em busca de um objeto iter·vel
+    final String[] properties = propertyPath.split("\\."); // Cada properties j√° inclui seus pr√≥prios "[...]"
+    // Iteramos o caminho para tentar obter o valor parte a parte em busca de um objeto iter√°vel
     Object lastBean = bean;
     String property = "";
     for (int i = 0; i < properties.length; i++) {
@@ -590,9 +590,9 @@ public class RUReflex {
   }
 
   /**
-   * Limpa o ID do objeto e recursivamente de todos os objetos de relacionamento do tipo composiÁ„o.<br>
-   * Este mÈtodo tem a finalidade de duplicar/clonar um objeto, permitindo que ao ser persistido ele possa ser identificado como um objeto novo.<br>
-   * Lembre-se que atributos que tenham a restriÁ„o de 'unique=true', continuar„o impedindo que o novo objeto seja persistido. Nesses dados este mÈtodo n„o faz nenhum tipo de alteraÁ„o.
+   * Limpa o ID do objeto e recursivamente de todos os objetos de relacionamento do tipo composi√ß√£o.<br>
+   * Este m√©todo tem a finalidade de duplicar/clonar um objeto, permitindo que ao ser persistido ele possa ser identificado como um objeto novo.<br>
+   * Lembre-se que atributos que tenham a restri√ß√£o de 'unique=true', continuar√£o impedindo que o novo objeto seja persistido. Nesses dados este m√©todo n√£o faz nenhum tipo de altera√ß√£o.
    *
    * @param vo RFWVO a ter seus IDs limpos
    * @throws RFWException
@@ -609,7 +609,7 @@ public class RUReflex {
           case PARENT_ASSOCIATION:
           case ASSOCIATION:
           case WEAK_ASSOCIATION:
-            // Para esses casos n„o remove nem faz nada, pois n„o ser„o persistidos com o novo objeto, e sim sÛ relacionados
+            // Para esses casos n√£o remove nem faz nada, pois n√£o ser√£o persistidos com o novo objeto, e sim s√≥ relacionados
             break;
           case COMPOSITION_TREE:
           case COMPOSITION: {
@@ -626,7 +626,7 @@ public class RUReflex {
                   cleanOwnIDs((VO) listValue);
                 }
               } else {
-                throw new RFWCriticalException("ImpossÌvel duplicar o VO! Tipo de atributo desconhecido no atributo '${0}' da classe '${1}'.", new String[] { field.getName(), vo.getClass().getCanonicalName() });
+                throw new RFWCriticalException("Imposs√≠vel duplicar o VO! Tipo de atributo desconhecido no atributo '${0}' da classe '${1}'.", new String[] { field.getName(), vo.getClass().getCanonicalName() });
               }
             }
           }
@@ -638,7 +638,7 @@ public class RUReflex {
   }
 
   /**
-   * Este mÈtodo recebe um objeto e um nome de propriedade. Tentar· encontrar uma RFWMeta Annotation neste atributo.
+   * Este m√©todo recebe um objeto e um nome de propriedade. Tentar√° encontrar uma RFWMeta Annotation neste atributo.
    *
    * @param voClass Classe a ser analizada
    * @param attribute Nome do atributo para encontrar a RFWMeta Annotation
@@ -650,11 +650,11 @@ public class RUReflex {
     Annotation ann = null;
     Field field = null;
 
-    // Se houver neasted properties, recuperamos a classe do pen˙ltimo atributo, para que dele possamos recuperar o Field
+    // Se houver neasted properties, recuperamos a classe do pen√∫ltimo atributo, para que dele possamos recuperar o Field
     if (attribute.indexOf(".") > -1) {
       final int lindex = attribute.lastIndexOf(".");
       final Class<?> tmpClass = getPropertyTransparentType(voClass, attribute.substring(0, lindex));
-      if (tmpClass == null || !RFWVO.class.isAssignableFrom(tmpClass)) throw new RFWCriticalException("ImpossÌvel obter o caminho '${0}' na clase '${1}' se o tipo retornado n„o È um RFWVO!", new String[] { attribute, voClass.getCanonicalName() });
+      if (tmpClass == null || !RFWVO.class.isAssignableFrom(tmpClass)) throw new RFWCriticalException("Imposs√≠vel obter o caminho '${0}' na clase '${1}' se o tipo retornado n√£o √© um RFWVO!", new String[] { attribute, voClass.getCanonicalName() });
       voClass = (Class<? extends RFWVO>) tmpClass;
       attribute = attribute.substring(lindex + 1, attribute.length());
     }
@@ -679,12 +679,12 @@ public class RUReflex {
   }
 
   /**
-   * Busca um 'field' por reflax„o na classe passada, se n„o encontrar continua buscando recursivamente nas classes pais atÈ encontrar.
+   * Busca um 'field' por reflax√£o na classe passada, se n√£o encontrar continua buscando recursivamente nas classes pais at√© encontrar.
    *
    * @param voClass Classe extendendo o {@link RFWVO} para obter o 'field'
    * @param attribute Nome do atributo ('field') para buscar.
-   * @return Objeto representando a definiÁ„o do 'field' no objeto passado ou classe pai mais imediata que contenha a definiÁ„o.
-   * @throws RFWException LanÁado caso o field n„o seja encontrado na hierarquia ('RFW_000020')
+   * @return Objeto representando a defini√ß√£o do 'field' no objeto passado ou classe pai mais imediata que contenha a defini√ß√£o.
+   * @throws RFWException Lan√ßado caso o field n√£o seja encontrado na hierarquia ('RFW_000020')
    */
   @SuppressWarnings("unchecked")
   public static Field getDeclaredFieldRecursively(Class<? extends RFWVO> voClass, String attribute) throws RFWException {
@@ -704,11 +704,11 @@ public class RUReflex {
   }
 
   /**
-   * Busca as definiÁıes dos fields da classe com o mÈtodo {@link Class#getDeclaredFields()} da classe passada e de todas as classes acima na hierarquia.
+   * Busca as defini√ß√µes dos fields da classe com o m√©todo {@link Class#getDeclaredFields()} da classe passada e de todas as classes acima na hierarquia.
    *
-   * @param voClass Classe do objeto que extenda {@link RFWVO} para objter as declaraÁıes de todos os fields na hierarquia.
-   * @return Array com a declaraÁ„o de todos os fields encontrados.
-   * @throws RFWException LanÁado em caso de falha do sistema.
+   * @param voClass Classe do objeto que extenda {@link RFWVO} para objter as declara√ß√µes de todos os fields na hierarquia.
+   * @return Array com a declara√ß√£o de todos os fields encontrados.
+   * @throws RFWException Lan√ßado em caso de falha do sistema.
    */
   @SuppressWarnings("unchecked")
   public static Field[] getDeclaredFieldsRecursively(Class<? extends RFWVO> voClass) throws RFWException {
@@ -723,47 +723,47 @@ public class RUReflex {
   }
 
   /**
-   * Este mÈtodo extrai o caminho "limpo" a partir de um caminho completo.<br>
-   * O caminho limpo È o caminho dos atributos mas sem os colchetes de Ìndices ou chaves de hash. Facilitando assim acomparaÁ„o do atributo sendo tratado.<br>
+   * Este m√©todo extrai o caminho "limpo" a partir de um caminho completo.<br>
+   * O caminho limpo √© o caminho dos atributos mas sem os colchetes de √≠ndices ou chaves de hash. Facilitando assim acompara√ß√£o do atributo sendo tratado.<br>
    * Ex: "itemcodelist[0].itemvo" retorna "itemcodelist.itemvo". Ex: "itemcodehash{key}.itemvo" retorna "itemcodehash.itemvo".
    *
    * @param fullpath
-   * @return caminho limpo sem as definiÁıes de coleÁıes.
+   * @return caminho limpo sem as defini√ß√µes de cole√ß√µes.
    */
   public static String getCleanPath(String fullpath) {
     return fullpath.replaceAll("\\[[^\\]]*\\]", "").replaceAll("\\{[^\\}]*\\}", "");
   }
 
   /**
-   * Este mÈtodo retorna o tipo (classe) de um atributo, navegando por Neasted Properties no padr„o do RFWDeprec, semelhante ao {@link #getPropertyTypeByType(Class, String)} mas ignorando as Listas/Hashs. Isto È, sempre que encontramos uma {@link List} ou {@link Map} no caminho o RFWDeprec retornar· o tipo de objeto que È armazenado dentro dessas coleÁıes. Para outros tipos, o tipo do objeto È
+   * Este m√©todo retorna o tipo (classe) de um atributo, navegando por Neasted Properties no padr√£o do RFWDeprec, semelhante ao {@link #getPropertyTypeByType(Class, String)} mas ignorando as Listas/Hashs. Isto √©, sempre que encontramos uma {@link List} ou {@link Map} no caminho o RFWDeprec retornar√° o tipo de objeto que √© armazenado dentro dessas cole√ß√µes. Para outros tipos, o tipo do objeto √©
    * retornado normalmente.<br>
    * <br>
-   * A resoluÁ„o de qual È o objeto dentro da collection È feito da seguinte maneira:
-   * <li>Verificamos se o atributo tem uma {@link RFWMetaRelationshipField} e o atributo {@link RFWMetaRelationshipField#targetRelationship()} definido. Caso verdadeiro, essa definiÁ„o È utilizada.
-   * <li>Verificamos os Generics definidos. Caso tenha essa classe È utilizada para continuar a busca.
+   * A resolu√ß√£o de qual √© o objeto dentro da collection √© feito da seguinte maneira:
+   * <li>Verificamos se o atributo tem uma {@link RFWMetaRelationshipField} e o atributo {@link RFWMetaRelationshipField#targetRelationship()} definido. Caso verdadeiro, essa defini√ß√£o √© utilizada.
+   * <li>Verificamos os Generics definidos. Caso tenha essa classe √© utilizada para continuar a busca.
    *
-   * @param beanClass Classe inicial para percorrer o caminho atÈ o atributo final.
+   * @param beanClass Classe inicial para percorrer o caminho at√© o atributo final.
    * @param propertyName Nome da Propriedade, com ou sem Neasted Properties.
-   * @throws RFWException LanÁado em Caso de Exception
+   * @throws RFWException Lan√ßado em Caso de Exception
    */
   @SuppressWarnings("unchecked")
   public static <VO extends RFWVO> Class<?> getPropertyTransparentType(Class<VO> beanClass, String propertyName) throws RFWException {
-    Objects.requireNonNull(beanClass, "O atributo beanclass n„o pode ser nulo!");
-    Objects.requireNonNull(propertyName, "O atributo propertyName n„o pode ser nulo!");
+    Objects.requireNonNull(beanClass, "O atributo beanclass n√£o pode ser nulo!");
+    Objects.requireNonNull(propertyName, "O atributo propertyName n√£o pode ser nulo!");
 
-    // Limpamos o caminho pois sÛ vamos trabalhar com a Classe dos objetos
+    // Limpamos o caminho pois s√≥ vamos trabalhar com a Classe dos objetos
     propertyName = getCleanPath(propertyName);
 
     int index = propertyName.indexOf(".");
     if (index > -1) {
-      // Se temos neasted properties, chamamos recursivamente atÈ chegar na ˙ltima propriedade
+      // Se temos neasted properties, chamamos recursivamente at√© chegar na √∫ltima propriedade
       Class<VO> valueVOClass = (Class<VO>) getPropertyTransparentType(beanClass, propertyName.substring(0, index));
-      // Se ainda temos Neasted Properties, mas o tipo retornado n„o È um RFWVO, Exception!!!
-      if (valueVOClass == null || !RFWVO.class.isAssignableFrom(valueVOClass)) throw new RFWCriticalException("ImpossÌvel obter o caminho '${0}' na clase '${1}' se o tipo retornado n„o È um RFWVO!", new String[] { propertyName, beanClass.getCanonicalName() });
+      // Se ainda temos Neasted Properties, mas o tipo retornado n√£o √© um RFWVO, Exception!!!
+      if (valueVOClass == null || !RFWVO.class.isAssignableFrom(valueVOClass)) throw new RFWCriticalException("Imposs√≠vel obter o caminho '${0}' na clase '${1}' se o tipo retornado n√£o √© um RFWVO!", new String[] { propertyName, beanClass.getCanonicalName() });
       return getPropertyTransparentType(valueVOClass, propertyName.substring(index + 1, propertyName.length()));
     } else {
       try {
-        // Se n„o È uma Neasted Property, recuperamos a classe do atributo e verificamos as listas/hashs
+        // Se n√£o √© uma Neasted Property, recuperamos a classe do atributo e verificamos as listas/hashs
         Field field = beanClass.getDeclaredField(propertyName);
         Class<?> type = field.getType();
         if (List.class.isAssignableFrom(type)) {
@@ -772,7 +772,7 @@ public class RUReflex {
           if (ann != null && ann.targetRelationship() != RFWVO.class) {
             return ann.targetRelationship();
           } else {
-            // Se N„o temos a annotation ou o target, tentamos recuperar o generics da lista
+            // Se N√£o temos a annotation ou o target, tentamos recuperar o generics da lista
             final Class<?>[] gi = getGenericsFromField(field);
             if (gi != null && gi.length > 0) return gi[0];
           }
@@ -782,12 +782,12 @@ public class RUReflex {
           if (ann != null && ann.targetRelationship() != RFWVO.class) {
             return ann.targetRelationship();
           } else {
-            // Se N„o temos a annotation ou o target, tentamos recuperar o generics da lista
+            // Se N√£o temos a annotation ou o target, tentamos recuperar o generics da lista
             final Class<?>[] gi = getGenericsFromField(field);
-            if (gi != null && gi.length > 1) return gi[1]; // Retorna o Ìndice do generics do Value e n„o da chave
+            if (gi != null && gi.length > 1) return gi[1]; // Retorna o √≠ndice do generics do Value e n√£o da chave
           }
         } else {
-          // Qualquer outro tipo È sÛ retornar
+          // Qualquer outro tipo √© s√≥ retornar
           return type;
         }
       } catch (Throwable e) {
@@ -798,14 +798,14 @@ public class RUReflex {
   }
 
   /**
-   * Recupera as classes definidas no Generics da DeclaraÁ„o de um attributo (Field) de uma classe.
+   * Recupera as classes definidas no Generics da Declara√ß√£o de um attributo (Field) de uma classe.
    *
-   * @param field Atributo Field j· recuperado por reflex„o.
-   * @return Conjunto de Classes que forem definidos no Generics da DeclaraÁ„o de um Attributo.
+   * @param field Atributo Field j√° recuperado por reflex√£o.
+   * @return Conjunto de Classes que forem definidos no Generics da Declara√ß√£o de um Attributo.
    * @throws RFWException
    */
   public static Class<?>[] getGenericsFromField(Field field) throws RFWException {
-    Objects.requireNonNull(field, "Classe È obrigatÛrioa!");
+    Objects.requireNonNull(field, "Classe √© obrigat√≥rioa!");
 
     Class<?>[] ret = null;
     final Type type = field.getGenericType();
@@ -822,12 +822,12 @@ public class RUReflex {
   }
 
   /**
-   * Procura um atributo em um RFWVO, procura se h· alguma RFWMetaAnnotation no atributo, e se esta RFWMeta tiver o atributo "preProcess" retorna seu valor. Caso contr·rio retornar· null.<br>
-   * Este mÈtodo n„o lanÁa exceÁıes caso o n„o tenha a RFWMeta, ou se a mesma n„o tiver o atributo caption.
+   * Procura um atributo em um RFWVO, procura se h√° alguma RFWMetaAnnotation no atributo, e se esta RFWMeta tiver o atributo "preProcess" retorna seu valor. Caso contr√°rio retornar√° null.<br>
+   * Este m√©todo n√£o lan√ßa exce√ß√µes caso o n√£o tenha a RFWMeta, ou se a mesma n√£o tiver o atributo caption.
    *
    * @param voClass Classe a ser analizada
    * @param attribute Atributo para procurar pela RFWMeta
-   * @return O valor da Caption, ou NULL caso n„o tenha sido encontrado
+   * @return O valor da Caption, ou NULL caso n√£o tenha sido encontrado
    * @throws RFWException
    */
   public static PreProcessOption[] getRFWMetaAnnotationPreProcess(Class<? extends RFWVO> voClass, String attribute) throws RFWException {
@@ -842,7 +842,7 @@ public class RUReflex {
           Method m = ann.getClass().getMethod("preProcess");
           preProcess = new PreProcessOption[] { (PreProcessOption) m.invoke(ann) };
         } catch (Exception e2) {
-          // Qualquer falha ao tentar obter o preProcess n„o È reportado nem tratado, apenas retornamos null
+          // Qualquer falha ao tentar obter o preProcess n√£o √© reportado nem tratado, apenas retornamos null
         }
       }
     }
@@ -850,9 +850,9 @@ public class RUReflex {
   }
 
   /**
-   * Este mÈtodo recebe um campo field diretamente e tentar· encontrar uma RFWMeta Annotation neste atributo.
+   * Este m√©todo recebe um campo field diretamente e tentar√° encontrar uma RFWMeta Annotation neste atributo.
    *
-   * @param field Objeto field da reflex„o do Java para encontrar a RFWMeta Annotation
+   * @param field Objeto field da reflex√£o do Java para encontrar a RFWMeta Annotation
    * @return uma annotation RFWMeta ou NULL caso nenhuma seja encontrada.
    * @throws RFWException
    */
@@ -870,12 +870,12 @@ public class RUReflex {
   }
 
   /**
-   * Procura um atributo em um RFWVO, procura se h· alguma RFWMetaAnnotation no atributo, e se esta RFWMeta tiver o atributo "caption" retorna seu valor. Caso contr·rio retornar· null.<br>
-   * Este mÈtodo n„o lanÁa exceÁıes caso o n„o tenha a RFWMeta, ou se a mesma n„o tiver o atributo caption.
+   * Procura um atributo em um RFWVO, procura se h√° alguma RFWMetaAnnotation no atributo, e se esta RFWMeta tiver o atributo "caption" retorna seu valor. Caso contr√°rio retornar√° null.<br>
+   * Este m√©todo n√£o lan√ßa exce√ß√µes caso o n√£o tenha a RFWMeta, ou se a mesma n√£o tiver o atributo caption.
    *
    * @param voClass Classe a ser analizada
    * @param attribute Atributo para procurar pela RFWMeta
-   * @return O valor da Caption, ou NULL caso n„o tenha sido encontrado
+   * @return O valor da Caption, ou NULL caso n√£o tenha sido encontrado
    * @throws RFWException
    */
   public static String getRFWMetaAnnotationCaption(Class<? extends RFWVO> voClass, String attribute) throws RFWException {
@@ -886,19 +886,19 @@ public class RUReflex {
         Method m = ann.getClass().getMethod("caption");
         caption = (String) m.invoke(ann);
       } catch (Exception e) {
-        // Qualquer falha ao tentar obter o caption n„o È reportado nem tratado, apenas retornamos null
+        // Qualquer falha ao tentar obter o caption n√£o √© reportado nem tratado, apenas retornamos null
       }
     }
     return caption;
   }
 
   /**
-   * Procura um atributo em um RFWVO, procura se h· alguma RFWMetaAnnotation no atributo, e se esta RFWMeta tiver o atributo "required" retorna seu valor. Caso contr·rio retornar· null.<br>
-   * Este mÈtodo n„o lanÁa exceÁıes caso o n„o tenha a RFWMeta, ou se a mesma n„o tiver o atributo caption.
+   * Procura um atributo em um RFWVO, procura se h√° alguma RFWMetaAnnotation no atributo, e se esta RFWMeta tiver o atributo "required" retorna seu valor. Caso contr√°rio retornar√° null.<br>
+   * Este m√©todo n√£o lan√ßa exce√ß√µes caso o n√£o tenha a RFWMeta, ou se a mesma n√£o tiver o atributo caption.
    *
    * @param voClass Classe a ser analizada
    * @param attribute Atributo para procurar pela RFWMeta
-   * @return O valor da Caption, ou NULL caso n„o tenha sido encontrado
+   * @return O valor da Caption, ou NULL caso n√£o tenha sido encontrado
    * @throws RFWException
    */
   public static Boolean getRFWMetaAnnotationRequired(Class<? extends RFWVO> voClass, String attribute) throws RFWException {
@@ -909,20 +909,20 @@ public class RUReflex {
         Method m = ann.getClass().getMethod("required");
         required = (Boolean) m.invoke(ann);
       } catch (Exception e) {
-        // Qualquer falha ao tentar obter o caption n„o È reportado nem tratado, apenas retornamos null
+        // Qualquer falha ao tentar obter o caption n√£o √© reportado nem tratado, apenas retornamos null
       }
     }
     return required;
   }
 
   /**
-   * Este mÈtodo tenta montar um caminho com os 'captions' das RFWMetaAnnotations recursivamente, no padr„o "Caption 1 > Caption 2 > Caption 3".<br>
-   * Caso algum atirbuto n„o tenha a RFWMetaAnnotation o mÈtodo lanÁar· exception.<br>
-   * Caso o caption esteja vazio (""), o passo ser· ignorado para evitar a concatenaÁ„o "> >". <br>
-   * Este mÈtodo n„o considera os indeces de Lista ou chaves de Hash para colocar no caminho. Essa opÁ„o deve ser criada em outro mÈtodo.
+   * Este m√©todo tenta montar um caminho com os 'captions' das RFWMetaAnnotations recursivamente, no padr√£o "Caption 1 > Caption 2 > Caption 3".<br>
+   * Caso algum atirbuto n√£o tenha a RFWMetaAnnotation o m√©todo lan√ßar√° exception.<br>
+   * Caso o caption esteja vazio (""), o passo ser√° ignorado para evitar a concatena√ß√£o "> >". <br>
+   * Este m√©todo n√£o considera os indeces de Lista ou chaves de Hash para colocar no caminho. Essa op√ß√£o deve ser criada em outro m√©todo.
    *
-   * @param voClass Classe do VO do comeÁo do caminho.
-   * @param attributePath Caminho partindo do voClass atÈ o atributo desejado
+   * @param voClass Classe do VO do come√ßo do caminho.
+   * @param attributePath Caminho partindo do voClass at√© o atributo desejado
    * @return Caption montado recursivamente.
    * @throws RFWException
    */
@@ -944,12 +944,12 @@ public class RUReflex {
 
   /**
    * Procura um RFWVO em uma lista caso o atributo passado seja 'equals' o valor. <br>
-   * Note que se houver mais do que um RFWVO com o mesmo ID, ser· retornado o primeiro encontrado.
+   * Note que se houver mais do que um RFWVO com o mesmo ID, ser√° retornado o primeiro encontrado.
    *
    * @param <VO> Tipo do Objeto que extenda {@link RFWVO}
    * @param list Lista de RFWVO
-   * @param path Caminho dos atirbutos aninhados atÈ a propriedade que precisa ser validada.
-   * @param value Valor para ser passado no equals e comparado. Caso seja passado 'null', o mÈtodo verificar· se o retorno da propriedade passada em 'path' tambÈm È nulo. OBS: Note que se qualquer par‚metro dos atirbutos aninhados retornar nulo, o resultado ser· 'true' caso value seja 'null'.
+   * @param path Caminho dos atirbutos aninhados at√© a propriedade que precisa ser validada.
+   * @param value Valor para ser passado no equals e comparado. Caso seja passado 'null', o m√©todo verificar√° se o retorno da propriedade passada em 'path' tamb√©m √© nulo. OBS: Note que se qualquer par√¢metro dos atirbutos aninhados retornar nulo, o resultado ser√° 'true' caso value seja 'null'.
    * @return Primeiro objeto cujo atributo passado seja 'equals' o 'value' passado.
    * @throws RFWException
    */
@@ -965,13 +965,13 @@ public class RUReflex {
       }
       return false;
     }).collect(Collectors.toList());
-    if (ex[0] != null) throw ex[0]; // se tiver uma exception dentro do bloco Lambda, lanÁa ela fora
+    if (ex[0] != null) throw ex[0]; // se tiver uma exception dentro do bloco Lambda, lan√ßa ela fora
     if (filteredList.size() > 0) return filteredList.get(0);
     return null;
   }
 
   /**
-   * Este mÈtodo recebe um objeto e um nome de propriedade. Tentar· encontrar uma RFWDAOEncrypt neste atributo.
+   * Este m√©todo recebe um objeto e um nome de propriedade. Tentar√° encontrar uma RFWDAOEncrypt neste atributo.
    *
    * @param voClass Classe a ser analizada
    * @param attribute Nome do atributo para encontrar a RFWMeta Annotation
@@ -983,11 +983,11 @@ public class RUReflex {
     RFWMetaEncrypt ann = null;
     Field field = null;
 
-    // Se houver neasted properties, recuperamos a classe do pen˙ltimo atributo, para que dele possamos recuperar o Field
+    // Se houver neasted properties, recuperamos a classe do pen√∫ltimo atributo, para que dele possamos recuperar o Field
     if (attribute.indexOf(".") > -1) {
       final int lindex = attribute.lastIndexOf(".");
       final Class<?> tmpClass = getPropertyTransparentType(voClass, attribute.substring(0, lindex));
-      if (tmpClass == null || !RFWVO.class.isAssignableFrom(tmpClass)) throw new RFWCriticalException("ImpossÌvel obter o caminho '${0}' na clase '${1}' se o tipo retornado n„o È um RFWVO!", new String[] { attribute, voClass.getCanonicalName() });
+      if (tmpClass == null || !RFWVO.class.isAssignableFrom(tmpClass)) throw new RFWCriticalException("Imposs√≠vel obter o caminho '${0}' na clase '${1}' se o tipo retornado n√£o √© um RFWVO!", new String[] { attribute, voClass.getCanonicalName() });
       voClass = (Class<? extends RFWVO>) tmpClass;
       attribute = attribute.substring(lindex + 1, attribute.length());
     }
@@ -1005,12 +1005,12 @@ public class RUReflex {
   }
 
   /**
-   * Este mÈtodo obtem uma classe de RFWVO e vasculha todos os objetos que s„o dependentes/relacionados a este objeto. Em outras palavras retorna os atributos que precisam ser recuperados para uma atualizaÁ„o.<br>
-   * A busca consiste em recuperar todos os objetos que estejam associados (tipos ASSOCIATION, PARENT_ASSOCIATION ou MANY_TO_MANY), para que seja possÌvel a detecÁ„o da desassociaÁ„o caso o objeto n„o esteja mais presente. E recuperamos recursivamente os objetos de composiÁ„o (tipo COMPOSITION) para o mesmo fim.
+   * Este m√©todo obtem uma classe de RFWVO e vasculha todos os objetos que s√£o dependentes/relacionados a este objeto. Em outras palavras retorna os atributos que precisam ser recuperados para uma atualiza√ß√£o.<br>
+   * A busca consiste em recuperar todos os objetos que estejam associados (tipos ASSOCIATION, PARENT_ASSOCIATION ou MANY_TO_MANY), para que seja poss√≠vel a detec√ß√£o da desassocia√ß√£o caso o objeto n√£o esteja mais presente. E recuperamos recursivamente os objetos de composi√ß√£o (tipo COMPOSITION) para o mesmo fim.
    *
    * @param clazz Classe do VO que vamos vasculhar
-   * @param path Caminho usado atÈ chegar na classe sendo passada. Usado durante a recurs„o. Para obter os atributos do objeto raiz passe o valor "".
-   * @return Lista com o caminho atÈ a propriedade id dos objetos que precisam ser recupeados. Ex: 'users.companies.id'.
+   * @param path Caminho usado at√© chegar na classe sendo passada. Usado durante a recurs√£o. Para obter os atributos do objeto raiz passe o valor "".
+   * @return Lista com o caminho at√© a propriedade id dos objetos que precisam ser recupeados. Ex: 'users.companies.id'.
    * @throws RFWException
    */
   @SuppressWarnings("unchecked")
@@ -1032,10 +1032,10 @@ public class RUReflex {
               entityType = (Class<? extends RFWVO>) field.getType();
             }
             if (entityType == null) {
-              throw new RFWCriticalException("N„o foi possÌvel encontrar o RFWVO no relacionamento da entidade '${0}' no atributo '${1}\". Relacionamentos com coleÁıes È obrigatÛrio a definiÁ„o do atributo 'targetRelationship' na RFWMetaAnnotation.", new String[] { clazz.getCanonicalName(), field.getName() });
+              throw new RFWCriticalException("N√£o foi poss√≠vel encontrar o RFWVO no relacionamento da entidade '${0}' no atributo '${1}\". Relacionamentos com cole√ß√µes √© obrigat√≥rio a defini√ß√£o do atributo 'targetRelationship' na RFWMetaAnnotation.", new String[] { clazz.getCanonicalName(), field.getName() });
             }
             if (!clazz.equals(entityType)) {
-              // Quando a classe atual e a da compoisÁ„o s„o as mesmas encontramos um loop, o que acontece quando utilizado em casos hier·rquicos.
+              // Quando a classe atual e a da compois√ß√£o s√£o as mesmas encontramos um loop, o que acontece quando utilizado em casos hier√°rquicos.
               // Neste caso paramos de buscar os atributos pq termina em loop eterno.
               list.addAll(getRFWVOUpdateAttributes(entityType, addPath(path, field.getName())));
             }
@@ -1048,7 +1048,7 @@ public class RUReflex {
             list.add(addPath(path, field.getName()) + ".id");
             break;
           case COMPOSITION_TREE:
-            // Salvamos os caminhos encontratos na cache de CompositionTree para vasculhar melhor, mas n„o continuamos navegando mais.
+            // Salvamos os caminhos encontratos na cache de CompositionTree para vasculhar melhor, mas n√£o continuamos navegando mais.
             list.add(addPath(path, field.getName()) + ".id");
             break;
         }
@@ -1062,14 +1062,14 @@ public class RUReflex {
   }
 
   /**
-   * MÈtodo auxiliar para adicionar um caminho na estrutura existente.<br>
+   * M√©todo auxiliar para adicionar um caminho na estrutura existente.<br>
    *
    * @param path Caminho atual.
-   * @param newAdd PedaÁo a ser adicionado ao caminho atual.
+   * @param newAdd Peda√ßo a ser adicionado ao caminho atual.
    * @return Retorna o caminho pai. Ex:
-   *         <li>Se passado "a.b.c.d.e" este mÈtodo deve retornar "a.b.c.d".
-   *         <li>Se passado "a" o mÈtodo deve retornar "" j· que vazio È caminho raiz.
-   *         <li>Se passado "" retornamos null j· que n„o temos um caminho pai.
+   *         <li>Se passado "a.b.c.d.e" este m√©todo deve retornar "a.b.c.d".
+   *         <li>Se passado "a" o m√©todo deve retornar "" j√° que vazio √© caminho raiz.
+   *         <li>Se passado "" retornamos null j√° que n√£o temos um caminho pai.
    */
   public static String addPath(String path, String newAdd) {
     if (path == null || "".equals(path)) {
@@ -1080,11 +1080,11 @@ public class RUReflex {
   }
 
   /**
-   * Este mÈtodo obtem uma classe de RFWVO e vasculha todos os objetos que s„o dependentes/relacionados a este objeto. Em outras palavras retorna os atributos que precisam ser recuperados para uma atualizaÁ„o.<br>
-   * A busca consiste em recuperar todos os objetos que estejam associados (tipos ASSOCIATION, PARENT_ASSOCIATION ou MANY_TO_MANY), para que seja possÌvel a detecÁ„o da desassociaÁ„o caso o objeto n„o esteja mais presente. E recuperamos recursivamente os objetos de composiÁ„o (tipo COMPOSITION) para o mesmo fim.
+   * Este m√©todo obtem uma classe de RFWVO e vasculha todos os objetos que s√£o dependentes/relacionados a este objeto. Em outras palavras retorna os atributos que precisam ser recuperados para uma atualiza√ß√£o.<br>
+   * A busca consiste em recuperar todos os objetos que estejam associados (tipos ASSOCIATION, PARENT_ASSOCIATION ou MANY_TO_MANY), para que seja poss√≠vel a detec√ß√£o da desassocia√ß√£o caso o objeto n√£o esteja mais presente. E recuperamos recursivamente os objetos de composi√ß√£o (tipo COMPOSITION) para o mesmo fim.
    *
    * @param clazz Classe do VO que vamos vasculhar
-   * @return Lista com o caminho atÈ a propriedade id dos objetos que precisam ser recupeados. Ex: 'users.companies.id'.
+   * @return Lista com o caminho at√© a propriedade id dos objetos que precisam ser recupeados. Ex: 'users.companies.id'.
    * @throws RFWException
    */
   public static <VO extends RFWVO> String[] getRFWVOUpdateAttributes(Class<VO> clazz) throws RFWException {
@@ -1092,10 +1092,10 @@ public class RUReflex {
   }
 
   /**
-   * Este mÈtodo recupera a pilha dos mÈtodos que foram sendo chamados atÈ a chamada deste mÈtodo. Cria o caminho dos mÈtodos chamados como uma pilha de StackTrace
+   * Este m√©todo recupera a pilha dos m√©todos que foram sendo chamados at√© a chamada deste m√©todo. Cria o caminho dos m√©todos chamados como uma pilha de StackTrace
    *
-   * @param offset permite "ocultar" as ˙ltimas chamadas do mÈtodo. Por exemplo, se n„o se deseja registrar o prÛprio mÈtodo getInvoker deve-se passar 1. Se n„o deseja registrar o mÈtodo que chamou este MÈtodo, deve se passar 2, e assim por diante. Valor mÌnimo 0, vaor muito alto pode n„o sobrar nada na pilha para imprimir.
-   * @param stacksize tamanho m·ximo da pilha para retornar. Pode limitar a quantidade m·xima de linhas a serem retornadas.
+   * @param offset permite "ocultar" as √∫ltimas chamadas do m√©todo. Por exemplo, se n√£o se deseja registrar o pr√≥prio m√©todo getInvoker deve-se passar 1. Se n√£o deseja registrar o m√©todo que chamou este M√©todo, deve se passar 2, e assim por diante. Valor m√≠nimo 0, vaor muito alto pode n√£o sobrar nada na pilha para imprimir.
+   * @param stacksize tamanho m√°ximo da pilha para retornar. Pode limitar a quantidade m√°xima de linhas a serem retornadas.
    */
   public static final String getInvoker(int offset, int stacksize) {
     final StringBuilder buff = new StringBuilder();
@@ -1112,10 +1112,10 @@ public class RUReflex {
   /**
    * Cria o caminho para um item dentro de uma hash.
    *
-   * @param attribute Nome do atributo que contÈm a hash.
-   * @param key RepresentaÁ„o em String do objeto chave da hash.
+   * @param attribute Nome do atributo que cont√©m a hash.
+   * @param key Representa√ß√£o em String do objeto chave da hash.
    * @param clazz Classe da chave de Hash. Atualmente suporta apenas String e Long.
-   * @param basepath Caminho base atÈ chegar neste atributo.
+   * @param basepath Caminho base at√© chegar neste atributo.
    * @return Caminho que identificau atributo em um objeto dentro de uma hash.
    */
   public static String getAttributePath(String attribute, Object key, Class<?> clazz, String basepath) {
@@ -1124,7 +1124,7 @@ public class RUReflex {
     } else if (Long.class.isAssignableFrom(clazz)) {
       key = key + "{Long}";
     } else {
-      throw new RFWRunTimeException("Classe n„o suportada como chave de hash!");
+      throw new RFWRunTimeException("Classe n√£o suportada como chave de hash!");
     }
     attribute = attribute + "[" + key + "]";
     if (basepath != null) {
@@ -1135,7 +1135,7 @@ public class RUReflex {
   }
 
   /**
-   * Monta um caminho baseado em um caminho base e o novo atributo. Faz a validaÁ„o se algum dos objetos È nulo para retornar o caminho correto considerando os nulos.
+   * Monta um caminho baseado em um caminho base e o novo atributo. Faz a valida√ß√£o se algum dos objetos √© nulo para retornar o caminho correto considerando os nulos.
    *
    * @param attribute Nome do atributo a ser anexado.
    * @param basepath Caminho base.
@@ -1154,10 +1154,10 @@ public class RUReflex {
   }
 
   /**
-   * Monta um caminho baseado em um caminho base e o novo atributo. Faz a validaÁ„o se algum dos objetos È nulo para retornar o caminho correto considerando os nulos.
+   * Monta um caminho baseado em um caminho base e o novo atributo. Faz a valida√ß√£o se algum dos objetos √© nulo para retornar o caminho correto considerando os nulos.
    *
    * @param attribute Nome do atributo a ser anexado.
-   * @param index Ìndice do atributo no array.
+   * @param index √≠ndice do atributo no array.
    * @param basepath Caminho base.
    * @return Caminho Base + . + atributo[index] considerando os nulos e a necessidade de agregar os separadores.
    *
@@ -1173,12 +1173,12 @@ public class RUReflex {
 
   /**
    * Procura um RFWVO em uma determinada lista pelo seu ID. <br>
-   * Note que se houver mais do que um RFWVO com o mesmo ID, ser· retornado o primeiro encontrado.
+   * Note que se houver mais do que um RFWVO com o mesmo ID, ser√° retornado o primeiro encontrado.
    *
    * @param <VO> Tipo do Objeto que extenda {@link RFWVO}
    * @param list Lista de RFWVO
    * @param id ID do VO a ser encontrado.
-   * @return Objeto com o ID desejado, ou nulo caso n„o tenha contrado nenhum.
+   * @return Objeto com o ID desejado, ou nulo caso n√£o tenha contrado nenhum.
    * @throws RFWException
    */
   public static <VO extends RFWVO> VO getRFWVOByID(List<VO> list, Long id) throws RFWException {
@@ -1189,12 +1189,12 @@ public class RUReflex {
   }
 
   /**
-   * Busca um "resource" no classPath de acordo com seu nome. Este mÈtodo tenta encontrar primeiro no mesmo classPath da classe que chamou este mÈtodo, se n„o encontrar procura no ClassLoader completo.<br>
-   * <b>ATEN«√O:</B> Este mÈtodo n„o funciona para resources que estejam dentro de pacotes do tipo EJB/WAR, quando chamado de uma classe de fora. Isso porque o classloader deles È separado por seguranÁa. Para ter os resources visÌveis por este mÈtodo coloque em um Jar "p˙blico", como o pacote client, ou um Jar especÌfico para carregar os resources.
+   * Busca um "resource" no classPath de acordo com seu nome. Este m√©todo tenta encontrar primeiro no mesmo classPath da classe que chamou este m√©todo, se n√£o encontrar procura no ClassLoader completo.<br>
+   * <b>ATEN√á√ÉO:</B> Este m√©todo n√£o funciona para resources que estejam dentro de pacotes do tipo EJB/WAR, quando chamado de uma classe de fora. Isso porque o classloader deles √© separado por seguran√ßa. Para ter os resources vis√≠veis por este m√©todo coloque em um Jar "p√∫blico", como o pacote client, ou um Jar espec√≠fico para carregar os resources.
    *
    *
-   * @param resourceName Nome do Recurso sendo procurado. O nome deve incluir a pasta conforme sua posiÁ„o relativa ‡ raiz. Ex: "resources/img.gif"
-   * @return InputStream pronto para ser lido com o conte˙do do Resource.
+   * @param resourceName Nome do Recurso sendo procurado. O nome deve incluir a pasta conforme sua posi√ß√£o relativa √† raiz. Ex: "resources/img.gif"
+   * @return InputStream pronto para ser lido com o conte√∫do do Resource.
    * @throws RFWException
    */
   public static InputStream getResourceAsStream(String resourceName) throws RFWException {
@@ -1204,7 +1204,7 @@ public class RUReflex {
         StackTraceElement[] stack = Thread.currentThread().getStackTrace();
         stream = Class.forName(stack[2].getClassName()).getClassLoader().getResourceAsStream(resourceName);
       } catch (ClassNotFoundException e1) {
-        // N„o deve ocorrer pe estamos criando a partir do prÛprio nome da classe, mas logamos
+        // N√£o deve ocorrer pe estamos criando a partir do pr√≥prio nome da classe, mas logamos
         RFWLogger.logException(e1);
       }
       if (stream == null) {
@@ -1220,7 +1220,7 @@ public class RUReflex {
   }
 
   /**
-   * Este mÈtodo cria um novo ClassLoader de URL com todos os arquivos JARs encontrados no classpath atual.
+   * Este m√©todo cria um novo ClassLoader de URL com todos os arquivos JARs encontrados no classpath atual.
    *
    * @return ClassLoader com todos os arquivos .jar carregados.
    */
@@ -1245,7 +1245,7 @@ public class RUReflex {
   /**
    * Recupera todos os "resources" do ClassLoader atual baseados em um pattern.
    *
-   * @param pattern Express„o Regularar para filtrar os "resources" que ser„o retornados.
+   * @param pattern Express√£o Regularar para filtrar os "resources" que ser√£o retornados.
    * @return Lista com o URL de todos os recursos encontrados.
    */
   public static Collection<String> getResources(final Pattern pattern) {
@@ -1261,8 +1261,8 @@ public class RUReflex {
   /**
    * Recupera uma lista de "resources" baseado em um determinado elemento, filtrados por um pattern.
    *
-   * @param element URI do Jar ou DiretÛrio onde podemos encontrar os "resources".
-   * @param pattern Express„o Regular para filtrar os recursos desejados.
+   * @param element URI do Jar ou Diret√≥rio onde podemos encontrar os "resources".
+   * @param pattern Express√£o Regular para filtrar os recursos desejados.
    * @return Lista de URI com os "resources" encontrados.
    */
   private static Collection<String> getResources(final String element, final Pattern pattern) {
@@ -1277,10 +1277,10 @@ public class RUReflex {
   }
 
   /**
-   * Recupera os "resources" de um diretÛrio
+   * Recupera os "resources" de um diret√≥rio
    *
-   * @param directory DiretÛrio para recuperar os "resources"
-   * @param pattern Express„o Regulara para filtrar os "resources" retornados.
+   * @param directory Diret√≥rio para recuperar os "resources"
+   * @param pattern Express√£o Regulara para filtrar os "resources" retornados.
    * @return Lista com os "resources" encontrados
    */
   private static Collection<String> getResourcesFromDirectory(final File directory, final Pattern pattern) {
@@ -1308,7 +1308,7 @@ public class RUReflex {
    * Recupera os "resources" de um arquivo JAR.
    *
    * @param file URI do arquivo JAR
-   * @param pattern Express„o Regular para filtrar os resultados.
+   * @param pattern Express√£o Regular para filtrar os resultados.
    * @return Lita de Resources encontrados.
    */
   private static Collection<String> getResourcesFromJarFile(final File file, final Pattern pattern) {
@@ -1339,13 +1339,13 @@ public class RUReflex {
   }
 
   /**
-   * MÈtodo auxiliar para obter o "˙ltimo atributo do caminho".<br>
+   * M√©todo auxiliar para obter o "√∫ltimo atributo do caminho".<br>
    *
-   * @param path Caminho para extrair o ˙ltimo bloco.
+   * @param path Caminho para extrair o √∫ltimo bloco.
    * @return Retorna o caminho pai. Ex:
-   *         <li>Se passado "a.b.c.d.e" este mÈtodo deve retornar "e".
-   *         <li>Se passado "a" o mÈtodo deve retornar "a".
-   *         <li>Se passado null ou "" retornamos null j· que n„o temos nenhum atributo.
+   *         <li>Se passado "a.b.c.d.e" este m√©todo deve retornar "e".
+   *         <li>Se passado "a" o m√©todo deve retornar "a".
+   *         <li>Se passado null ou "" retornamos null j√° que n√£o temos nenhum atributo.
    */
   public static String getLastPath(String path) {
     if (path == null || "".equals(path)) {
@@ -1360,13 +1360,13 @@ public class RUReflex {
   }
 
   /**
-   * MÈtodo auxiliar para obter o "caminho pai".<br>
+   * M√©todo auxiliar para obter o "caminho pai".<br>
    *
    * @param path Caminho para extrair o caminho pai.
    * @return Retorna o caminho pai. Ex:
-   *         <li>Se passado "a.b.c.d.e" este mÈtodo deve retornar "a.b.c.d".
-   *         <li>Se passado "a" o mÈtodo deve retornar "" j· que vazio È caminho raiz.
-   *         <li>Se passado "" retornamos null j· que n„o temos um caminho pai.
+   *         <li>Se passado "a.b.c.d.e" este m√©todo deve retornar "a.b.c.d".
+   *         <li>Se passado "a" o m√©todo deve retornar "" j√° que vazio √© caminho raiz.
+   *         <li>Se passado "" retornamos null j√° que n√£o temos um caminho pai.
    */
   public static String getParentPath(String path) {
     if (path == null || "".equals(path)) {
@@ -1381,7 +1381,7 @@ public class RUReflex {
   }
 
   /**
-   * Transforma uma ColeÁ„o de GVO em uma Lista contendo todos os VOs internos.
+   * Transforma uma Cole√ß√£o de GVO em uma Lista contendo todos os VOs internos.
    *
    * @param <VO> Qualquer classe de VO do {@link RFWVO} (extenda {@link RFWVO}).
    * @param vos Array com os {@link GVO}s
@@ -1393,65 +1393,65 @@ public class RUReflex {
   }
 
   /**
-   * Verifica se um mÈtodo È um getter. Um mÈtodo È considerado um getter se seu nome comeÁar com "get", n„o tiver par‚metros e retornar um valor.
+   * Verifica se um m√©todo √© um getter. Um m√©todo √© considerado um getter se seu nome come√ßar com "get", n√£o tiver par√¢metros e retornar um valor.
    *
-   * @param method O mÈtodo a ser verificado.
-   * @return true se o mÈtodo for um getter, false caso contr·rio.
+   * @param method O m√©todo a ser verificado.
+   * @return true se o m√©todo for um getter, false caso contr√°rio.
    */
   public static boolean isGetterMethod(Method method) {
     return method.getName().startsWith("get") && method.getParameterCount() == 0 && !method.getReturnType().equals(void.class);
   }
 
   /**
-   * Verifica se um mÈtodo È um setter. Um mÈtodo È considerado um setter se seu nome comeÁar com "set" e tiver exatamente um par‚metro.
+   * Verifica se um m√©todo √© um setter. Um m√©todo √© considerado um setter se seu nome come√ßar com "set" e tiver exatamente um par√¢metro.
    *
-   * @param method O mÈtodo a ser verificado.
-   * @return true se o mÈtodo for um setter, false caso contr·rio.
+   * @param method O m√©todo a ser verificado.
+   * @return true se o m√©todo for um setter, false caso contr√°rio.
    */
   public static boolean isSetterMethod(Method method) {
     return method.getName().startsWith("set") && method.getParameterCount() == 1;
   }
 
   /**
-   * Encontra o mÈtodo setter correspondente a um getter, com base no nome da propriedade e no tipo do par‚metro. Ajusta a capitalizaÁ„o do nome da propriedade para seguir as convenÁıes de mÈtodos Java.
+   * Encontra o m√©todo setter correspondente a um getter, com base no nome da propriedade e no tipo do par√¢metro. Ajusta a capitaliza√ß√£o do nome da propriedade para seguir as conven√ß√µes de m√©todos Java.
    *
-   * @param clazz A classe que contÈm o mÈtodo setter.
+   * @param clazz A classe que cont√©m o m√©todo setter.
    * @param propertyName O nome da propriedade (como declarado).
-   * @param parameterType O tipo do par‚metro que o setter deve aceitar.
-   * @return O mÈtodo setter correspondente, ou null se n„o for encontrado.
+   * @param parameterType O tipo do par√¢metro que o setter deve aceitar.
+   * @return O m√©todo setter correspondente, ou null se n√£o for encontrado.
    */
   public static Method findSetterMethod(Class<?> clazz, String propertyName, Class<?> parameterType) {
     try {
       String capitalizedPropertyName = RUString.capitalize(propertyName);
       return clazz.getMethod("set" + capitalizedPropertyName, parameterType);
     } catch (NoSuchMethodException e) {
-      return null; // Se n„o houver um setter correspondente, retorna null
+      return null; // Se n√£o houver um setter correspondente, retorna null
     }
   }
 
   /**
-   * Encontra o mÈtodo getter correspondente a um setter, com base no nome da propriedade. Ajusta a capitalizaÁ„o do nome da propriedade para seguir as convenÁıes de mÈtodos Java.
+   * Encontra o m√©todo getter correspondente a um setter, com base no nome da propriedade. Ajusta a capitaliza√ß√£o do nome da propriedade para seguir as conven√ß√µes de m√©todos Java.
    *
-   * @param clazz A classe que contÈm o mÈtodo getter.
+   * @param clazz A classe que cont√©m o m√©todo getter.
    * @param propertyName O nome da propriedade (como declarado).
-   * @return O mÈtodo getter correspondente, ou null se n„o for encontrado.
+   * @return O m√©todo getter correspondente, ou null se n√£o for encontrado.
    */
   public static Method findGetterMethod(Class<?> clazz, String propertyName) {
     try {
       String capitalizedPropertyName = RUString.capitalize(propertyName);
       return clazz.getMethod("get" + capitalizedPropertyName);
     } catch (NoSuchMethodException e) {
-      return null; // Se n„o houver um getter correspondente, retorna null
+      return null; // Se n√£o houver um getter correspondente, retorna null
     }
   }
 
   /**
-   * Verifica se uma classe possui tanto um mÈtodo getter quanto um mÈtodo setter para uma propriedade especÌfica.
+   * Verifica se uma classe possui tanto um m√©todo getter quanto um m√©todo setter para uma propriedade espec√≠fica.
    *
    * @param clazz A classe a ser verificada.
    * @param propertyName O nome da propriedade (como declarado).
-   * @param propertyType O tipo do par‚metro que o setter deve aceitar.
-   * @return true se ambos os mÈtodos getter e setter existirem, false caso contr·rio.
+   * @param propertyType O tipo do par√¢metro que o setter deve aceitar.
+   * @return true se ambos os m√©todos getter e setter existirem, false caso contr√°rio.
    */
   public static boolean hasGetterAndSetter(Class<?> clazz, String propertyName, Class<?> propertyType) {
     Method getter = findGetterMethod(clazz, propertyName);
@@ -1460,7 +1460,7 @@ public class RUReflex {
   }
 
   /**
-   * Permite que uma determinada ·rvore seja adicionada como parte de outra, adicionando a cada elemento do array uma base inicial da ·rvore pai.
+   * Permite que uma determinada √°rvore seja adicionada como parte de outra, adicionando a cada elemento do array uma base inicial da √°rvore pai.
    *
    * @param baseprefix
    * @param values
@@ -1475,7 +1475,7 @@ public class RUReflex {
   }
 
   /**
-   * Este mÈtodo recebe um array de caminhos a serem recuperados (no padr„o do MO do Framework) e filtra apenas os caminhos a partir de um determinado ponto.<br>
+   * Este m√©todo recebe um array de caminhos a serem recuperados (no padr√£o do MO do Framework) e filtra apenas os caminhos a partir de um determinado ponto.<br>
    * Exemplo, imagine um objeto:<br>
    * <li>vo
    * <ul>
@@ -1504,12 +1504,12 @@ public class RUReflex {
    * new String[] { "voA.voAA", "voA.voAB", "voB.voBA", "voB.voBB" };
    * </ul>
    *
-   * e que queremos carregar apenas o voB para substituir no objeto principal. Mas como queremos buscar diretamente o objeto voB. Neste caso o array de "exploit" n„o servir· e precisa ser convertido para:<br>
+   * e que queremos carregar apenas o voB para substituir no objeto principal. Mas como queremos buscar diretamente o objeto voB. Neste caso o array de "exploit" n√£o servir√° e precisa ser convertido para:<br>
    * <ul>
    * new String[] { "voBA", "voBB" };
    * </ul>
    *
-   * Filtrando as entradas que n„o pertencem ao trecho do objeto desejado, e adaptando o caminho para partir apenas do novo objeto.
+   * Filtrando as entradas que n√£o pertencem ao trecho do objeto desejado, e adaptando o caminho para partir apenas do novo objeto.
    *
    * @param tree Array com os caminhos a partir do objeto principal.
    * @param base Caminho base a partir de onde queremos o fazer a busca. No exemplo citado acima seria "voB".
@@ -1519,7 +1519,7 @@ public class RUReflex {
   public static String[] getSubTree(String[] tree, String base) throws RFWException {
     final ArrayList<String> finalList = new ArrayList<>();
 
-    base = base + '.'; // Faz com que a base termine com '.' por dois motivos: primeiro evita filtrar errado caso o ˙ltimo atributo da base coincida com o comeÁo de outro atributo na ·rvore. Segundo evita de incluir no filtro quando o caminho da ·rvore È exatamente o da base, caso contr·rio teriamos um valor "" adicionado.
+    base = base + '.'; // Faz com que a base termine com '.' por dois motivos: primeiro evita filtrar errado caso o √∫ltimo atributo da base coincida com o come√ßo de outro atributo na √°rvore. Segundo evita de incluir no filtro quando o caminho da √°rvore √© exatamente o da base, caso contr√°rio teriamos um valor "" adicionado.
 
     for (int i = 0; i < tree.length; i++) {
       if (tree[i].startsWith(base)) {
@@ -1539,7 +1539,7 @@ public class RUReflex {
    *
    * @param obj1 Objeto 1 para ser comparado
    * @param obj2 Objeto 2 para ser comparado
-   * @return Lista com o caminho das propriedades que apresentaram diferenÁas.
+   * @return Lista com o caminho das propriedades que apresentaram diferen√ßas.
    * @throws RFWException
    */
   public static <T extends Object> List<String> compareRecursively(T obj1, T obj2) throws RFWException {
@@ -1547,10 +1547,10 @@ public class RUReflex {
   }
 
   /**
-   * MÈtodo auxiliar do {@link #compareRecursively(RFWVO, RFWVO)}
+   * M√©todo auxiliar do {@link #compareRecursively(RFWVO, RFWVO)}
    *
-   * @param basepath Caminho dos atributos (recursivo) atÈ chegarem nesta comparaÁ„o. Passar nulo case sejam os dois objetos raiz.
-   * @param cache Lista com os objetos que j· foram comparados, evitando assim loop infinito em caso de link cÌclico dos objetos. Para o objeto raiz passar uma lista vazia.t· nada
+   * @param basepath Caminho dos atributos (recursivo) at√© chegarem nesta compara√ß√£o. Passar nulo case sejam os dois objetos raiz.
+   * @param cache Lista com os objetos que j√° foram comparados, evitando assim loop infinito em caso de link c√≠clico dos objetos. Para o objeto raiz passar uma lista vazia.t√° nada
    * @throws RFWException
    */
   private static <T extends Object> List<String> compareRecursively(T obj1, T obj2, String basepath, List<Object> cache) throws RFWException {
@@ -1625,12 +1625,12 @@ public class RUReflex {
                 }
                 atts.addAll(compareRecursively(ret1, ret2, RUReflex.getAttributePath(attribute, basepath), cache));
               } catch (Exception e) {
-                throw new RFWCriticalException("Falha ao comparar semelhanÁa dos objetos!", e);
+                throw new RFWCriticalException("Falha ao comparar semelhan√ßa dos objetos!", e);
               }
             }
           }
         } else {
-          throw new RFWCriticalException("MÈtodo despreparado para comparar o objeto '" + obj1.getClass().getCanonicalName() + "'.");
+          throw new RFWCriticalException("M√©todo despreparado para comparar o objeto '" + obj1.getClass().getCanonicalName() + "'.");
         }
       }
     }

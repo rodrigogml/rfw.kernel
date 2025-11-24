@@ -16,10 +16,10 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 
 /**
- * Description: Esta classe implementa mÈtodos para encriptaÁ„o e desencriptaÁ„o de dados (quando possÌvel).<BR>
- * Classe do tipo est·tica.
+ * Description: Esta classe implementa m√©todos para encripta√ß√£o e desencripta√ß√£o de dados (quando poss√≠vel).<BR>
+ * Classe do tipo est√°tica.
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 4.2.0 (29/10/2011)
  */
 public class RUEncrypter {
@@ -28,7 +28,7 @@ public class RUEncrypter {
   private static byte[] salt = { (byte) 0xA9, (byte) 0x9B, (byte) 0xC8, (byte) 0x32, (byte) 0x56, (byte) 0x35, (byte) 0xE3, (byte) 0x03 };
 
   /**
-   * Construtor privado para classe exclusivamente est·tica.
+   * Construtor privado para classe exclusivamente est√°tica.
    */
   private RUEncrypter() {
   }
@@ -68,8 +68,8 @@ public class RUEncrypter {
   }
 
   /**
-   * Somente para uso privado dos mÈtodos que criam a chave a partir da frase senha.<br>
-   * N„o pode ser recuperada a senha para depois usar como senha nos mÈtodos que aceitam o KeySecret pq È necess·rio mais configuraÁıes.
+   * Somente para uso privado dos m√©todos que criam a chave a partir da frase senha.<br>
+   * N√£o pode ser recuperada a senha para depois usar como senha nos m√©todos que aceitam o KeySecret pq √© necess√°rio mais configura√ß√µes.
    */
   private static SecretKey generateDESSecretKey(String passphrase) throws RFWException {
     try {

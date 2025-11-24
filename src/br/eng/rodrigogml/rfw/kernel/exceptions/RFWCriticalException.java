@@ -1,9 +1,9 @@
 package br.eng.rodrigogml.rfw.kernel.exceptions;
 
 /**
- * Description: Classe de exceÁ„o de erros crÌticos. Geralmente erros que nunca deveriam ocorrer no sistema e sÛ ocorrem por m· programaÁ„o ou lÛgica com falha.<br>
+ * Description: Classe de exce√ß√£o de erros cr√≠ticos. Geralmente erros que nunca deveriam ocorrer no sistema e s√≥ ocorrem por m√° programa√ß√£o ou l√≥gica com falha.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 10.0.0 (11 de jul de 2018)
  */
 public class RFWCriticalException extends RFWException {
@@ -29,8 +29,8 @@ public class RFWCriticalException extends RFWException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
-   * @param params Par‚metros que ser„o substituÌdos na mensagem do Bundle com o padr„o ${0}, ${1} ...
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
+   * @param params Par√¢metros que ser√£o substitu√≠dos na mensagem do Bundle com o padr√£o ${0}, ${1} ...
    * @param ex Exception causadora anteriore. Sempre que houver uma exception anterior ela deve ser passada aqui para que o dev tenha a pilha completa do problema.
    */
   public RFWCriticalException(String exceptionCode, String[] params, Throwable ex) {
@@ -40,8 +40,8 @@ public class RFWCriticalException extends RFWException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
-   * @param params Par‚metros que ser„o substituÌdos na mensagem do Bundle com o padr„o ${0}, ${1} ...
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
+   * @param params Par√¢metros que ser√£o substitu√≠dos na mensagem do Bundle com o padr√£o ${0}, ${1} ...
    */
   public RFWCriticalException(String exceptionCode, String[] params) {
     super(exceptionCode, params);
@@ -50,7 +50,7 @@ public class RFWCriticalException extends RFWException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
    * @param ex Exception causadora anteriore. Sempre que houver uma exception anterior ela deve ser passada aqui para que o dev tenha a pilha completa do problema.
    */
   public RFWCriticalException(String exceptionCode, Throwable ex) {
@@ -60,7 +60,7 @@ public class RFWCriticalException extends RFWException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
    */
   public RFWCriticalException(String exceptionCode) {
     super(exceptionCode);

@@ -60,22 +60,22 @@ import br.eng.rodrigogml.rfw.kernel.interfaces.RFWCertificate;
 import br.eng.rodrigogml.rfw.kernel.logger.RFWLogger;
 
 /**
- * Description: Esta classe utilit·ria tem a finalidade de agregar mÈtodos para facilitar a vida ao trabalhar com estruturas de XML.<br>
+ * Description: Esta classe utilit√°ria tem a finalidade de agregar m√©todos para facilitar a vida ao trabalhar com estruturas de XML.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.1.0 (11 de out de 2016)
  */
 public final class RUXML {
 
   /**
-   * Construtor privado para classe est·tica
+   * Construtor privado para classe est√°tica
    */
   private RUXML() {
   }
 
   /**
    * Transforma um XML em uma estrutura DOM para navegar entre os valores do XML.<br>
-   * Este mÈtodo normaliza o conte˙do do XML, isto È, evita que nos casos em que o XML esteja desta forma:<br>
+   * Este m√©todo normaliza o conte√∫do do XML, isto √©, evita que nos casos em que o XML esteja desta forma:<br>
    * <b>&lt;foo%gt;hello<br>
    * wor<br>
    * ld&lt;/foo&gt;</b><br>
@@ -99,9 +99,9 @@ public final class RUXML {
    *
    * <br>
    * <br>
-   * ATEN«√O: No caso de m˙ltiplos acessos ao mesmo XML, considere criar um ˙nico documento DOM e passar diretamente nos mÈtodos ao invÈs de forÁar o sistema a realizar o parser m˙ltiplas vezes, atrapalhando a performance do sistema.
+   * ATEN√á√ÉO: No caso de m√∫ltiplos acessos ao mesmo XML, considere criar um √∫nico documento DOM e passar diretamente nos m√©todos ao inv√©s de for√ßar o sistema a realizar o parser m√∫ltiplas vezes, atrapalhando a performance do sistema.
    *
-   * @param xml Conte˙do no formato XML.
+   * @param xml Conte√∫do no formato XML.
    * @return Objeto DOM
    * @throws RFWException
    */
@@ -115,7 +115,7 @@ public final class RUXML {
 
   /**
    * Transforma um XML em uma estrutura DOM para navegar entre os valores do XML.<br>
-   * Este mÈtodo normaliza o conte˙do do XML, isto È, evita que nos casos em que o XML esteja desta forma:<br>
+   * Este m√©todo normaliza o conte√∫do do XML, isto √©, evita que nos casos em que o XML esteja desta forma:<br>
    * <b>&lt;foo%gt;hello<br>
    * wor<br>
    * ld&lt;/foo&gt;</b><br>
@@ -139,9 +139,9 @@ public final class RUXML {
    *
    * <br>
    * <br>
-   * ATEN«√O: No caso de m˙ltiplos acessos ao mesmo XML, considere criar um ˙nico documento DOM e passar diretamente nos mÈtodos ao invÈs de forÁar o sistema a realizar o parser m˙ltiplas vezes, atrapalhando a performance do sistema.
+   * ATEN√á√ÉO: No caso de m√∫ltiplos acessos ao mesmo XML, considere criar um √∫nico documento DOM e passar diretamente nos m√©todos ao inv√©s de for√ßar o sistema a realizar o parser m√∫ltiplas vezes, atrapalhando a performance do sistema.
    *
-   * @param bytes Conte˙do no formato XML em bytes no encoding UTF-8.
+   * @param bytes Conte√∫do no formato XML em bytes no encoding UTF-8.
    * @return Objeto DOM
    * @throws RFWException
    */
@@ -151,7 +151,7 @@ public final class RUXML {
 
   /**
    * Transforma um XML em uma estrutura DOM para navegar entre os valores do XML.<br>
-   * Este mÈtodo normaliza o conte˙do do XML, isto È, evita que nos casos em que o XML esteja desta forma:<br>
+   * Este m√©todo normaliza o conte√∫do do XML, isto √©, evita que nos casos em que o XML esteja desta forma:<br>
    * <b>&lt;foo%gt;hello<br>
    * wor<br>
    * ld&lt;/foo&gt;</b><br>
@@ -175,11 +175,11 @@ public final class RUXML {
    *
    * <br>
    * <br>
-   * ATEN«√O: No caso de m˙ltiplos acessos ao mesmo XML, considere criar um ˙nico documento DOM e passar diretamente nos mÈtodos ao invÈs de forÁar o sistema a realizar o parser m˙ltiplas vezes, atrapalhando a performance do sistema.
+   * ATEN√á√ÉO: No caso de m√∫ltiplos acessos ao mesmo XML, considere criar um √∫nico documento DOM e passar diretamente nos m√©todos ao inv√©s de for√ßar o sistema a realizar o parser m√∫ltiplas vezes, atrapalhando a performance do sistema.
    *
    * @param input
    *
-   * @param bytes Conte˙do no formato XML em bytes no encoding UTF-8.
+   * @param bytes Conte√∫do no formato XML em bytes no encoding UTF-8.
    * @return Objeto DOM
    * @throws RFWException
    */
@@ -195,7 +195,7 @@ public final class RUXML {
   }
 
   /**
-   * Este mÈtodo cria uma ·rvore DOM nova a partir "do zero". Que pode ser usada para comeÁar a escrita de um novo XML.
+   * Este m√©todo cria uma √°rvore DOM nova a partir "do zero". Que pode ser usada para come√ßar a escrita de um novo XML.
    *
    * @return
    * @throws RFWExecption
@@ -212,9 +212,9 @@ public final class RUXML {
   }
 
   /**
-   * Este mÈtodo cria uma ·rvore DOM nova (um novo documento) a partir de algum nÛ de outra ·rvore DOM.
+   * Este m√©todo cria uma √°rvore DOM nova (um novo documento) a partir de algum n√≥ de outra √°rvore DOM.
    *
-   * @param externalNode NÛ da ·rvore externa que ser· a tag raiz do novo documento.
+   * @param externalNode N√≥ da √°rvore externa que ser√° a tag raiz do novo documento.
    * @return
    * @throws RFWExecption
    */
@@ -228,7 +228,7 @@ public final class RUXML {
   /**
    * Cria um novo elemento raiz no XML.
    *
-   * @param doc ¡rvore XML para criar o documento.
+   * @param doc √Årvore XML para criar o documento.
    * @param elementName Nome do Elemento (Tag) a ser criado.
    * @return Elemento/Tag criado
    * @throws RFWException
@@ -240,9 +240,9 @@ public final class RUXML {
   }
 
   /**
-   * Cria um novo elemento raiz no XML com uma definiÁ„o de name space (cria o atributo "xmlns").
+   * Cria um novo elemento raiz no XML com uma defini√ß√£o de name space (cria o atributo "xmlns").
    *
-   * @param doc ¡rvore XML para criar o documento.
+   * @param doc √Årvore XML para criar o documento.
    * @param elementName Nome do Elemento (Tag) a ser criado.
    * @param nameSpace NameSpace a ser atribuido neste elento (atributo 'xmlns')
    * @return Elemento/Tag criado
@@ -258,8 +258,8 @@ public final class RUXML {
   /**
    * Cria um novo elemento filho no elemento passado.
    *
-   * @param doc ¡rvore XML para criar o documento.
-   * @param parentTag Elemento da tag pai, onde o novo elemento ser· adicionado.
+   * @param doc √Årvore XML para criar o documento.
+   * @param parentTag Elemento da tag pai, onde o novo elemento ser√° adicionado.
    * @param elementName Nome do Elemento (Tag) a ser criado.
    * @return Elemento/Tag criado
    * @throws RFWException
@@ -271,7 +271,7 @@ public final class RUXML {
   }
 
   /**
-   * Cria um elemento j· com um conte˙do de texto dentro de suas Tags.
+   * Cria um elemento j√° com um conte√∫do de texto dentro de suas Tags.
    *
    * @param doc Documento DOM
    * @param parentTag
@@ -287,7 +287,7 @@ public final class RUXML {
   }
 
   /**
-   * Define um atributo em uma tag j· existente.
+   * Define um atributo em uma tag j√° existente.
    *
    * @param tag TAG a receber o atributo
    * @param attribute Nome do Atributo
@@ -299,10 +299,10 @@ public final class RUXML {
   }
 
   /**
-   * Este mÈtodo recebe um documento DOM e retorna seu conte˙do escrito diretamente em uma String.
+   * Este m√©todo recebe um documento DOM e retorna seu conte√∫do escrito diretamente em uma String.
    *
-   * @param doc ¡rvore DOM
-   * @return String com todo o seu conte˙do escrito.
+   * @param doc √Årvore DOM
+   * @return String com todo o seu conte√∫do escrito.
    * @throws RFWException
    */
   public static String writeDOMToString(Document doc) throws RFWException {
@@ -310,11 +310,11 @@ public final class RUXML {
   }
 
   /**
-   * Este mÈtodo recebe um documento DOM e retorna seu conte˙do escrito diretamente em uma String.
+   * Este m√©todo recebe um documento DOM e retorna seu conte√∫do escrito diretamente em uma String.
    *
-   * @param doc ¡rvore DOM
-   * @param omitXMLDeclaration Se true, o resultado do XML n„o ter· a deraÁ„o inicial: "<?xml version="1.0" encoding="UTF-8"?>"
-   * @return String com todo o seu conte˙do escrito.
+   * @param doc √Årvore DOM
+   * @param omitXMLDeclaration Se true, o resultado do XML n√£o ter√° a dera√ß√£o inicial: "<?xml version="1.0" encoding="UTF-8"?>"
+   * @return String com todo o seu conte√∫do escrito.
    * @throws RFWException
    */
   public static String writeDOMToString(Document doc, boolean omitXMLDeclaration) throws RFWException {
@@ -333,10 +333,10 @@ public final class RUXML {
   }
 
   /**
-   * Este mÈtodo recebe um nÛ da ·rvore DOM e retorna seu conte˙do escrito diretamente em uma String.
+   * Este m√©todo recebe um n√≥ da √°rvore DOM e retorna seu conte√∫do escrito diretamente em uma String.
    *
-   * @param node nÛ da ¡rvore DOM
-   * @return String com todo o seu conte˙do escrito.
+   * @param node n√≥ da √Årvore DOM
+   * @return String com todo o seu conte√∫do escrito.
    * @throws RFWException
    */
   public static String writeNodeToString(Node node) throws RFWException {
@@ -344,11 +344,11 @@ public final class RUXML {
   }
 
   /**
-   * Este mÈtodo recebe um documento DOM e retorna seu conte˙do escrito diretamente em uma String.
+   * Este m√©todo recebe um documento DOM e retorna seu conte√∫do escrito diretamente em uma String.
    *
-   * @param node ¡rvore DOM
-   * @param omitXMLDeclaration Se true, o resultado do XML n„o ter· a deraÁ„o inicial: "<?xml version="1.0" encoding="UTF-8"?>"
-   * @return String com todo o seu conte˙do escrito.
+   * @param node √Årvore DOM
+   * @param omitXMLDeclaration Se true, o resultado do XML n√£o ter√° a dera√ß√£o inicial: "<?xml version="1.0" encoding="UTF-8"?>"
+   * @return String com todo o seu conte√∫do escrito.
    * @throws RFWException
    */
   public static String writeNodeToString(Node node, boolean omitXMLDeclaration) throws RFWException {
@@ -367,9 +367,9 @@ public final class RUXML {
   }
 
   /**
-   * Retorna o NodeList da ·rvore DOM baseado no caminho fornecido. O caminho deve estar no padr„o XPath.<br>
+   * Retorna o NodeList da √°rvore DOM baseado no caminho fornecido. O caminho deve estar no padr√£o XPath.<br>
    * <ul>
-   * <li>"/nfeProc/NFe/infNFe/ide/NFref" - ComeÁe com a barra para indicar desde o objeto raiz;</li>
+   * <li>"/nfeProc/NFe/infNFe/ide/NFref" - Come√ße com a barra para indicar desde o objeto raiz;</li>
    * <li>"NFe/infNFe/ide/NFref" - comece sem a barra para indicar a partir do objeto (node) atual.</li>
    * <li>"/CFe/infCFe/ide/nCFe"</li>
    * <li>"/CFe/infCFe[1]/ide[3]/nCFe"</li>
@@ -392,9 +392,9 @@ public final class RUXML {
   }
 
   /**
-   * Retorna o NodeList relativo ‡ um nÛ da ·rvore DOM baseado no caminho fornecido. O caminho deve estar no padr„o XPath.<br>
+   * Retorna o NodeList relativo √† um n√≥ da √°rvore DOM baseado no caminho fornecido. O caminho deve estar no padr√£o XPath.<br>
    * <ul>
-   * <li>"/nfeProc/NFe/infNFe/ide/NFref" - ComeÁe com a barra para indicar desde o objeto raiz;</li>
+   * <li>"/nfeProc/NFe/infNFe/ide/NFref" - Come√ße com a barra para indicar desde o objeto raiz;</li>
    * <li>"NFe/infNFe/ide/NFref" - comece sem a barra para indicar a partir do objeto (node) atual.</li>
    * <li>"/CFe/infCFe/ide/nCFe"</li>
    * <li>"/CFe/infCFe[1]/ide[3]/nCFe"</li>
@@ -402,7 +402,7 @@ public final class RUXML {
    * <li>"/howto/topic/url/text/@nItem"</li>
    * </ul>
    * <br>
-   * <B>ATEN«√O:</B> Node que o caminho relativo n„o comeÁa com "/", pois isso indica raiz, comece o XPath a partir do nÛ passado em Node!
+   * <B>ATEN√á√ÉO:</B> Node que o caminho relativo n√£o come√ßa com "/", pois isso indica raiz, comece o XPath a partir do n√≥ passado em Node!
    *
    * @param node
    * @param xPath
@@ -418,10 +418,10 @@ public final class RUXML {
   }
 
   /**
-   * Recupera o primeiro nÛ do caminho.
+   * Recupera o primeiro n√≥ do caminho.
    *
    * <ul>
-   * <li>"/nfeProc/NFe/infNFe/ide/NFref" - ComeÁe com a barra para indicar desde o objeto raiz;</li>
+   * <li>"/nfeProc/NFe/infNFe/ide/NFref" - Come√ße com a barra para indicar desde o objeto raiz;</li>
    * <li>"NFe/infNFe/ide/NFref" - comece sem a barra para indicar a partir do objeto (node) atual.</li>
    * <li>"/CFe/infCFe/ide/nCFe"</li>
    * <li>"/CFe/infCFe[1]/ide[3]/nCFe"</li>
@@ -429,7 +429,7 @@ public final class RUXML {
    * <li>"/howto/topic/url/text/@nItem"</li>
    * </ul>
    *
-   * @param node NÛ de referÍncia
+   * @param node N√≥ de refer√™ncia
    * @param xPath Caminho XPath para procurar
    * @return
    * @throws RFWException
@@ -441,10 +441,10 @@ public final class RUXML {
   }
 
   /**
-   * Recupera o primeiro nÛ do caminho.
+   * Recupera o primeiro n√≥ do caminho.
    *
    * <ul>
-   * <li>"/nfeProc/NFe/infNFe/ide/NFref" - ComeÁe com a barra para indicar desde o objeto raiz;</li>
+   * <li>"/nfeProc/NFe/infNFe/ide/NFref" - Come√ße com a barra para indicar desde o objeto raiz;</li>
    * <li>"NFe/infNFe/ide/NFref" - comece sem a barra para indicar a partir do objeto (node) atual.</li>
    * <li>"/CFe/infCFe/ide/nCFe"</li>
    * <li>"/CFe/infCFe[1]/ide[3]/nCFe"</li>
@@ -452,7 +452,7 @@ public final class RUXML {
    * <li>"/howto/topic/url/text/@nItem"</li>
    * </ul>
    *
-   * @param doc ¡rvore DOM para pesquisa.
+   * @param doc √Årvore DOM para pesquisa.
    * @param xPath Caminho XPath para procurar
    * @return
    * @throws RFWException
@@ -464,10 +464,10 @@ public final class RUXML {
   }
 
   /**
-   * Recupera o conte˙do de texto dentro do conte˙do de uma TAG do XML baseado no seu xPath.<br>
+   * Recupera o conte√∫do de texto dentro do conte√∫do de uma TAG do XML baseado no seu xPath.<br>
    * Exemplos de XPath:<br>
    * <ul>
-   * <li>"/nfeProc/NFe/infNFe/ide/NFref" - ComeÁe com a barra para indicar desde o objeto raiz;</li>
+   * <li>"/nfeProc/NFe/infNFe/ide/NFref" - Come√ße com a barra para indicar desde o objeto raiz;</li>
    * <li>"NFe/infNFe/ide/NFref" - comece sem a barra para indicar a partir do objeto (node) atual.</li>
    * <li>"/CFe/infCFe/ide/nCFe"</li>
    * <li>"/CFe/infCFe[1]/ide[3]/nCFe"</li>
@@ -478,7 +478,7 @@ public final class RUXML {
    *
    * @param doc
    * @param xPath
-   * @return O valor da tag ou nulo caso a tag n„o seja encontrada.
+   * @return O valor da tag ou nulo caso a tag n√£o seja encontrada.
    * @throws RFWException
    */
   public static String getTextContent(Document doc, String xPath) throws RFWException {
@@ -491,10 +491,10 @@ public final class RUXML {
   }
 
   /**
-   * Recupera o conte˙do de texto dentro do conte˙do de uma TAG do XML baseado no seu xPath.<br>
+   * Recupera o conte√∫do de texto dentro do conte√∫do de uma TAG do XML baseado no seu xPath.<br>
    *
    * <ul>
-   * <li>"/nfeProc/NFe/infNFe/ide/NFref" - ComeÁe com a barra para indicar desde o objeto raiz;</li>
+   * <li>"/nfeProc/NFe/infNFe/ide/NFref" - Come√ße com a barra para indicar desde o objeto raiz;</li>
    * <li>"NFe/infNFe/ide/NFref" - comece sem a barra para indicar a partir do objeto (node) atual.</li>
    * <li>"/CFe/infCFe/ide/nCFe"</li>
    * <li>"/CFe/infCFe[1]/ide[3]/nCFe"</li>
@@ -502,11 +502,11 @@ public final class RUXML {
    * <li>"/howto/topic/url/text/@nItem"</li>
    * </ul>
    * <br>
-   * <B>ATEN«√O:</B> Node que o caminho relativo n„o comeÁa com "/", pois isso indica raiz, comece o XPath a partir do nÛ passado em Node!
+   * <B>ATEN√á√ÉO:</B> Node que o caminho relativo n√£o come√ßa com "/", pois isso indica raiz, comece o XPath a partir do n√≥ passado em Node!
    *
    * @param node
    * @param xPath
-   * @return O valor da tag ou nulo caso a tag n„o seja encontrada.
+   * @return O valor da tag ou nulo caso a tag n√£o seja encontrada.
    * @throws RFWException
    */
   public static String getTextContent(Node node, String xPath) throws RFWException {
@@ -519,10 +519,10 @@ public final class RUXML {
   }
 
   /**
-   * LÍ um XML pronto e importa a tag rais e toda sua estrutura como uma tag filha dentro do documento passado.
+   * L√™ um XML pronto e importa a tag rais e toda sua estrutura como uma tag filha dentro do documento passado.
    *
-   * @param doc Documento DOM j· criado e existente.
-   * @param tag Tag pai onde o XML ser· incluso como estrutura filha.
+   * @param doc Documento DOM j√° criado e existente.
+   * @param tag Tag pai onde o XML ser√° incluso como estrutura filha.
    * @param xml XML a ser importando no documento.
    * @throws RFWException
    */
@@ -534,11 +534,11 @@ public final class RUXML {
   }
 
   /**
-   * Importa a tag raiz de outra ·rvode DOM e toda sua estrutura como uma tag filha dentro do documento passado.
+   * Importa a tag raiz de outra √°rvode DOM e toda sua estrutura como uma tag filha dentro do documento passado.
    *
-   * @param doc Documento DOM j· criado e existente.
-   * @param tag Tag pai onde o XML ser· incluso como estrutura filha.
-   * @param childDoc ¡rvore DOM a ser importada como tag filha.
+   * @param doc Documento DOM j√° criado e existente.
+   * @param tag Tag pai onde o XML ser√° incluso como estrutura filha.
+   * @param childDoc √Årvore DOM a ser importada como tag filha.
    * @throws RFWException
    */
   public static void createElementTagFromDOMRoot(Document doc, Node tag, Document childDoc) throws RFWException {
@@ -548,11 +548,11 @@ public final class RUXML {
   }
 
   /**
-   * Importa um elemento de outra ·rvore DOM e toda sua estrutura como uma tag filha dentro do documento passado.
+   * Importa um elemento de outra √°rvore DOM e toda sua estrutura como uma tag filha dentro do documento passado.
    *
-   * @param doc Documento DOM j· criado e existente.
-   * @param tag Tag pai onde o XML ser· incluso como estrutura filha.
-   * @param newElement Elemento da outra ·rvore que deve ser importado como tag filha.
+   * @param doc Documento DOM j√° criado e existente.
+   * @param tag Tag pai onde o XML ser√° incluso como estrutura filha.
+   * @param newElement Elemento da outra √°rvore que deve ser importado como tag filha.
    * @throws RFWException
    */
   public static void createElementTagFromExternalNode(Document doc, Node tag, Node newElement) throws RFWException {
@@ -561,18 +561,18 @@ public final class RUXML {
   }
 
   /**
-   * Este mÈtodo faz a validaÁ„o de um XML contra seu Schema (XSD).
+   * Este m√©todo faz a valida√ß√£o de um XML contra seu Schema (XSD).
    *
-   * @param xml Conte˙do do XML que ser· validado.
-   * @param schemapath Caminho para o XSD de acordo com o caminho passado no atributo basePath (ou somente o nome do arquivo, caso ele j· esteja na pasta do basePath)
-   * @param basepath Caminho base para os XSD de validaÁ„o. ⁄til quando o XML faz referÍncia para outros XSD ao invÈs de ter todo o schema dentro do mesmo arquivo.
+   * @param xml Conte√∫do do XML que ser√° validado.
+   * @param schemapath Caminho para o XSD de acordo com o caminho passado no atributo basePath (ou somente o nome do arquivo, caso ele j√° esteja na pasta do basePath)
+   * @param basepath Caminho base para os XSD de valida√ß√£o. √ötil quando o XML faz refer√™ncia para outros XSD ao inv√©s de ter todo o schema dentro do mesmo arquivo.
    * @throws RFWException
    */
   public static void validateXMLAgainstSchema2(String xml, String schemapath, String basepath) throws RFWException {
     try {
-      InputStream in = RUXML.class.getResourceAsStream(basepath + schemapath); // LÍ durante o deploy "unexploded" do ear no eclipse (produÁ„o)
+      InputStream in = RUXML.class.getResourceAsStream(basepath + schemapath); // L√™ durante o deploy "unexploded" do ear no eclipse (produ√ß√£o)
       if (in == null) {
-        in = RUXML.class.getClassLoader().getResourceAsStream(basepath + schemapath); // LÍ durante o deploy "exploded" do ear no eclipse (desenvolvimento)
+        in = RUXML.class.getClassLoader().getResourceAsStream(basepath + schemapath); // L√™ durante o deploy "exploded" do ear no eclipse (desenvolvimento)
       }
 
       SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -589,17 +589,17 @@ public final class RUXML {
   }
 
   /**
-   * Assina digitalmente um documento XML, assinando todas as ocorrÍncias de uma tag especÌfica.
+   * Assina digitalmente um documento XML, assinando todas as ocorr√™ncias de uma tag espec√≠fica.
    * <p>
-   * Esse mÈtodo percorre todo o XML e aplica a assinatura digital em cada elemento que corresponde ‡ tag informada. Ele encapsula a lÛgica de assinatura e delega a assinatura individual para o mÈtodo {@link #signSingleXmlElement}.
+   * Esse m√©todo percorre todo o XML e aplica a assinatura digital em cada elemento que corresponde √† tag informada. Ele encapsula a l√≥gica de assinatura e delega a assinatura individual para o m√©todo {@link #signSingleXmlElement}.
    * </p>
    *
    * <p>
-   * <b>DiferenÁa para {@link #signSingleXmlElement}:</b>
+   * <b>Diferen√ßa para {@link #signSingleXmlElement}:</b>
    * </p>
    * <ul>
-   * <li>Esse mÈtodo <b>varre o XML</b> e assina <b>todas</b> as ocorrÍncias da tag informada.</li>
-   * <li>⁄til para documentos que possuem v·rias seÁıes assin·veis, como a NF-e da SEFAZ.</li>
+   * <li>Esse m√©todo <b>varre o XML</b> e assina <b>todas</b> as ocorr√™ncias da tag informada.</li>
+   * <li>√ötil para documentos que possuem v√°rias se√ß√µes assin√°veis, como a NF-e da SEFAZ.</li>
    * <li>Chama {@link #signSingleXmlElement} internamente para cada elemento encontrado.</li>
    * </ul>
    *
@@ -607,7 +607,7 @@ public final class RUXML {
    * @param signTag Tag que deve ser assinada.
    * @param rfwCertificate Certificado para assinatura das Tags do XML.
    * @return XML com as tags assinadas digitalmente.
-   * @throws RFWCriticalException se ocorrer erro na assinatura ou se a tag n„o for encontrada no XML.
+   * @throws RFWCriticalException se ocorrer erro na assinatura ou se a tag n√£o for encontrada no XML.
    */
   public static String signXmlDocument(String xml, String signTag, RFWCertificate rfwCertificate) throws RFWException {
     KeyStore.PrivateKeyEntry keyEntry = RUCert.extractPrivateKey(rfwCertificate);
@@ -624,7 +624,7 @@ public final class RUXML {
       throw new RFWCriticalException("RFW_000054", e);
     }
 
-    // Cria a f·brica de assinatura
+    // Cria a f√°brica de assinatura
     XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
 
     // Define os "Transforms"
@@ -636,10 +636,10 @@ public final class RUXML {
       throw new RFWCriticalException("RFW_000055", e);
     }
 
-    // ObtÈm a lista de elementos que devem ser assinados
+    // Obt√©m a lista de elementos que devem ser assinados
     NodeList nodes = doc.getDocumentElement().getElementsByTagName(signTag);
     if (nodes.getLength() == 0) {
-      throw new RFWCriticalException("RFW_000056", new String[] { "Tag " + signTag + " n„o encontrada no XML." });
+      throw new RFWCriticalException("RFW_000056", new String[] { "Tag " + signTag + " n√£o encontrada no XML." });
     }
 
     for (int i = 0; i < nodes.getLength(); i++) {
@@ -666,22 +666,22 @@ public final class RUXML {
   }
 
   /**
-   * Assina digitalmente um ˙nico elemento XML dentro de um documento.
+   * Assina digitalmente um √∫nico elemento XML dentro de um documento.
    * <p>
-   * Esse mÈtodo aplica a assinatura digital em apenas um elemento dentro do XML, baseado na tag informada. Ele deve ser chamado manualmente para assinar elementos especÌficos ou usado pelo mÈtodo {@link #signXmlDocument}, que assina todas as ocorrÍncias da tag no documento.
+   * Esse m√©todo aplica a assinatura digital em apenas um elemento dentro do XML, baseado na tag informada. Ele deve ser chamado manualmente para assinar elementos espec√≠ficos ou usado pelo m√©todo {@link #signXmlDocument}, que assina todas as ocorr√™ncias da tag no documento.
    * </p>
    *
    * <p>
-   * <b>DiferenÁa para {@link #signXmlDocument}:</b>
+   * <b>Diferen√ßa para {@link #signXmlDocument}:</b>
    * </p>
    * <ul>
-   * <li>Esse mÈtodo assina apenas <b>um elemento</b> do XML por vez.</li>
-   * <li>⁄til quando È necess·rio assinar um ˙nico nÛ especÌfico, sem percorrer todo o documento.</li>
-   * <li>… um mÈtodo auxiliar de {@link #signXmlDocument}, mas pode ser chamado diretamente se necess·rio.</li>
+   * <li>Esse m√©todo assina apenas <b>um elemento</b> do XML por vez.</li>
+   * <li>√ötil quando √© necess√°rio assinar um √∫nico n√≥ espec√≠fico, sem percorrer todo o documento.</li>
+   * <li>√â um m√©todo auxiliar de {@link #signXmlDocument}, mas pode ser chamado diretamente se necess√°rio.</li>
    * </ul>
    *
-   * @param fac F·brica de assinatura XML.
-   * @param transformList Lista de transformaÁıes para aplicar ‡ assinatura.
+   * @param fac F√°brica de assinatura XML.
+   * @param transformList Lista de transforma√ß√µes para aplicar √† assinatura.
    * @param privateKey Chave privada utilizada para assinar.
    * @param certificate Certificado X.509 correspondente.
    * @param element Elemento XML que deve ser assinado.
@@ -692,7 +692,7 @@ public final class RUXML {
       element.setIdAttributeNode(element.getAttributeNode("Id"), true); // Define o atributo ID como ID. Resposta obtida no post: http://stackoverflow.com/questions/17331187/xml-dig-sig-error-after-upgrade-to-java7u25
       String id = element.getAttribute("Id");
 
-      // Cria a referÍncia para a assinatura
+      // Cria a refer√™ncia para a assinatura
       Reference ref = fac.newReference("#" + id, fac.newDigestMethod(DigestMethod.SHA1, null), transformList, null, null);
       SignedInfo si = fac.newSignedInfo(fac.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null), fac.newSignatureMethod(SignatureMethod.RSA_SHA1, null), Collections.singletonList(ref));
 
@@ -702,7 +702,7 @@ public final class RUXML {
       KeyInfo ki = kif.newKeyInfo(Collections.singletonList(xData));
       XMLSignature signature = fac.newXMLSignature(si, ki);
 
-      // Define o local onde a assinatura ser· inserida
+      // Define o local onde a assinatura ser√° inserida
       DOMSignContext dsc = new DOMSignContext(privateKey, element.getParentNode());
 
       // Gera e aplica a assinatura
@@ -715,9 +715,9 @@ public final class RUXML {
 }
 
 /**
- * Description: Esta classe carrega os XSDs conforme o validador necessita. Foi necess·rio implementar essa classe para buscar os XSD importados pelos outros XSDs. J· que o validador n„o encontra eles sozinhos dentro do JAR.<br>
+ * Description: Esta classe carrega os XSDs conforme o validador necessita. Foi necess√°rio implementar essa classe para buscar os XSD importados pelos outros XSDs. J√° que o validador n√£o encontra eles sozinhos dentro do JAR.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 4.0.0 (27/01/2011)
  */
 class SchemaResourceResolver implements LSResourceResolver {
@@ -738,9 +738,9 @@ class SchemaResourceResolver implements LSResourceResolver {
 
   @Override
   public LSInput resolveResource(String type, String namespaceURI, String publicId, String systemid, String baseURI) {
-    InputStream in = getClass().getResourceAsStream(this.basepath + systemid); // Como lÍ no ambiente de produÁ„o (Deploy em .EAR)
+    InputStream in = getClass().getResourceAsStream(this.basepath + systemid); // Como l√™ no ambiente de produ√ß√£o (Deploy em .EAR)
     if (in == null) {
-      in = getClass().getClassLoader().getResourceAsStream(this.basepath + systemid); // Como LÍ no ambiente de desenvolvimento (Deploy em diretÛrio)
+      in = getClass().getClassLoader().getResourceAsStream(this.basepath + systemid); // Como L√™ no ambiente de desenvolvimento (Deploy em diret√≥rio)
     }
     return new LSInputImpl(publicId, systemid, in);
   }
@@ -799,7 +799,7 @@ class SchemaResourceResolver implements LSResourceResolver {
           byte[] input = new byte[inputStream.available()];
           inputStream.read(input);
           String contents = new String(input);
-          return contents.replaceAll("Ôªø", "");
+          return contents.replaceAll("√Ø¬ª¬ø", "");
         } catch (IOException e) {
           RFWLogger.logException(e);
           return null;

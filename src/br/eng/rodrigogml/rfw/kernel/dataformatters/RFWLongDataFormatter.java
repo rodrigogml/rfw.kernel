@@ -7,34 +7,34 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 
 /**
- * Description: DataFormatter de números inteiros.<br>
- * Esta classe baseia-se apenas na classe pai em validações e considerações. A única diferença é que o objeto retornado para o bean tem de ser um inteiro, assim, depois das validações da classe pai nãs verificamos se é possível converter em um valor inteiro.
+ * Description: DataFormatter de nÃºmeros inteiros.<br>
+ * Esta classe baseia-se apenas na classe pai em validaÃ§Ãµes e consideraÃ§Ãµes. A Ãºnica diferenÃ§a Ã© que o objeto retornado para o bean tem de ser um inteiro, assim, depois das validaÃ§Ãµes da classe pai nÃ£s verificamos se Ã© possÃ­vel converter em um valor inteiro.
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 4.1.0 (23/06/2011)
  */
 public class RFWLongDataFormatter extends RFWNumberDataFormatter {
 
   /**
-   * Para validadores usados com grande frequência.
+   * Para validadores usados com grande frequÃªncia.
    *
-   * @param minvalue Valor mínimo que pode ser atribuido no campo.
-   * @param maxvalue Valor máximo que pode ser atribuido no campo.
-   * @param ignoresignal Caso true, ignora o sinal, deixando sempre o valor positivo (valor absoluto do número)
+   * @param minvalue Valor mÃ­nimo que pode ser atribuido no campo.
+   * @param maxvalue Valor mÃ¡ximo que pode ser atribuido no campo.
+   * @param ignoresignal Caso true, ignora o sinal, deixando sempre o valor positivo (valor absoluto do nÃºmero)
    */
   public RFWLongDataFormatter(Long minvalue, Long maxvalue, Boolean ignoresignal) {
     super(ROUNDPOLICY.BESTROUND, 0, minvalue != null ? new Double(minvalue) : null, maxvalue != null ? new Double(maxvalue) : null, ignoresignal);
   }
 
   /**
-   * Cria uma instância que permite zero e qualquer número positivo até o limite de Long.MAX_VALUE.
+   * Cria uma instÃ¢ncia que permite zero e qualquer nÃºmero positivo atÃ© o limite de Long.MAX_VALUE.
    */
   public static RFWLongDataFormatter createInstanceZeroAndPositive() {
     return new RFWLongDataFormatter(0L, Long.MAX_VALUE, true);
   }
 
   /**
-   * Cria uma instância que permite zero e qualquer número positivo até o limite de Long.MAX_VALUE.
+   * Cria uma instÃ¢ncia que permite zero e qualquer nÃºmero positivo atÃ© o limite de Long.MAX_VALUE.
    */
   public static RFWLongDataFormatter createInstance() {
     return new RFWLongDataFormatter(Long.MIN_VALUE, Long.MAX_VALUE, false);
@@ -66,7 +66,7 @@ public class RFWLongDataFormatter extends RFWNumberDataFormatter {
   public void validate(Object value, Locale locale) throws RFWException {
     if (value != null && !"".equals(value.toString().trim())) {
       super.validate(value, locale);
-      // Se a validação do pai for um sucesso, ainda validamos se é um inteiro
+      // Se a validaÃ§Ã£o do pai for um sucesso, ainda validamos se Ã© um inteiro
       Double vn = processValue(value.toString(), locale);
       if (vn > Long.MAX_VALUE) {
         throw new RFWValidationException("RFW_ERR_300057");

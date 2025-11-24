@@ -9,30 +9,30 @@ import br.eng.rodrigogml.rfw.kernel.measureruler.MeasureRuler;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 
 /**
- * Description: Esta interface define os métodos que o sistema deve implementar para que o {@link MeasureRuler} consiga realizar a transformação entre unidades de medidas de dimenções diferentes. Incluindo unidades definidas pelo usuário.<br>
+ * Description: Esta interface define os mÃ©todos que o sistema deve implementar para que o {@link MeasureRuler} consiga realizar a transformaÃ§Ã£o entre unidades de medidas de dimenÃ§Ãµes diferentes. Incluindo unidades definidas pelo usuÃ¡rio.<br>
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 10.0 (22 de nov. de 2021)
  */
 public interface MeasureRulerEquivalenceInterface {
 
   /**
-   * Deve retornar uma hash com as unidades de medidas da régua de equivalência e seus pesos de conversão. Não confundir com os {@link MeasureUnit#getRatio()}, esses pesos são os pesos de conversão entre dimensões diferentes e/ou unidades de medidas personalizadas, não entre as unidades da mesma dimensão.
+   * Deve retornar uma hash com as unidades de medidas da rÃ©gua de equivalÃªncia e seus pesos de conversÃ£o. NÃ£o confundir com os {@link MeasureUnit#getRatio()}, esses pesos sÃ£o os pesos de conversÃ£o entre dimensÃµes diferentes e/ou unidades de medidas personalizadas, nÃ£o entre as unidades da mesma dimensÃ£o.
    *
-   * @return Hash contendo as unidades de medidas e seus pessos para conversão entre dimensões de medidas.
+   * @return Hash contendo as unidades de medidas e seus pessos para conversÃ£o entre dimensÃµes de medidas.
    * @throws RFWException
    */
   public HashMap<MeasureUnit, BigDecimal> getMeasureUnitHash() throws RFWException;
 
   /**
-   * Permite incluir uma comparação nesta régua de equivalências sem atrapalhar o conteúdo atual.<br>
-   * Por exemplo: Temos uma régua com as especificações 1Kg = 1Lt. E queremos adicionar a informação de que 1Und = 650g. Teremos que trocar o valor de "1Und" para "XUnd" de forma a não atrapalhar a equivalência já existente. O cálculo de X é feito internamente e aplicado na régua.<br>
+   * Permite incluir uma comparaÃ§Ã£o nesta rÃ©gua de equivalÃªncias sem atrapalhar o conteÃºdo atual.<br>
+   * Por exemplo: Temos uma rÃ©gua com as especificaÃ§Ãµes 1Kg = 1Lt. E queremos adicionar a informaÃ§Ã£o de que 1Und = 650g. Teremos que trocar o valor de "1Und" para "XUnd" de forma a nÃ£o atrapalhar a equivalÃªncia jÃ¡ existente. O cÃ¡lculo de X Ã© feito internamente e aplicado na rÃ©gua.<br>
    *
-   * @param newValue Valor da nova relação. 1 (de 1Und) do no exemplo.
-   * @param newMeasureUnit Unidade de medida da nova relação. Und do nosso exemplo.
-   * @param refValue Valor da unidade referênciada. 650 do nosso exemplo.
-   * @param refMeasureUnit Unidade de medida referênciada. 'g' no nosso exemplo.
-   * @throws RFWException Em caso de falhar ou, se a nova unidade já existir na régua. Se a unidade referênciada não existir na régua.
+   * @param newValue Valor da nova relaÃ§Ã£o. 1 (de 1Und) do no exemplo.
+   * @param newMeasureUnit Unidade de medida da nova relaÃ§Ã£o. Und do nosso exemplo.
+   * @param refValue Valor da unidade referÃªnciada. 650 do nosso exemplo.
+   * @param refMeasureUnit Unidade de medida referÃªnciada. 'g' no nosso exemplo.
+   * @throws RFWException Em caso de falhar ou, se a nova unidade jÃ¡ existir na rÃ©gua. Se a unidade referÃªnciada nÃ£o existir na rÃ©gua.
    */
   public default void addComparativeEquivalence(BigDecimal newValue, MeasureUnit newMeasureUnit, BigDecimal refValue, MeasureUnit refMeasureUnit) throws RFWException {
     PreProcess.requiredNonNullCritical(newValue, "Todos os parametros devem ser diferentes de nulo!");
@@ -40,21 +40,21 @@ public interface MeasureRulerEquivalenceInterface {
     PreProcess.requiredNonNullCritical(refValue, "Todos os parametros devem ser diferentes de nulo!");
     PreProcess.requiredNonNullCritical(refMeasureUnit, "Todos os parametros devem ser diferentes de nulo!");
 
-    // Valida a unidade de referência existe na régua
+    // Valida a unidade de referÃªncia existe na rÃ©gua
     final BigDecimal existRefRatio = MeasureRuler.getRatio(this, refMeasureUnit);
-    PreProcess.requiredNonNull(existRefRatio, "É esperado que a unidade de medida de referência já exista na régua!");
+    PreProcess.requiredNonNull(existRefRatio, "Ã‰ esperado que a unidade de medida de referÃªncia jÃ¡ exista na rÃ©gua!");
 
-    // Valida se a nova unidade ainda não existe na régua
+    // Valida se a nova unidade ainda nÃ£o existe na rÃ©gua
     final BigDecimal existNewRatio = MeasureRuler.getRatio(this, newMeasureUnit);
-    PreProcess.requiredNull(existNewRatio, "A unidade de medida a ser adicionada não deve existir na régua!");
+    PreProcess.requiredNull(existNewRatio, "A unidade de medida a ser adicionada nÃ£o deve existir na rÃ©gua!");
 
-    // Passo 1: Calculamos quantas vezes o valor passado como referência é maior que o valor atualmente na régia.
+    // Passo 1: Calculamos quantas vezes o valor passado como referÃªncia Ã© maior que o valor atualmente na rÃ©gia.
     BigDecimal ratio = refValue.divide(existRefRatio, 10, RFW.getRoundingMode());
 
-    // Passo 2: Ajustamos o valor da nova unidade de medida para ficar na mesma proporção que as comparações existentes na régua atualmente
+    // Passo 2: Ajustamos o valor da nova unidade de medida para ficar na mesma proporÃ§Ã£o que as comparaÃ§Ãµes existentes na rÃ©gua atualmente
     newValue = newValue.divide(ratio, 10, RFW.getRoundingMode());
 
-    // Incluímos o novo valor e sua unidade de medida na régua de comparação
+    // IncluÃ­mos o novo valor e sua unidade de medida na rÃ©gua de comparaÃ§Ã£o
     getMeasureUnitHash().put(newMeasureUnit, newValue);
   }
 

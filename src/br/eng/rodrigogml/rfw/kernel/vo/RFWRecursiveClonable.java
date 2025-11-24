@@ -5,10 +5,10 @@ import java.util.HashMap;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 
 /**
- * Description: Esta interface define a implementaÁ„o de um Clone Recursivo usado pelo framework para duplicar uma estrutura completa de Objetos.<br>
- * Os objetos que implementam essa interfacem devem duplicar qualquer objeto que possa ser obtido pelo mÈtodo get e definido pelo set e tambÈm implemente essa interface.
+ * Description: Esta interface define a implementa√ß√£o de um Clone Recursivo usado pelo framework para duplicar uma estrutura completa de Objetos.<br>
+ * Os objetos que implementam essa interfacem devem duplicar qualquer objeto que possa ser obtido pelo m√©todo get e definido pelo set e tamb√©m implemente essa interface.
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.1.0 (18/02/2016)
  */
 public interface RFWRecursiveClonable extends Cloneable {

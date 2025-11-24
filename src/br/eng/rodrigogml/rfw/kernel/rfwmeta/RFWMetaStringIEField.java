@@ -8,10 +8,10 @@ import java.lang.annotation.Target;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess.PreProcessOption;
 
 /**
- * Description: Annotation usada para definir um atributo do tipo String que funcionar· como um IE.<BR>
- * O campo IE ser· uma String apenas com os dÌgitos, sem nenhum tipo de formataÁ„o.
+ * Description: Annotation usada para definir um atributo do tipo String que funcionar√° como um IE.<BR>
+ * O campo IE ser√° uma String apenas com os d√≠gitos, sem nenhum tipo de formata√ß√£o.
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.1.0 (04/07/2015)
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -19,23 +19,23 @@ import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess.PreProcessOption;
 public @interface RFWMetaStringIEField {
 
   /**
-   * Define o nome da coluna na tabela do banco de dados. Caso deixado em branco, ser· utilizado o nome da propriedade.
+   * Define o nome da coluna na tabela do banco de dados. Caso deixado em branco, ser√° utilizado o nome da propriedade.
    */
   String column() default "";
 
   /**
-   * Define o nome do atributo/campo. Este nome È usado para facilitar mensagens de erros, validaÁıes, em UIs, etc.<br>
-   * N„o utilize ":" no final ou outras formataÁıes especÌficas do local de uso. Aqui deve ser definido apenas o nome, como "Caixa", "Nome do Usu·rio", etc.
+   * Define o nome do atributo/campo. Este nome √© usado para facilitar mensagens de erros, valida√ß√µes, em UIs, etc.<br>
+   * N√£o utilize ":" no final ou outras formata√ß√µes espec√≠ficas do local de uso. Aqui deve ser definido apenas o nome, como "Caixa", "Nome do Usu√°rio", etc.
    */
   String caption();
 
   /**
-   * Define se o atributo È obrigatÛrio ou n„o na entidade.
+   * Define se o atributo √© obrigat√≥rio ou n√£o na entidade.
    */
   boolean required();
 
   /**
-   * Define se o atributo È ˙nico.
+   * Define se o atributo √© √∫nico.
    */
   boolean unique() default false;
 
@@ -45,14 +45,14 @@ public @interface RFWMetaStringIEField {
   String uf() default "";
 
   /**
-   * Define o atributo do mesmo VO que contÈm a UF desta IE. O atributo pode ser indicado de forma encadeada com separaÁ„o de pontos.<br>
+   * Define o atributo do mesmo VO que cont√©m a UF desta IE. O atributo pode ser indicado de forma encadeada com separa√ß√£o de pontos.<br>
    * O Atributo apontado, se for uma String, deve conter a UF com duas letras.
    */
   String uffield() default "";
 
   /**
-   * Define o padr„o de prÈ-processamento a ser aplicado na String antes da validaÁ„o.<br>
-   * Note que o preprocessamento È aplicado na ordem que for definido!
+   * Define o padr√£o de pr√©-processamento a ser aplicado na String antes da valida√ß√£o.<br>
+   * Note que o preprocessamento √© aplicado na ordem que for definido!
    */
   PreProcessOption[] preProcess() default { PreProcessOption.NONE };
 }

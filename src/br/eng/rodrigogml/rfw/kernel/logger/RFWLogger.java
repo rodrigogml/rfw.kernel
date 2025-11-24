@@ -10,22 +10,22 @@ import br.eng.rodrigogml.rfw.kernel.utils.RUMachine;
 import br.eng.rodrigogml.rfw.kernel.utils.RUReflex;
 
 /**
- * Description: Esta classe centraliza as chamadas de Log do sistema, e repassa as chamadas para a classe de implementaÁ„o ativa para registrar e salvar os registros de Log.<br>
- * AlÈm disso, contÈm alguns mÈtodos est·ticos para ajudar na geraÁ„o de informaÁıes para o log.
+ * Description: Esta classe centraliza as chamadas de Log do sistema, e repassa as chamadas para a classe de implementa√ß√£o ativa para registrar e salvar os registros de Log.<br>
+ * Al√©m disso, cont√©m alguns m√©todos est√°ticos para ajudar na gera√ß√£o de informa√ß√µes para o log.
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 10.0 (20 de jul. de 2023)
  */
 public final class RFWLogger {
 
   /**
-   * ImplementaÁ„o de registro de log sendo utilizada no momento
+   * Implementa√ß√£o de registro de log sendo utilizada no momento
    */
   private static RFWLoggerImplementation impl = new RFWLoggerImplementation() {
 
     @Override
     public void log(RFWLogSeverity severity, String msg, String content, String exPoint, String... tags) {
-      System.out.println("#RFWLogger N„o Definido# ");
+      System.out.println("#RFWLogger N√£o Definido# ");
       try {
         System.out.println("#\t ClassLoaderName: " + RUMachine.getClassLoaderName(this.getClass()));
       } catch (RFWException e) {
@@ -52,7 +52,7 @@ public final class RFWLogger {
   };
 
   /**
-   * Construtor privado para classe exclusivamente est·tica.
+   * Construtor privado para classe exclusivamente est√°tica.
    */
   private RFWLogger() {
   }
@@ -70,7 +70,7 @@ public final class RFWLogger {
    * Realiza o log com a prioridade ERROR
    *
    * @param msg Mensagem a ser registrada
-   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s„o utilizadas para ajudar a filtrar v·rios eventos de uma mesma natureza, n„o jogue informaÁıes que sÛ aparecer„o em um ˙nico evento por vez nas tags. Cria um log de debug ou info para isso.
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s√£o utilizadas para ajudar a filtrar v√°rios eventos de uma mesma natureza, n√£o jogue informa√ß√µes que s√≥ aparecer√£o em um √∫nico evento por vez nas tags. Cria um log de debug ou info para isso.
    */
   public final static void logError(String msg, String... tags) {
     impl.logError(msg, tags);
@@ -79,7 +79,7 @@ public final class RFWLogger {
   /**
    * Faz o log de uma exception.
    *
-   * @param e ExceÁ„o a ser Logada.
+   * @param e Exce√ß√£o a ser Logada.
    */
   public synchronized final static void logException(Throwable e) {
     impl.logException(e);
@@ -88,8 +88,8 @@ public final class RFWLogger {
   /**
    * Faz o log de uma exception.
    *
-   * @param e ExceÁ„o a ser Logada.
-   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s„o utilizadas para ajudar a filtrar v·rios eventos de uma mesma natureza, n„o jogue informaÁıes que sÛ aparecer„o em um ˙nico evento por vez nas tags. Cria um log de debug ou info para isso.
+   * @param e Exce√ß√£o a ser Logada.
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s√£o utilizadas para ajudar a filtrar v√°rios eventos de uma mesma natureza, n√£o jogue informa√ß√µes que s√≥ aparecer√£o em um √∫nico evento por vez nas tags. Cria um log de debug ou info para isso.
    */
   public synchronized final static void logException(Throwable e, String... tags) {
     impl.logException(e, tags);
@@ -108,18 +108,18 @@ public final class RFWLogger {
    * Realiza o log com a prioridade WARN
    *
    * @param msg Mensagem a ser registrada
-   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s„o utilizadas para ajudar a filtrar v·rios eventos de uma mesma natureza, n„o jogue informaÁıes que sÛ aparecer„o em um ˙nico evento por vez nas tags. Cria um log de debug ou info para isso.
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s√£o utilizadas para ajudar a filtrar v√°rios eventos de uma mesma natureza, n√£o jogue informa√ß√µes que s√≥ aparecer√£o em um √∫nico evento por vez nas tags. Cria um log de debug ou info para isso.
    */
   public final static void logWarn(String msg, String... tags) {
     impl.logWarn(msg, tags);
   }
 
   /**
-   * Faz o log do conte˙do de um objeto. Utilizando o mÈtodo {@link RUReflex#printObject(Object)}
+   * Faz o log do conte√∫do de um objeto. Utilizando o m√©todo {@link RUReflex#printObject(Object)}
    *
    * @param msg Mensagem a ser colocada no registro do Log.
    * @param obj Objeto a ser impresso no anexo do Log.
-   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s„o utilizadas para ajudar a filtrar v·rios eventos de uma mesma natureza, n„o jogue informaÁıes que sÛ aparecer„o em um ˙nico evento por vez nas tags. Cria um log de debug ou info para isso.
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s√£o utilizadas para ajudar a filtrar v√°rios eventos de uma mesma natureza, n√£o jogue informa√ß√µes que s√≥ aparecer√£o em um √∫nico evento por vez nas tags. Cria um log de debug ou info para isso.
    */
   public final static void logObject(String msg, Object obj, String... tags) {
     impl.logObject(msg, obj, tags);
@@ -144,7 +144,7 @@ public final class RFWLogger {
   }
 
   /**
-   * Realiza o log de uma mensagem para os desenvolvedores, registrando alguma informaÁ„o para melhoria do cÛdigo no futuro.
+   * Realiza o log de uma mensagem para os desenvolvedores, registrando alguma informa√ß√£o para melhoria do c√≥digo no futuro.
    *
    * @param msg Mensagem a ser registrada
    */
@@ -156,36 +156,36 @@ public final class RFWLogger {
    * Realiza o log com a prioridade DEBUG.
    *
    * @param msg Mensagem a ser registrada
-   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s„o utilizadas para ajudar a filtrar v·rios eventos de uma mesma natureza, n„o jogue informaÁıes que sÛ aparecer„o em um ˙nico evento por vez nas tags. Cria um log de debug ou info para isso.
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s√£o utilizadas para ajudar a filtrar v√°rios eventos de uma mesma natureza, n√£o jogue informa√ß√µes que s√≥ aparecer√£o em um √∫nico evento por vez nas tags. Cria um log de debug ou info para isso.
    */
   public final static void logDebug(String msg, String... tags) {
     impl.logDebug(msg, tags);
   }
 
   /**
-   * Realiza o log de uma mensagem para os desenvolvedores, registrando alguma informaÁ„o para melhoria do cÛdigo no futuro.
+   * Realiza o log de uma mensagem para os desenvolvedores, registrando alguma informa√ß√£o para melhoria do c√≥digo no futuro.
    *
    * @param msg Mensagem a ser registrada
-   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s„o utilizadas para ajudar a filtrar v·rios eventos de uma mesma natureza, n„o jogue informaÁıes que sÛ aparecer„o em um ˙nico evento por vez nas tags. Cria um log de debug ou info para isso.
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s√£o utilizadas para ajudar a filtrar v√°rios eventos de uma mesma natureza, n√£o jogue informa√ß√µes que s√≥ aparecer√£o em um √∫nico evento por vez nas tags. Cria um log de debug ou info para isso.
    */
   public final static void logImprovement(String msg, String... tags) {
     impl.logImprovement(msg, tags);
   }
 
   /**
-   * MÈtodo usado para Fazer o Log do Stack de onde for chamado. Esse tipo de log È registrado como o label "DEBUG".<br>
-   * Mesmo que o mÈtodo {@link #logStack(String, int, String...) utilizando <code>Integer.MAX_VALUE</code> como par‚metro do tamanho da Pilha.
+   * M√©todo usado para Fazer o Log do Stack de onde for chamado. Esse tipo de log √© registrado como o label "DEBUG".<br>
+   * Mesmo que o m√©todo {@link #logStack(String, int, String...) utilizando <code>Integer.MAX_VALUE</code> como par√¢metro do tamanho da Pilha.
    *
    * @param msg mensagem adicional.
-   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s„o utilizadas para ajudar a filtrar v·rios eventos de uma mesma natureza, n„o jogue informaÁıes que sÛ aparecer„o em um ˙nico evento por vez nas tags. Cria um log de debug ou info para isso.
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s√£o utilizadas para ajudar a filtrar v√°rios eventos de uma mesma natureza, n√£o jogue informa√ß√µes que s√≥ aparecer√£o em um √∫nico evento por vez nas tags. Cria um log de debug ou info para isso.
    */
   public synchronized final static void logStack(String msg, String... tags) {
     impl.logDebug(msg + "\r\n<STACK>\r\n" + getInvoker(Integer.MAX_VALUE) + "</STACK>\r\n", tags);
   }
 
   /**
-   * MÈtodo usado para Fazer o Log do Stack de onde for chamado. Esse tipo de log È registrado como o label "DEBUG".<br>
-   * Mesmo que o mÈtodo {@link #logStack(String, String...)} utilizando <code>Integer.MAX_VALUE</code> como par‚metro do tamanho da Pilha.
+   * M√©todo usado para Fazer o Log do Stack de onde for chamado. Esse tipo de log √© registrado como o label "DEBUG".<br>
+   * Mesmo que o m√©todo {@link #logStack(String, String...)} utilizando <code>Integer.MAX_VALUE</code> como par√¢metro do tamanho da Pilha.
    *
    * @param msg mensagem adicional.
    * @param stacksize Tamanho da pilha a ser logada.
@@ -195,18 +195,18 @@ public final class RFWLogger {
   }
 
   /**
-   * MÈtodo usado para Fazer o Log do Stack de onde for chamado. Esse tipo de log È registrado como o label "DEBUG".
+   * M√©todo usado para Fazer o Log do Stack de onde for chamado. Esse tipo de log √© registrado como o label "DEBUG".
    *
    * @param msg mensagem adicional.
    * @param stacksize Tamanho da pilha a ser logada.
-   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s„o utilizadas para ajudar a filtrar v·rios eventos de uma mesma natureza, n„o jogue informaÁıes que sÛ aparecer„o em um ˙nico evento por vez nas tags. Cria um log de debug ou info para isso.
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags s√£o utilizadas para ajudar a filtrar v√°rios eventos de uma mesma natureza, n√£o jogue informa√ß√µes que s√≥ aparecer√£o em um √∫nico evento por vez nas tags. Cria um log de debug ou info para isso.
    */
   public synchronized final static void logStack(String msg, int stacksize, String... tags) {
     impl.logDebug(msg + "\r\n<STACK>\r\n" + getInvoker(stacksize) + "</STACK>\r\n", tags);
   }
 
   /**
-   * MÈtodo usado para Fazer o Log do Stack de onde for chamado. Esse tipo de log È registrado como o label "DEBUG".
+   * M√©todo usado para Fazer o Log do Stack de onde for chamado. Esse tipo de log √© registrado como o label "DEBUG".
    *
    * @param msg mensagem adicional.
    * @param stacksize Tamanho da pilha a ser logada.
@@ -216,7 +216,7 @@ public final class RFWLogger {
   }
 
   /**
-   * Este mÈtodo retorna quem foi que chamou a classe RFWLogger, para registrar de maneira f·cil onde no cÛdigo foi registrado cada evento.
+   * Este m√©todo retorna quem foi que chamou a classe RFWLogger, para registrar de maneira f√°cil onde no c√≥digo foi registrado cada evento.
    */
   private static final String getInvoker(int stacksize) {
     StringBuilder buff = new StringBuilder();
@@ -251,19 +251,19 @@ public final class RFWLogger {
   }
 
   /**
-   * # implementaÁ„o de registro de log sendo utilizada no momento.
+   * # implementa√ß√£o de registro de log sendo utilizada no momento.
    *
-   * @return implementaÁ„o de registro de log sendo utilizada no momento
+   * @return implementa√ß√£o de registro de log sendo utilizada no momento
    */
   public static RFWLoggerImplementation getImpl() {
     return impl;
   }
 
   /**
-   * # implementaÁ„o de registro de log sendo utilizada no momento.
+   * # implementa√ß√£o de registro de log sendo utilizada no momento.
    *
-   * @param impl implementaÁ„o de registro de log sendo utilizada no momento
-   * @throws RFWException LanÁado se a implementaÁ„o for nula.
+   * @param impl implementa√ß√£o de registro de log sendo utilizada no momento
+   * @throws RFWException Lan√ßado se a implementa√ß√£o for nula.
    */
   public static void setImpl(RFWLoggerImplementation impl) throws RFWException {
     PreProcess.requiredNonNull(impl);

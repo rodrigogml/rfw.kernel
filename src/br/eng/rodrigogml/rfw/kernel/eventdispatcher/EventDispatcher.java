@@ -12,45 +12,45 @@ import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 import br.eng.rodrigogml.rfw.kernel.utils.RUGenerators;
 
 /**
- * Description: Classe de lÛgica/controle dos disparos dos eventos do sistema.<br>
+ * Description: Classe de l√≥gica/controle dos disparos dos eventos do sistema.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.1.0 (27 de set de 2018)
  */
 public class EventDispatcher {
 
   /**
    * Listeners registrados no EventDispatcher. <br>
-   * Chave da Hash È o ID do evento para o qual o Listener foi registrado. O conte˙do È uma Hash com todos os listeners registrados para o evento. (Usamos a HashSet para evitar que o mesmo listener seja registrado m˙ltiplas vezes)
+   * Chave da Hash √© o ID do evento para o qual o Listener foi registrado. O conte√∫do √© uma Hash com todos os listeners registrados para o evento. (Usamos a HashSet para evitar que o mesmo listener seja registrado m√∫ltiplas vezes)
    */
   private static final HashMap<String, HashSet<EventDispatcherListener>> listeners = new HashMap<>();
 
   /** The Constant eventIDUUID. */
   /*
-   * Nome da propriedade tempor·ria utilizada para salvar o ID do evento dentro da prÛpria hash de par‚metros do evento. Esse artifÌcio foi utilizado para n„o termos de complicar a estrutura de objetos dos eventos do escopo.
+   * Nome da propriedade tempor√°ria utilizada para salvar o ID do evento dentro da pr√≥pria hash de par√¢metros do evento. Esse artif√≠cio foi utilizado para n√£o termos de complicar a estrutura de objetos dos eventos do escopo.
    */
   private static final String eventIDUUID = RUGenerators.generateUUID();
 
   /**
    * De fora para dentro:<Br>
-   * HashMap mais externa È utilizada para armezanar a pilha de escopos associados a Thread. Assim, a chave da Hash È a prÛpria inst‚ncia da Thread corrente.<Br>
-   * O valor da hash È uma pilha. Ou seja, cada Thread passa a ter sua prÛpria pilha. Sempre que abrimos um novo escopo para a Thread uma nova Hash È colocada na pilha, quando fechamos esse escopo, ela È removida. Assim, o total de itens da pilha È a quantidade de escopos abertos. A ausÍncia de pilha indica nenhum escopo aberto.<br>
+   * HashMap mais externa √© utilizada para armezanar a pilha de escopos associados a Thread. Assim, a chave da Hash √© a pr√≥pria inst√¢ncia da Thread corrente.<Br>
+   * O valor da hash √© uma pilha. Ou seja, cada Thread passa a ter sua pr√≥pria pilha. Sempre que abrimos um novo escopo para a Thread uma nova Hash √© colocada na pilha, quando fechamos esse escopo, ela √© removida. Assim, o total de itens da pilha √© a quantidade de escopos abertos. A aus√™ncia de pilha indica nenhum escopo aberto.<br>
    * **Aqui chamamos de escopo cada transaction criada, por exemplo, cada vez que a Thread chama uma fachada com o Interceptor que abre o escopo, e fechanda quando retorna.<Br>
-   * O objeto da Pilha È uma Lista de outra HashMap, Cada item da lista È um evento que foi registrado dentro deste escopo.<br>
-   * A HashMap da lista È o par‚metro recebido para disparar o evento, mesma HashMap que ser· passada no disparo do evento do fechamento do escopo.<br>
-   * Note que, para n„o criarmos uma nova estrutura para salvar o eventID, vamos utilizar a prÛpria hash de par‚metros para salvar o eventID. O eventID ser· colocado na Hash com a chave definida em {@link #eventIDUUID}.<br>
-   * Caso tenhamos recebido uma HashNula no evento, instanciamos uma para salvar o eventID e incluÌmos um segundo atributo identificado por {@link #eventIDUUID} + "-isNull", com um valor qualquer. A simples presenÁa dessa chave indica que a hash original era nula e n„o vazia.
+   * O objeto da Pilha √© uma Lista de outra HashMap, Cada item da lista √© um evento que foi registrado dentro deste escopo.<br>
+   * A HashMap da lista √© o par√¢metro recebido para disparar o evento, mesma HashMap que ser√° passada no disparo do evento do fechamento do escopo.<br>
+   * Note que, para n√£o criarmos uma nova estrutura para salvar o eventID, vamos utilizar a pr√≥pria hash de par√¢metros para salvar o eventID. O eventID ser√° colocado na Hash com a chave definida em {@link #eventIDUUID}.<br>
+   * Caso tenhamos recebido uma HashNula no evento, instanciamos uma para salvar o eventID e inclu√≠mos um segundo atributo identificado por {@link #eventIDUUID} + "-isNull", com um valor qualquer. A simples presen√ßa dessa chave indica que a hash original era nula e n√£o vazia.
    */
   private static final HashMap<Thread, Stack<List<HashMap<String, Object>>>> threadScopes = new HashMap<Thread, Stack<List<HashMap<String, Object>>>>();
 
   /**
-   * Prioridade da Thread de NotificaÁ„o de Evento.<br>
-   * Por padr„o a prioridade È muito baixa pois eventos normalmente s„o tarefas que s„o assincronas ‡ operaÁ„o que lanÁou o evento. Sendo assim o usu·rio n„o est· esperando que a tarefa ocorra, nem È um grande problema se ela demorar um pouco mais.
+   * Prioridade da Thread de Notifica√ß√£o de Evento.<br>
+   * Por padr√£o a prioridade √© muito baixa pois eventos normalmente s√£o tarefas que s√£o assincronas √† opera√ß√£o que lan√ßou o evento. Sendo assim o usu√°rio n√£o est√° esperando que a tarefa ocorra, nem √© um grande problema se ela demorar um pouco mais.
    */
   private static Integer eventThreadPriority = Thread.MIN_PRIORITY;
 
   /**
-   * Construtor privado, classe est·tica.
+   * Construtor privado, classe est√°tica.
    */
   private EventDispatcher() {
   }
@@ -59,7 +59,7 @@ public class EventDispatcher {
    * Registra um Listener para um detemrinado evento do sistema.
    *
    * @param eventID ID do evento
-   * @param listener Inst‚ncia do Listener que ser· notificado na ocorrÍncia do evento.
+   * @param listener Inst√¢ncia do Listener que ser√° notificado na ocorr√™ncia do evento.
    * @throws RFWException
    */
   public static void addListener(EventDispatcherListener listener, String... eventIDs) throws RFWException {
@@ -79,7 +79,7 @@ public class EventDispatcher {
 
   /**
    * Dispara um determinado evento para todos os listeners registrados.<br>
-   * Note que os eventos s„o executados em uma Thread paralela, sem sess„o ou Transaction Definidos.
+   * Note que os eventos s√£o executados em uma Thread paralela, sem sess√£o ou Transaction Definidos.
    *
    * @param eventID ID do evento.
    * @param params Parametros do evento a ser compartilhado com os listeners.
@@ -124,19 +124,19 @@ public class EventDispatcher {
   }
 
   /**
-   * Sinaliza a finalizaÁ„o/fechamento de um escopo de eventos.<br>
-   * <li>Caso n„o seja o ˙ltimo escopo aberto para a Thread:
+   * Sinaliza a finaliza√ß√£o/fechamento de um escopo de eventos.<br>
+   * <li>Caso n√£o seja o √∫ltimo escopo aberto para a Thread:
    * <ul>
-   * <li>e caso tenha terminado com sucesso, os eventos desse escopo s„o passados para o escopo pai para serem disparados ou descartados junto com o escopo anterior;
-   * <li>e caso tenha terminado com exception (rollback), os evento desse escopo ser„o descartados e n„o ser„o disparados.
+   * <li>e caso tenha terminado com sucesso, os eventos desse escopo s√£o passados para o escopo pai para serem disparados ou descartados junto com o escopo anterior;
+   * <li>e caso tenha terminado com exception (rollback), os evento desse escopo ser√£o descartados e n√£o ser√£o disparados.
    * </ul>
-   * <li>Se for o ˙ltimo escopo aberto para a Thread:
+   * <li>Se for o √∫ltimo escopo aberto para a Thread:
    * <ul>
-   * <li>e caso tenha terminado com sucesso, os eventos ser„o disparados;
-   * <li>e caso tenha terminado com exception (rollback), os evento ser„o descartados.
+   * <li>e caso tenha terminado com sucesso, os eventos ser√£o disparados;
+   * <li>e caso tenha terminado com exception (rollback), os evento ser√£o descartados.
    * </ul>
    *
-   * @param committed Indica se o escopo est· sendo finalizado com sucesso. True indica que devemos fazer commit dos eventos e dispara-los/associar ao escopo anterior conforme documentoraÁ„o. False indica que devemos dar um rollback e descartar os eventos desse escopo.
+   * @param committed Indica se o escopo est√° sendo finalizado com sucesso. True indica que devemos fazer commit dos eventos e dispara-los/associar ao escopo anterior conforme documentora√ß√£o. False indica que devemos dar um rollback e descartar os eventos desse escopo.
    * @throws RFWException
    */
   public static void endScope(boolean committed) throws RFWException {
@@ -147,11 +147,11 @@ public class EventDispatcher {
 
     boolean lastScope = scopes.size() == 0;
     if (lastScope) {
-      // se e o ˙ltimo scope, j· vamos limpar os objetos da memÛria para liberar os recursos
+      // se e o √∫ltimo scope, j√° vamos limpar os objetos da mem√≥ria para liberar os recursos
       threadScopes.remove(Thread.currentThread());
     }
 
-    // Se n„o tivermos nenhum evento, n„o precisamos nem processar nada
+    // Se n√£o tivermos nenhum evento, n√£o precisamos nem processar nada
     if (eventList != null && eventList.size() > 0) {
       if (lastScope) {
         if (committed) {
@@ -179,7 +179,7 @@ public class EventDispatcher {
               Thread t = new Thread("### EventDispatcher: " + eventID) {
                 @Override
                 public void run() {
-                  // Aguardamos uns segundos antes de iniciar, porque no caso do constrole dos escopos serem feitos pelo Interceptor, o commit n„o foi de fato realizado quando essa Thread iniciou
+                  // Aguardamos uns segundos antes de iniciar, porque no caso do constrole dos escopos serem feitos pelo Interceptor, o commit n√£o foi de fato realizado quando essa Thread iniciou
                   try {
                     Thread.sleep(1000);
                   } catch (InterruptedException e1) {
@@ -200,14 +200,14 @@ public class EventDispatcher {
             }
           }
         } else {
-          // N„o faz nada, sÛ vamos descartar toda a lista de eventos
+          // N√£o faz nada, s√≥ vamos descartar toda a lista de eventos
         }
       } else {
         if (committed) {
-          // Passamos todos os eventos para o prÛximo escopo para avaliar no fim dele se os eventos ser„o disparados ou n„o
+          // Passamos todos os eventos para o pr√≥ximo escopo para avaliar no fim dele se os eventos ser√£o disparados ou n√£o
           scopes.get(scopes.size() - 1).addAll(eventList);
         } else {
-          // N„o faz nada, sÛ vamos descartar toda a lista de eventos
+          // N√£o faz nada, s√≥ vamos descartar toda a lista de eventos
         }
       }
     }
@@ -215,7 +215,7 @@ public class EventDispatcher {
   }
 
   /**
-   * Registra um evento que dever· ser disparado na finalizaÁ„o do escopo quando terminado com sucesso.
+   * Registra um evento que dever√° ser disparado na finaliza√ß√£o do escopo quando terminado com sucesso.
    *
    * @param eventID ID do evento.
    * @param params Parametros do evento a ser compartilhado com os listeners.
@@ -237,20 +237,20 @@ public class EventDispatcher {
   }
 
   /**
-   * Gets the prioridade da Thread de NotificaÁ„o de Evento.<br>
-   * Por padr„o a prioridade È muito baixa pois eventos normalmente s„o tarefas que s„o assincronas ‡ operaÁ„o que lanÁou o evento. Sendo assim o usu·rio n„o est· esperando que a tarefa ocorra, nem È um grande problema se ela demorar um pouco mais.
+   * Gets the prioridade da Thread de Notifica√ß√£o de Evento.<br>
+   * Por padr√£o a prioridade √© muito baixa pois eventos normalmente s√£o tarefas que s√£o assincronas √† opera√ß√£o que lan√ßou o evento. Sendo assim o usu√°rio n√£o est√° esperando que a tarefa ocorra, nem √© um grande problema se ela demorar um pouco mais.
    *
-   * @return the prioridade da Thread de NotificaÁ„o de Evento
+   * @return the prioridade da Thread de Notifica√ß√£o de Evento
    */
   public static Integer getEventThreadPriority() {
     return eventThreadPriority;
   }
 
   /**
-   * Sets the prioridade da Thread de NotificaÁ„o de Evento.<br>
-   * Por padr„o a prioridade È muito baixa pois eventos normalmente s„o tarefas que s„o assincronas ‡ operaÁ„o que lanÁou o evento. Sendo assim o usu·rio n„o est· esperando que a tarefa ocorra, nem È um grande problema se ela demorar um pouco mais.
+   * Sets the prioridade da Thread de Notifica√ß√£o de Evento.<br>
+   * Por padr√£o a prioridade √© muito baixa pois eventos normalmente s√£o tarefas que s√£o assincronas √† opera√ß√£o que lan√ßou o evento. Sendo assim o usu√°rio n√£o est√° esperando que a tarefa ocorra, nem √© um grande problema se ela demorar um pouco mais.
    *
-   * @param eventThreadPriority the new prioridade da Thread de NotificaÁ„o de Evento
+   * @param eventThreadPriority the new prioridade da Thread de Notifica√ß√£o de Evento
    */
   public static void setEventThreadPriority(Integer eventThreadPriority) throws RFWException {
     PreProcess.requiredBetweenCritical(eventThreadPriority, Thread.MIN_PRIORITY, Thread.MAX_PRIORITY, "RFW_000017");

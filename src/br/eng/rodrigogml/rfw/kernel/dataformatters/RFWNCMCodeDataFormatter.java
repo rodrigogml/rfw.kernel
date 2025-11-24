@@ -6,9 +6,9 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 
 /**
- * Description: Classe que formata e valida um código NCM, de acordo com a quantidade de dígitos fornecida no campo.<br>
+ * Description: Classe que formata e valida um cÃ³digo NCM, de acordo com a quantidade de dÃ­gitos fornecida no campo.<br>
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 7.1.0 (13/12/2014)
  */
 public class RFWNCMCodeDataFormatter implements RFWDataFormatter<String, Object> {
@@ -58,9 +58,9 @@ public class RFWNCMCodeDataFormatter implements RFWDataFormatter<String, Object>
   public void validate(Object value, Locale locale) throws RFWException {
     if (value != null && !"".equals(value.toString().trim())) {
       String v = value.toString().replaceAll("[^0-9]", "");
-      // Verifica se tem tamanho Correto depois que só sobrarem números - exige que tenha os 8 números e não completa números a esquerda para evitar que ao "esquecer" um número durante a digitação, o erro seja detectado.
+      // Verifica se tem tamanho Correto depois que sÃ³ sobrarem nÃºmeros - exige que tenha os 8 nÃºmeros e nÃ£o completa nÃºmeros a esquerda para evitar que ao "esquecer" um nÃºmero durante a digitaÃ§Ã£o, o erro seja detectado.
       if (v.length() != 2 && (v.length() < 4 || v.length() > 8)) {
-        throw new RFWValidationException("Não é um código NCM válido!");
+        throw new RFWValidationException("NÃ£o Ã© um cÃ³digo NCM vÃ¡lido!");
       }
     }
   }

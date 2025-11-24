@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Description: Annotation usada para definit um atributo do tipo Boolean.<BR>
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 7.1.0 (03/07/2015)
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -16,13 +16,13 @@ import java.lang.annotation.Target;
 public @interface RFWMetaBooleanField {
 
   /**
-   * Define o nome da coluna na tabela do banco de dados. Caso deixado em branco, será utilizado o nome da propriedade.
+   * Define o nome da coluna na tabela do banco de dados. Caso deixado em branco, serÃ¡ utilizado o nome da propriedade.
    */
   String column() default "";
 
   /**
-   * Define o nome do atributo/campo. Este nome é usado para facilitar mensagens de erros, validações, em UIs, etc.<br>
-   * Não utilize ":" no final ou outras formatações específicas do local de uso. Aqui deve ser definido apenas o nome, como "Caixa", "Nome do Usuário", etc.
+   * Define o nome do atributo/campo. Este nome Ã© usado para facilitar mensagens de erros, validaÃ§Ãµes, em UIs, etc.<br>
+   * NÃ£o utilize ":" no final ou outras formataÃ§Ãµes especÃ­ficas do local de uso. Aqui deve ser definido apenas o nome, como "Caixa", "Nome do UsuÃ¡rio", etc.
    */
   String caption();
 
@@ -37,12 +37,12 @@ public @interface RFWMetaBooleanField {
   String falseCaption() default "Falso";
 
   /**
-   * Define se o atributo é obrigatório ou não na entidade.
+   * Define se o atributo Ã© obrigatÃ³rio ou nÃ£o na entidade.
    */
   boolean required();
 
   /**
-   * Define se o atributo é único.
+   * Define se o atributo Ã© Ãºnico.
    */
   boolean unique() default false;
 

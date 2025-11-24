@@ -9,14 +9,14 @@ import java.lang.annotation.Target;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 
 /**
- * Description: Meta Annotation para indicar quando uma classe È utilizada por outra de forma dependente.<br>
- * Ao indicar que uma classe È utilizada por outra, a outra classe dever· conter uma {@link RFWMetaDependency} para indiciar a forma da dependencia com esta classe.<br>
- * Esta indicaÁ„o sÛ deve serfeita nas seguitnes condiÁıes:
+ * Description: Meta Annotation para indicar quando uma classe √© utilizada por outra de forma dependente.<br>
+ * Ao indicar que uma classe √© utilizada por outra, a outra classe dever√° conter uma {@link RFWMetaDependency} para indiciar a forma da dependencia com esta classe.<br>
+ * Esta indica√ß√£o s√≥ deve serfeita nas seguitnes condi√ß√µes:
  * <ul>
- * <li>Caso este objeto n„o possa ser excluÌdo quando algum objeto que depende deste impeÁa a exclus„o, como ForeignKeys no banco sem</Li>
+ * <li>Caso este objeto n√£o possa ser exclu√≠do quando algum objeto que depende deste impe√ßa a exclus√£o, como ForeignKeys no banco sem</Li>
  * </ul>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 7.1.0 (16/07/2015)
  */
 @Retention(RetentionPolicy.RUNTIME)

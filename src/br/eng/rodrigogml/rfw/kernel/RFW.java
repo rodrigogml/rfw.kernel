@@ -23,7 +23,7 @@ import br.eng.rodrigogml.rfw.kernel.logger.RFWLogger;
 import br.eng.rodrigogml.rfw.kernel.logger.RFWLoggerImplementation;
 
 /**
- * Description: Classe utilit·ria geral do RFW com mÈtodos utilit·rios comuns genÈricos.<br>
+ * Description: Classe utilit√°ria geral do RFW com m√©todos utilit√°rios comuns gen√©ricos.<br>
  *
  * @author Rodrigo GML
  * @since 10.0 (12 de out de 2020)
@@ -31,38 +31,38 @@ import br.eng.rodrigogml.rfw.kernel.logger.RFWLoggerImplementation;
 public class RFW {
 
   /**
-   * ReferÍncia para o File do arquivo de definiÁ„o de ambiente de desenvolvimento.
+   * Refer√™ncia para o File do arquivo de defini√ß√£o de ambiente de desenvolvimento.
    */
   private static File devFile = null;
 
   /**
-   * Constante com o BigDecimal de "100", para evitar sua construÁ„o o tempo todo.<br>
-   * Por ser a base do percentual, e da divis„o principal financeira (toda moeda È dividida em centavos por padr„o) ela È requisitada o tempo todo.
+   * Constante com o BigDecimal de "100", para evitar sua constru√ß√£o o tempo todo.<br>
+   * Por ser a base do percentual, e da divis√£o principal financeira (toda moeda √© dividida em centavos por padr√£o) ela √© requisitada o tempo todo.
    */
   public static final BigDecimal BIGHUNDRED = new BigDecimal("100");
 
   /**
-   * MÈtodo padr„o de arredondamento do sistema.<br>
-   * Valor Padr„o inicial: RoundingMode.HALF_EVEN.
+   * M√©todo padr√£o de arredondamento do sistema.<br>
+   * Valor Padr√£o inicial: RoundingMode.HALF_EVEN.
    */
   private static RoundingMode roundingMode = RoundingMode.HALF_EVEN;
 
   /**
-   * Locale padr„o do sistema.<br>
-   * Valor Padr„o inicial: Locale("pt", "BR").
+   * Locale padr√£o do sistema.<br>
+   * Valor Padr√£o inicial: Locale("pt", "BR").
    */
   private static Locale locale = new Locale("pt", "BR"); // Locale.of("pt", "BR"); //JDK 20
 
   /**
-   * ZoneID padr„o do sistema.<br>
-   * Valor padr„o inicial: "America/Sao_Paulo.
+   * ZoneID padr√£o do sistema.<br>
+   * Valor padr√£o inicial: "America/Sao_Paulo.
    */
   private static ZoneId zoneId = ZoneId.of("America/Sao_Paulo");
 
   /**
-   * Batiza o sistema com um nome. … recomendado que se crie um label utilizando "Nome" = "Vers„o", algo como "RFW v10.0.0". Algo preferencialmente curto que identifique o sistema e sua vers„o.<br>
-   * Lembrando que esse nome deve abrangir o escopo da inst‚ncia da classe est·tica {@link RFW}, uma vez que esse nome ser· utilizado para o mesmo escopo.<br>
-   * A funÁ„o deste nome È identificaÁ„o, e ser· utilizado por exemplo pelo serviÁo RFWLogger para gerar tags nos relatÛrios criados.
+   * Batiza o sistema com um nome. √â recomendado que se crie um label utilizando "Nome" = "Vers√£o", algo como "RFW v10.0.0". Algo preferencialmente curto que identifique o sistema e sua vers√£o.<br>
+   * Lembrando que esse nome deve abrangir o escopo da inst√¢ncia da classe est√°tica {@link RFW}, uma vez que esse nome ser√° utilizado para o mesmo escopo.<br>
+   * A fun√ß√£o deste nome √© identifica√ß√£o, e ser√° utilizado por exemplo pelo servi√ßo RFWLogger para gerar tags nos relat√≥rios criados.
    */
   private static String systemName = null;
 
@@ -72,14 +72,14 @@ public class RFW {
   private static boolean shuttingDown = false;
 
   /**
-   * Construtor privado para uma classe completamente est·tica
+   * Construtor privado para uma classe completamente est√°tica
    */
   private RFW() {
   }
 
   /**
-   * Inicializa o valor padr„o do ZoneId utilizado no Sistema. Gera efeitos em todo o sistema que utilizar a mesma inst‚ncia est·tica do RFW.<br>
-   * Valor padr„o inicial: "America/Sao_Paulo".
+   * Inicializa o valor padr√£o do ZoneId utilizado no Sistema. Gera efeitos em todo o sistema que utilizar a mesma inst√¢ncia est√°tica do RFW.<br>
+   * Valor padr√£o inicial: "America/Sao_Paulo".
    *
    * @param zoneId ZoneID para ser utilizado em todo o framework.
    */
@@ -88,8 +88,8 @@ public class RFW {
   }
 
   /**
-   * Inicializa o valor padr„o do Locale utilizado no Sistema. Gera efeitos em todo o sistema que utilizar a mesma inst‚ncia est·tica do RFW.<br>
-   * Valor Padr„o inicial: Locale("pt", "BR").
+   * Inicializa o valor padr√£o do Locale utilizado no Sistema. Gera efeitos em todo o sistema que utilizar a mesma inst√¢ncia est√°tica do RFW.<br>
+   * Valor Padr√£o inicial: Locale("pt", "BR").
    *
    * @param locale Locale para ser uitilizado em todo o framework.
    */
@@ -98,29 +98,29 @@ public class RFW {
   }
 
   /**
-   * Define o mÈtodo padr„o de arredondamento do sistema.<br>
-   * Valor Padr„o inicial: RoundingMode.HALF_EVEN.
+   * Define o m√©todo padr√£o de arredondamento do sistema.<br>
+   * Valor Padr√£o inicial: RoundingMode.HALF_EVEN.
    *
-   * @param roundingMode the new mÈtodo padr„o de arredondamento do sistema
+   * @param roundingMode the new m√©todo padr√£o de arredondamento do sistema
    */
   public static void initializeRoundingMode(RoundingMode roundingMode) {
     RFW.roundingMode = roundingMode;
   }
 
   /**
-   * Define o {@link RFWLoggerImplementation} que tratar· os registros de log do framework.
+   * Define o {@link RFWLoggerImplementation} que tratar√° os registros de log do framework.
    *
-   * @param rfwLoggerImplementation ImplementaÁ„o desejada de tratamento dos Logs do Framework / Sistema.
-   * @throws RFWException LanÁado em caso de falha, como valor null.
+   * @param rfwLoggerImplementation Implementa√ß√£o desejada de tratamento dos Logs do Framework / Sistema.
+   * @throws RFWException Lan√ßado em caso de falha, como valor null.
    */
   public static void initializeRFWLogger(RFWLoggerImplementation rfwLoggerImplementation) throws RFWException {
     RFWLogger.setImpl(rfwLoggerImplementation);
   }
 
   /**
-   * Batiza o sistema com um nome. … recomendado que se crie um label utilizando "Nome" = "Vers„o", algo como "RFW v10.0.0". Algo preferencialmente curto que identifique o sistema e sua vers„o.<br>
-   * Lembrando que esse nome deve abrangir o escopo da inst‚ncia da classe est·tica {@link RFW}, uma vez que esse nome ser· utilizado para o mesmo escopo.<br>
-   * A funÁ„o deste nome È identificaÁ„o, e ser· utilizado por exemplo pelo serviÁo RFWLogger para gerar tags nos relatÛrios criados.
+   * Batiza o sistema com um nome. √â recomendado que se crie um label utilizando "Nome" = "Vers√£o", algo como "RFW v10.0.0". Algo preferencialmente curto que identifique o sistema e sua vers√£o.<br>
+   * Lembrando que esse nome deve abrangir o escopo da inst√¢ncia da classe est√°tica {@link RFW}, uma vez que esse nome ser√° utilizado para o mesmo escopo.<br>
+   * A fun√ß√£o deste nome √© identifica√ß√£o, e ser√° utilizado por exemplo pelo servi√ßo RFWLogger para gerar tags nos relat√≥rios criados.
    *
    * @param systemName
    */
@@ -129,8 +129,8 @@ public class RFW {
   }
 
   /**
-   * Este mÈtodo inicializa {@link RFWBundle} com um novo arquivo.<br>
-   * Note que cada novo arquivo carregado È lido sobre o mesmo properties. Isso faz com que em caso de conflito de chaves o conte˙do do ˙ltimo arquivo lido se sobreponha. Embora pareÁa uma falha, a ideia È proposital, assim È possÌvel substituir mensagens padr„o do RFWDeprec pelo sistema sendo feito.
+   * Este m√©todo inicializa {@link RFWBundle} com um novo arquivo.<br>
+   * Note que cada novo arquivo carregado √© lido sobre o mesmo properties. Isso faz com que em caso de conflito de chaves o conte√∫do do √∫ltimo arquivo lido se sobreponha. Embora pare√ßa uma falha, a ideia √© proposital, assim √© poss√≠vel substituir mensagens padr√£o do RFWDeprec pelo sistema sendo feito.
    *
    * @param bundleName
    * @throws RFWException
@@ -140,7 +140,7 @@ public class RFW {
   }
 
   /**
-   * Retorna o DateTime do sistema, levando em consideraÁ„o o {@link ZoneId} configurado nesta classe.
+   * Retorna o DateTime do sistema, levando em considera√ß√£o o {@link ZoneId} configurado nesta classe.
    *
    * @return DateTime atual
    */
@@ -149,7 +149,7 @@ public class RFW {
   }
 
   /**
-   * Retorna o Time do sistema, levando em consideraÁ„o o {@link ZoneId} configurado nesta classe.
+   * Retorna o Time do sistema, levando em considera√ß√£o o {@link ZoneId} configurado nesta classe.
    *
    * @return Time atual
    */
@@ -158,7 +158,7 @@ public class RFW {
   }
 
   /**
-   * Retorna o Date do sistema, levando em consideraÁ„o o {@link ZoneId} configurado nesta classe.
+   * Retorna o Date do sistema, levando em considera√ß√£o o {@link ZoneId} configurado nesta classe.
    *
    * @return Date Atual
    */
@@ -167,66 +167,66 @@ public class RFW {
   }
 
   /**
-   * Retorna o formatador de DateTime Padr„o do sistema: "dd/MM/uuuu HH:mm:ss".
+   * Retorna o formatador de DateTime Padr√£o do sistema: "dd/MM/uuuu HH:mm:ss".
    *
-   * @return DateTimeFormatter padr„o.
+   * @return DateTimeFormatter padr√£o.
    */
   public static DateTimeFormatter getDateTimeFormattter() {
     return DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm:ss");
   }
 
   /**
-   * Retorna o formatador de DateTime Padr„o do sistema: "HH:mm:ss".
+   * Retorna o formatador de DateTime Padr√£o do sistema: "HH:mm:ss".
    *
-   * @return DateTimeFormatter padr„o.
+   * @return DateTimeFormatter padr√£o.
    */
   public static DateTimeFormatter getTimeFormattter() {
     return DateTimeFormatter.ofPattern("HH:mm:ss");
   }
 
   /**
-   * Retorna o formatador de DateTime Padr„o do sistema: "dd/MM/uuuu".
+   * Retorna o formatador de DateTime Padr√£o do sistema: "dd/MM/uuuu".
    *
-   * @return DateTimeFormatter padr„o.
+   * @return DateTimeFormatter padr√£o.
    */
   public static DateTimeFormatter getDateFormattter() {
     return DateTimeFormatter.ofPattern("dd/MM/uuuu");
   }
 
   /**
-   * Locale padr„o do sistema.<br>
-   * Valor Padr„o inicial: Locale("pt", "BR").
+   * Locale padr√£o do sistema.<br>
+   * Valor Padr√£o inicial: Locale("pt", "BR").
    *
-   * @return locale padr„o do sistema
+   * @return locale padr√£o do sistema
    */
   public static Locale getLocale() {
     return locale;
   }
 
   /**
-   * Get mÈtodo padr„o de arredondamento do sistema.<br>
-   * Valor Padr„o inicial: RoundingMode.HALF_EVEN.
+   * Get m√©todo padr√£o de arredondamento do sistema.<br>
+   * Valor Padr√£o inicial: RoundingMode.HALF_EVEN.
    *
-   * @return the mÈtodo padr„o de arredondamento do sistema
+   * @return the m√©todo padr√£o de arredondamento do sistema
    */
   public static RoundingMode getRoundingMode() {
     return roundingMode;
   }
 
   /**
-   * Get zoneId padr„o do sistema.<br>
-   * Valor padr„o inicial: "America/Sao_Paulo.
+   * Get zoneId padr√£o do sistema.<br>
+   * Valor padr√£o inicial: "America/Sao_Paulo.
    *
-   * @return the zoneId padr„o do sistema
+   * @return the zoneId padr√£o do sistema
    */
   public static ZoneId getZoneId() {
     return zoneId;
   }
 
   /**
-   * Esta flag tem o objetivo de permitir que o cÛdigo tenha trechos que sÛ devem ser executados quando em desenvolvimento, como por exemplo alguns prints para o console, ou mesmo algum trecho de cÛdigo de testes pode ser encapsulado em um "if" que testa essa vari·vel.<br>
-   * Esta mÈtodo retorna TRUE, caso encontre um arquivo "rfwdev.txt" na raiz do HD. No caso do Windows: "C:\rfwdev.txt". <Br>
-   * O arquivo n„o precisa de nenhum conte˙do, apenas existir.
+   * Esta flag tem o objetivo de permitir que o c√≥digo tenha trechos que s√≥ devem ser executados quando em desenvolvimento, como por exemplo alguns prints para o console, ou mesmo algum trecho de c√≥digo de testes pode ser encapsulado em um "if" que testa essa vari√°vel.<br>
+   * Esta m√©todo retorna TRUE, caso encontre um arquivo "rfwdev.txt" na raiz do HD. No caso do Windows: "C:\rfwdev.txt". <Br>
+   * O arquivo n√£o precisa de nenhum conte√∫do, apenas existir.
    *
    * @return true, se o arquivo for encontrado.
    */
@@ -235,33 +235,33 @@ public class RFW {
   }
 
   /**
-   * Batiza o sistema com um nome. … recomendado que se crie um label utilizando "Nome" = "Vers„o", algo como "RFW v10.0.0". Algo preferencialmente curto que identifique o sistema e sua vers„o.<br>
-   * Lembrando que esse nome deve abrangir o escopo da inst‚ncia da classe est·tica {@link RFW}, uma vez que esse nome ser· utilizado para o mesmo escopo.<br>
-   * A funÁ„o deste nome È identificaÁ„o, e ser· utilizado por exemplo pelo serviÁo RFWLogger para gerar tags nos relatÛrios criados.
+   * Batiza o sistema com um nome. √â recomendado que se crie um label utilizando "Nome" = "Vers√£o", algo como "RFW v10.0.0". Algo preferencialmente curto que identifique o sistema e sua vers√£o.<br>
+   * Lembrando que esse nome deve abrangir o escopo da inst√¢ncia da classe est√°tica {@link RFW}, uma vez que esse nome ser√° utilizado para o mesmo escopo.<br>
+   * A fun√ß√£o deste nome √© identifica√ß√£o, e ser√° utilizado por exemplo pelo servi√ßo RFWLogger para gerar tags nos relat√≥rios criados.
    *
-   * @return identificaÁ„o do sistema
+   * @return identifica√ß√£o do sistema
    */
   public static String getSystemName() {
     return systemName;
   }
 
   /**
-   * Este mÈtodo simplifica a impress„o em console quando estamos em desenvolvimento.<Br>
-   * Tem a mesma funÁ„o que o cÛdigo:<br>
+   * Este m√©todo simplifica a impress√£o em console quando estamos em desenvolvimento.<Br>
+   * Tem a mesma fun√ß√£o que o c√≥digo:<br>
    *
    * <pre>
    * if (RFW.isDevelopmentEnvironment()) System.out.println(content);
    * </pre>
    *
-   * @param content Conte˙do a ser impresso no console
+   * @param content Conte√∫do a ser impresso no console
    */
   public static void pDev(String content) {
     if (RFW.isDevelopmentEnvironment()) System.out.println(content);
   }
 
   /**
-   * Este mÈtodo simplifica a impress„o em console quando estamos em desenvolvimento.<Br>
-   * Tem a mesma funÁ„o que o cÛdigo:<br>
+   * Este m√©todo simplifica a impress√£o em console quando estamos em desenvolvimento.<Br>
+   * Tem a mesma fun√ß√£o que o c√≥digo:<br>
    *
    * <pre>
    * if (RFW.isDevelopmentEnvironment()) e.printStackTrace();
@@ -274,10 +274,10 @@ public class RFW {
   }
 
   /**
-   * Faz o mesmo que o {@link Thread#sleep(long)}, porÈm j· captura o {@link InterruptedException} caso ele ocorra.<Br>
-   * Para os casos em que a exception n„o È importante, deixa o cÛdigo mais limpo.
+   * Faz o mesmo que o {@link Thread#sleep(long)}, por√©m j√° captura o {@link InterruptedException} caso ele ocorra.<Br>
+   * Para os casos em que a exception n√£o √© importante, deixa o c√≥digo mais limpo.
    *
-   * @param millisecondsDelay tempo em milisegundos que o cÛdigo (Thread atual) dever· aguardar.
+   * @param millisecondsDelay tempo em milisegundos que o c√≥digo (Thread atual) dever√° aguardar.
    */
   public static void sleep(long millisecondsDelay) {
     try {
@@ -287,25 +287,25 @@ public class RFW {
   }
 
   /**
-   * Ao chamar este mÈtodo, todos os serviÁos do RFW ser„o sinalizados para que finalizem seus serviÁos e Threads em andamento o mais r·pido possÌvel.<br>
-   * A chamada deste mÈtodo È irreversÌvel.
+   * Ao chamar este m√©todo, todos os servi√ßos do RFW ser√£o sinalizados para que finalizem seus servi√ßos e Threads em andamento o mais r√°pido poss√≠vel.<br>
+   * A chamada deste m√©todo √© irrevers√≠vel.
    */
   public static void shutdownFW() {
     RFW.shuttingDown = true;
   }
 
   /**
-   * @return Recupera se o Framework foi sinalizado que deve finalizar. Quando true, todos os seviÁos e Thread do RFW devem se encerrar para que a aplicaÁ„o faÁa um undeploy
+   * @return Recupera se o Framework foi sinalizado que deve finalizar. Quando true, todos os sevi√ßos e Thread do RFW devem se encerrar para que a aplica√ß√£o fa√ßa um undeploy
    */
   public static boolean isShuttingDown() {
     return RFW.shuttingDown;
   }
 
   /**
-   * Executa uma tarefa em outra thread. A idÈia È facilitar a execuÁ„o de algumas tarefas em uma thread paralela para liberar a execuÁ„o do cÛdigo principal. Muito ˙til para tarefas que precisam ser disparadas mas n„o precisamos do resultado imediato para continuar a execuÁ„o do mÈtodo principal.
+   * Executa uma tarefa em outra thread. A id√©ia √© facilitar a execu√ß√£o de algumas tarefas em uma thread paralela para liberar a execu√ß√£o do c√≥digo principal. Muito √∫til para tarefas que precisam ser disparadas mas n√£o precisamos do resultado imediato para continuar a execu√ß√£o do m√©todo principal.
    *
    * @param threadName Nome da Thread
-   * @param daemon Define se a thread de execuÁ„o deve ser daemon ou n„o. O sistema se encerra quando apenas Threads do tipo daemon est„o em execuÁ„o. Em outras palavras, threads daemon n„o precisam ser forÁadas a terminar para que o sistema finalize.
+   * @param daemon Define se a thread de execu√ß√£o deve ser daemon ou n√£o. O sistema se encerra quando apenas Threads do tipo daemon est√£o em execu√ß√£o. Em outras palavras, threads daemon n√£o precisam ser for√ßadas a terminar para que o sistema finalize.
    * @param delay Tempo em milisegundos para aguardar antes de executar a tarefa
    * @param task Tarefa a ser executada
    */
@@ -318,9 +318,9 @@ public class RFW {
           // Executa a tarefa passada
           task.run();
         } finally {
-          // Garante que o Timer morra antes de finalizar a tarefa. Se a tarefa n„o for encerrada o Timer mantÈm a thread ativa esperando com a task na fila.
+          // Garante que o Timer morra antes de finalizar a tarefa. Se a tarefa n√£o for encerrada o Timer mant√©m a thread ativa esperando com a task na fila.
           t.cancel(); // Cancela a tarefa atual
-          t.purge(); // Remove a referencia dessa tarefa na "queue" do Timer. Ao n„o encontrar nada na queue o Timer permite que a Thread termine ao invÈs de ficar aguardando outro reinÌcio.
+          t.purge(); // Remove a referencia dessa tarefa na "queue" do Timer. Ao n√£o encontrar nada na queue o Timer permite que a Thread termine ao inv√©s de ficar aguardando outro rein√≠cio.
         }
       }
     }, delay);
@@ -328,10 +328,10 @@ public class RFW {
   }
 
   /**
-   * LÍ uma propriedade dentro do arquivo de definiÁıes do ambiente de desenvolvimento, definido em {@link #RFWDEVPROPERTIESFILE}.
+   * L√™ uma propriedade dentro do arquivo de defini√ß√µes do ambiente de desenvolvimento, definido em {@link #RFWDEVPROPERTIESFILE}.
    *
    * @param property Nome da propriedade a ser lida.
-   * @return Valor da propriedade encontrada. Nulo se: N„o estiver no ambiente de desenvolvimento ({@link #isDevelopmentEnvironment()} retornar falso porque o arquivo n„o existe); ou a propriedade n„o existir.
+   * @return Valor da propriedade encontrada. Nulo se: N√£o estiver no ambiente de desenvolvimento ({@link #isDevelopmentEnvironment()} retornar falso porque o arquivo n√£o existe); ou a propriedade n√£o existir.
    * @throws RFWException
    */
   public static String getDevProperty(String property) throws RFWException {
@@ -341,21 +341,21 @@ public class RFW {
         properties.load(new FileInputStream(getDevFile()));
         return properties.getProperty(property);
       } catch (FileNotFoundException e) {
-        // N„o deve ser lanÁado pois o isDevelopmentEnvironment() j· testa, a n„o ser que haja erro de lÛgica/definiÁ„o do arquivo.
-        throw new RFWCriticalException("Arquivo N„o encontrado!", e);
+        // N√£o deve ser lan√ßado pois o isDevelopmentEnvironment() j√° testa, a n√£o ser que haja erro de l√≥gica/defini√ß√£o do arquivo.
+        throw new RFWCriticalException("Arquivo N√£o encontrado!", e);
       } catch (IOException e) {
-        throw new RFWCriticalException("Falha ao lÍr o arquivo de properties!", e);
+        throw new RFWCriticalException("Falha ao l√™r o arquivo de properties!", e);
       }
     }
     return null;
   }
 
   /**
-   * LÍ uma propriedade dentro do arquivo de definiÁıes do ambiente de desenvolvimento utilizando o mÈtodo {@link #getDevProperty(String)} e verifica se a propriedade existe e est· definida como "true".
+   * L√™ uma propriedade dentro do arquivo de defini√ß√µes do ambiente de desenvolvimento utilizando o m√©todo {@link #getDevProperty(String)} e verifica se a propriedade existe e est√° definida como "true".
    *
    * @param property Propriedade a ser verificada
-   * @return true se o arquivo e a propriedade for encontrada com o valor true (case insensitive). False caso o contr·rio.
-   * @throws RFWException SÛ È lanÁado em caso de erro de leitura ou de sistema, em geral o mÈtodo retorna false se a propriedade n„o for encontrada com sucesso e com o valor 'true'.
+   * @return true se o arquivo e a propriedade for encontrada com o valor true (case insensitive). False caso o contr√°rio.
+   * @throws RFWException S√≥ √© lan√ßado em caso de erro de leitura ou de sistema, em geral o m√©todo retorna false se a propriedade n√£o for encontrada com sucesso e com o valor 'true'.
    */
   public static boolean isDevPropertyTrue(String property) throws RFWException {
     String value = getDevProperty(property);
@@ -364,7 +364,7 @@ public class RFW {
 
   /**
    * Retorna o objeto File com o caminho para o arquivo de propriedades do desenvolvedor.<br>
-   * A existÍncia desse arquivo configura o sistema todo como ambiente de desenvolvimento, independente de ter ou n„o conte˙do.
+   * A exist√™ncia desse arquivo configura o sistema todo como ambiente de desenvolvimento, independente de ter ou n√£o conte√∫do.
    *
    * @return Objeto File com o caminho para o arquivo independente de plataforma (Linux, Windows, Unis, etc.)
    */

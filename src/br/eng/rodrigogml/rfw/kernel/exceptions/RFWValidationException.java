@@ -7,9 +7,9 @@ import br.eng.rodrigogml.rfw.kernel.utils.RUArray;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
 
 /**
- * Description: Classe de exceÁ„o de dados inv·lidos. LanÁado sempre que algum dados for submetido a alguma validaÁ„o e falhar, interrompendo o fluxo normal.<br>
+ * Description: Classe de exce√ß√£o de dados inv√°lidos. Lan√ßado sempre que algum dados for submetido a alguma valida√ß√£o e falhar, interrompendo o fluxo normal.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 1.0
  */
 public class RFWValidationException extends RFWException {
@@ -17,24 +17,24 @@ public class RFWValidationException extends RFWException {
   private static final long serialVersionUID = 1092994413574267711L;
 
   /**
-   * Armazena o caminho para o atributo que deu erro. Quando o atributo est· dentro de outro objeto que n„o o principal que foi validado, ou dentro de uma lista, collection, etc.
+   * Armazena o caminho para o atributo que deu erro. Quando o atributo est√° dentro de outro objeto que n√£o o principal que foi validado, ou dentro de uma lista, collection, etc.
    */
   private String fieldPath = null;
 
   /**
-   * Classe do objeto que gerou esta validaÁ„o.
+   * Classe do objeto que gerou esta valida√ß√£o.
    */
   private String className = null;
 
   /**
-   * Nome do atributo que o problema de validaÁ„o foi encontrado.
+   * Nome do atributo que o problema de valida√ß√£o foi encontrado.
    */
   private String[] fieldName = null;
 
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
    */
   public RFWValidationException(String exceptionCode) {
     super(exceptionCode);
@@ -43,7 +43,7 @@ public class RFWValidationException extends RFWException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
    * @param ex Exception causadora anteriore. Sempre que houver uma exception anterior ela deve ser passada aqui para que o dev tenha a pilha completa do problema.
    */
   public RFWValidationException(String exceptionCode, Throwable ex) {
@@ -53,8 +53,8 @@ public class RFWValidationException extends RFWException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
-   * @param params Par‚metros que ser„o substituÌdos na mensagem do Bundle com o padr„o ${0}, ${1} ...
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
+   * @param params Par√¢metros que ser√£o substitu√≠dos na mensagem do Bundle com o padr√£o ${0}, ${1} ...
    */
   public RFWValidationException(String exceptionCode, String[] params) {
     super(exceptionCode, params);
@@ -63,8 +63,8 @@ public class RFWValidationException extends RFWException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
-   * @param params Par‚metros que ser„o substituÌdos na mensagem do Bundle com o padr„o ${0}, ${1} ...
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
+   * @param params Par√¢metros que ser√£o substitu√≠dos na mensagem do Bundle com o padr√£o ${0}, ${1} ...
    * @param ex Exception causadora anteriore. Sempre que houver uma exception anterior ela deve ser passada aqui para que o dev tenha a pilha completa do problema.
    */
   public RFWValidationException(String exceptionCode, String[] params, Throwable ex) {
@@ -74,8 +74,8 @@ public class RFWValidationException extends RFWException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
-   * @param fieldPath caminho para o field do VO que falhou na validaÁ„o.
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
+   * @param fieldPath caminho para o field do VO que falhou na valida√ß√£o.
    */
   public RFWValidationException(String exceptionCode, String fieldPath) {
     super(exceptionCode);
@@ -85,9 +85,9 @@ public class RFWValidationException extends RFWException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
    * @param ex Exception causadora anteriore. Sempre que houver uma exception anterior ela deve ser passada aqui para que o dev tenha a pilha completa do problema.
-   * @param fieldPath caminho para o field do VO que falhou na validaÁ„o.
+   * @param fieldPath caminho para o field do VO que falhou na valida√ß√£o.
    */
   public RFWValidationException(String exceptionCode, Throwable ex, String fieldPath) {
     super(exceptionCode, ex);
@@ -97,9 +97,9 @@ public class RFWValidationException extends RFWException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
-   * @param params Par‚metros que ser„o substituÌdos na mensagem do Bundle com o padr„o ${0}, ${1} ...
-   * @param fieldPath caminho para o field do VO que falhou na validaÁ„o.
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
+   * @param params Par√¢metros que ser√£o substitu√≠dos na mensagem do Bundle com o padr√£o ${0}, ${1} ...
+   * @param fieldPath caminho para o field do VO que falhou na valida√ß√£o.
    */
   public RFWValidationException(String exceptionCode, String[] params, String fieldPath) {
     super(exceptionCode, params);
@@ -109,8 +109,8 @@ public class RFWValidationException extends RFWException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
-   * @param params Par‚metros que ser„o substituÌdos na mensagem do Bundle com o padr„o ${0}, ${1} ...
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
+   * @param params Par√¢metros que ser√£o substitu√≠dos na mensagem do Bundle com o padr√£o ${0}, ${1} ...
    * @param ex Exception causadora anteriore. Sempre que houver uma exception anterior ela deve ser passada aqui para que o dev tenha a pilha completa do problema.
    */
   public RFWValidationException(String exceptionCode, String[] params, Throwable ex, String fieldPath) {
@@ -121,11 +121,11 @@ public class RFWValidationException extends RFWException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
-   * @param params Par‚metros que ser„o substituÌdos na mensagem do Bundle com o padr„o ${0}, ${1} ...
-   * @param fieldPath caminho para o field do VO que falhou na validaÁ„o.
-   * @param className Nome da Classe descendente do {@link RFWVO} que falhou na validaÁ„o.
-   * @param fieldName Nome dos campos que falharam na validaÁ„o.
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
+   * @param params Par√¢metros que ser√£o substitu√≠dos na mensagem do Bundle com o padr√£o ${0}, ${1} ...
+   * @param fieldPath caminho para o field do VO que falhou na valida√ß√£o.
+   * @param className Nome da Classe descendente do {@link RFWVO} que falhou na valida√ß√£o.
+   * @param fieldName Nome dos campos que falharam na valida√ß√£o.
    */
   public RFWValidationException(String exceptionCode, String[] params, String fieldPath, String className, String[] fieldName) {
     super(exceptionCode, params);
@@ -137,12 +137,12 @@ public class RFWValidationException extends RFWException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
-   * @param params Par‚metros que ser„o substituÌdos na mensagem do Bundle com o padr„o ${0}, ${1} ...
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
+   * @param params Par√¢metros que ser√£o substitu√≠dos na mensagem do Bundle com o padr√£o ${0}, ${1} ...
    * @param ex Exception causadora anteriore. Sempre que houver uma exception anterior ela deve ser passada aqui para que o dev tenha a pilha completa do problema.
-   * @param fieldPath caminho para o field do VO que falhou na validaÁ„o.
-   * @param className Nome da Classe descendente do {@link RFWVO} que falhou na validaÁ„o.
-   * @param fieldName Nome dos campos que falharam na validaÁ„o.
+   * @param fieldPath caminho para o field do VO que falhou na valida√ß√£o.
+   * @param className Nome da Classe descendente do {@link RFWVO} que falhou na valida√ß√£o.
+   * @param fieldName Nome dos campos que falharam na valida√ß√£o.
    */
   public RFWValidationException(String exceptionCode, String[] params, Throwable ex, String fieldPath, String className, String[] fieldName) {
     super(exceptionCode, params, ex);
@@ -154,10 +154,10 @@ public class RFWValidationException extends RFWException {
   /**
    * Cria uma nova Exception
    *
-   * @param exceptionCode CÛdigo da Exception para identificaÁ„o. Este cÛdigo È utilizado tambÈm para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n„o encontrado no bundle o valor passado aqui È utilizado.
-   * @param fieldPath caminho para o field do VO que falhou na validaÁ„o.
-   * @param className Nome da Classe descendente do {@link RFWVO} que falhou na validaÁ„o.
-   * @param fieldName Nome dos campos que falharam na validaÁ„o.
+   * @param exceptionCode C√≥digo da Exception para identifica√ß√£o. Este c√≥digo √© utilizado tamb√©m para resovler no arquivo de bundle. Alternativamente pode ser passada a mensagem de erro diretamente, pois quando n√£o encontrado no bundle o valor passado aqui √© utilizado.
+   * @param fieldPath caminho para o field do VO que falhou na valida√ß√£o.
+   * @param className Nome da Classe descendente do {@link RFWVO} que falhou na valida√ß√£o.
+   * @param fieldName Nome dos campos que falharam na valida√ß√£o.
    */
   public RFWValidationException(String exceptionCode, String fieldPath, String className, String[] fieldName) {
     super(exceptionCode);

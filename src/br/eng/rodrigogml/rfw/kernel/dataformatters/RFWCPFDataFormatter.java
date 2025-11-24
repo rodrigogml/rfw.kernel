@@ -8,9 +8,9 @@ import br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation;
 import br.eng.rodrigogml.rfw.kernel.utils.RUString;
 
 /**
- * Description: Classe que formata e valida um número de CPF.<br>
+ * Description: Classe que formata e valida um nÃºmero de CPF.<br>
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 4.1.0 (24/06/2011)
  */
 public class RFWCPFDataFormatter implements RFWDataFormatter<String, String> {

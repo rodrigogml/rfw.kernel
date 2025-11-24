@@ -11,7 +11,7 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 
 /**
- * Description: Classe utilitária para métodos de IO.<br>
+ * Description: Classe utilitÃ¡ria para mÃ©todos de IO.<br>
  *
  * @author Rodrigo GML
  * @since 1.0.0 (25 de ago. de 2023)
@@ -20,17 +20,17 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 public class RUIO {
 
   /**
-   * Construtor privado para classe utilitária exclusivamente estática.
+   * Construtor privado para classe utilitÃ¡ria exclusivamente estÃ¡tica.
    */
   private RUIO() {
   }
 
   /**
-   * Lê o conteúdo de um {@link InputStream} para um array de Bytes.
+   * LÃª o conteÃºdo de um {@link InputStream} para um array de Bytes.
    *
    * @param in InputStream pronto para ser lido
-   * @return array de bytes com o conteúdo lido do InputStream
-   * @throws RFWException Em caso de problemas para lêr o InputStream
+   * @return array de bytes com o conteÃºdo lido do InputStream
+   * @throws RFWException Em caso de problemas para lÃªr o InputStream
    */
   public static byte[] toByteArray(InputStream in) throws RFWException {
     try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -42,14 +42,14 @@ public class RUIO {
       out.flush();
       return out.toByteArray();
     } catch (IOException e) {
-      throw new RFWCriticalException("Falha ao lêr o conteúdo do InputStream!", e);
+      throw new RFWCriticalException("Falha ao lÃªr o conteÃºdo do InputStream!", e);
     }
   }
 
   /**
-   * Lê o conteúdo de um {@link InputStream} para uma String utilizando o Charset UTF_8.
+   * LÃª o conteÃºdo de um {@link InputStream} para uma String utilizando o Charset UTF_8.
    *
-   * @param in Stream com o conteúdo para ser lido.
+   * @param in Stream com o conteÃºdo para ser lido.
    * @return String montada com os Bytes do InputStream convertidos utilizadno o UTF_8.
    * @throws RFWException
    */
@@ -58,10 +58,10 @@ public class RUIO {
   }
 
   /**
-   * Lê o conteúdo de um {@link InputStream} para uma String utilizando o Charset desejado.
+   * LÃª o conteÃºdo de um {@link InputStream} para uma String utilizando o Charset desejado.
    *
-   * @param in Stream com o conteúdo para ser lido.
-   * @param charset que será utilizado para converter os bytes em caracteres.
+   * @param in Stream com o conteÃºdo para ser lido.
+   * @param charset que serÃ¡ utilizado para converter os bytes em caracteres.
    * @return String montada com os Bytes do InputStream convertidos utilizadno o Charset passado.
    * @throws RFWException
    */
@@ -70,13 +70,13 @@ public class RUIO {
   }
 
   /**
-   * Escreve o conteúdo lido de um InputStream em um OutputStream.<Br>
-   * Este método invoca o .close() de ambos os streams ao finalizar a cópia.
+   * Escreve o conteÃºdo lido de um InputStream em um OutputStream.<Br>
+   * Este mÃ©todo invoca o .close() de ambos os streams ao finalizar a cÃ³pia.
    *
    * @param in InputStream para leitura dos dados.
    * @param out OutputStream para escrita dos dados.
-   * @param closeStreams se true, o método chama as funções .close() dos streams, caso false os streams são deixados em aberto após a cópia. Útil quando vamos compiar multiplos conteúdos ou se os streams já foram criandos dentro de blocos try() que executam o fechamento.
-   * @throws RFWException Lançado caso não seja possível manipular algum dos Streams.
+   * @param closeStreams se true, o mÃ©todo chama as funÃ§Ãµes .close() dos streams, caso false os streams sÃ£o deixados em aberto apÃ³s a cÃ³pia. Ãštil quando vamos compiar multiplos conteÃºdos ou se os streams jÃ¡ foram criandos dentro de blocos try() que executam o fechamento.
+   * @throws RFWException LanÃ§ado caso nÃ£o seja possÃ­vel manipular algum dos Streams.
    */
   public static void copy(InputStream in, OutputStream out, boolean closeStreams) throws RFWException {
     try {
@@ -86,7 +86,7 @@ public class RUIO {
         out.write(buf, 0, len);
       }
     } catch (IOException e) {
-      throw new RFWCriticalException("Falha ao copiar conteúdo do InputStream para o OutputStream.", e);
+      throw new RFWCriticalException("Falha ao copiar conteÃºdo do InputStream para o OutputStream.", e);
     } finally {
       try {
         if (closeStreams) out.close();

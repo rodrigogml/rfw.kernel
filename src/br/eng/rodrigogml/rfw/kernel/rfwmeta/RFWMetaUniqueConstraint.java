@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Description: Annotation usada para definir constraints de Unicidade entre atributos de um VO.<br>
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 7.1.0 (16/07/2015)
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 public @interface RFWMetaUniqueConstraint {
 
   /**
-   * Define o conjunto de campos que tevem ter valor único.
+   * Define o conjunto de campos que tevem ter valor Ãºnico.
    */
   String[] fields();
 

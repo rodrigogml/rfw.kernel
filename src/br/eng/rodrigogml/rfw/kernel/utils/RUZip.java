@@ -21,9 +21,9 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWWarningException;
 
 /**
- * Description: Classe utilit·ria respons·vel por dispobilizar classes de tratamento e manipulaÁ„o de arquivos compactados do tipo ZIP.<BR>
+ * Description: Classe utilit√°ria respons√°vel por dispobilizar classes de tratamento e manipula√ß√£o de arquivos compactados do tipo ZIP.<BR>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 5.1.0 (11/10/2013)
  */
 public class RUZip {
@@ -32,10 +32,10 @@ public class RUZip {
   }
 
   /**
-   * Este mÈtodo retorna os nomes dos arquivos contidos no arquivo .zip.<br>
-   * Retorna uma lista de String contendo seu nome completo, isto È, caminho completo incluindo as pastas dentro do arquivo.<br>
+   * Este m√©todo retorna os nomes dos arquivos contidos no arquivo .zip.<br>
+   * Retorna uma lista de String contendo seu nome completo, isto √©, caminho completo incluindo as pastas dentro do arquivo.<br>
    * <br>
-   * Por exemplo, imagine um arquivo zip que tenha duas pastas: <b>"A"</b> e <b>"B"</b>, dentro da pasta <b>"A"</b> exista dois arquivos: <b>"1.txt"</b> e <b>"2.txt"</b>, j· na pasta <b>"B"</b> existe apenas o arquivo <b>"Cantarola.mp3"</b>. Neste caso os elementos retornados na lista ser„o:<br>
+   * Por exemplo, imagine um arquivo zip que tenha duas pastas: <b>"A"</b> e <b>"B"</b>, dentro da pasta <b>"A"</b> exista dois arquivos: <b>"1.txt"</b> e <b>"2.txt"</b>, j√° na pasta <b>"B"</b> existe apenas o arquivo <b>"Cantarola.mp3"</b>. Neste caso os elementos retornados na lista ser√£o:<br>
    * <ul>
    * <li>"A/1.txt"
    * <li>"A/2.txt"
@@ -43,19 +43,19 @@ public class RUZip {
    * </ul>
    * <br>
    *
-   * @param content conte˙do do arquivo em bytes.
-   * @return uma lista vazia caso o arquivo ZIP n„o contenha nenhuma entra, ou a lista de elementos na ordem em que foram encontrados no ZIP.
-   * @throws RFWException LanÁado caso ocorra algum problema tentando ler o arquivo .zip
+   * @param content conte√∫do do arquivo em bytes.
+   * @return uma lista vazia caso o arquivo ZIP n√£o contenha nenhuma entra, ou a lista de elementos na ordem em que foram encontrados no ZIP.
+   * @throws RFWException Lan√ßado caso ocorra algum problema tentando ler o arquivo .zip
    */
   public static List<String> getZipEntries(final byte[] content) throws RFWException {
     return getZipEntries(new ByteArrayInputStream(content));
   }
 
   /**
-   * Este mÈtodo retorna os nomes dos arquivos contidos no arquivo .zip.<br>
-   * Retorna uma lista de String contendo seu nome completo, isto È, caminho completo incluindo as pastas dentro do arquivo.<br>
+   * Este m√©todo retorna os nomes dos arquivos contidos no arquivo .zip.<br>
+   * Retorna uma lista de String contendo seu nome completo, isto √©, caminho completo incluindo as pastas dentro do arquivo.<br>
    * <br>
-   * Por exemplo, imagine um arquivo zip que tenha duas pastas: <b>"A"</b> e <b>"B"</b>, dentro da pasta <b>"A"</b> exista dois arquivos: <b>"1.txt"</b> e <b>"2.txt"</b>, j· na pasta <b>"B"</b> existe apenas o arquivo <b>"Cantarola.mp3"</b>. Neste caso os elementos retornados na lista ser„o:<br>
+   * Por exemplo, imagine um arquivo zip que tenha duas pastas: <b>"A"</b> e <b>"B"</b>, dentro da pasta <b>"A"</b> exista dois arquivos: <b>"1.txt"</b> e <b>"2.txt"</b>, j√° na pasta <b>"B"</b> existe apenas o arquivo <b>"Cantarola.mp3"</b>. Neste caso os elementos retornados na lista ser√£o:<br>
    * <ul>
    * <li>"A/1.txt"
    * <li>"A/2.txt"
@@ -64,8 +64,8 @@ public class RUZip {
    * <br>
    *
    * @param stream InputStream do Arquivo .zip
-   * @return uma lista vazia caso o arquivo ZIP n„o contenha nenhuma entra, ou a lista de elementos na ordem em que foram encontrados no ZIP.
-   * @throws RFWException LanÁado caso ocorra algum problema tentando ler o arquivo .zip
+   * @return uma lista vazia caso o arquivo ZIP n√£o contenha nenhuma entra, ou a lista de elementos na ordem em que foram encontrados no ZIP.
+   * @throws RFWException Lan√ßado caso ocorra algum problema tentando ler o arquivo .zip
    */
   public static List<String> getZipEntries(InputStream stream) throws RFWException {
     final List<String> entries = new ArrayList<>();
@@ -82,17 +82,17 @@ public class RUZip {
   }
 
   /**
-   * Extrai uma entrada de dentro do arquivo ZIP para um arquivo especÌfico.
+   * Extrai uma entrada de dentro do arquivo ZIP para um arquivo espec√≠fico.
    *
-   * @param zipContent Conte˙do do arquivo zip.
-   * @param entryName Entrada a ser extraÌda. IncluÌ o caminho completo, ex:
+   * @param zipContent Conte√∫do do arquivo zip.
+   * @param entryName Entrada a ser extra√≠da. Inclu√≠ o caminho completo, ex:
    *          <ul>
    *          <li>"A/1.txt"
    *          <li>"A/2.txt"
    *          <li>"B/Cantarola.mp3"
    *          </ul>
    *          <br>
-   * @param outputFile Arquivo destino do conte˙do extraÌdo. Pode ser um arquivo tempor·rio. IncluÌr o nome do arquivo, n„o apenas o diretÛrio.
+   * @param outputFile Arquivo destino do conte√∫do extra√≠do. Pode ser um arquivo tempor√°rio. Inclu√≠r o nome do arquivo, n√£o apenas o diret√≥rio.
    * @throws RFWException
    */
   public static void extractZipEntry(InputStream zipContent, final String entryName, File outputFile) throws RFWException {
@@ -142,17 +142,17 @@ public class RUZip {
   }
 
   /**
-   * Cria um arquivo ZIP com o conte˙do de outros arquivos dentro.
+   * Cria um arquivo ZIP com o conte√∫do de outros arquivos dentro.
    *
-   * @param zipFileName Nome do arquivo ZIP tempor·rio para ser criado em uma pasta tempor·ria. Ex: "CargaBalanca.zip"
-   * @param compressionLevel NÌvel de compress„o do ZIP de 0-9, sendo 0 menos comprimido e 9 o m·ximo de compress„o.
+   * @param zipFileName Nome do arquivo ZIP tempor√°rio para ser criado em uma pasta tempor√°ria. Ex: "CargaBalanca.zip"
+   * @param compressionLevel N√≠vel de compress√£o do ZIP de 0-9, sendo 0 menos comprimido e 9 o m√°ximo de compress√£o.
    * @param content array bi-dimensional onde o primeiro index indica os arquivos a serem adicionados, enquanto que o segundo index deve ter tamanho 2:
-   *          <li>No index 0 uma {@link String} com o nome do arquivo que ser· colocado dentro do ZIP,
-   *          <li>No index 1 uma das opÁıes:
+   *          <li>No index 0 uma {@link String} com o nome do arquivo que ser√° colocado dentro do ZIP,
+   *          <li>No index 1 uma das op√ß√µes:
    *          <ul>
-   *          <li>{@link InputStream} com o conte˙do do arquivo.
-   *          <li>{@link String} com o caminho para uma arquivo tempor·rio.
-   * @return Caminho para o arquivo tempor·rio criado com o resultado da operaÁ„o
+   *          <li>{@link InputStream} com o conte√∫do do arquivo.
+   *          <li>{@link String} com o caminho para uma arquivo tempor√°rio.
+   * @return Caminho para o arquivo tempor√°rio criado com o resultado da opera√ß√£o
    * @throws RFWException
    */
   public static String createNewZipFile(String zipFileName, int compressionLevel, Object[][] content) throws RFWException {
@@ -161,14 +161,14 @@ public class RUZip {
       zip.setMethod(ZipOutputStream.DEFLATED);
       zip.setLevel(compressionLevel);
 
-      // Itera todo o conte˙do para adicionar dentro do ZIP
+      // Itera todo o conte√∫do para adicionar dentro do ZIP
       for (int i = 0; i < content.length; i++) {
         if (content[i] != null && content[i][1] != null) {
           if (content[i][1] instanceof InputStream) {
             try (InputStream fileContent = (InputStream) content[i][1]) {
               // Cria o "arquivo" dentro do zip
               zip.putNextEntry(new ZipEntry((String) content[i][0]));
-              // Escreve o conte˙do do arquivo dentro do zip
+              // Escreve o conte√∫do do arquivo dentro do zip
               RUIO.copy(fileContent, zip, false);
               zip.closeEntry();
             }
@@ -179,7 +179,7 @@ public class RUZip {
               zip.closeEntry();
             }
           } else {
-            throw new RFWCriticalException("Conte˙do inexperado para ser colocado dentro do arquivo ZIP!", new String[] { content[i][1].getClass().getCanonicalName() });
+            throw new RFWCriticalException("Conte√∫do inexperado para ser colocado dentro do arquivo ZIP!", new String[] { content[i][1].getClass().getCanonicalName() });
           }
         }
       }

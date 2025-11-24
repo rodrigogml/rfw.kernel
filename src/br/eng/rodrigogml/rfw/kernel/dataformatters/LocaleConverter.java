@@ -16,20 +16,20 @@ import br.eng.rodrigogml.rfw.kernel.utils.RUString;
 import br.eng.rodrigogml.rfw.kernel.utils.RUTypes;
 
 /**
- * Description: Classe utilit·ria que converte os valores padroes do java no formato configurado de locale do usu·rio, e vice-versa.<br>
+ * Description: Classe utilit√°ria que converte os valores padroes do java no formato configurado de locale do usu√°rio, e vice-versa.<br>
  *
- * @author Rodrigo Leit„o
+ * @author Rodrigo Leit√£o
  * @since 3.0.0 (SET / 2009)
  */
 
 public class LocaleConverter {
 
   /**
-   * PolÌticas de definiÁ„o de arrendondamento dos valores.
+   * Pol√≠ticas de defini√ß√£o de arrendondamento dos valores.
    */
   public static enum ROUNDPOLICY {
     /**
-     * N„o aplica nenhuma polÌtica de arredondamento.
+     * N√£o aplica nenhuma pol√≠tica de arredondamento.
      */
     NONE,
 
@@ -49,7 +49,7 @@ public class LocaleConverter {
   }
 
   /**
-   * Recupera o simbolo que separa os decimais da parte inteira de um n˙mero, para um Locale especÌfico.
+   * Recupera o simbolo que separa os decimais da parte inteira de um n√∫mero, para um Locale espec√≠fico.
    *
    * @param locale Localidade desejada
    * @return
@@ -61,7 +61,7 @@ public class LocaleConverter {
   }
 
   /**
-   * Recupera o simbolo de agrupamento de milhares de um n˙mero, para um Locale especÌfico.
+   * Recupera o simbolo de agrupamento de milhares de um n√∫mero, para um Locale espec√≠fico.
    *
    * @param locale Localidade desejada
    * @return
@@ -74,7 +74,7 @@ public class LocaleConverter {
   }
 
   /**
-   * Converte um objeto para texto chamando sei toString. Com a diferenÁa que verifica se o objeto n„o È nulo, e se for n„o retorna a string 'null' e sim uma string vazia ''.
+   * Converte um objeto para texto chamando sei toString. Com a diferen√ßa que verifica se o objeto n√£o √© nulo, e se for n√£o retorna a string 'null' e sim uma string vazia ''.
    *
    * @param obj Objeto a ser convertido para texto
    * @return String com o toString do objeto ou uma string vazia em caso do obj ser nulo.
@@ -88,7 +88,7 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor Inteiro para se adequar a formataÁ„o do local.
+   * Este m√©todo formata um valor Inteiro para se adequar a formata√ß√£o do local.
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
@@ -102,7 +102,7 @@ public class LocaleConverter {
   }
 
   /**
-   * Converte um objeto para Integer. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira possÌvel.
+   * Converte um objeto para Integer. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira poss√≠vel.
    *
    * @param value Valor a ser formatado.
    * @param locale Localidade a ser usada para recuperar os simbolos.
@@ -115,13 +115,13 @@ public class LocaleConverter {
 
   /**
    *
-   * Converte um objeto para Integer. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira possÌvel.
+   * Converte um objeto para Integer. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira poss√≠vel.
    *
    * @param value Valor a ser formatado.
    * @param locale Localidade a ser usada para recuperar os simbolos.
    * @param ignoresignal ignora o sinal, retornando sempre um valor positivo.
    * @return Objeto Integer com o valor parseado. Ou nulo caso o valor recebido seja nulo ou vazio.
-   * @throws RFWValidationException LanÁado sempre que n„o for possÌvel converter a informaÁ„o.
+   * @throws RFWValidationException Lan√ßado sempre que n√£o for poss√≠vel converter a informa√ß√£o.
    * @throws RFWCriticalException
    */
   public static Integer parseInteger(Object value, Locale locale, boolean ignoresignal) throws RFWException {
@@ -130,7 +130,7 @@ public class LocaleConverter {
       if (value instanceof Integer) {
         parsedvalue = Integer.valueOf((Integer) value);
       } else if (value instanceof String) {
-        // Verifica se contem apenas os caracteres esperados para evitar que nÌmeros com caracteres estranhos (como pontos no lugar da virgula) sejam interpretados errados
+        // Verifica se contem apenas os caracteres esperados para evitar que n√≠meros com caracteres estranhos (como pontos no lugar da virgula) sejam interpretados errados
         String newvalue = (String) value;
         value = newvalue.trim();
         String groupsymbol = getDigitGroupingSymbol(locale);
@@ -155,7 +155,7 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor Long para se adequar a formataÁ„o do local.
+   * Este m√©todo formata um valor Long para se adequar a formata√ß√£o do local.
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
@@ -169,7 +169,7 @@ public class LocaleConverter {
   }
 
   /**
-   * Converte um objeto para Long. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira possÌvel.
+   * Converte um objeto para Long. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira poss√≠vel.
    *
    * @param value Valor a ser formatado.
    * @param locale Localidade a ser usada para recuperar os simbolos.
@@ -181,7 +181,7 @@ public class LocaleConverter {
   }
 
   /**
-   * Converte um objeto para Long. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira possÌvel.
+   * Converte um objeto para Long. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira poss√≠vel.
    *
    * @param value Valor a ser formatado.
    * @param locale Localidade a ser usada para recuperar os simbolos.
@@ -197,7 +197,7 @@ public class LocaleConverter {
       } else if (value instanceof Long) {
         parsedvalue = new Long((Long) value);
       } else if (value instanceof String) {
-        // Verifica se contem apenas os caracteres esperados para evitar que nÌmeros com caracteres estranhos (como pontos no lugar da virgula) sejam interpretados errados
+        // Verifica se contem apenas os caracteres esperados para evitar que n√≠meros com caracteres estranhos (como pontos no lugar da virgula) sejam interpretados errados
         String newvalue = (String) value;
         value = newvalue.trim();
         String groupsymbol = getDigitGroupingSymbol(locale);
@@ -222,7 +222,7 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor Float para se adequar a formataÁ„o do local. Por padr„o deixa o n˙mero sempre com 2 casas decimais.<Br>
+   * Este m√©todo formata um valor Float para se adequar a formata√ß√£o do local. Por padr√£o deixa o n√∫mero sempre com 2 casas decimais.<Br>
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
@@ -232,7 +232,7 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor Float para se adequar a formataÁ„o do local.<Br>
+   * Este m√©todo formata um valor Float para se adequar a formata√ß√£o do local.<Br>
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
@@ -251,11 +251,11 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor BigDecimal para se adequar a formataÁ„o do local.<Br>
+   * Este m√©todo formata um valor BigDecimal para se adequar a formata√ß√£o do local.<Br>
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
-   * @param decimals Quantidade de casas decimais. Ou nulo caso n„o deseje sÛ formar o n˙mero sem alterar as casas decimais.
+   * @param decimals Quantidade de casas decimais. Ou nulo caso n√£o deseje s√≥ formar o n√∫mero sem alterar as casas decimais.
    */
   public static String formatBigDecimal(BigDecimal value, Locale locale, Integer decimals) {
     if (value == null) {
@@ -271,13 +271,13 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor BigDecimal para se adequar a formataÁ„o definida por parametros.<Br>
+   * Este m√©todo formata um valor BigDecimal para se adequar a formata√ß√£o definida por parametros.<Br>
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
-   * @param minDecimals Quantidade de casas decimais fixas. Ou nulo caso o n„o deseje definir um n˙mero mÌnimode casas, apenas limita-las.
-   * @param maxDecimals Quantidade m·xima de casas decimais permitidas.
-   * @param groupingUsed Define se deve ou n„o utilizar o caractere de agrupamento.
+   * @param minDecimals Quantidade de casas decimais fixas. Ou nulo caso o n√£o deseje definir um n√∫mero m√≠nimode casas, apenas limita-las.
+   * @param maxDecimals Quantidade m√°xima de casas decimais permitidas.
+   * @param groupingUsed Define se deve ou n√£o utilizar o caractere de agrupamento.
    */
   public static String formatBigDecimal(BigDecimal value, Locale locale, Integer minDecimals, Integer maxDecimals, boolean groupingUsed) {
     if (value == null) {
@@ -296,12 +296,12 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor BigDecimal para se adequar a formataÁ„o do local.<Br>
+   * Este m√©todo formata um valor BigDecimal para se adequar a formata√ß√£o do local.<Br>
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
-   * @param minDecimals Quantidade de casas decimais fixas. Ou nulo caso o n„o deseje definir um n˙mero mÌnimode casas, apenas limita-las.
-   * @param maxDecimals Quantidade m·xima de casas decimais permitidas.
+   * @param minDecimals Quantidade de casas decimais fixas. Ou nulo caso o n√£o deseje definir um n√∫mero m√≠nimode casas, apenas limita-las.
+   * @param maxDecimals Quantidade m√°xima de casas decimais permitidas.
    */
   public static String formatBigDecimal(BigDecimal value, Locale locale, Integer minDecimals, Integer maxDecimals) {
     if (value == null) {
@@ -319,8 +319,8 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor BigDecimal para se adequar a formataÁ„o do local.<Br>
-   * Este mÈtodo mantÈm a quantidade de n˙meros decimais existente no BigDecimal
+   * Este m√©todo formata um valor BigDecimal para se adequar a formata√ß√£o do local.<Br>
+   * Este m√©todo mant√©m a quantidade de n√∫meros decimais existente no BigDecimal
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
@@ -336,12 +336,12 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor Float para se adequar a formataÁ„o do local.<Br>
+   * Este m√©todo formata um valor Float para se adequar a formata√ß√£o do local.<Br>
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
-   * @param mindecimals Quantidade mÌnima de casas decimais.
-   * @param maxdecimals Quantidade m·xima de casas decimais.
+   * @param mindecimals Quantidade m√≠nima de casas decimais.
+   * @param maxdecimals Quantidade m√°xima de casas decimais.
    */
   public static String formatFloat(Float value, Locale locale, Integer mindecimals, Integer maxdecimals) {
     if (value == null) {
@@ -358,8 +358,8 @@ public class LocaleConverter {
   }
 
   /**
-   * Converte um objeto para Float. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira possÌvel.<br>
-   * <b>AtenÁ„o:</b> De acordo com o tamanho do n˙mero a precis„o dos decimais poder„o ser perdidas pelo float! Caso isso n„o seja desejado use Double.<br>
+   * Converte um objeto para Float. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira poss√≠vel.<br>
+   * <b>Aten√ß√£o:</b> De acordo com o tamanho do n√∫mero a precis√£o dos decimais poder√£o ser perdidas pelo float! Caso isso n√£o seja desejado use Double.<br>
    *
    * @param value Valor a ser formatado.
    * @param locale Localidade a ser usada para recuperar os simbolos.
@@ -375,13 +375,13 @@ public class LocaleConverter {
   }
 
   /**
-   * Converte um objeto para Float. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira possÌvel.<br>
-   * <b>AtenÁ„o:</b> De acordo com o tamanho do n˙mero a precis„o dos decimais poder„o ser perdidas pelo float! Caso isso n„o seja desejado use Double.<br>
+   * Converte um objeto para Float. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira poss√≠vel.<br>
+   * <b>Aten√ß√£o:</b> De acordo com o tamanho do n√∫mero a precis√£o dos decimais poder√£o ser perdidas pelo float! Caso isso n√£o seja desejado use Double.<br>
    *
    * @param value Valor a ser formatado.
    * @param locale Localidade a ser usada para recuperar os simbolos.
    * @param ignoresignal ignora o sinal, retornando sempre um valor positivo.
-   * @param decimals numero de casas decimais que se deseja ter o n˙mero arredondado. Nulo para manter quantas casas decimais forem possÌveis.
+   * @param decimals numero de casas decimais que se deseja ter o n√∫mero arredondado. Nulo para manter quantas casas decimais forem poss√≠veis.
    * @return Objeto Float com o valor parseado. Ou nulo caso o valor recebido seja nulo ou vazio.
    * @throws RFWException
    */
@@ -394,13 +394,13 @@ public class LocaleConverter {
   }
 
   /**
-   * Converte um objeto para BigDecimal. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira possÌvel.<br>
-   * <b>AtenÁ„o:</b> De acordo com o tamanho do n˙mero a precis„o dos decimais poder„o ser perdidas pelo float! Caso isso n„o seja desejado use Double.<br>
+   * Converte um objeto para BigDecimal. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira poss√≠vel.<br>
+   * <b>Aten√ß√£o:</b> De acordo com o tamanho do n√∫mero a precis√£o dos decimais poder√£o ser perdidas pelo float! Caso isso n√£o seja desejado use Double.<br>
    *
    * @param value Valor a ser formatado.
    * @param locale Localidade a ser usada para recuperar os simbolos.
    * @param ignoresignal ignora o sinal, retornando sempre um valor positivo.
-   * @param decimals numero de casas decimais que se deseja ter o n˙mero arredondado. Nulo para manter quantas casas decimais forem possÌveis.
+   * @param decimals numero de casas decimais que se deseja ter o n√∫mero arredondado. Nulo para manter quantas casas decimais forem poss√≠veis.
    * @return Objeto BigDecimal com o valor parseado. Ou nulo caso o valor recebido seja nulo ou vazio.
    * @throws RFWException
    */
@@ -444,7 +444,7 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor Double para se adequar a formataÁ„o do local. Por padr„o deixa o n˙mero sempre com 2 casas decimais.<Br>
+   * Este m√©todo formata um valor Double para se adequar a formata√ß√£o do local. Por padr√£o deixa o n√∫mero sempre com 2 casas decimais.<Br>
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
@@ -454,7 +454,7 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor Double para se adequar a formataÁ„o do local.<Br>
+   * Este m√©todo formata um valor Double para se adequar a formata√ß√£o do local.<Br>
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
@@ -465,12 +465,12 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor Double para se adequar a formataÁ„o do local.<Br>
+   * Este m√©todo formata um valor Double para se adequar a formata√ß√£o do local.<Br>
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
    * @param decimals Quantidade de casas decimais. Ou nulo caso o valor recebido seja nulo ou vazio.
-   * @param groupingused Define se o n˙mero deve usar o agrupador de milhares Ex: Caso true 1000L = "1.000"; Caso false 1000L => "1000";
+   * @param groupingused Define se o n√∫mero deve usar o agrupador de milhares Ex: Caso true 1000L = "1.000"; Caso false 1000L => "1000";
    */
   public static String formatDouble(Double value, Locale locale, Integer decimals, boolean groupingused) {
     if (value == null) {
@@ -486,7 +486,7 @@ public class LocaleConverter {
   }
 
   /**
-   * Converte um objeto para Double. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira possÌvel.<br>
+   * Converte um objeto para Double. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira poss√≠vel.<br>
    *
    * @param value Valor a ser formatado.
    * @param locale Localidade a ser usada para recuperar os simbolos.
@@ -498,12 +498,12 @@ public class LocaleConverter {
   }
 
   /**
-   * Converte um objeto para Double. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira possÌvel.<br>
+   * Converte um objeto para Double. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira poss√≠vel.<br>
    *
    * @param value Valor a ser formatado.
    * @param locale Localidade a ser usada para recuperar os simbolos.
    * @param ignoresignal ignora o sinal, retornando sempre um valor positivo.
-   * @param decimals numero de casas decimais que se deseja ter o n˙mero arredondado. Nulo para manter quantas casas decimais forem possÌveis.
+   * @param decimals numero de casas decimais que se deseja ter o n√∫mero arredondado. Nulo para manter quantas casas decimais forem poss√≠veis.
    * @return Objeto Double com o valor parseado. Ou nulo caso o valor recebido seja nulo ou vazio.
    * @throws RFWException
    */
@@ -512,12 +512,12 @@ public class LocaleConverter {
   }
 
   /**
-   * Converte um objeto para Double. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira possÌvel.<br>
+   * Converte um objeto para Double. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira poss√≠vel.<br>
    *
    * @param value Valor a ser formatado.
    * @param locale Localidade a ser usada para recuperar os simbolos.
    * @param ignoresignal ignora o sinal, retornando sempre um valor positivo.
-   * @param decimals numero de casas decimais que se deseja ter o n˙mero arredondado. Nulo para manter quantas casas decimais forem possÌveis.
+   * @param decimals numero de casas decimais que se deseja ter o n√∫mero arredondado. Nulo para manter quantas casas decimais forem poss√≠veis.
    * @return Objeto Double com o valor parseado. Ou nulo caso o valor recebido seja nulo ou vazio.
    * @throws RFWException
    */
@@ -552,7 +552,7 @@ public class LocaleConverter {
             } else if (ROUNDPOLICY.ROUNDFLOOR.equals(roundpolicy)) {
               parsedvalue = RUTypes.roundFloor(parsedvalue, decimals);
             } else if (ROUNDPOLICY.NONE.equals(roundpolicy)) {
-              // N„o faz nada deixa o n˙mero sem arredondamento
+              // N√£o faz nada deixa o n√∫mero sem arredondamento
             }
           }
           if (negative) {
@@ -567,12 +567,12 @@ public class LocaleConverter {
   }
 
   /**
-   * Converte um objeto para Float. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira possÌvel.<br>
+   * Converte um objeto para Float. Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira poss√≠vel.<br>
    *
    * @param value Valor a ser formatado.
    * @param locale Localidade a ser usada para recuperar os simbolos.
    * @param ignoresignal ignora o sinal, retornando sempre um valor positivo.
-   * @param decimals numero de casas decimais que se deseja ter o n˙mero arredondado. Nulo para manter quantas casas decimais forem possÌveis.
+   * @param decimals numero de casas decimais que se deseja ter o n√∫mero arredondado. Nulo para manter quantas casas decimais forem poss√≠veis.
    * @return Objeto Double com o valor parseado. Ou nulo caso o valor recebido seja nulo ou vazio.
    * @throws RFWException
    */
@@ -606,7 +606,7 @@ public class LocaleConverter {
           } else if (ROUNDPOLICY.ROUNDFLOOR.equals(roundpolicy)) {
             parsedvalue = RUTypes.roundFloor(parsedvalue, decimals);
           } else if (ROUNDPOLICY.NONE.equals(roundpolicy)) {
-            // N„o faz nada deixa o n˙mero sem arredondamento
+            // N√£o faz nada deixa o n√∫mero sem arredondamento
           }
         }
         if (negative) {
@@ -620,7 +620,7 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÌtodo formata um valor currency para se adequar a formataÁ„o do local. Por padr„o deixa o n˙mero sempre com 2 casas decimais.<Br>
+   * Este m√≠todo formata um valor currency para se adequar a formata√ß√£o do local. Por padr√£o deixa o n√∫mero sempre com 2 casas decimais.<Br>
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
@@ -630,7 +630,7 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor currency (Double) para se adequar a formataÁ„o do local.<Br>
+   * Este m√©todo formata um valor currency (Double) para se adequar a formata√ß√£o do local.<Br>
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
@@ -652,13 +652,13 @@ public class LocaleConverter {
   }
 
   /**
-   * Converte um objeto para Currency (Double). Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira possÌvel.<br>
-   * Por padr„o deixa apenas 2 casas deciamis.<br>
+   * Converte um objeto para Currency (Double). Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira poss√≠vel.<br>
+   * Por padr√£o deixa apenas 2 casas deciamis.<br>
    *
    * @param value Valor a ser formatado.
    * @param locale Localidade a ser usada para recuperar os simbolos.
    * @return Objeto Double com o valor parseado. Ou nulo caso o valor recebido seja nulo ou vazio.
-   * @throws RFWValidationException LanÁado sempre que n„o for possÌvel converter a informaÁ„o.
+   * @throws RFWValidationException Lan√ßado sempre que n√£o for poss√≠vel converter a informa√ß√£o.
    * @throws RFWCriticalException
    */
   public static Double parseCurrency(Object value, Locale locale) throws RFWValidationException, RFWCriticalException {
@@ -666,12 +666,12 @@ public class LocaleConverter {
   }
 
   /**
-   * Converte um objeto para Currency (Double). Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira possÌvel.<br>
+   * Converte um objeto para Currency (Double). Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira poss√≠vel.<br>
    *
    * @param value Valor a ser formatado.
    * @param locale Localidade a ser usada para recuperar os simbolos.
    * @param ignoresignal ignora o sinal, retornando sempre um valor positivo.
-   * @param decimals numero de casas decimais que se deseja ter o n˙mero arredondado. Nulo para manter quantas casas decimais forem possÌveis.
+   * @param decimals numero de casas decimais que se deseja ter o n√∫mero arredondado. Nulo para manter quantas casas decimais forem poss√≠veis.
    * @return Objeto Double com o valor parseado. Ou nulo caso o valor recebido seja nulo ou vazio.
    * @throws RFWCriticalException
    */
@@ -712,8 +712,8 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor Percentage (BigDecimal) para se adequar a formataÁ„o do local. Por padr„o deixa o n˙mero sempre com 1 casas decimais.<Br>
-   * Usar valor em porcentagem 100% È 100F. 1% È 1F.
+   * Este m√©todo formata um valor Percentage (BigDecimal) para se adequar a formata√ß√£o do local. Por padr√£o deixa o n√∫mero sempre com 1 casas decimais.<Br>
+   * Usar valor em porcentagem 100% √© 100F. 1% √© 1F.
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
@@ -723,8 +723,8 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor Percentage (BigDecimal) para se adequar a formataÁ„o do local. Por padr„o deixa o n˙mero sempre com 1 casas decimais.<Br>
-   * Usar valor em porcentagem 100% È 100F. 1% È 1F.
+   * Este m√©todo formata um valor Percentage (BigDecimal) para se adequar a formata√ß√£o do local. Por padr√£o deixa o n√∫mero sempre com 1 casas decimais.<Br>
+   * Usar valor em porcentagem 100% √© 100F. 1% √© 1F.
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
@@ -743,8 +743,8 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor Percentage (Float) para se adequar a formataÁ„o do local. Por padr„o deixa o n˙mero sempre com 1 casas decimais.<Br>
-   * Usar valor em porcentagem 100% È 100F. 1% È 1F.
+   * Este m√©todo formata um valor Percentage (Float) para se adequar a formata√ß√£o do local. Por padr√£o deixa o n√∫mero sempre com 1 casas decimais.<Br>
+   * Usar valor em porcentagem 100% √© 100F. 1% √© 1F.
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
@@ -754,8 +754,8 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor Percentage (Float) para se adequar a formataÁ„o do local.<Br>
-   * Usar valor em porcentagem 100% È 100F. 1% È 1F.
+   * Este m√©todo formata um valor Percentage (Float) para se adequar a formata√ß√£o do local.<Br>
+   * Usar valor em porcentagem 100% √© 100F. 1% √© 1F.
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
@@ -766,8 +766,8 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor Percentage para se adequar a formataÁ„o do local.<Br>
-   * Usar valor em porcentagem 100% È 100F. 1% È 1F.
+   * Este m√©todo formata um valor Percentage para se adequar a formata√ß√£o do local.<Br>
+   * Usar valor em porcentagem 100% √© 100F. 1% √© 1F.
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
@@ -777,8 +777,8 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor Percentage para se adequar a formataÁ„o do local.<Br>
-   * Usar valor em porcentagem 100% È 100F. 1% È 1F.
+   * Este m√©todo formata um valor Percentage para se adequar a formata√ß√£o do local.<Br>
+   * Usar valor em porcentagem 100% √© 100F. 1% √© 1F.
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
@@ -788,8 +788,8 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor Percentage para se adequar a formataÁ„o do local. Por padr„o deixa o n˙mero sempre com 1 casas decimais.<Br>
-   * Usar valor em porcentagem 100% È 100F. 1% È 1F.
+   * Este m√©todo formata um valor Percentage para se adequar a formata√ß√£o do local. Por padr√£o deixa o n√∫mero sempre com 1 casas decimais.<Br>
+   * Usar valor em porcentagem 100% √© 100F. 1% √© 1F.
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
@@ -799,8 +799,8 @@ public class LocaleConverter {
   }
 
   /**
-   * Este mÈtodo formata um valor Percentage (Float) para se adequar a formataÁ„o do local.<Br>
-   * Usar valor em porcentagem 100% È 100F. 1% È 1F.
+   * Este m√©todo formata um valor Percentage (Float) para se adequar a formata√ß√£o do local.<Br>
+   * Usar valor em porcentagem 100% √© 100F. 1% √© 1F.
    *
    * @param value Objeto a ser formatado
    * @param locale String com o valor formatado ou uma string vazia caso value seja nulo.
@@ -819,7 +819,7 @@ public class LocaleConverter {
   }
 
   /**
-   * Converte um objeto para Percentage (Float). Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira possÌvel.<br>
+   * Converte um objeto para Percentage (Float). Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira poss√≠vel.<br>
    *
    * @param value Valor a ser formatado.
    * @param locale Localidade a ser usada para recuperar os simbolos.
@@ -831,12 +831,12 @@ public class LocaleConverter {
   }
 
   /**
-   * Converte um objeto para Percentage (Float). Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira possÌvel.<br>
+   * Converte um objeto para Percentage (Float). Caso seja uma String usa o locale para recuperar os simbolos da localidade. Caso seja outro objeto tenta fazer o parser da melhor maneira poss√≠vel.<br>
    *
    * @param value Valor a ser formatado.
    * @param locale Localidade a ser usada para recuperar os simbolos.
    * @param ignoresignal ignora o sinal, retornando sempre um valor positivo.
-   * @param decimals numero de casas decimais que se deseja ter o n˙mero arredondado. Nulo para manter quantas casas decimais forem possÌveis.
+   * @param decimals numero de casas decimais que se deseja ter o n√∫mero arredondado. Nulo para manter quantas casas decimais forem poss√≠veis.
    * @return Objeto Float com o valor parseado. Ou nulo caso o valor recebido seja nulo ou vazio.
    * @throws RFWException
    */
@@ -882,7 +882,7 @@ public class LocaleConverter {
   }
 
   /**
-   * Tabela de convers„o de valores:
+   * Tabela de convers√£o de valores:
    * <ul>
    * <li>KB Kilobyte 1,024 Bytes</li>
    * <li>MB Megabyte 1,048,576 Bytes</li>
@@ -897,7 +897,7 @@ public class LocaleConverter {
    * @param bytes
    * @param locale
    * @param decimals
-   * @return String formatada com as informaÁıes dos bytes.
+   * @return String formatada com as informa√ß√µes dos bytes.
    * @throws NullPointerException
    */
   public static String formatBytesSize(Long bytes, Locale locale, Integer decimals) {
@@ -954,38 +954,38 @@ public class LocaleConverter {
    * @throws RFWException
    */
   public static BigDecimal convertByteUnits(BigDecimal size, int entryDimension, int decimals, int exitDimension) throws RFWException {
-    // Calcula o fator de utilizando o prÛprio Ìndice passado
+    // Calcula o fator de utilizando o pr√≥prio √≠ndice passado
     BigDecimal entryFactor = new BigDecimal(1024).pow(entryDimension);
     BigDecimal exitFactor = new BigDecimal(1024).pow(exitDimension);
 
-    // Calcula o fator de convers„o dividindo a dimens„o de entrada pela dimens„o de saÌda
+    // Calcula o fator de convers√£o dividindo a dimens√£o de entrada pela dimens√£o de sa√≠da
     BigDecimal cf = entryFactor.divide(exitFactor);
     // Calcula o novo tamanho
     return size.multiply(cf).setScale(decimals, RFW.getRoundingMode());
   }
 
   /**
-   * Formata a parte de data (sem o time) para a notaÁ„o usada no Brasil (dd/MM/yyyy HH:mm:ss)
+   * Formata a parte de data (sem o time) para a nota√ß√£o usada no Brasil (dd/MM/yyyy HH:mm:ss)
    *
    * @param date A data a ser formatada.
-   * @return Uma string contendo a data com a formataÁ„o aplicada.
+   * @return Uma string contendo a data com a formata√ß√£o aplicada.
    */
   public static String formatDateTime(Date date) {
     return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
   }
 
   /**
-   * Formata a parte de data (sem o time) para a notaÁ„o usada no Brasil (dd/MM/yyyy)
+   * Formata a parte de data (sem o time) para a nota√ß√£o usada no Brasil (dd/MM/yyyy)
    *
    * @param date A data a ser formatada.
-   * @return Uma string contendo a data com a formataÁ„o aplicada.
+   * @return Uma string contendo a data com a formata√ß√£o aplicada.
    */
   public static String formatDate(Date date) {
     return new SimpleDateFormat("dd/MM/yyyy").format(date);
   }
 
   /**
-   * Este mÈtodo faz o parser de datas no formato "dd/MM/yyyy" para {@link Date}.
+   * Este m√©todo faz o parser de datas no formato "dd/MM/yyyy" para {@link Date}.
    *
    * @param formatteddate
    * @return

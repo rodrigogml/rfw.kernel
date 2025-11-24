@@ -6,10 +6,10 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.utils.RUMail;
 
 /**
- * Description: Data formatter para endereços de e-mail.<BR>
- * Esta classe não "formata" os e-mail, o valor para o VO e para a Tela passa livremente, a única eficiência desta classe está no Método de validação.
+ * Description: Data formatter para endereÃ§os de e-mail.<BR>
+ * Esta classe nÃ£o "formata" os e-mail, o valor para o VO e para a Tela passa livremente, a Ãºnica eficiÃªncia desta classe estÃ¡ no MÃ©todo de validaÃ§Ã£o.
  *
- * @author Rodrigo Leitão
+ * @author Rodrigo LeitÃ£o
  * @since 7.1.0 (23/06/2015)
  */
 public class RFWEmailDataFormatter implements RFWDataFormatter<String, String> {
