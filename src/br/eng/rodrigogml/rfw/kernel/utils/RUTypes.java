@@ -28,9 +28,9 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
  * Os mtodos dessa classe so organizados da seguinte forma de acordo com seu prefixo:<br>
  * <li><b>parse</b> - Indica mtodos que extraem ou convertem valores entre tipos, podendo ou no considerar {@link Locale} para uma correta interpretao dos dados.</li>
  * <li><b>format</b> - Faz o inverso do mtodo 'parse'. Converte o valor de um tipo de dado em uma string formatada para leitura do usurio, podendo considerar o Locale ou no.</li> <br>
- * Para mï¿½todos de geraï¿½ï¿½o de valores verifique {@link RUGenerators}.
+ * Para métodos de geraïção de valores verifique {@link RUGenerators}.
  *
- * @author Rodrigo Leitï¿½o
+ * @author Rodrigo Leitïão
  * @since (21 de fev. de 2025)
  */
 public class RUTypes {
