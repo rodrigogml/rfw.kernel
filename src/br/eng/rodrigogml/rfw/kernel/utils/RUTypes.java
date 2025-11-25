@@ -821,7 +821,7 @@ public class RUTypes {
    * @return {@link Long} correspondente ou {@code null}.
    * @throws RFWException Se o valor nï¿½o for vï¿½lido.
    */
-  public static Long toLong(String value) throws RFWException {
+  public static Long parseLong(String value) throws RFWException {
     if (value == null || value.trim().isEmpty()) return null;
     try {
       return Long.valueOf(value.trim());
@@ -848,7 +848,7 @@ public class RUTypes {
    * @return {@link Long} correspondente ou {@code null}.
    * @throws RFWException Se o valor for invï¿½lido ou fora da faixa de {@link Long}.
    */
-  public static Long toLong(Number value) throws RFWException {
+  public static Long parseLong(Number value) throws RFWException {
     if (value == null) return null;
 
     if (value instanceof Long) return (Long) value;
@@ -890,11 +890,11 @@ public class RUTypes {
    * @return {@link Long} correspondente ou {@code null}.
    * @throws RFWException Se o tipo nï¿½o for suportado ou o valor for invï¿½lido.
    */
-  public static Long toLong(Object value) throws RFWException {
+  public static Long parseLong(Object value) throws RFWException {
     if (value == null) return null;
 
-    if (value instanceof Number) return toLong((Number) value);
-    if (value instanceof String) return toLong((String) value);
+    if (value instanceof Number) return parseLong((Number) value);
+    if (value instanceof String) return parseLong((String) value);
     if (value instanceof Boolean) return ((Boolean) value) ? 1L : 0L;
 
     throw new RFWValidationException("Tipo nï¿½o suportado para conversï¿½o em Long: '${0}'", new String[] { value.getClass().getName() });
@@ -1143,7 +1143,7 @@ public class RUTypes {
    * @param value valor numï¿½rico a ser convertido
    * @return representaï¿½ï¿½o textual sem notaï¿½ï¿½o cientï¿½fica ou {@code null} se o valor for {@code null}
    */
-  public static String toString(BigDecimal value) {
+  public static String parseString(BigDecimal value) {
     return value != null ? value.toPlainString() : null;
   }
 
@@ -1157,7 +1157,7 @@ public class RUTypes {
    * @param value valor long a ser convertido
    * @return representaï¿½ï¿½o textual do valor ou {@code null} se o valor for {@code null}
    */
-  public static String toString(Long value) {
+  public static String parseString(Long value) {
     return value != null ? value.toString() : null;
   }
 
@@ -1171,7 +1171,7 @@ public class RUTypes {
    * @param value valor inteiro a ser convertido
    * @return representaï¿½ï¿½o textual do valor ou {@code null} se o valor for {@code null}
    */
-  public static String toString(Integer value) {
+  public static String parseString(Integer value) {
     return value != null ? value.toString() : null;
   }
 
@@ -1185,7 +1185,7 @@ public class RUTypes {
    * @param value valor float a ser convertido
    * @return representaï¿½ï¿½o textual do valor ou {@code null} se o valor for {@code null}
    */
-  public static String toString(Float value) {
+  public static String parseString(Float value) {
     return value != null ? value.toString() : null;
   }
 
@@ -1199,7 +1199,7 @@ public class RUTypes {
    * @param value valor double a ser convertido
    * @return representaï¿½ï¿½o textual do valor ou {@code null} se o valor for {@code null}
    */
-  public static String toString(Double value) {
+  public static String parseString(Double value) {
     return value != null ? value.toString() : null;
   }
 
@@ -1227,7 +1227,7 @@ public class RUTypes {
    * @return Instï¿½ncia de {@link BigDecimal} representando o valor ou {@code null} se entrada nula ou vazia.
    * @throws RFWException Em caso de erro de validaï¿½ï¿½o ou falha crï¿½tica de conversï¿½o.
    */
-  public static BigDecimal toBigDecimal(String value) throws RFWException {
+  public static BigDecimal parseBigDecimal(String value) throws RFWException {
     if (value == null) {
       return null;
     }
