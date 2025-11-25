@@ -129,7 +129,7 @@ public class RFWPhoneDataFormatter implements RFWDataFormatter<String, String> {
   }
 
   /**
-   * Como os telefones são exibidos em campos especiais para tratar o telefone, este método apenas devolve o conteúdo como recebido no VO, toda a "formatação" é tratada pelo próprio campo. Para exibir o telfone de forma formata em uma String verifique o método {@link #format(String)}.
+   * Como os telefones são exibidos em campos especiais para tratar o telefone, este método apenas devolve o conteúdo como recebido no VO, toda a "formatação" é tratada pelo próprio campo. Para exibir o telefone de forma formatada em uma String verifique o método {@link #format(String)}.
    */
   @Override
   public String toPresentation(String value, Locale locale) {
@@ -137,7 +137,7 @@ public class RFWPhoneDataFormatter implements RFWDataFormatter<String, String> {
   }
 
   /**
-   * Este método formata o número recebido. Para definir uma formatação adequada ele primeiro tenta reconhecero tipo do número. Se nao reconehcer, aplica uma formatação padrão baseado no tamanho.
+   * Este método formata o número recebido. Para definir uma formatação adequada ele primeiro tenta reconhecer o tipo do número. Se não reconhecer, aplica uma formatação padrão baseada no tamanho.
    *
    * @param number número a ser identificado, validado e formatado
    * @return Retorna o valor formatado
