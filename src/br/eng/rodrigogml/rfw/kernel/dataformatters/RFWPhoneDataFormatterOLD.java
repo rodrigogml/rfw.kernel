@@ -39,7 +39,7 @@ public class RFWPhoneDataFormatterOLD implements RFWDataFormatter<String, String
   }
 
   /**
-   * Como os telefones são exibidos em campos especiais para tratar o telefone, este método apenas devolve o conteúdo como recebido no VO, toda a "formatação" é tratada pelo próprio campo. Para exibir o telfone de forma formata em uma String verifique o método {@link #format(String)}.
+   * Como os telefones são exibidos em campos especiais para tratar o telefone, este método apenas devolve o conteúdo como recebido no VO, toda a "formatação" é tratada pelo próprio campo. Para exibir o telefone de forma formatada em uma String verifique o método {@link #format(String)}.
    */
   @Override
   public String toPresentation(String value, Locale locale) {
