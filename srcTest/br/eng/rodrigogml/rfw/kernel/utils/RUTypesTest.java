@@ -290,31 +290,31 @@ public class RUTypesTest {
   }
 
   @Test
-  public void t22_toLong() throws RFWException {
-    assertNull(RUTypes.toLong((Object) null));
-    assertEquals(Long.valueOf(10L), RUTypes.toLong("10"));
-    assertEquals(Long.valueOf(-5L), RUTypes.toLong(Integer.valueOf(-5)));
-    assertEquals(Long.valueOf(1L), RUTypes.toLong(Boolean.TRUE));
+  public void t22_parseLong() throws RFWException {
+    assertNull(RUTypes.parseLong((Object) null));
+    assertEquals(Long.valueOf(10L), RUTypes.parseLong("10"));
+    assertEquals(Long.valueOf(-5L), RUTypes.parseLong(Integer.valueOf(-5)));
+    assertEquals(Long.valueOf(1L), RUTypes.parseLong(Boolean.TRUE));
 
-    assertEquals(Long.valueOf(20L), RUTypes.toLong(Long.valueOf(20L)));
-    assertEquals(Long.valueOf(30L), RUTypes.toLong(new BigDecimal("30.00")));
+    assertEquals(Long.valueOf(20L), RUTypes.parseLong(Long.valueOf(20L)));
+    assertEquals(Long.valueOf(30L), RUTypes.parseLong(new BigDecimal("30.00")));
 
     try {
-      RUTypes.toLong("12.3");
+      RUTypes.parseLong("12.3");
       fail("Era esperada RFWValidationException");
     } catch (RFWValidationException expected) {
       // ok
     }
 
     try {
-      RUTypes.toLong(Double.NaN);
+      RUTypes.parseLong(Double.NaN);
       fail("Era esperada RFWValidationException");
     } catch (RFWValidationException expected) {
       // ok
     }
 
     try {
-      RUTypes.toLong(new Object());
+      RUTypes.parseLong(new Object());
       fail("Era esperada RFWValidationException");
     } catch (RFWValidationException expected) {
       // ok
@@ -401,36 +401,36 @@ public class RUTypesTest {
   }
 
   @Test
-  public void t32_toStringConversions() {
-    assertEquals("10.5", RUTypes.toString(new BigDecimal("10.5")));
-    assertEquals("10", RUTypes.toString(Long.valueOf(10)));
-    assertEquals("5", RUTypes.toString(Integer.valueOf(5)));
-    assertEquals("1.5", RUTypes.toString(Float.valueOf(1.5f)));
-    assertEquals("2.5", RUTypes.toString(Double.valueOf(2.5)));
+  public void t32_parseStringConversions() {
+    assertEquals("10.5", RUTypes.parseString(new BigDecimal("10.5")));
+    assertEquals("10", RUTypes.parseString(Long.valueOf(10)));
+    assertEquals("5", RUTypes.parseString(Integer.valueOf(5)));
+    assertEquals("1.5", RUTypes.parseString(Float.valueOf(1.5f)));
+    assertEquals("2.5", RUTypes.parseString(Double.valueOf(2.5)));
 
-    assertNull(RUTypes.toString((BigDecimal) null));
-    assertNull(RUTypes.toString((Long) null));
-    assertNull(RUTypes.toString((Integer) null));
-    assertNull(RUTypes.toString((Float) null));
-    assertNull(RUTypes.toString((Double) null));
+    assertNull(RUTypes.parseString((BigDecimal) null));
+    assertNull(RUTypes.parseString((Long) null));
+    assertNull(RUTypes.parseString((Integer) null));
+    assertNull(RUTypes.parseString((Float) null));
+    assertNull(RUTypes.parseString((Double) null));
   }
 
   @Test
-  public void t33_toBigDecimal() throws RFWException {
-    assertNull(RUTypes.toBigDecimal(null));
-    assertNull(RUTypes.toBigDecimal("   "));
-    assertEquals(new BigDecimal("10.50"), RUTypes.toBigDecimal("10.50"));
-    assertEquals(new BigDecimal("-5"), RUTypes.toBigDecimal("-5"));
+  public void t33_parseBigDecimal() throws RFWException {
+    assertNull(RUTypes.parseBigDecimal(null));
+    assertNull(RUTypes.parseBigDecimal("   "));
+    assertEquals(new BigDecimal("10.50"), RUTypes.parseBigDecimal("10.50"));
+    assertEquals(new BigDecimal("-5"), RUTypes.parseBigDecimal("-5"));
 
     try {
-      RUTypes.toBigDecimal("1,5");
+      RUTypes.parseBigDecimal("1,5");
       fail("Era esperada RFWValidationException");
     } catch (RFWValidationException expected) {
       // ok
     }
 
     try {
-      RUTypes.toBigDecimal("not a number");
+      RUTypes.parseBigDecimal("not a number");
       fail("Era esperada RFWValidationException");
     } catch (RFWValidationException expected) {
       // ok
