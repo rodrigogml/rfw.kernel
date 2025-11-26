@@ -55,7 +55,6 @@ import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaStringPhoneField;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaUniqueConstraint;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaUsedBy;
 import br.eng.rodrigogml.rfw.kernel.rfwmeta.RFWMetaUsedByArray;
-import br.eng.rodrigogml.rfw.kernel.utils.RUMail;
 import br.eng.rodrigogml.rfw.kernel.utils.RUReflex;
 import br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation;
 import br.eng.rodrigogml.rfw.kernel.vo.RFWMO;
@@ -1034,9 +1033,9 @@ public class RFWValidator {
     // Valida o dado se preenchido
     if (value != null) {
       if (ann.useRFC822()) {
-        RUMail.validateMailAddress(value);
+        RUValueValidation.validateMailAddress(value);
       } else {
-        RUMail.validateMailAddress(value);
+        RUValueValidation.validateMailAddress(value);
       }
     }
   }

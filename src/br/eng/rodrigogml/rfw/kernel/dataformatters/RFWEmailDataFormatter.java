@@ -3,7 +3,7 @@ package br.eng.rodrigogml.rfw.kernel.dataformatters;
 import java.util.Locale;
 
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
-import br.eng.rodrigogml.rfw.kernel.utils.RUMail;
+import br.eng.rodrigogml.rfw.kernel.utils.RUValueValidation;
 
 /**
  * Description: Data formatter para endereços de e-mail.<BR>
@@ -40,7 +40,7 @@ public class RFWEmailDataFormatter implements RFWDataFormatter<String, String> {
   @Override
   public void validate(Object value, Locale locale) throws RFWException {
     if (value != null && !"".equals(value.toString())) {
-      RUMail.validateMailAddress(value.toString());
+      RUValueValidation.validateMailAddress(value.toString());
     }
   }
 

@@ -1784,4 +1784,58 @@ public class RUValueValidation {
 
     return (10 - (sum % 10)) % 10;
   }
+
+  /**
+   * Valida se o endereço de e-mail é válido conforme a RFC 5322 (versão "relaxed"), sem uso da API JavaMail.
+   *
+   * <p>
+   * A RFC 5322 completa permite casos extremamente complexos e pouco usados (comentários, strings escapadas elaboradas, domínios literais com IPv6 detalhado, quoted-pairs extensivos, etc.).
+   * </p>
+   *
+   * <p>
+   * Esta implementação usa o padrão amplamente adotado como "RFC 5322 Official Standard" na prática, reconhecido pela maioria das linguagens e validadores modernos, oferecendo excelente compatibilidade real sem permitir formatos obsoletos ou inseguros.
+   * </p>
+   *
+   * @param mail endereço de e-mail a validar
+   * @throws RFWException se o endereço for nulo ou inválido
+   */
+  public static void validateMailAddress(String mail) throws RFWException {
+    if (mail == null) {
+      throw new RFWValidationException("RFW_000018");
+    }
+
+    // RFC 5322 – versão amplamente aceita (“relaxed official standard”)
+    final String regex = "^(?i)" + // case-insensitive
+        "[a-z0-9.!#$%&'*+/=?^_`{|}~-]+" + // local-part sem aspas
+        "@" + "(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+" + // labels do domínio
+        "[a-z]{2,}$"; // TLD
+
+    if (!mail.matches(regex)) {
+      throw new RFWValidationException("O endereço de e-mail não é um endereço válido.");
+    }
+  }
+
+  /**
+   * Verifica se a string informada representa um endereço de e-mail válido.
+   *
+   * <p>
+   * Esta validação utiliza internamente {@link #validateMailAddress(String)}, que implementa as regras de sintaxe compatíveis com a RFC 5322 (versão prática/relaxed). Diferentemente do método citado, esta função não lança exceções: apenas retorna um valor booleano.
+   * </p>
+   *
+   * <p>
+   * Use este método quando desejar apenas saber se o formato é válido. Caso precise identificar o motivo da invalidez, utilize {@link #validateMailAddress(String)}.
+   * </p>
+   *
+   * @param mail endereço de e-mail a ser verificado
+   * @return {@code true} se o e-mail for válido; {@code false} caso seja nulo ou inválido
+   */
+  public static boolean isMailAddress(String mail) {
+    try {
+      RUValueValidation.validateMailAddress(mail);
+      return true;
+    } catch (RFWException e) {
+      return false;
+    }
+  }
+
 }

@@ -15,6 +15,9 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -516,4 +519,23 @@ public class RUValueValidationTest {
   public void testValidateGTINGeneral_Invalid() throws Exception {
     RUValueValidation.validateGTIN("7894900010016");
   }
+
+  /**
+   * Testa {@link RUMail#validateMailAddress(String)} com endereços válidos e inválidos.
+   */
+  @Test
+  public void t00_validateMailAddress() throws RFWException {
+    List<String> validAddresses = Arrays.asList("simple@example.com", "user.name+tag@sub.domain.com", "user_name@domain.co", "u-ser@dominio.com.br", "123@numbers.net");
+
+    for (String address : validAddresses) {
+      RUValueValidation.validateMailAddress(address);
+    }
+
+    assertThrows(RFWValidationException.class, () -> RUValueValidation.validateMailAddress(null));
+    assertThrows(RFWValidationException.class, () -> RUValueValidation.validateMailAddress(""));
+    assertThrows(RFWValidationException.class, () -> RUValueValidation.validateMailAddress("sem-arroba.com"));
+    assertThrows(RFWValidationException.class, () -> RUValueValidation.validateMailAddress("nome@dominio"));
+    assertThrows(RFWValidationException.class, () -> RUValueValidation.validateMailAddress("nome@dominio..com"));
+  }
+
 }
