@@ -48,7 +48,7 @@ public class RUMail {
   private static final String mailPattern = RUMail.mailAcceptedChar + "+@" + RUMail.mailAcceptedChar + "+";
 
   private static final Pattern MAIL_ADDRESS_PATTERN = Pattern.compile(mailPattern);
-  private static final Pattern NAME_WITH_ADDRESS_PATTERN = Pattern.compile("^\\s*\"?\\s*([^<>"]*?)\\s*\"?\\s*<" + mailPattern + ">\\s*$");
+  private static final Pattern NAME_WITH_ADDRESS_PATTERN = Pattern.compile("^\\s*\\\"?\\s*([^<>\\\"]*?)\\s*\\\"?\\s*<" + mailPattern + ">\\s*$");
   private static final java.nio.charset.Charset DEFAULT_TEMPLATE_CHARSET = StandardCharsets.UTF_8;
 
   /**
