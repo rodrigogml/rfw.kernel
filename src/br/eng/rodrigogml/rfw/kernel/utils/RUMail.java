@@ -1,5 +1,6 @@
 package br.eng.rodrigogml.rfw.kernel.utils;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -19,11 +20,9 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
-import br.eng.rodrigogml.rfw.kernel.utils.RUIO;
-import br.eng.rodrigogml.rfw.kernel.utils.RUReflex;
-import br.eng.rodrigogml.rfw.kernel.utils.RUString;
 
 /**
  * Description: Classe utilitária para conter métodos de auxílio do serviço de e-mail.<BR>
@@ -197,6 +196,8 @@ public class RUMail {
     String content;
     try (InputStream templateStream = RUReflex.getResourceAsStream(templateResourceName)) {
       content = RUIO.toString(templateStream, DEFAULT_TEMPLATE_CHARSET);
+    } catch (IOException e) {
+      throw new RFWCriticalException("Falha ao carregar template de email! '${0}'.", new String[] { templateResourceName });
     }
 
     if (fieldContents != null) {
