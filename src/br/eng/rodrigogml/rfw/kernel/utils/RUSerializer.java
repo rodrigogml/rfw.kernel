@@ -146,10 +146,22 @@ public class RUSerializer {
    * @throws RFWException
    */
   public static String serializeToXML(Object object, Class<?> clazz) throws RFWException {
+    return serializeToXML(object, clazz, true);
+  }
+
+  /**
+   * Serializa um objeto para XML utilizando o padrão JAXB do nativo do Java.
+   *
+   * @param object Objeto a ser serializado.
+   * @param clazz Classe do Objeto a ser serializado
+   * @param formatted Define se o XML deve ser formatado (com quebras de linha e indentação) ou não.
+   * @throws RFWException
+   */
+  public static String serializeToXML(Object object, Class<?> clazz, boolean formatted) throws RFWException {
     try {
       JAXBContext jc = JAXBContext.newInstance(clazz);
       Marshaller m = jc.createMarshaller();
-      m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+      m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.valueOf(formatted));
       try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
         m.marshal(object, os);
         return new String(os.toByteArray());
