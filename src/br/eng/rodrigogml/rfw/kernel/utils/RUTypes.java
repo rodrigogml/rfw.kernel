@@ -114,6 +114,26 @@ public class RUTypes {
   }
 
   /**
+   * Este método utiliza o SimpleDateFormat para formatar o Date em um formato completo com o pattern 'dd/MM/yyyy HH:mm:ss'.
+   *
+   * @param date
+   * @return
+   */
+  public static String formatTodd_MM_yyyy(LocalDateTime date) {
+    return formatLocalDateTime(date, "dd/MM/yyyy");
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formatar o Date em um formato completo com o pattern 'dd/MM/yyyy HH:mm:ss'.
+   *
+   * @param date
+   * @return
+   */
+  public static String formatTodd_MM_yyyy(LocalDate date) {
+    return formatLocalDate(date, "dd/MM/yyyy");
+  }
+
+  /**
    * Este método utiliza o SimpleDateFormat para formatar o Date apenas no horário com o pattern '23:59:59', ignorando qualquer que seja a data.
    *
    * @param dLastConsult
@@ -1255,9 +1275,7 @@ public class RUTypes {
    * Converte uma {@link String} para {@link BigDecimal} definindo a escala desejada.
    *
    * <p>
-   * Este método reaproveita a validação de {@link #parseBigDecimal(String)} e, quando um número de casas
-   * decimais é informado, aplica {@link BigDecimal#setScale(int, java.math.RoundingMode)} utilizando o
-   * {@link RFW#getRoundingMode()} configurado no sistema.
+   * Este método reaproveita a validação de {@link #parseBigDecimal(String)} e, quando um número de casas decimais é informado, aplica {@link BigDecimal#setScale(int, java.math.RoundingMode)} utilizando o {@link RFW#getRoundingMode()} configurado no sistema.
    * </p>
    *
    * @param value Texto a ser convertido.

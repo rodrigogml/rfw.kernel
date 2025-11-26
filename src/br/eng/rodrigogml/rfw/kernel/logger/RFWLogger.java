@@ -3,8 +3,10 @@ package br.eng.rodrigogml.rfw.kernel.logger;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import br.eng.rodrigogml.rfw.kernel.RFW;
 import br.eng.rodrigogml.rfw.kernel.bundle.RFWBundle;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
+import br.eng.rodrigogml.rfw.kernel.logger.RFWLoggerImplementation.RFWLogSeverity;
 import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 import br.eng.rodrigogml.rfw.kernel.utils.RUMachine;
 import br.eng.rodrigogml.rfw.kernel.utils.RUReflex;
@@ -31,25 +33,41 @@ public final class RFWLogger {
       } catch (RFWException e) {
         System.out.println("\t ClassLoaderName: <Erro ao Obter: " + e.getMessage() + ">");
       }
-      System.out.print('\t' + severity.name());
-      System.out.print(' ');
-      System.out.println(msg);
-      if (content != null) {
-        System.out.println("==================================");
-        System.out.println(content);
-        System.out.println("==================================");
-      }
-      if (exPoint != null) {
-        System.out.println("\tExpoint: " + exPoint);
-      }
-      if (tags != null) {
-        System.out.println("\tTags:");
-        for (String tag : tags) {
-          System.out.println("\t - " + tag);
-        }
-      }
+      System.out.println(writeTextLog(severity, msg, content, exPoint, tags));
     }
   };
+
+  /**
+   * Este método recebe as informações referentes ao log e escreve em uma estrutura de texto para tela ou arquivo de texto. Já inclui a data e a severidade.
+   *
+   * @param severity
+   * @param msg
+   * @param content
+   * @param exPoint
+   * @param tags
+   * @return
+   */
+  public static String writeTextLog(RFWLogSeverity severity, String msg, String content, String exPoint, String... tags) {
+    StringBuilder builder = new StringBuilder();
+    builder.append('\t').append(RFW.getDateTimeISO()).append(" | ").append(severity.name()).append(": ").append(System.lineSeparator());
+    builder.append(' ').append(System.lineSeparator());
+    builder.append(msg).append(System.lineSeparator());
+    if (content != null) {
+      builder.append("==================================").append(System.lineSeparator());
+      builder.append(content).append(System.lineSeparator());
+      builder.append("==================================").append(System.lineSeparator());
+    }
+    if (exPoint != null) {
+      builder.append("\tExpoint: " + exPoint).append(System.lineSeparator());
+    }
+    if (tags != null) {
+      builder.append("\tTags:").append(System.lineSeparator());
+      for (String tag : tags) {
+        builder.append("\t - ").append(tag).append(System.lineSeparator());
+      }
+    }
+    return builder.toString();
+  }
 
   /**
    * Construtor privado para classe exclusivamente estática.

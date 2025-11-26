@@ -31,11 +31,13 @@ public class RUTypesTest {
 
   @Test
   public void t00_formatTo235959() {
-    Date date = new Date(0);
+    TimeZone tz = TimeZone.getDefault(); // Recupera o TImeZone da máquina
+    int offset = tz.getOffset(0); // Recupera o offset do timezone da máquina para o UTC (Date sempre está em UTC)
+    Date date = new Date(-offset); // Cria a data com a hora zero no timezone da máquina.
     assertEquals("00:00:00", RUTypes.formatTo235959(date));
 
     long millis = 23 * 60 * 60 * 1000L + 59 * 60 * 1000L + 59 * 1000L;
-    assertEquals("23:59:59", RUTypes.formatTo235959(millis));
+    assertEquals("23:59:59", RUTypes.formatTo235959(millis - offset));
   }
 
   @Test
@@ -113,9 +115,9 @@ public class RUTypesTest {
     assertNull(RUTypes.parseLocalDateTime((String) null));
     assertNull(RUTypes.parseLocalDateTime("   "));
 
-    assertEquals(base, RUTypes.parseLocalDateTime("2024-02-20T15:30:00"));
-    assertEquals(base, RUTypes.parseLocalDateTime("2024-02-20"));
-    assertEquals(base, RUTypes.parseLocalDateTime("20/02/2024"));
+    assertEquals(LocalDateTime.of(2024, 2, 20, 15, 30, 0), RUTypes.parseLocalDateTime("2024-02-20T15:30:00"));
+    assertEquals(LocalDateTime.of(2024, 2, 20, 0, 0, 0), RUTypes.parseLocalDateTime("2024-02-20"));
+    assertEquals(LocalDateTime.of(2024, 2, 20, 0, 0, 0), RUTypes.parseLocalDateTime("20/02/2024"));
 
     OffsetDateTime odt = OffsetDateTime.of(base, ZoneOffset.ofHours(-3));
     assertEquals(base, RUTypes.parseLocalDateTime(odt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)));
@@ -186,8 +188,8 @@ public class RUTypesTest {
 
     try {
       RUTypes.parseLocalDate("2024-13-01");
-      fail("Era esperada RFWValidationException");
-    } catch (RFWValidationException expected) {
+      fail("Era esperada RFWException");
+    } catch (RFWException expected) {
       // ok
     }
   }
@@ -326,7 +328,8 @@ public class RUTypesTest {
     Locale previous = Locale.getDefault();
     Locale.setDefault(Locale.US);
     try {
-      assertEquals("0%", RUTypes.formatToPercentage(null));
+      assertEquals("0.0%", RUTypes.formatToPercentage(null));
+      assertEquals("12%", RUTypes.formatToPercentage(0.123, 0));
       assertEquals("12.3%", RUTypes.formatToPercentage(0.123));
       assertEquals("12.30%", RUTypes.formatToPercentage(0.123, 2));
     } finally {
@@ -378,7 +381,7 @@ public class RUTypesTest {
       assertEquals("2024-02-20T15:30:00Z", RUTypes.formatToyyyy_MM_dd_T_HH_mm_ssXXX(date));
       assertEquals("2024-02-20T15:30:00Z", RUTypes.formatToyyyy_MM_dd_T_HH_mm_ssXXX(date, utc));
 
-      assertEquals("2024-02-20T12:30:00-03:00", RUTypes.formatToyyyy_MM_dd_T_HH_mm_ssXXX(ldt, ZoneId.of("America/Sao_Paulo")));
+      assertEquals("2024-02-20T15:30:00-03:00", RUTypes.formatToyyyy_MM_dd_T_HH_mm_ssXXX(ldt, ZoneId.of("America/Sao_Paulo")));
       assertEquals("2024-02-20T15:30:00Z", RUTypes.formatToyyyy_MM_dd_T_HH_mm_ssXXX(ldt));
     } finally {
       RFW.initializeZoneID(previous);

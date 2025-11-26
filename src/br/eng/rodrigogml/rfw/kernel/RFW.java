@@ -21,6 +21,7 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.logger.RFWLogger;
 import br.eng.rodrigogml.rfw.kernel.logger.RFWLoggerImplementation;
+import br.eng.rodrigogml.rfw.kernel.utils.RUTypes;
 
 /**
  * Description: Classe utilitária geral do RFW com métodos utilitários comuns genéricos.<br>
@@ -170,27 +171,20 @@ public class RFW {
    * Retorna o formatador de DateTime Padrão do sistema: "dd/MM/uuuu HH:mm:ss".
    *
    * @return DateTimeFormatter padrão.
+   * @deprecated Utilizar diretamente os métodos disponiblizados em {@link RUTypes}
    */
+  @Deprecated
   public static DateTimeFormatter getDateTimeFormattter() {
     return DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm:ss");
   }
 
   /**
-   * Retorna o formatador de DateTime Padrão do sistema: "HH:mm:ss".
+   * Retorna a data e horaatual já no formado ISO
    *
-   * @return DateTimeFormatter padrão.
+   * @return
    */
-  public static DateTimeFormatter getTimeFormattter() {
-    return DateTimeFormatter.ofPattern("HH:mm:ss");
-  }
-
-  /**
-   * Retorna o formatador de DateTime Padrão do sistema: "dd/MM/uuuu".
-   *
-   * @return DateTimeFormatter padrão.
-   */
-  public static DateTimeFormatter getDateFormattter() {
-    return DateTimeFormatter.ofPattern("dd/MM/uuuu");
+  public static String getDateTimeISO() {
+    return DateTimeFormatter.ISO_DATE_TIME.format(getDateTime());
   }
 
   /**

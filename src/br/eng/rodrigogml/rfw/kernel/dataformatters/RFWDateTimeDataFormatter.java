@@ -8,6 +8,7 @@ import java.util.Locale;
 import br.eng.rodrigogml.rfw.kernel.RFW;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWRunTimeException;
+import br.eng.rodrigogml.rfw.kernel.utils.RUTypes;
 
 /**
  * Description: Classe que formata dados de Data e Horário. não valida pois não é utilizado em campos, só para formatação em relatórios e campos de exibição.<br>
@@ -58,7 +59,7 @@ public class RFWDateTimeDataFormatter implements RFWDataFormatter<String, Object
         if (this.mode == 0) { // Data e Hora
           result = ((LocalDateTime) value).format(RFW.getDateTimeFormattter());
         } else if (this.mode == 1) { // Data
-          result = ((LocalDateTime) value).format(RFW.getDateFormattter());
+          result = RUTypes.formatTodd_MM_yyyy((LocalDateTime) value);
         }
       } else {
         throw new RFWRunTimeException("O RFWDataTimeDataFormatter não sabe trabalhar com a classe '" + value.getClass().getCanonicalName() + "'.");
