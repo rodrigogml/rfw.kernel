@@ -18,6 +18,7 @@ import javax.xml.bind.Unmarshaller;
 
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
+import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 
 /**
  * Description: Classe com métodos para auxiliar na serialização e desserialização de objetos.<br>
@@ -139,32 +140,64 @@ public class RUSerializer {
   }
 
   /**
-   * Serializa um objeto para XML utilizando o padrão JAXB do nativo do Java.
+   * Serializa um objeto para XML utilizando JAXB. Mantém o comportamento original: XML formatado e documento completo (sem fragment).
    *
    * @param object Objeto a ser serializado.
-   * @param clazz Classe do Objeto a ser serializado
-   * @throws RFWException
+   * @param clazz Classe do objeto.
+   * @return XML formatado como String.
+   * @throws RFWException Em caso de falha na serialização.
    */
   public static String serializeToXML(Object object, Class<?> clazz) throws RFWException {
-    return serializeToXML(object, clazz, true);
+    return serializeToXMLInternal(object, clazz, true, false, "UTF-8", null, null);
   }
 
   /**
-   * Serializa um objeto para XML utilizando o padrão JAXB do nativo do Java.
+   * Serializa um objeto para XML utilizando JAXB, permitindo definir se a saída deve ser formatada (pretty-print) ou não.
    *
    * @param object Objeto a ser serializado.
-   * @param clazz Classe do Objeto a ser serializado
-   * @param formatted Define se o XML deve ser formatado (com quebras de linha e indentação) ou não.
-   * @throws RFWException
+   * @param clazz Classe raiz do objeto.
+   * @param formatted Se true, gera XML indentado e com quebras de linha.
+   * @return XML gerado como String.
+   * @throws RFWException Em caso de falha na serialização.
    */
   public static String serializeToXML(Object object, Class<?> clazz, boolean formatted) throws RFWException {
+    return serializeToXMLInternal(object, clazz, formatted, false, "UTF-8", null, null);
+  }
+
+  /**
+   * Serializa um objeto para XML usando JAXB, com parâmetros completos de configuração.<br>
+   *
+   * @param object Objeto a ser serializado.
+   * @param clazz Classe raiz usada para o JAXBContext.
+   * @param formatted Se true, o XML será gerado com indentação e quebras de linha.
+   * @param fragment Se true, gera XML em modo fragmento (sem prólogo e podendo suprimir raiz). Este modo é equivalente ao comportamento antigo do método writeXMLFromObject.
+   * @param encoding Codificação desejada (ex.: "UTF-8"). Se null, assume UTF-8.
+   * @param schemaLocation Valor para xsi:schemaLocation (opcional).
+   * @param noNamespaceSchemaLocation Valor para xsi:noNamespaceSchemaLocation (opcional).
+   * @return XML serializado como String.
+   * @throws RFWException Em caso de falha na serialização.
+   */
+  private static String serializeToXMLInternal(Object object, Class<?> clazz, boolean formatted, boolean fragment, String encoding, String schemaLocation, String noNamespaceSchemaLocation) throws RFWException {
+    PreProcess.requiredNonNull(object);
     try {
       JAXBContext jc = JAXBContext.newInstance(clazz);
       Marshaller m = jc.createMarshaller();
-      m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.valueOf(formatted));
+
+      m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, formatted);
+      m.setProperty(Marshaller.JAXB_FRAGMENT, fragment);
+      if (encoding == null) {
+        encoding = "UTF-8";
+      }
+      m.setProperty(Marshaller.JAXB_ENCODING, encoding);
+      if (schemaLocation != null) {
+        m.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, schemaLocation);
+      }
+      if (noNamespaceSchemaLocation != null) {
+        m.setProperty(Marshaller.JAXB_NO_NAMESPACE_SCHEMA_LOCATION, noNamespaceSchemaLocation);
+      }
       try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
         m.marshal(object, os);
-        return new String(os.toByteArray());
+        return new String(os.toByteArray(), encoding);
       }
     } catch (Throwable e) {
       throw new RFWCriticalException("RFW_ERR_200492", e);

@@ -14,7 +14,7 @@ import br.eng.rodrigogml.rfw.kernel.utils.RUArray;
  * @author Rodrigo GML
  * @since 10.0 (16 de nov de 2020)
  */
-public class RFWEnumerationCollectionDataFormatter<E extends Enum<?>> implements RFWDataFormatter<String, List<E>> {
+public class RFWEnumerationCollectionDataFormatter<E extends Enum<?>> implements RFWDataFormatter<String, List<E>> { // NO_UCD (unused code)
 
   private int maxItems = 3;
 

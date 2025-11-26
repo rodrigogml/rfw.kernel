@@ -3,9 +3,6 @@ package br.eng.rodrigogml.rfw.kernel.dataformatters;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import br.eng.rodrigogml.rfw.kernel.RFW;
@@ -964,38 +961,4 @@ public class LocaleConverter {
     return size.multiply(cf).setScale(decimals, RFW.getRoundingMode());
   }
 
-  /**
-   * Formata a parte de data (sem o time) para a notação usada no Brasil (dd/MM/yyyy HH:mm:ss)
-   *
-   * @param date A data a ser formatada.
-   * @return Uma string contendo a data com a formatação aplicada.
-   */
-  public static String formatDateTime(Date date) {
-    return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
-  }
-
-  /**
-   * Formata a parte de data (sem o time) para a notação usada no Brasil (dd/MM/yyyy)
-   *
-   * @param date A data a ser formatada.
-   * @return Uma string contendo a data com a formatação aplicada.
-   */
-  public static String formatDate(Date date) {
-    return new SimpleDateFormat("dd/MM/yyyy").format(date);
-  }
-
-  /**
-   * Este método faz o parser de datas no formato "dd/MM/yyyy" para {@link Date}.
-   *
-   * @param formatteddate
-   * @return
-   * @throws RFWException
-   */
-  public static Date parseDate_dd_MM_yyyy(String formatteddate) throws RFWException {
-    try {
-      return new SimpleDateFormat("dd/MM/yyyy").parse(formatteddate);
-    } catch (ParseException e) {
-      throw new RFWValidationException("RFW_ERR_100098", new String[] { formatteddate }, e);
-    }
-  }
 }

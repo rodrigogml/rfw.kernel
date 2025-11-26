@@ -2,7 +2,8 @@ package executableUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.charset.MalformedInputException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.regex.Pattern;
  * @author Rodrigo Leitão
  * @since (29 de ago. de 2024)
  */
-public class CheckForMetaAnnotation {
+public class CheckForMetaAnnotation { // NO_UCD (unused code)
 
   public static void main(String[] args) {
     if (args.length == 0) {
@@ -51,7 +52,13 @@ public class CheckForMetaAnnotation {
 
   private static void checkAnnotationsInFile(Path filePath) {
     try {
-      List<String> lines = Files.readAllLines(filePath, Charset.forName("Windows-1252"));
+      // List<String> lines = Files.readAllLines(filePath, Charset.forName("Windows-1252"));
+      List<String> lines;
+      try {
+        lines = Files.readAllLines(filePath, StandardCharsets.UTF_8);
+      } catch (MalformedInputException e) {
+        lines = Files.readAllLines(filePath, StandardCharsets.ISO_8859_1);
+      }
       String className = filePath.getFileName().toString().replace(".java", "");
       boolean inFieldSection = false;
 

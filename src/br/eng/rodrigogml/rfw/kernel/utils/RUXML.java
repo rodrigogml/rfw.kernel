@@ -16,6 +16,8 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.XMLConstants;
 import javax.xml.crypto.dsig.CanonicalizationMethod;
@@ -58,6 +60,7 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.interfaces.RFWCertificate;
 import br.eng.rodrigogml.rfw.kernel.logger.RFWLogger;
+import br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess;
 
 /**
  * Description: Esta classe utilitária tem a finalidade de agregar métodos para facilitar a vida ao trabalhar com estruturas de XML.<br>
@@ -519,6 +522,36 @@ public final class RUXML {
   }
 
   /**
+   * Remove a tag especial <xml-fragment> gerada pelo JAXB/Axis quando o XML representa apenas um fragmento e não um documento completo.
+   *
+   * <p>
+   * Quando o JAXB serializa uma classe sem {@code @XmlRootElement}, ou quando o marshaller está configurado com {@code JAXB_FRAGMENT = true}, ele envolve o conteúdo resultante dentro de uma tag:
+   *
+   * <pre>
+   *   &lt;xml-fragment&gt; ... &lt;/xml-fragment&gt;
+   * </pre>
+   *
+   * <p>
+   * Esse método detecta essa estrutura e retorna apenas o conteúdo interno. Caso a tag não exista, o XML original é devolvido sem alterações.
+   *
+   * <p>
+   * A detecção é feita via expressão regular que captura o conteúdo entre &lt;xml-fragment&gt; e &lt;/xml-fragment&gt;.
+   *
+   * @param xml XML possivelmente contendo a tag xml-fragment.
+   * @return Conteúdo interno sem a tag xml-fragment, ou o próprio XML caso a tag não exista.
+   * @throws RFWException
+   */
+  public static String removeXmlFragmentTag(String xml) throws RFWException {
+    PreProcess.requiredNonNull(xml);
+    Pattern pattern = Pattern.compile("<xml-fragment.*?>(.*?)</xml-fragment>", Pattern.DOTALL);
+    Matcher matcher = pattern.matcher(xml);
+    if (matcher.find()) {
+      return matcher.group(1);
+    }
+    return xml;
+  }
+
+  /**
    * Lê um XML pronto e importa a tag rais e toda sua estrutura como uma tag filha dentro do documento passado.
    *
    * @param doc Documento DOM já criado e existente.
@@ -745,7 +778,7 @@ class SchemaResourceResolver implements LSResourceResolver {
     return new LSInputImpl(publicId, systemid, in);
   }
 
-  protected class LSInputImpl implements LSInput {
+  private class LSInputImpl implements LSInput {
     private String publicId;
     private String systemId;
 

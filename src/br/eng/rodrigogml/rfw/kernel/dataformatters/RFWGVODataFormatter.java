@@ -11,7 +11,7 @@ import br.eng.rodrigogml.rfw.kernel.vo.RFWVO;
  * <br>
  * Confira mais detalhes na Documentação do {@link GVO}.
  */
-public class RFWGVODataFormatter<VO extends RFWVO> implements RFWDataFormatter<GVO<VO>, VO> {
+public class RFWGVODataFormatter<VO extends RFWVO> implements RFWDataFormatter<GVO<VO>, VO> { // NO_UCD (unused code)
 
   @Override
   public GVO<VO> toPresentation(VO value, Locale locale) throws RFWException {
