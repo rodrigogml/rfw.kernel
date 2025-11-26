@@ -24,11 +24,11 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 
 /**
- * Description: Classe utilitria utilizada para converso entre tipos de dados.<br>
- * Os mtodos dessa classe so organizados da seguinte forma de acordo com seu prefixo:<br>
- * <li><b>parse</b> - Indica mtodos que extraem ou convertem valores entre tipos, podendo ou no considerar {@link Locale} para uma correta interpretao dos dados.</li>
- * <li><b>format</b> - Faz o inverso do mtodo 'parse'. Converte o valor de um tipo de dado em uma string formatada para leitura do usurio, podendo considerar o Locale ou no.</li> <br>
- * Para mtodos de gerao de valores verifique {@link RUGenerators}.
+ * Description: Classe utilitária utilizada para conversão entre tipos de dados.<br>
+ * Os métodos dessa classe são organizados da seguinte forma de acordo com seu prefixo:<br>
+ * <li><b>parse</b> - Indica métodos que extraem ou convertem valores entre tipos, podendo ou não considerar {@link Locale} para uma correta interpretação dos dados.</li>
+ * <li><b>format</b> - Faz o inverso do método 'parse'. Converte o valor de um tipo de dado em uma string formatada para leitura do usuário, podendo considerar o Locale ou não.</li> <br>
+ * Para métodos de geração de valores verifique {@link RUGenerators}.
  *
  * @author Rodrigo Leito
  * @since (21 de fev. de 2025)
@@ -38,13 +38,13 @@ public class RUTypes {
   private static final DateTimeFormatter FORMATTER_yyyy_MM_dd_T_HH_mm_ssXXX = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
 
   /**
-   * Classe utilitria exclusivamente esttica
+   * Classe utilitária exclusivamente estática
    */
   private RUTypes() {
   }
 
   /**
-   * Este mtodo utiliza o SimpleDateFormat para formatar o Date apenas no horrio com o pattern '23:59:59', ignorando qualquer que seja a data.
+   * Este método utiliza o SimpleDateFormat para formatar o Date apenas no horário com o pattern '23:59:59', ignorando qualquer que seja a data.
    *
    * @param time
    * @return
@@ -54,7 +54,7 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo utiliza o SimpleDateFormat para formatar o Date em um TimeStamp com o pattern 'yyyyMMddHHmmss'.
+   * Este método utiliza o SimpleDateFormat para formatar o Date em um TimeStamp com o pattern 'yyyyMMddHHmmss'.
    *
    * @param date
    * @return
@@ -64,7 +64,7 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo utiliza o SimpleDateFormat para formatar o Date em um TimeStamp com o pattern 'yyyyMMdd'.
+   * Este método utiliza o SimpleDateFormat para formatar o Date em um TimeStamp com o pattern 'yyyyMMdd'.
    *
    * @param date
    * @return
@@ -74,7 +74,7 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo utiliza o SimpleDateFormat para formatar o Date em um TimeStamp com o pattern 'ddMMyyyy'.
+   * Este método utiliza o SimpleDateFormat para formatar o Date em um TimeStamp com o pattern 'ddMMyyyy'.
    *
    * @param date
    * @return
@@ -84,7 +84,7 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo utiliza o SimpleDateFormat para formatar o Date em um TimeStamp com o pattern 'ddMMyyyyHHmmss'.
+   * Este método utiliza o SimpleDateFormat para formatar o Date em um TimeStamp com o pattern 'ddMMyyyyHHmmss'.
    *
    * @param date
    * @return
@@ -94,7 +94,7 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo utiliza o SimpleDateFormat para formatar o Date em um formato completo com o pattern 'dd/MM/yyyy HH:mm:ss'.
+   * Este método utiliza o SimpleDateFormat para formatar o Date em um formato completo com o pattern 'dd/MM/yyyy HH:mm:ss'.
    *
    * @param date
    * @return
@@ -104,7 +104,7 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo utiliza o SimpleDateFormat para formatar o Date em um formato completo com o pattern 'dd/MM/yyyy HH:mm:ss'.
+   * Este método utiliza o SimpleDateFormat para formatar o Date em um formato completo com o pattern 'dd/MM/yyyy HH:mm:ss'.
    *
    * @param date
    * @return
@@ -114,7 +114,7 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo utiliza o SimpleDateFormat para formatar o Date apenas no horrio com o pattern '23:59:59', ignorando qualquer que seja a data.
+   * Este método utiliza o SimpleDateFormat para formatar o Date apenas no horário com o pattern '23:59:59', ignorando qualquer que seja a data.
    *
    * @param dLastConsult
    * @return
@@ -148,7 +148,7 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo formata um LocalDate para com o pattern 'ddMMyyyy'.
+   * Este método formata um LocalDate para com o pattern 'ddMMyyyy'.
    *
    * @param date Objeto LocalDate com a data a formatar.
    * @return String com o dado formatado.
@@ -158,12 +158,12 @@ public class RUTypes {
   }
 
   /**
-   * Formata um tempo em milissegundos no formato "HHH:MM:SS'mmm", onde HHH so horas, MM minutos, SS segundos e mmm milissegundos.
+   * Formata um tempo em milissegundos no formato "HHH:MM:SS'mmm", onde HHH são horas, MM minutos, SS segundos e mmm milissegundos.
    * <p>
-   * Os campos zerados so omitidos. Exemplo:
+   * Os campos zerados são omitidos. Exemplo:
    * </p>
    * <ul>
-   * <li>Se no houver horas, o resultado ser "MM:SS'mmm".</li>
+   * <li>Se não houver horas, o resultado será "MM:SS'mmm".</li>
    * </ul>
    *
    * @param millis Tempo em milissegundos a ser formatado.
@@ -179,11 +179,11 @@ public class RUTypes {
   }
 
   /**
-   * Formata um tempo em milissegundos utilizando um padro de data/hora.
+   * Formata um tempo em milissegundos utilizando um padrão de data/hora.
    *
-   * @param pattern Padro de formatao do {@link SimpleDateFormat}.
+   * @param pattern Padrão de formatação do {@link SimpleDateFormat}.
    * @param millis Tempo em milissegundos para ser formatado.
-   * @return Tempo formatado conforme o padro informado.
+   * @return Tempo formatado conforme o padrão informado.
    */
   public static String formatMillis(String pattern, long millis) {
     SimpleDateFormat sf = new SimpleDateFormat(pattern);
@@ -194,7 +194,7 @@ public class RUTypes {
   /**
    * Interpreta diversos formatos de data e os converte para {@link LocalDateTime}.
    * <p>
-   * Os formatos suportados so:
+   * Os formatos suportados são:
    * <ul>
    * <li>"yyyy-MM-dd'T'HH:mm:ssXXX" Exemplo: "2024-02-20T15:30:00-07:00" (UTC com timezone)</li>
    * <li>"yyyy-MM-dd'T'HH:mm:ssZ" Exemplo: "2024-02-20T15:30:00-0700" (UTC com timezone)</li>
@@ -203,15 +203,15 @@ public class RUTypes {
    * <li>"dd/MM/yyyy" Exemplo: "20/02/2024"</li>
    * </ul>
    * <p>
-   * Quando o timezone est presente na string, ele ignorado e a data retornada no horrio local. Se no houver timezone, assume-se o fuso horrio do sistema.
+   * Quando o timezone está presente na string, ele é ignorado e a data é retornada no horário local. Se não houver timezone, assume-se o fuso horário do sistema.
    *
    * <p>
-   * <b>Diferena para {@link #parseLocalDateTime(String, ZoneId)}:</b> Esse mtodo apenas interpreta a data sem fazer converso de fusos horrios.
+   * <b>Diferença para {@link #parseLocalDateTime(String, ZoneId)}:</b> Esse método apenas interpreta a data sem fazer conversão de fusos horários.
    * </p>
    *
    * @param date String representando a data.
    * @return {@link LocalDateTime} correspondente.
-   * @throws RFWException Se o formato da data no for reconhecido ou se ocorrer um erro de converso.
+   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
    */
   public static LocalDateTime parseLocalDateTime(String date) throws RFWException {
     if (date == null || date.trim().isEmpty()) {
@@ -223,10 +223,10 @@ public class RUTypes {
         // yyyy-MM-dd (Apenas Data)
         return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay();
       } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9]:[0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ssXXX (Padro UTC com TimeZone, ex: -07:00)
+        // yyyy-MM-dd'T'HH:mm:ssXXX (Padrão UTC com TimeZone, ex: -07:00)
         return OffsetDateTime.parse(date, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toLocalDateTime();
       } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9][0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ssZ (Padro UTC com TimeZone sem separador, ex: -0700)
+        // yyyy-MM-dd'T'HH:mm:ssZ (Padrão UTC com TimeZone sem separador, ex: -0700)
         return OffsetDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")).toLocalDateTime();
       } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9]")) {
         // yyyy-MM-dd'T'HH:mm:ss (UTC Sem TimeZone)
@@ -245,17 +245,17 @@ public class RUTypes {
   /**
    * Interpreta diversos formatos de data e os converte para {@link LocalDateTime}, ajustando a data para o timezone especificado.
    * <p>
-   * Os formatos suportados so os mesmos do mtodo {@link #parseLocalDateTime(String)}, porm, caso a data contenha um timezone, ele ser convertido para o {@link ZoneId} fornecido.
+   * Os formatos suportados são os mesmos do método {@link #parseLocalDateTime(String)}, porém, caso a data contenha um timezone, ele será convertido para o {@link ZoneId} fornecido.
    * </p>
    *
    * <p>
-   * <b>Diferena para {@link #parseLocalDateTime(String)}:</b> Esse mtodo converte o horrio para o fuso horrio recebido como argumento.
+   * <b>Diferença para {@link #parseLocalDateTime(String)}:</b> Esse método converte o horário para o fuso horário recebido como argumento.
    * </p>
    *
    * @param date String representando a data.
    * @param zoneID O {@link ZoneId} para o qual a data deve ser convertida.
    * @return {@link LocalDateTime} correspondente no timezone especificado.
-   * @throws RFWException Se o formato da data no for reconhecido ou se ocorrer um erro de converso.
+   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
    */
   public static LocalDateTime parseLocalDateTime(String date, ZoneId zoneID) throws RFWException {
     if (date == null || date.trim().isEmpty()) {
@@ -267,10 +267,10 @@ public class RUTypes {
         // yyyy-MM-dd (Apenas Data)
         return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay(zoneID).toLocalDateTime();
       } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9]:[0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ssXXX (Padro UTC com TimeZone, ex: -07:00)
+        // yyyy-MM-dd'T'HH:mm:ssXXX (Padrão UTC com TimeZone, ex: -07:00)
         return OffsetDateTime.parse(date, DateTimeFormatter.ISO_OFFSET_DATE_TIME).atZoneSameInstant(zoneID).toLocalDateTime();
       } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9][0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ssZ (Padro UTC com TimeZone sem separador, ex: -0700)
+        // yyyy-MM-dd'T'HH:mm:ssZ (Padrão UTC com TimeZone sem separador, ex: -0700)
         return OffsetDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")).atZoneSameInstant(zoneID).toLocalDateTime();
       } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9]")) {
         // yyyy-MM-dd'T'HH:mm:ss (UTC Sem TimeZone)
@@ -289,7 +289,7 @@ public class RUTypes {
   /**
    * Interpreta diversos formatos de data e os converte para {@link Date}.
    * <p>
-   * Os formatos suportados so:
+   * Os formatos suportados são:
    * <ul>
    * <li>"yyyy-MM-dd'T'HH:mm:ssXXX" Exemplo: "2024-02-20T15:30:00-07:00" (UTC com timezone)</li>
    * <li>"yyyy-MM-dd'T'HH:mm:ssZ" Exemplo: "2024-02-20T15:30:00-0700" (UTC com timezone)</li>
@@ -298,22 +298,22 @@ public class RUTypes {
    * <li>"dd/MM/yyyy" Exemplo: "20/02/2024"</li>
    * </ul>
    * <p>
-   * Se um timezone for especificado na string, ele ser utilizado para calcular o timestamp UTC. Caso contrrio, assume-se o fuso horrio do sistema.
+   * Se um timezone for especificado na string, ele será utilizado para calcular o timestamp UTC. Caso contrário, assume-se o fuso horário do sistema.
    *
    * <p>
-   * <b>Diferena para {@link #parseDate(String, ZoneId)}:</b> Esse mtodo apenas faz o parser da data sem converso de timezone.
+   * <b>Diferença para {@link #parseDate(String, ZoneId)}:</b> Esse método apenas faz o parser da data sem conversão de timezone.
    * </p>
    *
    * @param date String representando a data.
    * @return {@link Date} correspondente.
-   * @throws RFWException Se o formato da data no for reconhecido ou se ocorrer um erro de converso.
+   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
    */
   public static Date parseDate(String date) throws RFWException {
     return parseDate(date, RFW.getZoneId());
   }
 
   /**
-   * Este mtodo utiliza o SimpleDateFormat para realizar o parse de uma Date e j tratar a exception.
+   * Este método utiliza o SimpleDateFormat para realizar o parse de uma Date e j tratar a exception.
    *
    * @param value
    * @return
@@ -329,17 +329,17 @@ public class RUTypes {
   /**
    * Interpreta diversos formatos de data e os converte para {@link Date}, ajustando a data para o timezone especificado.
    * <p>
-   * Os formatos suportados so os mesmos do mtodo {@link #parseDate(String)}, porm, caso a data contenha um timezone, ele ser convertido para o {@link ZoneId} fornecido.
+   * Os formatos suportados são os mesmos do método {@link #parseDate(String)}, porém, caso a data contenha um timezone, ele será convertido para o {@link ZoneId} fornecido.
    * </p>
    *
    * <p>
-   * <b>Diferena para {@link #parseDate(String)}:</b> Esse mtodo converte o horrio para o fuso horrio recebido como argumento.
+   * <b>Diferença para {@link #parseDate(String)}:</b> Esse método converte o horário para o fuso horário recebido como argumento.
    * </p>
    *
    * @param date String representando a data.
    * @param zoneID O {@link ZoneId} para o qual a data deve ser convertida.
    * @return {@link Date} correspondente no timezone especificado.
-   * @throws RFWException Se o formato da data no for reconhecido ou se ocorrer um erro de converso.
+   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
    */
   public static Date parseDate(String date, ZoneId zoneID) throws RFWException {
     if (date == null || date.trim().isEmpty()) {
@@ -376,7 +376,7 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo utiliza o SimpleDateFormat para formar o Date em um TimeStamp com o patern 'yyyyMMddHHmmss'.
+   * Este método utiliza o SimpleDateFormat para formar o Date em um TimeStamp com o patern 'yyyyMMddHHmmss'.
    *
    * @param value
    * @return
@@ -393,7 +393,7 @@ public class RUTypes {
    * Realiza o parser da String utilizando o {@link DateTimeFormatter}.<Br>
    *
    * @param date Data no formato String que precisa ser lida.
-   * @param pattern no Formado especificado pela documentao do mtodo {@link DateTimeFormatter#ofPattern(String)}.
+   * @param pattern no Formado especificado pela documentação do método {@link DateTimeFormatter#ofPattern(String)}.
    * @return Objeto Com o a Data.
    * @throws RFWException
    */
@@ -405,7 +405,7 @@ public class RUTypes {
   /**
    * Interpreta diversos formatos de data e os converte para {@link LocalDate}.
    * <p>
-   * Os formatos suportados so:
+   * Os formatos suportados são:
    * <ul>
    * <li>"yyyy-MM-dd'T'HH:mm:ssXXX" Exemplo: "2024-02-20T15:30:00-07:00" (UTC com timezone)</li>
    * <li>"yyyy-MM-dd'T'HH:mm:ssZ" Exemplo: "2024-02-20T15:30:00-0700" (UTC com timezone)</li>
@@ -414,34 +414,34 @@ public class RUTypes {
    * <li>"dd/MM/yyyy" Exemplo: "20/02/2024"</li>
    * </ul>
    * <p>
-   * Se um timezone for especificado na string, ele ser utilizado apenas para converso do timestamp UTC, mas o retorno ser um {@link LocalDate} sem informaes de horrio.
+   * Se um timezone for especificado na string, ele será utilizado apenas para conversão do timestamp UTC, mas o retornão será um {@link LocalDate} sem informações de horário.
    *
    * <p>
-   * <b>Diferena para {@link #parseLocalDate(String, ZoneId)}:</b> Esse mtodo apenas faz o parser da data sem converso de timezone.
+   * <b>Diferença para {@link #parseLocalDate(String, ZoneId)}:</b> Esse método apenas faz o parser da data sem conversão de timezone.
    * </p>
    *
    * @param date String representando a data.
    * @return {@link LocalDate} correspondente.
-   * @throws RFWException Se o formato da data no for reconhecido ou se ocorrer um erro de converso.
+   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
    */
   public static LocalDate parseLocalDate(String date) throws RFWException {
     return parseLocalDate(date, RFW.getZoneId());
   }
 
   /**
-   * Interpreta diversos formatos de data e os converte para {@link LocalDate}, ajustando a data para o timezone especificado antes de descartar a informao de horrio.
+   * Interpreta diversos formatos de data e os converte para {@link LocalDate}, ajustando a data para o timezone especificado antes de descartar a informação de horário.
    * <p>
-   * Os formatos suportados so os mesmos do mtodo {@link #parseLocalDate(String)}, porm, caso a data contenha um timezone, ele ser convertido para o {@link ZoneId} fornecido antes de extrair a data.
+   * Os formatos suportados são os mesmos do método {@link #parseLocalDate(String)}, porém, caso a data contenha um timezone, ele será convertido para o {@link ZoneId} fornecido antes de extrair a data.
    * </p>
    *
    * <p>
-   * <b>Diferena para {@link #parseLocalDate(String)}:</b> Esse mtodo converte o horrio para o fuso horrio recebido como argumento antes de extrair a data.
+   * <b>Diferença para {@link #parseLocalDate(String)}:</b> Esse método converte o horário para o fuso horário recebido como argumento antes de extrair a data.
    * </p>
    *
    * @param date String representando a data.
    * @param zoneID O {@link ZoneId} para o qual a data deve ser convertida antes de extrair a parte da data.
-   * @return {@link LocalDate} correspondente sem informaes de horrio.
-   * @throws RFWException Se o formato da data no for reconhecido ou se ocorrer um erro de converso.
+   * @return {@link LocalDate} correspondente sem informações de horário.
+   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
    */
   public static LocalDate parseLocalDate(String date, ZoneId zoneID) throws RFWException {
     if (date == null || date.trim().isEmpty()) {
@@ -474,7 +474,7 @@ public class RUTypes {
 
   /**
    * Converte um {@link LocalDate} para {@link Date} utilizando a Zona do Sistema {@link RFW#getZoneId()}.<br>
-   * considerada a hora zero do dia passaro na converso para a Zona.
+   * considerada a hora zero do dia passaro na conversão para a Zona.
    *
    * @param date Valor de Entrada a ser convertido
    * @return Valor Convertido
@@ -485,7 +485,7 @@ public class RUTypes {
 
   /**
    * Converte um {@link LocalDate} para {@link Date} utilizando uma Zona personalizada.<br>
-   * considerada a hora zero do dia passaro na converso para a Zona.
+   * considerada a hora zero do dia passaro na conversão para a Zona.
    *
    * @param date Valor de Entrada a ser convertido
    * @param zone Zona a ser utilizada.
@@ -518,7 +518,7 @@ public class RUTypes {
   }
 
   /**
-   * Converte um {@link Date} em {@link LocalDate}. Utiliza a Zona padro do sistema
+   * Converte um {@link Date} em {@link LocalDate}. Utiliza a Zona padrão do sistema
    *
    * @param date Data a ser convertida em LocalDate
    * @return LocalDate conforme a zona, ou nulo caso a entrada seja nula.
@@ -532,7 +532,7 @@ public class RUTypes {
    * Converte um {@link Date} em {@link LocalDate}.
    *
    * @param date Data a ser convertida em LocalDate
-   * @param zone Zone para correta converso entre objetos temporais.
+   * @param zone Zone para correta conversão entre objetos temporais.
    * @return LocalDate conforme a zona, ou nulo caso date == null;
    */
   public static LocalDate parseLocalDate(Date date, ZoneId zone) {
@@ -541,7 +541,7 @@ public class RUTypes {
   }
 
   /**
-   * Converte um {@link java.sql.Date} em {@link LocalDate}. Utiliza a Zona padro do sistema
+   * Converte um {@link java.sql.Date} em {@link LocalDate}. Utiliza a Zona padrão do sistema
    *
    * @param date Data a ser convertida em LocalDate
    * @return LocalDate conforme a zona ou null caso a entrada seja nula.
@@ -566,7 +566,7 @@ public class RUTypes {
    * Converte a {@link Timestamp} recebida para o LocalDate<br>
    *
    * @param stamp Data a ser convertida.
-   * @return Objeto com o dia/horrio convertido para a zona solicitada, ou nulo se receber uma entrada nula.
+   * @return Objeto com o dia/horário convertido para a zona solicitada, ou nulo se receber uma entrada nula.
    * @throws RFWException
    */
   public static LocalDate parseLocalDate(Timestamp stamp) throws RFWException {
@@ -575,7 +575,7 @@ public class RUTypes {
   }
 
   /**
-   * Converte um {@link Date} em {@link LocalDateTime}. Utiliza a Zona padro do sistema {@link RFWDeprec#getZoneId()}.
+   * Converte um {@link Date} em {@link LocalDateTime}. Utiliza a Zona padrão do sistema {@link RFWDeprec#getZoneId()}.
    *
    * @param date Data a ser convertida em LocalDateTime
    * @return LocalDateTime conforme a zona, ou nulo se receber o valor nulo como parmetro.
@@ -589,7 +589,7 @@ public class RUTypes {
    * Converte um {@link Date} em {@link LocalDateTime}.
    *
    * @param date Data a ser convertida em LocalDateTime
-   * @param zone Zone para correta converso entre objetos temporais.
+   * @param zone Zone para correta conversão entre objetos temporais.
    * @return LocalDateTime conforme a zona, ou nulo caso a entrada seja nula.
    */
   public static LocalDateTime parseLocalDateTime(Date date, ZoneId zone) {
@@ -601,7 +601,7 @@ public class RUTypes {
    * Converte a {@link Timestamp} recebida para o LocalDateTime<br>
    *
    * @param stamp DataHora a ser convertida.
-   * @return Objeto com o dia/horrio convertido para a zona solicitada, ou nulo se receber uma entrada nula.
+   * @return Objeto com o dia/horário convertido para a zona solicitada, ou nulo se receber uma entrada nula.
    * @throws RFWException
    */
   public static LocalDateTime parseLocalDateTime(Timestamp stamp) throws RFWException {
@@ -610,12 +610,12 @@ public class RUTypes {
   }
 
   /**
-   * Formata um nmero decimal para String com o nmero de casas decimais especificado, usando o Locale informado.
+   * Formata um número decimal para String com o número de casas decimais especificado, usando o Locale informado.
    *
    * @param number Nmero a ser formatado
-   * @param locale Localizao usada para formatao
+   * @param locale Localização usada para formatação
    * @param maxDecimals Nmero mximo de casas decimais
-   * @return Representao em String formatada do nmero
+   * @return Representação em String formatada do número
    */
   public static String formatDecimalWithoutTrailingZeros(BigDecimal number, Locale locale, int maxDecimals) {
     if (number == null) {
@@ -630,7 +630,7 @@ public class RUTypes {
   /**
    * Converte de forma segura um valor genrico para {@link Integer}.<br>
    * <p>
-   * Regras de converso:
+   * Regras de conversão:
    * <ul>
    * <li>Se o valor for {@code null}, retorna {@code null}.</li>
    * <li>Se o valor j for {@link Integer}, retornado diretamente.</li>
@@ -639,12 +639,12 @@ public class RUTypes {
    * <li>Se o valor for {@link Boolean}, retorna {@code 1} para {@code true} e {@code 0} para {@code false}.</li>
    * </ul>
    * <p>
-   * Caso o tipo no seja suportado, uma {@link RFWValidationException} lanada.<br>
-   * Em situaes de falha interna de converso (por exemplo, falha em parsers de baixo nvel), uma {@link RFWCriticalException} poder ser propagada pelos mtodos delegados.
+   * Caso o tipo não seja suportado, uma {@link RFWValidationException} lançada.<br>
+   * Em situações de falha interna de conversão (por exemplo, falha em parsers de baixo nvel), uma {@link RFWCriticalException} poder ser propagada pelos métodos delegados.
    *
    * @param value Valor de entrada a ser convertido.
    * @return Valor convertido em {@link Integer} ou {@code null} caso o valor de entrada seja {@code null} ou {@link String} vazia.
-   * @throws RFWException Em caso de erro de validao ou falha crtica de converso.
+   * @throws RFWException Em caso de erro de validação ou falha crítica de conversão.
    */
   public static Integer parseInteger(Object value) throws RFWException {
     // Trata nulo imediatamente
@@ -673,24 +673,24 @@ public class RUTypes {
     }
 
     // Tipo no suportado
-    throw new RFWValidationException("Tipo '${0}' no suportado para converso em Integer.", new String[] { value.getClass().getName() });
+    throw new RFWValidationException("Tipo '${0}' no suportado para conversão em Integer.", new String[] { value.getClass().getName() });
   }
 
   /**
    * Converte de forma segura um {@link String} para {@link Integer}.<br>
    * <p>
-   * Regras de converso:
+   * Regras de conversão:
    * <ul>
-   * <li>Se o valor for {@code null} ou vazio (apenas espaos), retorna {@code null}.</li>
-   * <li>O formato aceito opcionalmente sinalizado (+/-) seguido apenas de dgitos.</li>
-   * <li>Se o formato no for suportado, lana {@link RFWValidationException}.</li>
-   * <li>Se ocorrer falha interna no parser (por exemplo, estouro no tratado), lana {@link RFWCriticalException}.</li>
-   * <li>Se o valor estiver fora do intervalo de {@link Integer}, lana {@link RFWValidationException}.</li>
+   * <li>Se o valor for {@code null} ou vazio (apenas espaços), retorna {@code null}.</li>
+   * <li>O formato aceito opcionalmente sinalizado (+/-) seguido apenas de dígitos.</li>
+   * <li>Se o formato não for suportado, lança {@link RFWValidationException}.</li>
+   * <li>Se ocorrer falha interna no parser (por exemplo, estouro no tratado), lança {@link RFWCriticalException}.</li>
+   * <li>Se o valor estiver fora do intervalo de {@link Integer}, lança {@link RFWValidationException}.</li>
    * </ul>
    *
    * @param value Valor textual a ser convertido.
    * @return Valor convertido em {@link Integer} ou {@code null} caso o valor de entrada seja {@code null} ou vazio.
-   * @throws RFWException Em caso de erro de validao ou falha crtica de converso.
+   * @throws RFWException Em caso de erro de validação ou falha crítica de conversão.
    */
   public static Integer parseInteger(String value) throws RFWException {
     // Trata nulo ou vazio como nulo
@@ -703,23 +703,23 @@ public class RUTypes {
       return null;
     }
 
-    // Valida formato aceito: sinal opcional seguido de dgitos
+    // Valida formato aceito: sinal opcional seguido de dígitos
     if (!trimmed.matches("[+-]?[0-9]+")) {
-      throw new RFWValidationException("Formato de nmero inteiro no suportado. Valor: '${0}'", new String[] { value });
+      throw new RFWValidationException("Formato de número inteiro no suportado. Valor: '${0}'", new String[] { value });
     }
 
     try {
       // Usa Long para detectar facilmente estouro de faixa do int
       long longValue = Long.parseLong(trimmed);
 
-      // Validao de faixa do tipo Integer
+      // Validação de faixa do tipo Integer
       if (longValue < Integer.MIN_VALUE || longValue > Integer.MAX_VALUE) {
         throw new RFWValidationException("Valor fora do intervalo suportado para Integer. Valor: '${0}'", new String[] { value });
       }
 
       return (int) longValue;
     } catch (NumberFormatException e) {
-      // Falha interna de converso numrica
+      // Falha interna de conversão numrica
       throw new RFWCriticalException("Falha ao converter valor para Integer. Valor '${0}'.", new String[] { value }, e);
     }
   }
@@ -727,20 +727,20 @@ public class RUTypes {
   /**
    * Converte de forma segura um {@link Number} para {@link Integer}.<br>
    * <p>
-   * Regras de converso:
+   * Regras de conversão:
    * <ul>
    * <li>Se o valor for {@code null}, retorna {@code null}.</li>
    * <li>Se o valor j for {@link Integer}, retornado diretamente.</li>
-   * <li>Para tipos integrais ({@link Long}, {@link Short}, {@link Byte}), feita validao de faixa.</li>
+   * <li>Para tipos integrais ({@link Long}, {@link Short}, {@link Byte}), feita validação de faixa.</li>
    * <li>Para {@link BigDecimal}, exigido que o valor seja inteiro (sem casas decimais) e dentro da faixa de {@link Integer}.</li>
-   * <li>Para {@link Double} e {@link Float}, exigido que o valor no seja NaN/Infinito, seja inteiro (sem parte fracionria) e esteja na faixa de {@link Integer}.</li>
+   * <li>Para {@link Double} e {@link Float}, exigido que o valor não seja NaN/Infinito, seja inteiro (sem parte fracionária) e esteja na faixa de {@link Integer}.</li>
    * </ul>
    * <p>
-   * Situaes em que o valor no puder ser representado como inteiro sem perda de preciso ou estiver fora da faixa geram {@link RFWValidationException}.
+   * Situações em que o valor não puder ser representado como inteiro sem perda de precisão ou estiver fora da faixa geram {@link RFWValidationException}.
    *
-   * @param value Valor numrico a ser convertido.
+   * @param value Valor numérico a ser convertido.
    * @return Valor convertido em {@link Integer} ou {@code null} caso o valor de entrada seja {@code null}.
-   * @throws RFWException Em caso de erro de validao ou falha crtica de converso interna.
+   * @throws RFWException Em caso de erro de validação ou falha crítica de conversão interna.
    */
   public static Integer parseInteger(Number value) throws RFWException {
     // Trata nulo
@@ -772,18 +772,18 @@ public class RUTypes {
         }
         return (int) longValue;
       } catch (ArithmeticException e) {
-        // Tem parte fracionria ou est fora da faixa de long
-        throw new RFWValidationException("Valor decimal no pode ser convertido para Integer sem perda de preciso. Valor: '${0}'", new String[] { bd.toPlainString() });
+        // Tem parte fracionária ou está fora da faixa de long
+        throw new RFWValidationException("Valor decimal não pode ser convertido para Integer sem perda de precisão. Valor: '${0}'", new String[] { bd.toPlainString() });
       }
     }
 
-    // Double/Float: verifica NaN, infinito, parte fracionria e faixa
+    // Double/Float: verifica NaN, infinito, parte fracionária e faixa
     if (value instanceof Double || value instanceof Float) {
       double d = value.doubleValue();
 
-      // NaN ou infinito no so valores vlidos
+      // NaN ou infinito não são valores válidos
       if (Double.isNaN(d) || Double.isInfinite(d)) {
-        throw new RFWValidationException("Valor numrico invlido para converso em Integer. Valor: '${0}'", new String[] { String.valueOf(value) });
+        throw new RFWValidationException("Valor numérico inválido para conversão em Integer. Valor: '${0}'", new String[] { String.valueOf(value) });
       }
 
       // Verifica faixa de Integer
@@ -793,13 +793,13 @@ public class RUTypes {
 
       // Exige que seja inteiro (sem casas decimais)
       if (Math.rint(d) != d) {
-        throw new RFWValidationException("Valor decimal no pode ser convertido para Integer sem perda de preciso. Valor: '${0}'", new String[] { String.valueOf(value) });
+        throw new RFWValidationException("Valor decimal não pode ser convertido para Integer sem perda de precisão. Valor: '${0}'", new String[] { String.valueOf(value) });
       }
 
       return (int) d;
     }
 
-    // Qualquer outro subtipo de Number: tenta via long com validao de faixa
+    // Qualquer outro subtipo de Number: tenta via long com validação de faixa
     long longValue = value.longValue();
     if (longValue < Integer.MIN_VALUE || longValue > Integer.MAX_VALUE) {
       throw new RFWValidationException("Valor fora do intervalo suportado para Integer. Valor: '${0}'", new String[] { String.valueOf(value) });
@@ -813,20 +813,20 @@ public class RUTypes {
    * Regras:
    * <ul>
    * <li>Se o valor for {@code null}, vazio ou em branco, retorna {@code null}.</li>
-   * <li>Se o valor no for um nmero inteiro vlido, lana {@link RFWValidationException}.</li>
-   * <li>Se ocorrer falha interna no parser numrico, lana {@link RFWCriticalException}.</li>
+   * <li>Se o valor não for um número inteiro válido, lança {@link RFWValidationException}.</li>
+   * <li>Se ocorrer falha interna no parser numérico, lança {@link RFWCriticalException}.</li>
    * </ul>
    *
    * @param value Valor textual a ser convertido.
    * @return {@link Long} correspondente ou {@code null}.
-   * @throws RFWException Se o valor no for vlido.
+   * @throws RFWException Se o valor não for válido.
    */
   public static Long parseLong(String value) throws RFWException {
     if (value == null || value.trim().isEmpty()) return null;
     try {
       return Long.valueOf(value.trim());
     } catch (NumberFormatException e) {
-      throw new RFWValidationException("Valor invlido para converso em Long: '${0}'", new String[] { value });
+      throw new RFWValidationException("Valor inválido para conversão em Long: '${0}'", new String[] { value });
     } catch (Exception e) {
       throw new RFWCriticalException("Falha inesperada ao converter valor '${0}' para Long.", new String[] { value }, e);
     }
@@ -840,13 +840,13 @@ public class RUTypes {
    * <li>Se o valor for {@code null}, retorna {@code null}.</li>
    * <li>Se o valor for {@link Long}, retorna diretamente.</li>
    * <li>Se o valor for {@link BigDecimal}, deve ser inteiro exato e dentro da faixa de {@link Long}.</li>
-   * <li>Se o valor for {@link Double} ou {@link Float}, deve representar nmero inteiro exato.</li>
-   * <li>Outros tipos numricos (Integer, Short, Byte) so convertidos diretamente.</li>
+   * <li>Se o valor for {@link Double} ou {@link Float}, deve representar número inteiro exato.</li>
+   * <li>Outros tipos numéricos (Integer, Short, Byte) são convertidos diretamente.</li>
    * </ul>
    *
-   * @param value Valor numrico a ser convertido.
+   * @param value Valor numérico a ser convertido.
    * @return {@link Long} correspondente ou {@code null}.
-   * @throws RFWException Se o valor for invlido ou fora da faixa de {@link Long}.
+   * @throws RFWException Se o valor for inválido ou fora da faixa de {@link Long}.
    */
   public static Long parseLong(Number value) throws RFWException {
     if (value == null) return null;
@@ -859,19 +859,19 @@ public class RUTypes {
       try {
         return bd.longValueExact();
       } catch (ArithmeticException e) {
-        throw new RFWValidationException("Valor decimal no  inteiro ou est fora da faixa de Long: '${0}'", new String[] { value.toString() });
+        throw new RFWValidationException("Valor decimal no  inteiro ou está fora da faixa de Long: '${0}'", new String[] { value.toString() });
       }
     }
 
     if (value instanceof Double || value instanceof Float) {
       double d = value.doubleValue();
-      if (Double.isNaN(d) || Double.isInfinite(d)) throw new RFWValidationException("Valor invlido (NaN ou Infinito) para Long: '${0}'", new String[] { value.toString() });
-      if (d % 1 != 0) throw new RFWValidationException("Valor no inteiro para converso em Long: '${0}'", new String[] { value.toString() });
+      if (Double.isNaN(d) || Double.isInfinite(d)) throw new RFWValidationException("Valor inválido (NaN ou Infinito) para Long: '${0}'", new String[] { value.toString() });
+      if (d % 1 != 0) throw new RFWValidationException("Valor no inteiro para conversão em Long: '${0}'", new String[] { value.toString() });
       if (d < Long.MIN_VALUE || d > Long.MAX_VALUE) throw new RFWValidationException("Valor fora da faixa de Long: '${0}'", new String[] { value.toString() });
       return (long) d;
     }
 
-    throw new RFWValidationException("Tipo numrico no suportado para converso em Long: '${0}'", new String[] { value.getClass().getName() });
+    throw new RFWValidationException("Tipo numérico no suportado para conversão em Long: '${0}'", new String[] { value.getClass().getName() });
   }
 
   /**
@@ -883,12 +883,12 @@ public class RUTypes {
    * <li>Se for instncia de {@link Number}, usa {@link #parseLong(Number)}.</li>
    * <li>Se for {@link String}, usa {@link #parseLong(String)}.</li>
    * <li>Se for {@link Boolean}, retorna {@code 1L} para {@code true} e {@code 0L} para {@code false}.</li>
-   * <li>Qualquer outro tipo lana {@link RFWValidationException}.</li>
+   * <li>Qualquer outro tipo lança {@link RFWValidationException}.</li>
    * </ul>
    *
    * @param value Objeto genrico a ser convertido.
    * @return {@link Long} correspondente ou {@code null}.
-   * @throws RFWException Se o tipo no for suportado ou o valor for invlido.
+   * @throws RFWException Se o tipo não for suportado ou o valor for inválido.
    */
   public static Long parseLong(Object value) throws RFWException {
     if (value == null) return null;
@@ -897,7 +897,7 @@ public class RUTypes {
     if (value instanceof String) return parseLong((String) value);
     if (value instanceof Boolean) return ((Boolean) value) ? 1L : 0L;
 
-    throw new RFWValidationException("Tipo no suportado para converso em Long: '${0}'", new String[] { value.getClass().getName() });
+    throw new RFWValidationException("Tipo no suportado para conversão em Long: '${0}'", new String[] { value.getClass().getName() });
   }
 
   /**
@@ -915,20 +915,20 @@ public class RUTypes {
   }
 
   /**
-   * Formata um valor decimal para percentual com o nmero de casas decimais especificado.
+   * Formata um valor decimal para percentual com o número de casas decimais especificado.
    * <p>
    * O valor recebido deve estar em formato decimal (ex: 1.0 = 100%, 0.5 = 50%, 0.1234 = 12,34%).<br>
    * Caso o valor seja {@code null}, ser retornado {@code "0%"}.
    * </p>
    *
    * @param value Valor decimal a ser formatado.
-   * @param decimals Quantidade de casas decimais desejadas na parte fracionria.
-   * @return String representando o valor em formato percentual conforme o nmero de casas solicitado.
+   * @param decimals Quantidade de casas decimais desejadas na parte fracionária.
+   * @return String representando o valor em formato percentual conforme o número de casas solicitado.
    */
   public static String formatToPercentage(Double value, int decimals) {
     double safeValue = (value == null ? 0.0 : value) * 100.0;
 
-    // Gera o padro dinamicamente conforme as casas decimais desejadas
+    // Gera o padrão dinamicamente conforme as casas decimais desejadas
     StringBuilder pattern = new StringBuilder("0");
     if (decimals > 0) {
       pattern.append(".");
@@ -944,10 +944,10 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo arredonda <b>para o lado mais prximo</b> nmeros decimais (double) com um nmero mximo de casas (decimals).
+   * Este método arredonda <b>para o lado mais prximo</b> números decimais (double) com um número mximo de casas (decimals).
    *
    * @param value valor decimal a ser arredondado
-   * @param decimals nmero de casas mximo
+   * @param decimals número de casas mximo
    * @return
    */
   public static Double round(double value, int decimals) {
@@ -957,10 +957,10 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo arredonda <b>para baixo</b> nmeros decimais (double) com um nmero mximo de casas (decimals).
+   * Este método arredonda <b>para baixo</b> números decimais (double) com um número mximo de casas (decimals).
    *
    * @param value valor decimal a ser arredondado
-   * @param decimals nmero de casas mximo
+   * @param decimals número de casas mximo
    * @return
    */
   public static Double roundFloor(double value, int decimals) {
@@ -970,10 +970,10 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo arredonda <b>para cima</b> nmeros decimais (double) com um nmero mximo de casas (decimals).
+   * Este método arredonda <b>para cima</b> números decimais (double) com um número mximo de casas (decimals).
    *
    * @param value valor decimal a ser arredondado
-   * @param decimals nmero de casas mximo
+   * @param decimals número de casas mximo
    * @return
    */
   public static Double roundCeil(double value, int decimals) {
@@ -983,10 +983,10 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo arredonda <b>para o lado mais prximo</b> nmeros decimais (float) com um nmero mximo de casas (decimals).
+   * Este método arredonda <b>para o lado mais prximo</b> números decimais (float) com um número mximo de casas (decimals).
    *
    * @param value valor decimal a ser arredondado
-   * @param decimals nmero de casas mximo
+   * @param decimals número de casas mximo
    * @return
    */
   public static Float round(float value, int decimals) {
@@ -996,10 +996,10 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo arredonda <b>para baixo</b> nmeros decimais (float) com um nmero mximo de casas (decimals).
+   * Este método arredonda <b>para baixo</b> números decimais (float) com um número mximo de casas (decimals).
    *
    * @param value valor decimal a ser arredondado
-   * @param decimals nmero de casas mximo
+   * @param decimals número de casas mximo
    * @return
    */
   public static Float roundFloor(float value, int decimals) {
@@ -1009,10 +1009,10 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo arredonda <b>para cima</b> nmeros decimais (float) com um nmero mximo de casas (decimals).
+   * Este método arredonda <b>para cima</b> números decimais (float) com um número mximo de casas (decimals).
    *
    * @param value valor decimal a ser arredondado
-   * @param decimals nmero de casas mximo
+   * @param decimals número de casas mximo
    * @return
    */
   public static Float roundCeil(float value, int decimals) {
@@ -1022,7 +1022,7 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo formata um {@link LocalDateTime} no padro completo "yyyy-MM-dd'T'HH:mm:ssXXX", utilizando o {@link ZoneOffset} informado.
+   * Este método formata um {@link LocalDateTime} no padrão completo "yyyy-MM-dd'T'HH:mm:ssXXX", utilizando o {@link ZoneOffset} informado.
    *
    * @param dateTime Data/hora a ser formatada (no nula)
    * @param offset Offset a ser utilizado (ex: {@link ZoneOffset#UTC})
@@ -1033,9 +1033,9 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo formata um {@link Date} no padro completo {@code "yyyy-MM-dd'T'HH:mm:ssXXX"}, utilizando a zona padro do sistema {@link RFW#getZoneId()}.
+   * Este método formata um {@link Date} no padrão completo {@code "yyyy-MM-dd'T'HH:mm:ssXXX"}, utilizando a zona padrão do sistema {@link RFW#getZoneId()}.
    * <p>
-   * Observao: quando o offset resultante for UTC (deslocamento zero), o {@link DateTimeFormatter} do Java imprimir {@code Z} ao final, em vez de {@code +00:00}, conforme a especificao ISO-8601.
+   * Observação: quando o offset resultante for UTC (deslocamento zero), o {@link DateTimeFormatter} do Java imprimir {@code Z} ao final, em vez de {@code +00:00}, conforme a especificação ISO-8601.
    * </p>
    *
    * @param date Data a ser formatada (pode ser nula)
@@ -1047,13 +1047,13 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo formata um {@link Date} no padro completo {@code "yyyy-MM-dd'T'HH:mm:ssXXX"}, utilizando a {@link ZoneId} informada.
+   * Este método formata um {@link Date} no padrão completo {@code "yyyy-MM-dd'T'HH:mm:ssXXX"}, utilizando a {@link ZoneId} informada.
    * <p>
-   * Observao: quando o offset resultante for UTC (deslocamento zero), o {@link DateTimeFormatter} do Java imprimir {@code Z} ao final, em vez de {@code +00:00}, conforme a especificao ISO-8601.
+   * Observação: quando o offset resultante for UTC (deslocamento zero), o {@link DateTimeFormatter} do Java imprimir {@code Z} ao final, em vez de {@code +00:00}, conforme a especificação ISO-8601.
    * </p>
    *
    * @param date Data a ser formatada (pode ser nula)
-   * @param zoneId Zona a ser utilizada na converso (no nula)
+   * @param zoneId Zona a ser utilizada na conversão (no nula)
    * @return String com a data/hora formatada ou {@code null} se {@code date} for nulo.
    */
   public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(Date date, ZoneId zoneId) {
@@ -1062,9 +1062,9 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo formata um {@link LocalDateTime} no padro completo {@code "yyyy-MM-dd'T'HH:mm:ssXXX"}, utilizando a zona padro do sistema {@link RFW#getZoneId()}.
+   * Este método formata um {@link LocalDateTime} no padrão completo {@code "yyyy-MM-dd'T'HH:mm:ssXXX"}, utilizando a zona padrão do sistema {@link RFW#getZoneId()}.
    * <p>
-   * Observao: quando o offset resultante for UTC (deslocamento zero), o {@link DateTimeFormatter} do Java imprimir {@code Z} ao final, em vez de {@code +00:00}, conforme a especificao ISO-8601.
+   * Observação: quando o offset resultante for UTC (deslocamento zero), o {@link DateTimeFormatter} do Java imprimir {@code Z} ao final, em vez de {@code +00:00}, conforme a especificação ISO-8601.
    * </p>
    *
    * @param dateTime Data/hora a ser formatada (pode ser nula)
@@ -1076,13 +1076,13 @@ public class RUTypes {
   }
 
   /**
-   * Este mtodo formata um {@link LocalDateTime} no padro completo {@code "yyyy-MM-dd'T'HH:mm:ssXXX"}, utilizando a {@link ZoneId} informada.
+   * Este método formata um {@link LocalDateTime} no padrão completo {@code "yyyy-MM-dd'T'HH:mm:ssXXX"}, utilizando a {@link ZoneId} informada.
    * <p>
-   * Observao: quando o offset resultante for UTC (deslocamento zero), o {@link DateTimeFormatter} do Java imprimir {@code Z} ao final, em vez de {@code +00:00}, conforme a especificao ISO-8601.
+   * Observação: quando o offset resultante for UTC (deslocamento zero), o {@link DateTimeFormatter} do Java imprimir {@code Z} ao final, em vez de {@code +00:00}, conforme a especificação ISO-8601.
    * </p>
    *
    * @param dateTime Data/hora a ser formatada (pode ser nula)
-   * @param zoneId Zona a ser utilizada na converso (no nula)
+   * @param zoneId Zona a ser utilizada na conversão (no nula)
    * @return String com a data/hora formatada ou {@code null} se {@code dateTime} for nulo.
    */
   public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(LocalDateTime dateTime, ZoneId zoneId) {
@@ -1091,10 +1091,10 @@ public class RUTypes {
   }
 
   /**
-   * Formata uma data usando um padro customizado.
+   * Formata uma data usando um padrão customizado.
    *
    * <p>
-   * O parmetro {@code pattern} segue as regras do {@link java.text.SimpleDateFormat}. Abaixo esto os principais termos que podem ser utilizados no padro:
+   * O parmetro {@code pattern} segue as regras do {@link java.text.SimpleDateFormat}. Abaixo esto os principais termos que podem ser utilizados no padrão:
    *
    * <ul>
    * <li><b>y</b> Ano (ex.: yyyy = 2025, yy = 25)</li>
@@ -1107,8 +1107,8 @@ public class RUTypes {
    * <li><b>s</b> Segundos (ex.: ss = 59)</li>
    * <li><b>S</b> Milissegundos (ex.: SSS = 123)</li>
    * <li><b>a</b> AM/PM (ex.: a = PM)</li>
-   * <li><b>z</b> Fuso horrio (ex.: z = BRT, zzzz = Braslia Standard Time)</li>
-   * <li><b>Z</b> Offset numrico do fuso (ex.: -0300)</li>
+   * <li><b>z</b> Fuso horário (ex.: z = BRT, zzzz = Braslia Standard Time)</li>
+   * <li><b>Z</b> Offset numérico do fuso (ex.: -0300)</li>
    * </ul>
    *
    * Exemplos de uso:
@@ -1119,29 +1119,29 @@ public class RUTypes {
    * </ul>
    *
    * @param date Data a ser formatada.
-   * @param pattern Padro de formatao.
+   * @param pattern Padrão de formatação.
    * @return String formatada ou {@code null} caso a data seja nula.
-   * @throws IllegalArgumentException caso o padro seja invlido.
+   * @throws IllegalArgumentException caso o padrão seja inválido.
    */
   public static String formatDate(Date date, String pattern) {
     if (date == null) {
       return null;
     }
     if (pattern == null || pattern.trim().isEmpty()) {
-      throw new IllegalArgumentException("Pattern no pode ser nulo ou vazio");
+      throw new IllegalArgumentException("Pattern não pode ser nulo ou vazio");
     }
     return new java.text.SimpleDateFormat(pattern).format(date);
   }
 
   /**
-   * Converte um {@link BigDecimal} em sua representao sem notao cientfica.
+   * Converte um {@link BigDecimal} em sua representação sem notação cientfica.
    *
    * <p>
    * Retorna {@code null} se o valor informado for {@code null}.
    * </p>
    *
-   * @param value valor numrico a ser convertido
-   * @return representao textual sem notao cientfica ou {@code null} se o valor for {@code null}
+   * @param value valor numérico a ser convertido
+   * @return representação textual sem notação cientfica ou {@code null} se o valor for {@code null}
    */
   public static String parseString(BigDecimal value) {
     return value != null ? value.toPlainString() : null;
@@ -1151,11 +1151,11 @@ public class RUTypes {
    * Converte um {@link Long} em uma {@link String}.
    *
    * <p>
-   * Retorna {@code null} caso o valor informado tambm seja {@code null}.
+   * Retorna {@code null} caso o valor informado também seja {@code null}.
    * </p>
    *
    * @param value valor long a ser convertido
-   * @return representao textual do valor ou {@code null} se o valor for {@code null}
+   * @return representação textual do valor ou {@code null} se o valor for {@code null}
    */
   public static String parseString(Long value) {
     return value != null ? value.toString() : null;
@@ -1165,11 +1165,11 @@ public class RUTypes {
    * Converte um {@link Integer} em uma {@link String}.
    *
    * <p>
-   * Retorna {@code null} caso o valor informado tambm seja {@code null}.
+   * Retorna {@code null} caso o valor informado também seja {@code null}.
    * </p>
    *
    * @param value valor inteiro a ser convertido
-   * @return representao textual do valor ou {@code null} se o valor for {@code null}
+   * @return representação textual do valor ou {@code null} se o valor for {@code null}
    */
   public static String parseString(Integer value) {
     return value != null ? value.toString() : null;
@@ -1179,11 +1179,11 @@ public class RUTypes {
    * Converte um {@link Float} em uma {@link String}.
    *
    * <p>
-   * Retorna {@code null} caso o valor informado tambm seja {@code null}.
+   * Retorna {@code null} caso o valor informado também seja {@code null}.
    * </p>
    *
    * @param value valor float a ser convertido
-   * @return representao textual do valor ou {@code null} se o valor for {@code null}
+   * @return representação textual do valor ou {@code null} se o valor for {@code null}
    */
   public static String parseString(Float value) {
     return value != null ? value.toString() : null;
@@ -1193,11 +1193,11 @@ public class RUTypes {
    * Converte um {@link Double} em uma {@link String}.
    *
    * <p>
-   * Retorna {@code null} caso o valor informado tambm seja {@code null}.
+   * Retorna {@code null} caso o valor informado também seja {@code null}.
    * </p>
    *
    * @param value valor double a ser convertido
-   * @return representao textual do valor ou {@code null} se o valor for {@code null}
+   * @return representação textual do valor ou {@code null} se o valor for {@code null}
    */
   public static String parseString(Double value) {
     return value != null ? value.toString() : null;
@@ -1207,25 +1207,25 @@ public class RUTypes {
    * Converte de forma segura um {@link String} para {@link BigDecimal}.
    *
    * <p>
-   * <b>Regras de converso:</b>
+   * <b>Regras de conversão:</b>
    * </p>
    * <ul>
-   * <li>Se o valor for {@code null} ou vazio (apenas espaos), retorna {@code null}.</li>
-   * <li>O formato aceito :
+   * <li>Se o valor for {@code null} ou vazio (apenas espaços), retorna {@code null}.</li>
+   * <li>O formato aceito é:
    * <ul>
    * <li>Sinal opcional (+/-)</li>
-   * <li>Parte inteira composta apenas por dgitos</li>
-   * <li>Opcionalmente um ponto decimal seguido apenas de dgitos</li>
+   * <li>Parte inteira composta apenas por dígitos</li>
+   * <li>Opcionalmente um ponto decimal seguido apenas de dígitos</li>
    * </ul>
    * Ex.: {@code "10"}, {@code "-5"}, {@code "12.34"}, {@code "+0.99"}.</li>
-   * <li>NO aceita formato com vrgula.</li>
-   * <li>Se o formato no for suportado, lana {@link RFWValidationException}.</li>
-   * <li>Se ocorrer falha interna no parser (ex.: valor muito grande ou formato inesperado), lana {@link RFWCriticalException}.</li>
+   * <li>NÃO aceita formato com vírgula.</li>
+   * <li>Se o formato não for suportado, lança {@link RFWValidationException}.</li>
+   * <li>Se ocorrer falha interna no parser (ex.: valor muito grande ou formato inesperado), lança {@link RFWCriticalException}.</li>
    * </ul>
    *
    * @param value Valor textual a ser convertido.
-   * @return Instncia de {@link BigDecimal} representando o valor ou {@code null} se entrada nula ou vazia.
-   * @throws RFWException Em caso de erro de validao ou falha crtica de converso.
+   * @return Instância de {@link BigDecimal} representando o valor ou {@code null} se entrada nula ou vazia.
+   * @throws RFWException Em caso de erro de validação ou falha crítica de conversão.
    */
   public static BigDecimal parseBigDecimal(String value) throws RFWException {
     if (value == null) {
@@ -1237,18 +1237,44 @@ public class RUTypes {
       return null;
     }
 
-    // Regex: sinal opcional, dgitos obrigatrios, decimal opcional com dgitos
+    // Regex: sinal opcional, dígitos obrigatórios, decimal opcional com dígitos
     // Aceita: 123, -10, +50, 1.23, -0.50, +12.0001
     if (!trimmed.matches("[+-]?\\d+(\\.\\d+)?")) {
-      throw new RFWValidationException("Formato numrico invlido para BigDecimal. Valor recebido: '${0}'", new String[] { value });
+      throw new RFWValidationException("Formato numérico inválido para BigDecimal. Valor recebido: '${0}'", new String[] { value });
     }
 
     try {
       return new BigDecimal(trimmed);
     } catch (Exception e) {
-      // BigDecimal pode lanar NumberFormatException ou ArithmeticException
+      // BigDecimal pode lançar NumberFormatException ou ArithmeticException
       throw new RFWCriticalException("Falha ao converter valor para BigDecimal. Valor '${0}'.", new String[] { value }, e);
     }
+  }
+
+  /**
+   * Converte uma {@link String} para {@link BigDecimal} definindo a escala desejada.
+   *
+   * <p>
+   * Este método reaproveita a validação de {@link #parseBigDecimal(String)} e, quando um número de casas
+   * decimais é informado, aplica {@link BigDecimal#setScale(int, java.math.RoundingMode)} utilizando o
+   * {@link RFW#getRoundingMode()} configurado no sistema.
+   * </p>
+   *
+   * @param value Texto a ser convertido.
+   * @param decimals Quantidade de casas decimais desejada. Se {@code null}, a escala não é alterada.
+   * @return {@link BigDecimal} convertido ou {@code null} se o texto estiver nulo ou vazio.
+   * @throws RFWException Em caso de validação inválida ou falha ao ajustar a escala.
+   */
+  public static BigDecimal parseBigDecimal(String value, Integer decimals) throws RFWException {
+    BigDecimal parsed = parseBigDecimal(value);
+    if (parsed != null && decimals != null) {
+      try {
+        parsed = parsed.setScale(decimals, RFW.getRoundingMode());
+      } catch (Exception e) {
+        throw new RFWCriticalException("Falha ao ajustar escala do BigDecimal. Valor '${0}', escala '${1}'.", new String[] { value, String.valueOf(decimals) }, e);
+      }
+    }
+    return parsed;
   }
 
 }
