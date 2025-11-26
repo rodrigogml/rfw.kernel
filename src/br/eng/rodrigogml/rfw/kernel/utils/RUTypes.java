@@ -185,6 +185,7 @@ public class RUTypes {
    * @param millis Tempo em milissegundos para ser formatado.
    * @return Tempo formatado conforme o padro informado.
    */
+  public static String formatMillis(String pattern, long millis) {
     SimpleDateFormat sf = new SimpleDateFormat(pattern);
     sf.setTimeZone(TimeZone.getTimeZone("UTC"));
     return sf.format(new Date(millis));
@@ -202,7 +203,7 @@ public class RUTypes {
    * <li>"dd/MM/yyyy" Exemplo: "20/02/2024"</li>
    * </ul>
    * <p>
-   * Quando o timezone est presente na string, ele  ignorado e a data  retornada no horrio local. Se no houver timezone, assume-se o fuso horrio do sistema.
+   * Quando o timezone est presente na string, ele ignorado e a data retornada no horrio local. Se no houver timezone, assume-se o fuso horrio do sistema.
    *
    * <p>
    * <b>Diferena para {@link #parseLocalDateTime(String, ZoneId)}:</b> Esse mtodo apenas interpreta a data sem fazer converso de fusos horrios.
@@ -473,7 +474,7 @@ public class RUTypes {
 
   /**
    * Converte um {@link LocalDate} para {@link Date} utilizando a Zona do Sistema {@link RFW#getZoneId()}.<br>
-   *  considerada a hora zero do dia passaro na converso para a Zona.
+   * considerada a hora zero do dia passaro na converso para a Zona.
    *
    * @param date Valor de Entrada a ser convertido
    * @return Valor Convertido
@@ -484,7 +485,7 @@ public class RUTypes {
 
   /**
    * Converte um {@link LocalDate} para {@link Date} utilizando uma Zona personalizada.<br>
-   *  considerada a hora zero do dia passaro na converso para a Zona.
+   * considerada a hora zero do dia passaro na converso para a Zona.
    *
    * @param date Valor de Entrada a ser convertido
    * @param zone Zona a ser utilizada.
@@ -632,13 +633,13 @@ public class RUTypes {
    * Regras de converso:
    * <ul>
    * <li>Se o valor for {@code null}, retorna {@code null}.</li>
-   * <li>Se o valor j for {@link Integer},  retornado diretamente.</li>
+   * <li>Se o valor j for {@link Integer}, retornado diretamente.</li>
    * <li>Se o valor for {@link Number}, delega para {@link #parseInteger(Number)}.</li>
    * <li>Se o valor for {@link String}, delega para {@link #parseInteger(String)}.</li>
    * <li>Se o valor for {@link Boolean}, retorna {@code 1} para {@code true} e {@code 0} para {@code false}.</li>
    * </ul>
    * <p>
-   * Caso o tipo no seja suportado, uma {@link RFWValidationException}  lanada.<br>
+   * Caso o tipo no seja suportado, uma {@link RFWValidationException} lanada.<br>
    * Em situaes de falha interna de converso (por exemplo, falha em parsers de baixo nvel), uma {@link RFWCriticalException} poder ser propagada pelos mtodos delegados.
    *
    * @param value Valor de entrada a ser convertido.
@@ -651,7 +652,7 @@ public class RUTypes {
       return null;
     }
 
-    // J  Integer, apenas retorna
+    // J Integer, apenas retorna
     if (value instanceof Integer) {
       return (Integer) value;
     }
@@ -681,7 +682,7 @@ public class RUTypes {
    * Regras de converso:
    * <ul>
    * <li>Se o valor for {@code null} ou vazio (apenas espaos), retorna {@code null}.</li>
-   * <li>O formato aceito  opcionalmente sinalizado (+/-) seguido apenas de dgitos.</li>
+   * <li>O formato aceito opcionalmente sinalizado (+/-) seguido apenas de dgitos.</li>
    * <li>Se o formato no for suportado, lana {@link RFWValidationException}.</li>
    * <li>Se ocorrer falha interna no parser (por exemplo, estouro no tratado), lana {@link RFWCriticalException}.</li>
    * <li>Se o valor estiver fora do intervalo de {@link Integer}, lana {@link RFWValidationException}.</li>
@@ -729,10 +730,10 @@ public class RUTypes {
    * Regras de converso:
    * <ul>
    * <li>Se o valor for {@code null}, retorna {@code null}.</li>
-   * <li>Se o valor j for {@link Integer},  retornado diretamente.</li>
-   * <li>Para tipos integrais ({@link Long}, {@link Short}, {@link Byte}),  feita validao de faixa.</li>
-   * <li>Para {@link BigDecimal},  exigido que o valor seja inteiro (sem casas decimais) e dentro da faixa de {@link Integer}.</li>
-   * <li>Para {@link Double} e {@link Float},  exigido que o valor no seja NaN/Infinito, seja inteiro (sem parte fracionria) e esteja na faixa de {@link Integer}.</li>
+   * <li>Se o valor j for {@link Integer}, retornado diretamente.</li>
+   * <li>Para tipos integrais ({@link Long}, {@link Short}, {@link Byte}), feita validao de faixa.</li>
+   * <li>Para {@link BigDecimal}, exigido que o valor seja inteiro (sem casas decimais) e dentro da faixa de {@link Integer}.</li>
+   * <li>Para {@link Double} e {@link Float}, exigido que o valor no seja NaN/Infinito, seja inteiro (sem parte fracionria) e esteja na faixa de {@link Integer}.</li>
    * </ul>
    * <p>
    * Situaes em que o valor no puder ser representado como inteiro sem perda de preciso ou estiver fora da faixa geram {@link RFWValidationException}.
@@ -747,7 +748,7 @@ public class RUTypes {
       return null;
     }
 
-    // J  Integer
+    // J Integer
     if (value instanceof Integer) {
       return (Integer) value;
     }
@@ -1096,18 +1097,18 @@ public class RUTypes {
    * O parmetro {@code pattern} segue as regras do {@link java.text.SimpleDateFormat}. Abaixo esto os principais termos que podem ser utilizados no padro:
    *
    * <ul>
-   * <li><b>y</b>  Ano (ex.: yyyy = 2025, yy = 25)</li>
-   * <li><b>M</b>  Ms (ex.: MM = 03, MMM = Mar, MMMM = Maro)</li>
-   * <li><b>d</b>  Dia do ms (ex.: dd = 09)</li>
-   * <li><b>E</b>  Dia da semana (ex.: EEE = Seg, EEEE = Segunda-feira)</li>
-   * <li><b>H</b>  Hora (023, ex.: HH = 17)</li>
-   * <li><b>h</b>  Hora (112, ex.: hh = 05)</li>
-   * <li><b>m</b>  Minutos (ex.: mm = 07)</li>
-   * <li><b>s</b>  Segundos (ex.: ss = 59)</li>
-   * <li><b>S</b>  Milissegundos (ex.: SSS = 123)</li>
-   * <li><b>a</b>  AM/PM (ex.: a = PM)</li>
-   * <li><b>z</b>  Fuso horrio (ex.: z = BRT, zzzz = Braslia Standard Time)</li>
-   * <li><b>Z</b>  Offset numrico do fuso (ex.: -0300)</li>
+   * <li><b>y</b> Ano (ex.: yyyy = 2025, yy = 25)</li>
+   * <li><b>M</b> Ms (ex.: MM = 03, MMM = Mar, MMMM = Maro)</li>
+   * <li><b>d</b> Dia do ms (ex.: dd = 09)</li>
+   * <li><b>E</b> Dia da semana (ex.: EEE = Seg, EEEE = Segunda-feira)</li>
+   * <li><b>H</b> Hora (023, ex.: HH = 17)</li>
+   * <li><b>h</b> Hora (112, ex.: hh = 05)</li>
+   * <li><b>m</b> Minutos (ex.: mm = 07)</li>
+   * <li><b>s</b> Segundos (ex.: ss = 59)</li>
+   * <li><b>S</b> Milissegundos (ex.: SSS = 123)</li>
+   * <li><b>a</b> AM/PM (ex.: a = PM)</li>
+   * <li><b>z</b> Fuso horrio (ex.: z = BRT, zzzz = Braslia Standard Time)</li>
+   * <li><b>Z</b> Offset numrico do fuso (ex.: -0300)</li>
    * </ul>
    *
    * Exemplos de uso:
