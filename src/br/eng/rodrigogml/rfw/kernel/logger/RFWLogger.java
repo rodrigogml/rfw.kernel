@@ -49,8 +49,7 @@ public final class RFWLogger {
    */
   public static String writeTextLog(RFWLogSeverity severity, String msg, String content, String exPoint, String... tags) {
     StringBuilder builder = new StringBuilder();
-    builder.append('\t').append(RFW.getDateTimeISO()).append(" | ").append(severity.name()).append(": ").append(System.lineSeparator());
-    builder.append(' ').append(System.lineSeparator());
+    builder.append("[").append(RFW.getDateTimeISO()).append(" | ").append(severity.name()).append("] ").append("\r\n");
     builder.append(msg).append(System.lineSeparator());
     if (content != null) {
       builder.append("==================================").append(System.lineSeparator());
@@ -60,7 +59,7 @@ public final class RFWLogger {
     if (exPoint != null) {
       builder.append("\tExpoint: " + exPoint).append(System.lineSeparator());
     }
-    if (tags != null) {
+    if (tags != null && tags.length > 0) {
       builder.append("\tTags:").append(System.lineSeparator());
       for (String tag : tags) {
         builder.append("\t - ").append(tag).append(System.lineSeparator());
