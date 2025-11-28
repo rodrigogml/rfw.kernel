@@ -686,8 +686,8 @@ public class RUDateTime {
       return RUDateTime.getMonthName(locale, RUDateTime.getMonth(startDate)) + "-" + RUDateTime.getYear(startDate);
     }
 
-    String startFormatted = RUTypes.formatToddMMyyyy(startDate);
-    String endFormatted = RUTypes.formatToddMMyyyy(endDate);
+      String startFormatted = RUTypes.formatDateDayMonthYear(startDate);
+      String endFormatted = RUTypes.formatDateDayMonthYear(endDate);
 
     return startFormatted.equals(endFormatted) ? startFormatted : startFormatted + '_' + endFormatted;
   }
