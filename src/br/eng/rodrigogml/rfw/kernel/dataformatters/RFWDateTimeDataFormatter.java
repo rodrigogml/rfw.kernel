@@ -59,7 +59,7 @@ public class RFWDateTimeDataFormatter implements RFWDataFormatter<String, Object
         if (this.mode == 0) { // Data e Hora
           result = ((LocalDateTime) value).format(RFW.getDateTimeFormattter());
         } else if (this.mode == 1) { // Data
-          result = RUTypes.formatTodd_MM_yyyy((LocalDateTime) value);
+          result = RUTypes.formatDateDayMonthYear_Slash((LocalDateTime) value);
         }
       } else {
         throw new RFWRunTimeException("O RFWDataTimeDataFormatter não sabe trabalhar com a classe '" + value.getClass().getCanonicalName() + "'.");

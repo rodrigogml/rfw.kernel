@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -35,8 +36,6 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
  */
 public class RUTypes {
 
-  private static final DateTimeFormatter FORMATTER_yyyy_MM_dd_T_HH_mm_ssXXX = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
-
   /**
    * Classe utilitária exclusivamente estática
    */
@@ -49,7 +48,7 @@ public class RUTypes {
    * @param time
    * @return
    */
-  public static String formatTo235959(Date time) {
+  public static String formatTimeHourMinuteSecond(Date time) {
     return new SimpleDateFormat("HH:mm:ss").format(time);
   }
 
@@ -59,8 +58,18 @@ public class RUTypes {
    * @param date
    * @return
    */
-  public static String formatToyyyyMMddHHmmss(Date date) {
+  public static String formatDateTimeYearMonthDayHourMinuteSecond(Date date) {
     return new SimpleDateFormat("yyyyMMddHHmmss").format(date);
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formatar o LocalDateTime em um TimeStamp com o pattern 'yyyyMMddHHmmss'.
+   *
+   * @param date Data/hora a ser formatada
+   * @return String com a data formatada
+   */
+  public static String formatDateTimeYearMonthDayHourMinuteSecond(LocalDateTime date) {
+    return formatLocalDateTime(date, "yyyyMMddHHmmss");
   }
 
   /**
@@ -69,8 +78,28 @@ public class RUTypes {
    * @param date
    * @return
    */
-  public static String formatToyyyyMMdd(Date date) {
+  public static String formatDateYearMonthDay(Date date) {
     return new SimpleDateFormat("yyyyMMdd").format(date);
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formatar o LocalDateTime com o pattern 'yyyyMMdd'.
+   *
+   * @param date Data/hora a ser formatada
+   * @return String com a data formatada
+   */
+  public static String formatDateYearMonthDay(LocalDateTime date) {
+    return formatLocalDateTime(date, "yyyyMMdd");
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formatar o LocalDate com o pattern 'yyyyMMdd'.
+   *
+   * @param date Data a ser formatada
+   * @return String com a data formatada
+   */
+  public static String formatDateYearMonthDay(LocalDate date) {
+    return formatLocalDate(date, "yyyyMMdd");
   }
 
   /**
@@ -79,8 +108,18 @@ public class RUTypes {
    * @param date
    * @return
    */
-  public static String formatToddMMyyyy(Date date) {
+  public static String formatDateDayMonthYear(Date date) {
     return new SimpleDateFormat("ddMMyyyy").format(date);
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formatar o LocalDateTime em um TimeStamp com o pattern 'ddMMyyyy'.
+   *
+   * @param date Data/hora a ser formatada
+   * @return String com a data formatada
+   */
+  public static String formatDateDayMonthYear(LocalDateTime date) {
+    return formatLocalDateTime(date, "ddMMyyyy");
   }
 
   /**
@@ -89,8 +128,18 @@ public class RUTypes {
    * @param date
    * @return
    */
-  public static String formatToddMMyyyyHHmmss(Date date) {
+  public static String formatDateTimeDayMonthYearHourMinuteSecond(Date date) {
     return new SimpleDateFormat("ddMMyyyyHHmmss").format(date);
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formatar o LocalDateTime em um TimeStamp com o pattern 'ddMMyyyyHHmmss'.
+   *
+   * @param date Data/hora a ser formatada
+   * @return String com a data formatada
+   */
+  public static String formatDateTimeDayMonthYearHourMinuteSecond(LocalDateTime date) {
+    return formatLocalDateTime(date, "ddMMyyyyHHmmss");
   }
 
   /**
@@ -99,7 +148,7 @@ public class RUTypes {
    * @param date
    * @return
    */
-  public static String formatTodd_MM_yyyy_HH_mm_ss(Date date) {
+  public static String formatDateTimeDayMonthYearHourMinuteSecond_Slash(Date date) {
     return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
   }
 
@@ -109,8 +158,18 @@ public class RUTypes {
    * @param date
    * @return
    */
-  public static String formatTodd_MM_yyyy_HH_mm_ss(LocalDateTime date) {
+  public static String formatDateTimeDayMonthYearHourMinuteSecond_Slash(LocalDateTime date) {
     return formatLocalDateTime(date, "dd/MM/yyyy HH:mm:ss");
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formatar o Date em um formato completo com o pattern 'dd/MM/yyyy'.
+   *
+   * @param date
+   * @return
+   */
+  public static String formatDateDayMonthYear_Slash(Date date) {
+    return new SimpleDateFormat("dd/MM/yyyy").format(date);
   }
 
   /**
@@ -119,7 +178,7 @@ public class RUTypes {
    * @param date
    * @return
    */
-  public static String formatTodd_MM_yyyy(LocalDateTime date) {
+  public static String formatDateDayMonthYear_Slash(LocalDateTime date) {
     return formatLocalDateTime(date, "dd/MM/yyyy");
   }
 
@@ -129,7 +188,7 @@ public class RUTypes {
    * @param date
    * @return
    */
-  public static String formatTodd_MM_yyyy(LocalDate date) {
+  public static String formatDateDayMonthYear_Slash(LocalDate date) {
     return formatLocalDate(date, "dd/MM/yyyy");
   }
 
@@ -139,8 +198,29 @@ public class RUTypes {
    * @param dLastConsult
    * @return
    */
-  public static String formatTo235959(long timemillis) {
-    return formatTo235959(new Date(timemillis));
+  public static String formatTimeHourMinuteSecond(long timemillis) {
+    return formatTimeHourMinuteSecond(new Date(timemillis));
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formatar o LocalDateTime apenas no horário com o pattern '23:59:59', ignorando
+   * qualquer que seja a data.
+   *
+   * @param dateTime
+   * @return
+   */
+  public static String formatTimeHourMinuteSecond(LocalDateTime dateTime) {
+    return formatLocalDateTime(dateTime, "HH:mm:ss");
+  }
+
+  /**
+   * Este método utiliza o SimpleDateFormat para formatar o LocalTime apenas no horário com o pattern '23:59:59'.
+   *
+   * @param time
+   * @return
+   */
+  public static String formatTimeHourMinuteSecond(LocalTime time) {
+    return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
   }
 
   /**
@@ -173,7 +253,7 @@ public class RUTypes {
    * @param date Objeto LocalDate com a data a formatar.
    * @return String com o dado formatado.
    */
-  public static String formatToddMMyyyy(LocalDate date) {
+  public static String formatDateDayMonthYear(LocalDate date) {
     return formatLocalDate(date, "ddMMyyyy");
   }
 
@@ -1049,7 +1129,8 @@ public class RUTypes {
    * @return String com a data/hora formatada
    */
   public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(LocalDateTime dateTime, ZoneOffset offset) {
-    return dateTime.atOffset(offset).format(FORMATTER_yyyy_MM_dd_T_HH_mm_ssXXX);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
+    return dateTime.atOffset(offset).format(formatter);
   }
 
   /**
@@ -1063,7 +1144,8 @@ public class RUTypes {
    */
   public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(Date date) {
     if (date == null) return null;
-    return date.toInstant().atZone(RFW.getZoneId()).format(FORMATTER_yyyy_MM_dd_T_HH_mm_ssXXX);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
+    return date.toInstant().atZone(RFW.getZoneId()).format(formatter);
   }
 
   /**
@@ -1078,7 +1160,8 @@ public class RUTypes {
    */
   public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(Date date, ZoneId zoneId) {
     if (date == null) return null;
-    return date.toInstant().atZone(zoneId).format(FORMATTER_yyyy_MM_dd_T_HH_mm_ssXXX);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
+    return date.toInstant().atZone(zoneId).format(formatter);
   }
 
   /**
@@ -1092,7 +1175,8 @@ public class RUTypes {
    */
   public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(LocalDateTime dateTime) {
     if (dateTime == null) return null;
-    return dateTime.atZone(RFW.getZoneId()).format(FORMATTER_yyyy_MM_dd_T_HH_mm_ssXXX);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
+    return dateTime.atZone(RFW.getZoneId()).format(formatter);
   }
 
   /**
@@ -1107,7 +1191,8 @@ public class RUTypes {
    */
   public static String formatToyyyy_MM_dd_T_HH_mm_ssXXX(LocalDateTime dateTime, ZoneId zoneId) {
     if (dateTime == null) return null;
-    return dateTime.atZone(zoneId).format(FORMATTER_yyyy_MM_dd_T_HH_mm_ssXXX);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
+    return dateTime.atZone(zoneId).format(formatter);
   }
 
   /**
