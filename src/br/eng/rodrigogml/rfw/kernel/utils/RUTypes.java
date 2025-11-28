@@ -1295,4 +1295,74 @@ public class RUTypes {
     return parsed;
   }
 
+  /**
+   * Converts a {@link Date} into a string using the pattern {@code "yyyy/MM/dd"}.
+   *
+   * <p>
+   * The output always follows the four-digit year, two-digit month, and two-digit day format, separated by slashes.
+   * </p>
+   *
+   * @param date the date to format; must not be {@code null}
+   * @return the formatted date string in the pattern {@code yyyy/MM/dd}
+   * @throws IllegalArgumentException if {@code date} is {@code null}
+   */
+  public static String formatToyyyy_MM_dd(Date date) {
+    return new SimpleDateFormat("yyyy/MM/dd").format(date);
+  }
+
+  /**
+   * Converte um objeto {@link Date} em uma string usando o padrão {@code "yyyy-MM-dd"}.
+   *
+   * <p>
+   * O resultado segue o formato: ano com quatro dígitos, mês com dois dígitos e dia com dois dígitos, separados por hífens.
+   * </p>
+   *
+   * @param date a data a ser formatada; não deve ser {@code null}
+   * @return a data formatada no padrão {@code yyyy-MM-dd}
+   * @throws IllegalArgumentException se {@code date} for {@code null}
+   */
+  public static String formatToYYYY_MM_DDHyphen(Date date) {
+    return new SimpleDateFormat("yyyy-MM-dd").format(date);
+  }
+
+  /**
+   * Converte um {@link LocalDateTime} em uma string usando o padrão {@code "yyyy/MM/dd"}.
+   *
+   * @param dateTime o objeto a ser formatado; não deve ser {@code null}
+   * @return data formatada em {@code yyyy/MM/dd}
+   */
+  public static String formatToYYYY_MM_DD(LocalDateTime dateTime) {
+    return dateTime.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+  }
+
+  /**
+   * Converte um {@link LocalDateTime} em uma string usando o padrão {@code "yyyy-MM-dd"}.
+   *
+   * @param dateTime o objeto a ser formatado; não deve ser {@code null}
+   * @return data formatada em {@code yyyy-MM-dd}
+   */
+  public static String formatToYYYY_MM_DDHyphen(LocalDateTime dateTime) {
+    return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+  }
+
+  /**
+   * Converte um {@link LocalDate} em uma string usando o padrão {@code "yyyy/MM/dd"}.
+   *
+   * @param date o objeto a ser formatado; não deve ser {@code null}
+   * @return data formatada em {@code yyyy/MM/dd}
+   */
+  public static String formatToYYYY_MM_DD(LocalDate date) {
+    return date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+  }
+
+  /**
+   * Converte um {@link LocalDate} em uma string usando o padrão {@code "yyyy-MM-dd"}.
+   *
+   * @param date o objeto a ser formatado; não deve ser {@code null}
+   * @return data formatada em {@code yyyy-MM-dd}
+   */
+  public static String formatToYYYY_MM_DDHyphen(LocalDate date) {
+    return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+  }
+
 }
