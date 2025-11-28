@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -30,48 +31,81 @@ import br.eng.rodrigogml.rfw.kernel.exceptions.RFWValidationException;
 public class RUTypesTest {
 
   @Test
-  public void t00_formatTo235959() {
+  public void t00_formatTimeHourMinuteSecond() {
     TimeZone tz = TimeZone.getDefault(); // Recupera o TImeZone da máquina
     int offset = tz.getOffset(0); // Recupera o offset do timezone da máquina para o UTC (Date sempre está em UTC)
     Date date = new Date(-offset); // Cria a data com a hora zero no timezone da máquina.
-    assertEquals("00:00:00", RUTypes.formatTo235959(date));
+    assertEquals("00:00:00", RUTypes.formatTimeHourMinuteSecond(date));
 
     long millis = 23 * 60 * 60 * 1000L + 59 * 60 * 1000L + 59 * 1000L;
-    assertEquals("23:59:59", RUTypes.formatTo235959(millis - offset));
+    assertEquals("23:59:59", RUTypes.formatTimeHourMinuteSecond(millis - offset));
+
+    LocalDateTime time = LocalDateTime.ofInstant(new Date(millis - offset).toInstant(), ZoneId.systemDefault());
+    assertEquals("23:59:59", RUTypes.formatTimeHourMinuteSecond(time));
+    assertEquals("23:59:59", RUTypes.formatTimeHourMinuteSecond(time.toLocalTime()));
   }
 
   @Test
-  public void t01_formatToyyyyMMddHHmmss() {
+  public void t01_formatDateTimeYearMonthDayHourMinuteSecond() {
     Date date = new Date(1700000000000L);
-    assertEquals(new SimpleDateFormat("yyyyMMddHHmmss").format(date), RUTypes.formatToyyyyMMddHHmmss(date));
-  }
-
-  @Test
-  public void t02_formatToyyyyMMdd() {
-    Date date = new Date(1700000000000L);
-    assertEquals(new SimpleDateFormat("yyyyMMdd").format(date), RUTypes.formatToyyyyMMdd(date));
-  }
-
-  @Test
-  public void t03_formatToddMMyyyy() {
-    Date date = new Date(1700000000000L);
-    assertEquals(new SimpleDateFormat("ddMMyyyy").format(date), RUTypes.formatToddMMyyyy(date));
-  }
-
-  @Test
-  public void t04_formatToddMMyyyyHHmmss() {
-    Date date = new Date(1700000000000L);
-    assertEquals(new SimpleDateFormat("ddMMyyyyHHmmss").format(date), RUTypes.formatToddMMyyyyHHmmss(date));
-  }
-
-  @Test
-  public void t05_formatTodd_MM_yyyy_HH_mm_ss() {
-    Date date = new Date(1700000000000L);
-    String expected = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
-    assertEquals(expected, RUTypes.formatTodd_MM_yyyy_HH_mm_ss(date));
+    String expected = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
+    assertEquals(expected, RUTypes.formatDateTimeYearMonthDayHourMinuteSecond(date));
 
     LocalDateTime ldt = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
-    assertEquals(expected, RUTypes.formatTodd_MM_yyyy_HH_mm_ss(ldt));
+    assertEquals(expected, RUTypes.formatDateTimeYearMonthDayHourMinuteSecond(ldt));
+  }
+
+  @Test
+  public void t02_formatDateYearMonthDay() {
+    Date date = new Date(1700000000000L);
+    String expected = new SimpleDateFormat("yyyyMMdd").format(date);
+    assertEquals(expected, RUTypes.formatDateYearMonthDay(date));
+
+    LocalDateTime ldt = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+    assertEquals(expected, RUTypes.formatDateYearMonthDay(ldt));
+    assertEquals(expected, RUTypes.formatDateYearMonthDay(ldt.toLocalDate()));
+  }
+
+  @Test
+  public void t03_formatDateDayMonthYear() {
+    Date date = new Date(1700000000000L);
+    String expected = new SimpleDateFormat("ddMMyyyy").format(date);
+    assertEquals(expected, RUTypes.formatDateDayMonthYear(date));
+
+    LocalDateTime ldt = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+    assertEquals(expected, RUTypes.formatDateDayMonthYear(ldt));
+    assertEquals(expected, RUTypes.formatDateDayMonthYear(ldt.toLocalDate()));
+  }
+
+  @Test
+  public void t04_formatDateTimeDayMonthYearHourMinuteSecond() {
+    Date date = new Date(1700000000000L);
+    String expected = new SimpleDateFormat("ddMMyyyyHHmmss").format(date);
+    assertEquals(expected, RUTypes.formatDateTimeDayMonthYearHourMinuteSecond(date));
+
+    LocalDateTime ldt = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+    assertEquals(expected, RUTypes.formatDateTimeDayMonthYearHourMinuteSecond(ldt));
+  }
+
+  @Test
+  public void t05_formatDateTimeDayMonthYearHourMinuteSecond_Slash() {
+    Date date = new Date(1700000000000L);
+    String expected = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
+    assertEquals(expected, RUTypes.formatDateTimeDayMonthYearHourMinuteSecond_Slash(date));
+
+    LocalDateTime ldt = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+    assertEquals(expected, RUTypes.formatDateTimeDayMonthYearHourMinuteSecond_Slash(ldt));
+  }
+
+  @Test
+  public void t05_formatDateDayMonthYear_Slash() {
+    Date date = new Date(1700000000000L);
+    String expected = new SimpleDateFormat("dd/MM/yyyy").format(date);
+    assertEquals(expected, RUTypes.formatDateDayMonthYear_Slash(date));
+
+    LocalDateTime ldt = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+    assertEquals(expected, RUTypes.formatDateDayMonthYear_Slash(ldt));
+    assertEquals(expected, RUTypes.formatDateDayMonthYear_Slash(ldt.toLocalDate()));
   }
 
   @Test
@@ -87,9 +121,9 @@ public class RUTypesTest {
   }
 
   @Test
-  public void t08_formatToddMMyyyyLocalDate() {
+  public void t08_formatDateDayMonthYearLocalDate() {
     LocalDate date = LocalDate.of(2024, 2, 20);
-    assertEquals("20022024", RUTypes.formatToddMMyyyy(date));
+    assertEquals("20022024", RUTypes.formatDateDayMonthYear(date));
   }
 
   @Test
