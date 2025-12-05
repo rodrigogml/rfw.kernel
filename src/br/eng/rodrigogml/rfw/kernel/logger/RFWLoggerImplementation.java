@@ -142,6 +142,17 @@ public interface RFWLoggerImplementation {
   }
 
   /**
+   * Realiza o log de mensagens específicas para o Desenvolvedor.<br>
+   * A diferença entre este método e o objetivo do método {@link #logDebug(String)} é a possibilidade de que as mensagens registradas como Severity DEV podem ser enviadas para o desenvolvedor de forma ativa, ou registradas em separado.<br>
+   * Permite que sejam criados mensagens específicas para o desenvolvedor, não apenas para rastrear DEBUG em casos de exception.<Br>
+   *
+   * @param msg Mensagem a ser registrada
+   */
+  public default void logDev(String msg) {
+    log(RFWLogSeverity.DEV, msg, null, null);
+  }
+
+  /**
    * Realiza o log com a prioridade DEBUG.
    *
    * @param msg Mensagem a ser registrada
@@ -179,11 +190,25 @@ public interface RFWLoggerImplementation {
   }
 
   /**
-   * Realiza o log de uma mensagem para os desenvolvedores, registrando alguma informação para melhoria do código no futuro.
+   * Realiza o log de mensagens específicas para o Desenvolvedor.<br>
+   * A diferença entre este método e o objetivo do método {@link #logDebug(String)} é a possibilidade de que as mensagens registradas como Severity DEV podem ser enviadas para o desenvolvedor de forma ativa, ou registradas em separado.<br>
+   * Permite que sejam criados mensagens específicas para o desenvolvedor, não apenas para rastrear DEBUG em casos de exception.<Br>
    *
    * @param msg Mensagem a ser registrada
    * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags são utilizadas para ajudar a filtrar vários eventos de uma mesma natureza, não jogue informações que só aparecerão em um único evento por vez nas tags. Cria um log de debug ou info para isso.
    */
+  public default void logDev(String msg, String... tags) {
+    log(RFWLogSeverity.DEV, msg, null, null, tags);
+  }
+
+  /**
+   * Realiza o log de uma mensagem para os desenvolvedores, registrando alguma informação para melhoria do código no futuro.
+   *
+   * @param msg Mensagem a ser registrada
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags são utilizadas para ajudar a filtrar vários eventos de uma mesma natureza, não jogue informações que só aparecerão em um único evento por vez nas tags. Cria um log de debug ou info para isso.
+   * @deprecated Utilize os métodos {@link #logDev(String)}.
+   */
+  @Deprecated
   public default void logImprovement(String msg, String... tags) {
     log(RFWLogSeverity.DEV, msg, null, null, tags);
   }

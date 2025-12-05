@@ -152,6 +152,18 @@ public final class RFWLogger {
   }
 
   /**
+   * Realiza o log de mensagens específicas para o Desenvolvedor.<br>
+   * A diferença entre este método e o objetivo do método {@link #logDebug(String)} é a possibilidade de que as mensagens registradas como Severity DEV podem ser enviadas para o desenvolvedor de forma ativa, ou registradas em separado.<br>
+   * Permite que sejam criados mensagens específicas para o desenvolvedor, não apenas para rastrear DEBUG em casos de exception.<Br>
+   * A implementação padrão deste método loga automaticamente o Stack de tamanho 10.
+   *
+   * @param msg Mensagem a ser registrada
+   */
+  public final static void logDev(String msg) {
+    impl.logDev(msg);
+  }
+
+  /**
    * Realiza o log com a prioridade INFO
    *
    * @param msg Mensagem a ser registrada
@@ -164,7 +176,9 @@ public final class RFWLogger {
    * Realiza o log de uma mensagem para os desenvolvedores, registrando alguma informação para melhoria do código no futuro.
    *
    * @param msg Mensagem a ser registrada
+   * @deprecated Utilize os métodos {@link #logDev(String)}.
    */
+  @Deprecated
   public final static void logImprovement(String msg) {
     impl.logImprovement(msg);
   }
@@ -180,11 +194,26 @@ public final class RFWLogger {
   }
 
   /**
-   * Realiza o log de uma mensagem para os desenvolvedores, registrando alguma informação para melhoria do código no futuro.
+   * Realiza o log de mensagens específicas para o Desenvolvedor.<br>
+   * A diferença entre este método e o objetivo do método {@link #logDebug(String)} é a possibilidade de que as mensagens registradas como Severity DEV podem ser enviadas para o desenvolvedor de forma ativa, ou registradas em separado.<br>
+   * Permite que sejam criados mensagens específicas para o desenvolvedor, não apenas para rastrear DEBUG em casos de exception.<Br>
+   * A implementação padrão deste método loga automaticamente o Stack de tamanho 10.
    *
    * @param msg Mensagem a ser registrada
    * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags são utilizadas para ajudar a filtrar vários eventos de uma mesma natureza, não jogue informações que só aparecerão em um único evento por vez nas tags. Cria um log de debug ou info para isso.
    */
+  public final static void logDev(String msg, String... tags) {
+    impl.logDev(msg, tags);
+  }
+
+  /**
+   * Realiza o log de uma mensagem para os desenvolvedores, registrando alguma informação para melhoria do código no futuro.
+   *
+   * @param msg Mensagem a ser registrada
+   * @param tags permite que se adicione tags particulares ao Log. Tenha em mente que Tags são utilizadas para ajudar a filtrar vários eventos de uma mesma natureza, não jogue informações que só aparecerão em um único evento por vez nas tags. Cria um log de debug ou info para isso.
+   * @deprecated Utilize os métodos {@link #logDev(String)}.
+   */
+  @Deprecated
   public final static void logImprovement(String msg, String... tags) {
     impl.logImprovement(msg, tags);
   }
