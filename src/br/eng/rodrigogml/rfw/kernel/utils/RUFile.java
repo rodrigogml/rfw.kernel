@@ -845,6 +845,14 @@ public class RUFile {
     file.mkdirs(); // Força criar os diretórios caso não existam
   }
 
+  public static void createPath(Path path) throws RFWException {
+    try {
+      Files.createDirectories(path);
+    } catch (IOException e) {
+      throw new RFWCriticalException("Falha ao criar diretório solicitado!", new String[] { path.toString() }, e);
+    }
+  }
+
   /**
    * Este método verifica a existência dos diretórios do caminho ddo arquivo passado, caso não exista ainda, o cria.<br>
    * <b>Este método aceita o caminho completo incluindo o nome do arquivo, e garante que sua pasta seja criada. Caso tenha apenas os nomes dos diretórios utilize o {@link #createPath(String)}</b>
@@ -925,4 +933,5 @@ public class RUFile {
       }
     }
   }
+
 }
