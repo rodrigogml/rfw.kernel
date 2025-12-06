@@ -75,6 +75,28 @@ public class RUFile {
    *
    * @param file Arquivo para Escrita
    * @param fileContent Conteúdo a ser escrito dentro do arquivo.
+   * @throws RFWException
+   */
+  public static void writeFileContent(File file, InputStream inputStream) throws RFWException {
+    try (FileOutputStream writer = new FileOutputStream(file)) {
+
+      byte[] buffer = new byte[8192];
+      int bytesRead;
+
+      while ((bytesRead = inputStream.read(buffer)) != -1) {
+        writer.write(buffer, 0, bytesRead);
+      }
+
+    } catch (Throwable e) {
+      throw new RFWWarningException("Não foi possível abrir o arquivo para escrita: '${0}'", new String[] { file.getAbsolutePath() }, e);
+    }
+  }
+
+  /**
+   * Escreve o conteúdo de texto em um arquivo de forma binária.
+   *
+   * @param file Arquivo para Escrita
+   * @param fileContent Conteúdo a ser escrito dentro do arquivo.
    * @param append Indica se devemos anexar o conteúdo no conteúdo já existente do arquivo (true) ou se devemos sobreescrever o conteúdo atual (false).
    * @throws RFWException
    */

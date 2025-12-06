@@ -1113,6 +1113,33 @@ public class RUString {
   }
 
   /**
+   * Quebra o conteúdo em linhas de tamanho exato, de forma abrupta, ignorando espaços e sem preservar palavras.
+   *
+   * Exemplo: content = "ABCDEFGHIJK", maxLength = 5 Resultado: ["ABCDE", "FGHIJ", "K"]
+   *
+   * @param content Conteúdo a ser quebrado.
+   * @param maxLength Tamanho exato de cada linha.
+   * @return Array de String contendo as linhas criadas.
+   */
+  public static String[] breakLineAbrupt(String content, int maxLength) {
+    if (content == null) return new String[0];
+    if (maxLength <= 0) return new String[] { content };
+
+    List<String> lines = new ArrayList<>();
+
+    int start = 0;
+    int length = content.length();
+
+    while (start < length) {
+      int end = Math.min(start + maxLength, length);
+      lines.add(content.substring(start, end));
+      start += maxLength;
+    }
+
+    return lines.toArray(new String[0]);
+  }
+
+  /**
    * Escreve um valor por extenso. Apesar de aceitar um BigDecimal por causa do tamanho dos números, os valores fracionários serão simplesmente ignorados.
    *
    * @param value Valor a ser transformado por extenso.
