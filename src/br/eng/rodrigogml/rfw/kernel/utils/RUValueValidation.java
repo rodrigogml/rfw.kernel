@@ -1525,7 +1525,7 @@ public class RUValueValidation {
   public static String calcDVGenericMod11(String value) throws RFWException {
     value = RUString.removeNonDigits(value);
     if (value == null || !value.matches("[0-9]+")) {
-      throw new RFWValidationException("RFW_000050");
+      throw new RFWValidationException("É esperado apenas uma entrada com dígitos. O valor '${0}' é inválido!", new String[] { value });
     }
 
     int[] base = { 2, 3, 4, 5, 6, 7, 8, 9 };
