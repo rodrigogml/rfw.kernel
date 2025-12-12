@@ -770,10 +770,7 @@ public final class PreProcess {
    * @return o menor valor não nulo ou nulo se todos os valores forem nulos.
    */
   public static BigDecimal min(BigDecimal... values) {
-    return Arrays.stream(values)
-        .filter(value -> value != null)
-        .min(BigDecimal::compareTo)
-        .orElse(null);
+    return Arrays.stream(values).filter(value -> value != null).min(BigDecimal::compareTo).orElse(null);
   }
 
   /**
@@ -783,10 +780,7 @@ public final class PreProcess {
    * @return o menor valor não nulo ou nulo se todos os valores forem nulos.
    */
   public static Double min(Double... values) {
-    return Arrays.stream(values)
-        .filter(value -> value != null)
-        .min(Double::compareTo)
-        .orElse(null);
+    return Arrays.stream(values).filter(value -> value != null).min(Double::compareTo).orElse(null);
   }
 
   /**
@@ -796,10 +790,7 @@ public final class PreProcess {
    * @return o menor valor não nulo ou nulo se todos os valores forem nulos.
    */
   public static Integer min(Integer... values) {
-    return Arrays.stream(values)
-        .filter(value -> value != null)
-        .min(Integer::compareTo)
-        .orElse(null);
+    return Arrays.stream(values).filter(value -> value != null).min(Integer::compareTo).orElse(null);
   }
 
   /**
@@ -809,10 +800,7 @@ public final class PreProcess {
    * @return o menor valor não nulo ou nulo se todos os valores forem nulos.
    */
   public static Long min(Long... values) {
-    return Arrays.stream(values)
-        .filter(value -> value != null)
-        .min(Long::compareTo)
-        .orElse(null);
+    return Arrays.stream(values).filter(value -> value != null).min(Long::compareTo).orElse(null);
   }
 
   /**
@@ -822,10 +810,7 @@ public final class PreProcess {
    * @return o menor valor não nulo ou nulo se todos os valores forem nulos.
    */
   public static Float min(Float... values) {
-    return Arrays.stream(values)
-        .filter(value -> value != null)
-        .min(Float::compareTo)
-        .orElse(null);
+    return Arrays.stream(values).filter(value -> value != null).min(Float::compareTo).orElse(null);
   }
 
   /**
@@ -835,10 +820,7 @@ public final class PreProcess {
    * @return o menor valor não nulo ou nulo se todos os valores forem nulos.
    */
   public static Short min(Short... values) {
-    return Arrays.stream(values)
-        .filter(value -> value != null)
-        .min(Short::compareTo)
-        .orElse(null);
+    return Arrays.stream(values).filter(value -> value != null).min(Short::compareTo).orElse(null);
   }
 
   /**
@@ -848,10 +830,7 @@ public final class PreProcess {
    * @return o maior valor não nulo ou nulo se todos os valores forem nulos.
    */
   public static BigDecimal max(BigDecimal... values) {
-    return Arrays.stream(values)
-        .filter(value -> value != null)
-        .max(BigDecimal::compareTo)
-        .orElse(null);
+    return Arrays.stream(values).filter(value -> value != null).max(BigDecimal::compareTo).orElse(null);
   }
 
   /**
@@ -861,10 +840,7 @@ public final class PreProcess {
    * @return o maior valor não nulo ou nulo se todos os valores forem nulos.
    */
   public static Double max(Double... values) {
-    return Arrays.stream(values)
-        .filter(value -> value != null)
-        .max(Double::compareTo)
-        .orElse(null);
+    return Arrays.stream(values).filter(value -> value != null).max(Double::compareTo).orElse(null);
   }
 
   /**
@@ -874,10 +850,7 @@ public final class PreProcess {
    * @return o maior valor não nulo ou nulo se todos os valores forem nulos.
    */
   public static Integer max(Integer... values) {
-    return Arrays.stream(values)
-        .filter(value -> value != null)
-        .max(Integer::compareTo)
-        .orElse(null);
+    return Arrays.stream(values).filter(value -> value != null).max(Integer::compareTo).orElse(null);
   }
 
   /**
@@ -887,10 +860,7 @@ public final class PreProcess {
    * @return o maior valor não nulo ou nulo se todos os valores forem nulos.
    */
   public static Long max(Long... values) {
-    return Arrays.stream(values)
-        .filter(value -> value != null)
-        .max(Long::compareTo)
-        .orElse(null);
+    return Arrays.stream(values).filter(value -> value != null).max(Long::compareTo).orElse(null);
   }
 
   /**
@@ -900,10 +870,7 @@ public final class PreProcess {
    * @return o maior valor não nulo ou nulo se todos os valores forem nulos.
    */
   public static Float max(Float... values) {
-    return Arrays.stream(values)
-        .filter(value -> value != null)
-        .max(Float::compareTo)
-        .orElse(null);
+    return Arrays.stream(values).filter(value -> value != null).max(Float::compareTo).orElse(null);
   }
 
   /**
@@ -913,10 +880,7 @@ public final class PreProcess {
    * @return o maior valor não nulo ou nulo se todos os valores forem nulos.
    */
   public static Short max(Short... values) {
-    return Arrays.stream(values)
-        .filter(value -> value != null)
-        .max(Short::compareTo)
-        .orElse(null);
+    return Arrays.stream(values).filter(value -> value != null).max(Short::compareTo).orElse(null);
   }
 
   /**
@@ -926,9 +890,7 @@ public final class PreProcess {
    * @return a soma dos valores não nulos ou nulo se todos os valores forem nulos.
    */
   public static BigDecimal sum(BigDecimal... values) {
-    return Arrays.stream(values)
-        .filter(Objects::nonNull)
-        .reduce(BigDecimal.ZERO, BigDecimal::add);
+    return Arrays.stream(values).filter(Objects::nonNull).reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 
   /**
@@ -938,9 +900,7 @@ public final class PreProcess {
    * @return a soma dos valores não nulos ou nulo se todos os valores forem nulos.
    */
   public static Double sum(Double... values) {
-    return Arrays.stream(values)
-        .filter(Objects::nonNull)
-        .reduce(0.0, Double::sum);
+    return Arrays.stream(values).filter(Objects::nonNull).reduce(0.0, Double::sum);
   }
 
   /**
@@ -950,9 +910,7 @@ public final class PreProcess {
    * @return a soma dos valores não nulos ou nulo se todos os valores forem nulos.
    */
   public static Integer sum(Integer... values) {
-    return Arrays.stream(values)
-        .filter(Objects::nonNull)
-        .reduce(0, Integer::sum);
+    return Arrays.stream(values).filter(Objects::nonNull).reduce(0, Integer::sum);
   }
 
   /**
@@ -962,9 +920,7 @@ public final class PreProcess {
    * @return a soma dos valores não nulos ou nulo se todos os valores forem nulos.
    */
   public static Long sum(Long... values) {
-    return Arrays.stream(values)
-        .filter(Objects::nonNull)
-        .reduce(0L, Long::sum);
+    return Arrays.stream(values).filter(Objects::nonNull).reduce(0L, Long::sum);
   }
 
   /**
@@ -974,9 +930,7 @@ public final class PreProcess {
    * @return a soma dos valores não nulos ou nulo se todos os valores forem nulos.
    */
   public static Float sum(Float... values) {
-    return Arrays.stream(values)
-        .filter(Objects::nonNull)
-        .reduce(0.0f, Float::sum);
+    return Arrays.stream(values).filter(Objects::nonNull).reduce(0.0f, Float::sum);
   }
 
   /**
@@ -986,9 +940,7 @@ public final class PreProcess {
    * @return a soma dos valores não nulos ou nulo se todos os valores forem nulos.
    */
   public static Short sum(Short... values) {
-    return Arrays.stream(values)
-        .filter(Objects::nonNull)
-        .reduce((short) 0, (a, b) -> (short) (a + b));
+    return Arrays.stream(values).filter(Objects::nonNull).reduce((short) 0, (a, b) -> (short) (a + b));
   }
 
   /**
@@ -2467,6 +2419,76 @@ public final class PreProcess {
    */
   public static void requiredNonPositiveCritical(Double value, String message) throws RFWCriticalException {
     if (value != null && value > 0) throw new RFWCriticalException(message);
+  }
+
+  /**
+   * Valida se o objeto passado não é nulo e, se for String, não é vazio após trim().<br>
+   * Caso seja nulo ou vazio, lança {@link RFWValidationException} com mensagem padrão.
+   *
+   * @param value Objeto a ser testado.
+   */
+  public static void requiredNonNullNonEmpty(Object value) throws RFWException {
+    requiredNonNullNonEmpty(value, "RFW_000001");
+  }
+
+  /**
+   * Valida se o objeto passado não é nulo e, se for String, não é vazio após trim().<br>
+   * Caso seja nulo ou vazio, lança {@link RFWValidationException} com mensagem personalizada.
+   *
+   * @param value Objeto a ser testado.
+   * @param msg Mensagem/Código da Exception a ser colocado na Exception.
+   */
+  public static void requiredNonNullNonEmpty(Object value, String msg) throws RFWException {
+    if (value == null) throw new RFWValidationException(msg);
+    if (value instanceof String && ((String) value).trim().isEmpty()) throw new RFWValidationException(msg);
+  }
+
+  /**
+   * Valida se o objeto passado não é nulo e, se for String, não é vazio após trim().<br>
+   * Caso seja nulo ou vazio, lança {@link RFWValidationException} com mensagem personalizada e parâmetros.
+   *
+   * @param value Objeto a ser testado.
+   * @param msg Mensagem/Código da Exception a ser colocado na Exception.
+   * @param params Parâmetros usados como substitutos de ${i} na mensagem de erro.
+   */
+  public static void requiredNonNullNonEmpty(Object value, String msg, String[] params) throws RFWException {
+    if (value == null) throw new RFWValidationException(msg, params);
+    if (value instanceof String && ((String) value).trim().isEmpty()) throw new RFWValidationException(msg, params);
+  }
+
+  /**
+   * Valida se o objeto passado não é nulo e, se for String, não é vazio após trim().<br>
+   * Caso seja nulo ou vazio, lança uma {@link RFWCriticalException} com mensagem padrão. Exception crítica.
+   *
+   * @param value Objeto a ser testado.
+   */
+  public static void requiredNonNullNonEmptyCritical(Object value) throws RFWException {
+    requiredNonNullNonEmptyCritical(value, "RFW_000001");
+  }
+
+  /**
+   * Valida se o objeto passado não é nulo e, se for String, não é vazio após trim().<br>
+   * Caso seja nulo ou vazio, lança uma {@link RFWCriticalException} com mensagem personalizada. Exception crítica.
+   *
+   * @param value Objeto a ser testado.
+   * @param msg Mensagem/Código da Exception a ser colocado na Exception.
+   */
+  public static void requiredNonNullNonEmptyCritical(Object value, String msg) throws RFWException {
+    if (value == null) throw new RFWCriticalException(msg);
+    if (value instanceof String && ((String) value).trim().isEmpty()) throw new RFWCriticalException(msg);
+  }
+
+  /**
+   * Valida se o objeto passado não é nulo e, se for String, não é vazio após trim().<br>
+   * Caso seja nulo ou vazio, lança uma {@link RFWCriticalException} com mensagem personalizada e parâmetros. Exception crítica.
+   *
+   * @param value Objeto a ser testado.
+   * @param msg Mensagem/Código da Exception a ser colocado na Exception.
+   * @param params Parâmetros usados como substitutos de ${i} na mensagem de erro.
+   */
+  public static void requiredNonNullNonEmptyCritical(Object value, String msg, String[] params) throws RFWException {
+    if (value == null) throw new RFWCriticalException(msg, params);
+    if (value instanceof String && ((String) value).trim().isEmpty()) throw new RFWCriticalException(msg, params);
   }
 
 }
