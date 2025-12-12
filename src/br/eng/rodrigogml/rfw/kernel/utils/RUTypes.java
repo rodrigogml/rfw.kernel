@@ -203,8 +203,7 @@ public class RUTypes {
   }
 
   /**
-   * Este método utiliza o SimpleDateFormat para formatar o LocalDateTime apenas no horário com o pattern '23:59:59', ignorando
-   * qualquer que seja a data.
+   * Este método utiliza o SimpleDateFormat para formatar o LocalDateTime apenas no horário com o pattern '23:59:59', ignorando qualquer que seja a data.
    *
    * @param dateTime
    * @return
@@ -1448,6 +1447,130 @@ public class RUTypes {
    */
   public static String formatToYYYY_MM_DDHyphen(LocalDate date) {
     return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+  }
+
+  /**
+   * Retorna o maior valor entre os elementos informados, de forma segura para valores nulos.
+   * <p>
+   * O método ignora valores {@code null} e retorna {@code null} caso o array seja nulo, vazio ou contenha apenas valores nulos.
+   * </p>
+   *
+   * <p>
+   * Funciona para qualquer tipo que implemente {@link Comparable}, como {@link Integer}, {@link Long}, {@link Double}, {@link java.math.BigDecimal}, {@link java.math.BigInteger}, entre outros.
+   * </p>
+   *
+   * @param <T> tipo do valor a ser comparado
+   * @param values valores a serem avaliados
+   * @return o maior valor encontrado ou {@code null} se não houver valores válidos
+   * @since BIS Orion
+   */
+  @SafeVarargs
+  public static <T extends Comparable<? super T>> T max(T... values) {
+    T max = null;
+
+    if (values == null) {
+      return null;
+    }
+
+    for (T value : values) {
+      if (value != null && (max == null || value.compareTo(max) > 0)) {
+        max = value;
+      }
+    }
+
+    return max;
+  }
+
+  /**
+   * Retorna o menor valor entre os elementos informados, de forma segura para valores nulos.
+   * <p>
+   * O método ignora valores {@code null} e retorna {@code null} caso o array seja nulo, vazio ou contenha apenas valores nulos.
+   * </p>
+   *
+   * <p>
+   * Funciona para qualquer tipo que implemente {@link Comparable}, como {@link Integer}, {@link Long}, {@link Double}, {@link java.math.BigDecimal}, {@link java.math.BigInteger}, entre outros.
+   * </p>
+   *
+   * @param <T> tipo do valor a ser comparado
+   * @param values valores a serem avaliados
+   * @return o menor valor encontrado ou {@code null} se não houver valores válidos
+   * @since BIS Orion
+   */
+  @SafeVarargs
+  public static <T extends Comparable<? super T>> T minSafe(T... values) {
+    T min = null;
+
+    if (values == null) {
+      return null;
+    }
+
+    for (T value : values) {
+      if (value != null && (min == null || value.compareTo(min) < 0)) {
+        min = value;
+      }
+    }
+
+    return min;
+  }
+
+  /**
+   * Retorna o valor absoluto do número informado de forma segura para {@code null}.
+   * <p>
+   * Caso o valor seja {@code null}, o método retorna {@code null}.
+   * </p>
+   *
+   * @param value valor inteiro a ser avaliado
+   * @return valor absoluto ou {@code null} se o valor for {@code null}
+   * @since BIS Orion
+   */
+  public static Integer abs(Integer value) {
+    return value == null ? null : Math.abs(value);
+  }
+
+  /**
+   * Retorna o valor absoluto do número informado de forma segura para {@code null}.
+   * <p>
+   * Caso o valor seja {@code null}, o método retorna {@code null}.
+   * </p>
+   *
+   * @param value valor {@link Long} a ser avaliado
+   * @return valor absoluto ou {@code null} se o valor for {@code null}
+   * @since BIS Orion
+   */
+  public static Long abs(Long value) {
+    return value == null ? null : Math.abs(value);
+  }
+
+  /**
+   * Retorna o valor absoluto do número informado de forma segura para {@code null}.
+   * <p>
+   * Caso o valor seja {@code null}, o método retorna {@code null}.
+   * </p>
+   *
+   * <p>
+   * Para {@link Double}, este método preserva as regras do {@link Math#abs(double)}, incluindo o tratamento de {@code NaN}.
+   * </p>
+   *
+   * @param value valor {@link Double} a ser avaliado
+   * @return valor absoluto ou {@code null} se o valor for {@code null}
+   * @since BIS Orion
+   */
+  public static Double abs(Double value) {
+    return value == null ? null : Math.abs(value);
+  }
+
+  /**
+   * Retorna o valor absoluto do número informado de forma segura para {@code null}.
+   * <p>
+   * Caso o valor seja {@code null}, o método retorna {@code null}.
+   * </p>
+   *
+   * @param value valor {@link java.math.BigDecimal} a ser avaliado
+   * @return valor absoluto ou {@code null} se o valor for {@code null}
+   * @since BIS Orion
+   */
+  public static java.math.BigDecimal abs(java.math.BigDecimal value) {
+    return value == null ? null : value.abs();
   }
 
 }

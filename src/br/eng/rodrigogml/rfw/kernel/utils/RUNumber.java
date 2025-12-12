@@ -106,24 +106,6 @@ public class RUNumber {
   }
 
   /**
-   * Retorna o maior número entre os valores passados.
-   *
-   * @param numbers números inteiros para retornar o maior
-   * @return O menor número encontrado. Retorna nulo caso não receba nenhum número, array nulo, ou array só com valores nulos.
-   */
-  public static Integer max(Integer... numbers) {
-    Integer v = null;
-    if (numbers != null) {
-      for (Integer i : numbers) {
-        if (i != null && (v == null || v < i)) {
-          v = i;
-        }
-      }
-    }
-    return v;
-  }
-
-  /**
    * Garante que o BigDecimal terá no mínimo a escala desejada.
    *
    * @param value Valor para ter a escala corrigida

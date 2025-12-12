@@ -607,7 +607,8 @@ public final class RUXML {
       if (in == null) {
         in = RUXML.class.getClassLoader().getResourceAsStream(basepath + schemapath); // Lê durante o deploy "exploded" do ear no eclipse (desenvolvimento)
       }
-
+      // RUFile.writeFileContent("c:\\t\\xsd.xsd",RUFile.readFileContent(in));
+      // new String(RUFile.readFileContent(in), StandardCharsets.UTF_8);
       SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
       factory.setResourceResolver(new SchemaResourceResolver(basepath));
       Schema schema = factory.newSchema(new StreamSource(in));
@@ -878,14 +879,6 @@ class SchemaResourceResolver implements LSResourceResolver {
     @Override
     public void setSystemId(String systemId) {
       this.systemId = systemId;
-    }
-
-    public BufferedInputStream getInputStream() {
-      return inputStream;
-    }
-
-    public void setInputStream(BufferedInputStream inputStream) {
-      this.inputStream = inputStream;
     }
   }
 
