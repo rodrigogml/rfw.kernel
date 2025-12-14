@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -35,6 +37,10 @@ public class RFW {
    * Referência para o File do arquivo de definição de ambiente de desenvolvimento.
    */
   private static File devFile = null;
+
+  private static Object springEnvironment;
+  private static Method springGetProperty;
+  private static Properties fileProperties;
 
   /**
    * Constante com o BigDecimal de "100", para evitar sua construção o tempo todo.<br>
@@ -72,6 +78,10 @@ public class RFW {
    */
   private static boolean shuttingDown = false;
 
+  static {
+    configurePropertySource();
+  }
+
   /**
    * Construtor privado para uma classe completamente estática
    */
@@ -79,6 +89,7 @@ public class RFW {
   }
 
   /**
+   *
    * Inicializa o valor padrão do ZoneId utilizado no Sistema. Gera efeitos em todo o sistema que utilizar a mesma instância estática do RFW.<br>
    * Valor padrão inicial: "America/Sao_Paulo".
    *
@@ -345,6 +356,85 @@ public class RFW {
   }
 
   /**
+   * Obtém o valor de uma propriedade da aplicação.
+   * <p>
+   * Se o Spring estiver disponível, a resolução é delegada ao {@code Environment}, garantindo comportamento idêntico ao framework, incluindo precedência, profiles e variáveis externas.
+   * <p>
+   * Caso contrário, o valor é obtido a partir do arquivo {@code application.properties} previamente carregado e cacheado.
+   *
+   * @param property Nome da propriedade a ser obtida.
+   * @return Valor da propriedade, ou {@code null} se a chave não existir.
+   * @throws RFWException Se nenhuma fonte de propriedades estiver configurada.
+   */
+  public static String getAppProperty(String property) throws RFWException {
+    try {
+      if (springEnvironment != null) {
+        return (String) springGetProperty.invoke(springEnvironment, property);
+      }
+
+      if (fileProperties != null) {
+        return fileProperties.getProperty(property);
+      }
+
+      throw new RFWCriticalException("Nenhum arquivo de propriedades da aplicação econtrado!");
+
+    } catch (RFWException e) {
+      throw e;
+    } catch (Exception e) {
+      throw new RFWCriticalException("Falha ao acessar a propriedade: " + property, e);
+    }
+  }
+
+  /**
+   * Configura a fonte de propriedades da aplicação.
+   * <p>
+   * A estratégia adotada é:
+   * <ol>
+   * <li>Tentar localizar um {@code org.springframework.core.env.Environment} ativo via reflexão, delegando integralmente ao Spring a resolução de propriedades, respeitando sua ordem, sobreposição, profiles e variáveis de ambiente.</li>
+   * <li>Na ausência do Spring, carregar manualmente o arquivo {@code application.properties} seguindo a mesma ordem de precedência do Spring Boot:
+   * <ul>
+   * <li>{@code ./config/application.properties}</li>
+   * <li>{@code ./application.properties}</li>
+   * <li>{@code classpath:/config/application.properties}</li>
+   * <li>{@code classpath:/application.properties}</li>
+   * </ul>
+   * mantendo o comportamento de sobreposição.</li>
+   * </ol>
+   * <p>
+   * Este método é executado uma única vez, no carregamento da classe, e seu resultado é cacheado para evitar custo de reflexão ou I/O em chamadas subsequentes.
+   */
+  private static void configurePropertySource() {
+    try {
+      Object applicationContext = Class.forName("org.springframework.context.ApplicationContextProvider").getMethod("getApplicationContext").invoke(null);
+
+      if (applicationContext != null) {
+        springEnvironment = applicationContext.getClass().getMethod("getEnvironment").invoke(applicationContext);
+        springGetProperty = springEnvironment.getClass().getMethod("getProperty", String.class);
+        return;
+      }
+    } catch (Throwable ignored) {
+    }
+
+    Properties p = new Properties();
+
+    try {
+      File f1 = new File("./config/application.properties");
+      if (f1.exists()) p.load(new FileInputStream(f1));
+
+      File f2 = new File("./application.properties");
+      if (f2.exists()) p.load(new FileInputStream(f2));
+
+      InputStream c1 = Thread.currentThread().getContextClassLoader().getResourceAsStream("config/application.properties");
+      if (c1 != null) p.load(c1);
+
+      InputStream c2 = Thread.currentThread().getContextClassLoader().getResourceAsStream("application.properties");
+      if (c2 != null) p.load(c2);
+    } catch (IOException ignored) {
+    }
+    fileProperties = p.isEmpty() ? null : p;
+  }
+
+  /**
    * Lê uma propriedade dentro do arquivo de definições do ambiente de desenvolvimento utilizando o método {@link #getDevProperty(String)} e verifica se a propriedade existe e está definida como "true".
    *
    * @param property Propriedade a ser verificada
@@ -366,4 +456,78 @@ public class RFW {
     if (RFW.devFile == null) RFW.devFile = new File(System.getProperty("user.home") + File.separatorChar + "rfwdev.properties");
     return RFW.devFile;
   }
+
+  /**
+   * Carrega e retorna um {@link Properties} a partir de um arquivo de propriedades específico, realizando a leitura em tempo real e sem qualquer tipo de cache.
+   * <p>
+   * Quando é informado apenas o nome do arquivo, a busca é realizada seguindo a ordem de precedência adotada pelo Spring Boot:
+   * <ul>
+   * <li>{@code ./config/&lt;propertiesFile&gt;}</li>
+   * <li>{@code ./&lt;propertiesFile&gt;}</li>
+   * <li>{@code classpath:/config/&lt;propertiesFile&gt;}</li>
+   * <li>{@code classpath:/&lt;propertiesFile&gt;}</li>
+   * </ul>
+   * <p>
+   * Caso seja informado um caminho contendo diretórios (relativo ou absoluto), o fallback padrão é ignorado e apenas o arquivo explicitamente indicado é considerado.
+   * <p>
+   * Se o arquivo for alterado entre chamadas, o conteúdo retornado refletirá o estado atual. Se nenhum arquivo for localizado no momento da chamada, é lançada exceção.
+   *
+   * @param propertiesFile Nome do arquivo ou caminho completo do arquivo de propriedades.
+   * @return Instância de {@link Properties} carregada no momento da chamada.
+   * @throws RFWException
+   *           <li>Critical - RFWERR_000001 - Arquivo de properties '${0}' não encontrado!
+   * @since BIS Orion
+   */
+  public static Properties loadPropertiesFrom(String propertiesFile) throws RFWException {
+    Properties p = new Properties();
+    boolean found = false;
+
+    try {
+      File explicitFile = new File(propertiesFile);
+      if (explicitFile.getParent() != null) {
+        if (explicitFile.exists()) {
+          try (FileInputStream in = new FileInputStream(explicitFile)) {
+            p.load(in);
+            found = true;
+          }
+        }
+      } else {
+        File f1 = new File("./config/" + propertiesFile);
+        if (f1.exists()) {
+          try (FileInputStream in = new FileInputStream(f1)) {
+            p.load(in);
+            found = true;
+          }
+        }
+        File f2 = new File("./" + propertiesFile);
+        if (f2.exists()) {
+          try (FileInputStream in = new FileInputStream(f2)) {
+            p.load(in);
+            found = true;
+          }
+        }
+        try (InputStream c1 = Thread.currentThread().getContextClassLoader().getResourceAsStream("config/" + propertiesFile)) {
+          if (c1 != null) {
+            p.load(c1);
+            found = true;
+          }
+        }
+
+        try (InputStream c2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(propertiesFile)) {
+          if (c2 != null) {
+            p.load(c2);
+            found = true;
+          }
+        }
+      }
+
+      if (!found) {
+        throw new RFWCriticalException("RFWERR_000001", new String[] { propertiesFile }); // Arquivo de properties '${0}' não encontrado!
+      }
+      return p;
+    } catch (IOException e) {
+      throw new RFWCriticalException("RFWERR_000002", new String[] { propertiesFile }, e); // Falha ao lêr arquivo de properties '${0}'!
+    }
+  }
+
 }
