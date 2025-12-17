@@ -1259,20 +1259,59 @@ public class RUReflex {
   }
 
   /**
-   * Recupera uma lista de "resources" baseado em um determinado elemento, filtrados por um pattern.
+   * Recupera uma lista de {@code resources} a partir de um elemento do classpath, aplicando um filtro baseado em expressão regular.
+   * <p>
+   * O elemento informado pode representar:
+   * <ul>
+   * <li>Um diretório do sistema de arquivos</li>
+   * <li>Um arquivo JAR</li>
+   * <li>Um diretório com wildcard no formato {@code dir/*}</li>
+   * </ul>
    *
-   * @param element URI do Jar ou Diretório onde podemos encontrar os "resources".
-   * @param pattern Expressão Regular para filtrar os recursos desejados.
-   * @return Lista de URI com os "resources" encontrados.
+   * <h3>Comportamento especial para wildcard ({@code *})</h3> Quando o elemento termina com {@code *}, ele é interpretado como um diretório e todos os arquivos {@code .jar} contidos nesse diretório são automaticamente inspecionados. Esse comportamento replica a forma como a JVM trata {@code dir/*} no classpath, evitando tentativas inválidas de abertura do literal {@code *} como arquivo.
+   *
+   * <h3>Regras gerais</h3>
+   * <ul>
+   * <li>Entradas inexistentes ou inválidas no classpath são ignoradas silenciosamente</li>
+   * <li>Diretórios são varridos recursivamente (conforme implementação de {@code getResourcesFromDirectory})</li>
+   * <li>Arquivos JAR são analisados via {@code getResourcesFromJarFile}</li>
+   * </ul>
+   *
+   * @param element Elemento do classpath a ser inspecionado. Pode ser um diretório, um arquivo JAR ou um diretório com wildcard ({@code *}).
+   * @param pattern Expressão regular utilizada para filtrar os nomes dos recursos encontrados.
+   *
+   * @return Coleção contendo os caminhos (ou URIs) dos recursos encontrados que correspondem ao {@code pattern}. Nunca retorna {@code null}.
    */
   private static Collection<String> getResources(final String element, final Pattern pattern) {
-    final ArrayList<String> retval = new ArrayList<>();
-    final File file = new File(element);
+    final List<String> retval = new ArrayList<>();
+
+    // Trata wildcard no classpath (ex: dir/*)
+    if (element.endsWith("*")) {
+      File dir = new File(element.substring(0, element.length() - 1));
+      if (dir.isDirectory()) {
+        File[] jars = dir.listFiles((d, name) -> name.endsWith(".jar"));
+        if (jars != null) {
+          for (File jar : jars) {
+            retval.addAll(getResourcesFromJarFile(jar, pattern));
+          }
+        }
+      }
+      return retval;
+    }
+
+    File file = new File(element);
+
+    if (!file.exists()) {
+      // ignora entradas inválidas do classpath
+      return retval;
+    }
+
     if (file.isDirectory()) {
       retval.addAll(getResourcesFromDirectory(file, pattern));
-    } else {
+    } else if (element.endsWith(".jar")) {
       retval.addAll(getResourcesFromJarFile(file, pattern));
     }
+
     return retval;
   }
 
@@ -1561,19 +1600,7 @@ public class RUReflex {
     } else if (obj1 != null && obj2 != null) {
       if (!cache.contains(obj1)) {
         cache.add(obj1);
-        if (obj1.getClass().isPrimitive() ||
-            String.class.isInstance(obj1) ||
-            Long.class.isInstance(obj1) ||
-            Integer.class.isInstance(obj1) ||
-            Boolean.class.isInstance(obj1) ||
-            Double.class.isInstance(obj1) ||
-            Float.class.isInstance(obj1) ||
-            Enum.class.isInstance(obj1) ||
-            Date.class.isInstance(obj1) ||
-            LocalDate.class.isInstance(obj1) ||
-            LocalDateTime.class.isInstance(obj1) ||
-            BigDecimal.class.isInstance(obj1) ||
-            Class.class.isInstance(obj1)) {
+        if (obj1.getClass().isPrimitive() || String.class.isInstance(obj1) || Long.class.isInstance(obj1) || Integer.class.isInstance(obj1) || Boolean.class.isInstance(obj1) || Double.class.isInstance(obj1) || Float.class.isInstance(obj1) || Enum.class.isInstance(obj1) || Date.class.isInstance(obj1) || LocalDate.class.isInstance(obj1) || LocalDateTime.class.isInstance(obj1) || BigDecimal.class.isInstance(obj1) || Class.class.isInstance(obj1)) {
           if (!obj1.equals(obj2)) {
             atts.add(RUReflex.getAttributePath("", basepath));
           }

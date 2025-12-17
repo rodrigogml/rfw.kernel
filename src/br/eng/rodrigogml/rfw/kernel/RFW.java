@@ -367,17 +367,33 @@ public class RFW {
    * @throws RFWException Se nenhuma fonte de propriedades estiver configurada.
    */
   public static String getAppProperty(String property) throws RFWException {
+    return getAppProperty(property, null);
+  }
+
+  /**
+   * Obtém o valor de uma propriedade da aplicação.
+   * <p>
+   * Se o Spring estiver disponível, a resolução é delegada ao {@code Environment}, garantindo comportamento idêntico ao framework, incluindo precedência, profiles e variáveis externas.
+   * <p>
+   * Caso contrário, o valor é obtido a partir do arquivo {@code application.properties} previamente carregado e cacheado.
+   *
+   * @param property Nome da propriedade a ser obtida.
+   * @param defaultValue Valor padrão retornado se a propriedade ou o arquivo não for encontrado. Quando este atributo é diferente de nulo, o método não lança exceção se o arquivo não for encontrado.
+   * @return Valor da propriedade, ou {@code null} se a chave não existir.
+   * @throws RFWException Se nenhuma fonte de propriedades estiver configurada e se não houver um valor padrão definido.
+   */
+  public static String getAppProperty(String property, String defaultValue) throws RFWException {
     try {
       if (springEnvironment != null) {
         return (String) springGetProperty.invoke(springEnvironment, property);
       }
-
       if (fileProperties != null) {
-        return fileProperties.getProperty(property);
+        return fileProperties.getProperty(property, defaultValue);
       }
-
+      if (defaultValue != null) {
+        return defaultValue;
+      }
       throw new RFWCriticalException("Nenhum arquivo de propriedades da aplicação econtrado!");
-
     } catch (RFWException e) {
       throw e;
     } catch (Exception e) {
