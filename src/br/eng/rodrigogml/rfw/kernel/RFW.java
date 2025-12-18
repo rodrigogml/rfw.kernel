@@ -2,7 +2,6 @@ package br.eng.rodrigogml.rfw.kernel;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -33,14 +32,9 @@ import br.eng.rodrigogml.rfw.kernel.utils.RUTypes;
  */
 public class RFW {
 
-  /**
-   * Referência para o File do arquivo de definição de ambiente de desenvolvimento.
-   */
-  private static File devFile = null;
-
   private static Object springEnvironment;
   private static Method springGetProperty;
-  private static Properties fileProperties;
+  private static Properties applicationProperties;
 
   /**
    * Constante com o BigDecimal de "100", para evitar sua construção o tempo todo.<br>
@@ -229,14 +223,34 @@ public class RFW {
   }
 
   /**
-   * Esta flag tem o objetivo de permitir que o código tenha trechos que só devem ser executados quando em desenvolvimento, como por exemplo alguns prints para o console, ou mesmo algum trecho de código de testes pode ser encapsulado em um "if" que testa essa variável.<br>
-   * Esta método retorna TRUE, caso encontre um arquivo "rfwdev.txt" na raiz do HD. No caso do Windows: "C:\rfwdev.txt". <Br>
-   * O arquivo não precisa de nenhum conteúdo, apenas existir.
+   * Indica se a aplicação está em ambiente de desenvolvimento.
+   * <p>
+   * Essa flag permite a ativação condicional de trechos de código específicos para desenvolvimento, como logs adicionais, mensagens de depuração ou execuções auxiliares de teste.
+   * <p>
+   * O ambiente de desenvolvimento é considerado ativo quando é possível localizar o arquivo de configuração {@code rfwdev.properties}. A busca pelo arquivo segue o mecanismo padrão de resolução de propriedades da aplicação, incluindo:
+   * <ul>
+   * <li>{@code ./config/rfwdev.properties}</li>
+   * <li>{@code ./rfwdev.properties}</li>
+   * <li>{@code classpath:/config/rfwdev.properties}</li>
+   * <li>{@code classpath:/rfwdev.properties}</li>
+   * <li>{@code ${user.home}/rfwdev.properties} (fallback legado)</li>
+   * </ul>
+   * <p>
+   * O arquivo não precisa conter qualquer conteúdo; sua simples existência é suficiente para caracterizar o ambiente como desenvolvimento.
+   * <p>
+   * Em caso de erro durante a verificação, o método retorna {@code false}. Nenhuma exceção é propagada, garantindo que o comportamento da aplicação em produção não seja impactado.
    *
-   * @return true, se o arquivo for encontrado.
+   * @return {@code true} se o ambiente de desenvolvimento estiver ativo; {@code false} caso contrário.
+   * @since BIS Orion
    */
   public static boolean isDevelopmentEnvironment() {
-    return getDevFile().exists();
+    try {
+      return getDevFile() != null;
+    } catch (RFWException e) {
+      // Não lança nem registra exception por ser um método de teste para desenvolvimento, se não encontrar retornamos false, em caso de falhas ou problemas o desenvolvedor percebe sozinho.
+      // O importante é o código não parar em hipótese alguma durante a produção
+      return false;
+    }
   }
 
   /**
@@ -333,26 +347,39 @@ public class RFW {
   }
 
   /**
-   * Lê uma propriedade dentro do arquivo de definições do ambiente de desenvolvimento, definido em {@link #RFWDEVPROPERTIESFILE}.
+   * Lê uma propriedade definida no arquivo de configuração do ambiente de desenvolvimento.
+   * <p>
+   * O arquivo {@code rfwdev.properties} é localizado utilizando o mesmo mecanismo de busca adotado para configurações da aplicação, incluindo fallback legado. Caso o arquivo não exista, o ambiente não é considerado como desenvolvimento e o método retorna {@code null}.
+   * <p>
+   * O método realiza a leitura em tempo real e sem cache. A ausência da propriedade solicitada também resulta em {@code null}.
    *
    * @param property Nome da propriedade a ser lida.
-   * @return Valor da propriedade encontrada. Nulo se: Não estiver no ambiente de desenvolvimento ({@link #isDevelopmentEnvironment()} retornar falso porque o arquivo não existe); ou a propriedade não existir.
+   * @return Valor da propriedade encontrada, ou {@code null} se o arquivo de desenvolvimento não existir ou se a propriedade não estiver definida.
    * @throws RFWException
+   *           <li>Critical - RFWERR_000002 - Falha ao ler o arquivo de properties.
+   * @since BIS Orion
    */
   public static String getDevProperty(String property) throws RFWException {
-    if (isDevelopmentEnvironment()) {
-      try {
-        Properties properties = new Properties();
-        properties.load(new FileInputStream(getDevFile()));
-        return properties.getProperty(property);
-      } catch (FileNotFoundException e) {
-        // Não deve ser lançado pois o isDevelopmentEnvironment() já testa, a não ser que haja erro de lógica/definição do arquivo.
-        throw new RFWCriticalException("Arquivo Não encontrado!", e);
-      } catch (IOException e) {
-        throw new RFWCriticalException("Falha ao lêr o arquivo de properties!", e);
-      }
+    InputStream is;
+
+    try {
+      is = getDevFile();
+    } catch (RFWException e) {
+      // Qualquer falha na verificação do ambiente de desenvolvimento não deve impactar a execução da aplicação
+      return null;
     }
-    return null;
+
+    if (is == null) {
+      return null;
+    }
+
+    try (InputStream in = is) {
+      Properties properties = new Properties();
+      properties.load(in);
+      return properties.getProperty(property);
+    } catch (IOException e) {
+      throw new RFWCriticalException("RFWERR_000002", new String[] { "rfwdev.properties" }, e);
+    }
   }
 
   /**
@@ -365,6 +392,7 @@ public class RFW {
    * @param property Nome da propriedade a ser obtida.
    * @return Valor da propriedade, ou {@code null} se a chave não existir.
    * @throws RFWException Se nenhuma fonte de propriedades estiver configurada.
+   * @since BIS Orion
    */
   public static String getAppProperty(String property) throws RFWException {
     return getAppProperty(property, null);
@@ -375,20 +403,21 @@ public class RFW {
    * <p>
    * Se o Spring estiver disponível, a resolução é delegada ao {@code Environment}, garantindo comportamento idêntico ao framework, incluindo precedência, profiles e variáveis externas.
    * <p>
-   * Caso contrário, o valor é obtido a partir do arquivo {@code application.properties} previamente carregado e cacheado.
+   * Caso contrário, o valor é obtido a partir do arquivo {@code application.properties} previamente carregado e cacheado no carregamento desta classe.
    *
    * @param property Nome da propriedade a ser obtida.
    * @param defaultValue Valor padrão retornado se a propriedade ou o arquivo não for encontrado. Quando este atributo é diferente de nulo, o método não lança exceção se o arquivo não for encontrado.
    * @return Valor da propriedade, ou {@code null} se a chave não existir.
    * @throws RFWException Se nenhuma fonte de propriedades estiver configurada e se não houver um valor padrão definido.
+   * @since BIS Orion
    */
   public static String getAppProperty(String property, String defaultValue) throws RFWException {
     try {
       if (springEnvironment != null) {
         return (String) springGetProperty.invoke(springEnvironment, property);
       }
-      if (fileProperties != null) {
-        return fileProperties.getProperty(property, defaultValue);
+      if (applicationProperties != null) {
+        return applicationProperties.getProperty(property, defaultValue);
       }
       if (defaultValue != null) {
         return defaultValue;
@@ -418,6 +447,8 @@ public class RFW {
    * </ol>
    * <p>
    * Este método é executado uma única vez, no carregamento da classe, e seu resultado é cacheado para evitar custo de reflexão ou I/O em chamadas subsequentes.
+   *
+   * @since BIS Orion
    */
   private static void configurePropertySource() {
     try {
@@ -447,7 +478,7 @@ public class RFW {
       if (c2 != null) p.load(c2);
     } catch (IOException ignored) {
     }
-    fileProperties = p.isEmpty() ? null : p;
+    applicationProperties = p.isEmpty() ? null : p;
   }
 
   /**
@@ -463,14 +494,49 @@ public class RFW {
   }
 
   /**
-   * Retorna o objeto File com o caminho para o arquivo de propriedades do desenvolvedor.<br>
-   * A existência desse arquivo configura o sistema todo como ambiente de desenvolvimento, independente de ter ou não conteúdo.
+   * Localiza e abre um {@link InputStream} para o arquivo de propriedades de desenvolvimento.
+   * <p>
+   * A existência desse arquivo configura o sistema como ambiente de desenvolvimento, independentemente de seu conteúdo.
+   * <p>
+   * A busca é realizada na seguinte ordem:
+   * <ol>
+   * <li>Utilizando o fallback padrão de configuração, seguindo a ordem:
+   * <ul>
+   * <li>{@code ./config/rfwdev.properties}</li>
+   * <li>{@code ./rfwdev.properties}</li>
+   * <li>{@code classpath:/config/rfwdev.properties}</li>
+   * <li>{@code classpath:/rfwdev.properties}</li>
+   * </ul>
+   * </li>
+   * <li>Como fallback adicional (retrocompatibilidade): {@code ${user.home}/rfwdev.properties}</li>
+   * </ol>
+   * <p>
+   * O método apenas localiza e abre o recurso, não realizando qualquer leitura. O {@link InputStream} retornado deve ser fechado pelo chamador.
+   * <p>
+   * Caso nenhum arquivo seja encontrado, o método retorna {@code null}.
    *
-   * @return Objeto File com o caminho para o arquivo independente de plataforma (Linux, Windows, Unis, etc.)
+   * @return {@link InputStream} aberto para o arquivo de desenvolvimento ou {@code null} se não encontrado.
+   * @throws RFWException
+   *           <li>Critical - RFWERR_000002 - Falha ao ler arquivo de properties '${0}'!
    */
-  public static File getDevFile() {
-    if (RFW.devFile == null) RFW.devFile = new File(System.getProperty("user.home") + File.separatorChar + "rfwdev.properties");
-    return RFW.devFile;
+  public static InputStream getDevFile() throws RFWException {
+    final String rfwdevFileName = "rfwdev.properties";
+
+    InputStream is = searchConfigProperty(rfwdevFileName);
+    if (is != null) {
+      return is;
+    }
+
+    try {
+      File devFile = new File(System.getProperty("user.home") + File.separatorChar + rfwdevFileName);
+
+      if (devFile.exists()) {
+        return new FileInputStream(devFile);
+      }
+      return null;
+    } catch (IOException e) {
+      throw new RFWCriticalException("RFWERR_000002", new String[] { rfwdevFileName }, e); // Falha ao ler arquivo de properties '${0}'!
+    }
   }
 
   /**
@@ -492,58 +558,81 @@ public class RFW {
    * @return Instância de {@link Properties} carregada no momento da chamada.
    * @throws RFWException
    *           <li>Critical - RFWERR_000001 - Arquivo de properties '${0}' não encontrado!
+   *           <li>Critical - RFWERR_000002 - Falha ao ler arquivo de properties '${0}'!
    * @since BIS Orion
    */
   public static Properties loadPropertiesFrom(String propertiesFile) throws RFWException {
-    Properties p = new Properties();
-    boolean found = false;
+    InputStream in = searchConfigProperty(propertiesFile);
 
-    try {
-      File explicitFile = new File(propertiesFile);
-      if (explicitFile.getParent() != null) {
-        if (explicitFile.exists()) {
-          try (FileInputStream in = new FileInputStream(explicitFile)) {
-            p.load(in);
-            found = true;
-          }
-        }
-      } else {
-        File f1 = new File("./config/" + propertiesFile);
-        if (f1.exists()) {
-          try (FileInputStream in = new FileInputStream(f1)) {
-            p.load(in);
-            found = true;
-          }
-        }
-        File f2 = new File("./" + propertiesFile);
-        if (f2.exists()) {
-          try (FileInputStream in = new FileInputStream(f2)) {
-            p.load(in);
-            found = true;
-          }
-        }
-        try (InputStream c1 = Thread.currentThread().getContextClassLoader().getResourceAsStream("config/" + propertiesFile)) {
-          if (c1 != null) {
-            p.load(c1);
-            found = true;
-          }
-        }
+    if (in == null) {
+      throw new RFWCriticalException("RFWERR_000001", new String[] { propertiesFile }); // Arquivo de properties '${0}' não encontrado!
+    }
 
-        try (InputStream c2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(propertiesFile)) {
-          if (c2 != null) {
-            p.load(c2);
-            found = true;
-          }
-        }
-      }
-
-      if (!found) {
-        throw new RFWCriticalException("RFWERR_000001", new String[] { propertiesFile }); // Arquivo de properties '${0}' não encontrado!
-      }
+    try (InputStream is = in) {
+      Properties p = new Properties();
+      p.load(is);
       return p;
     } catch (IOException e) {
-      throw new RFWCriticalException("RFWERR_000002", new String[] { propertiesFile }, e); // Falha ao lêr arquivo de properties '${0}'!
+      throw new RFWCriticalException("RFWERR_000002", new String[] { propertiesFile }, e); // Falha ao ler arquivo de properties '${0}'!
     }
   }
 
+  /**
+   * Localiza e abre um {@link InputStream} para um arquivo de configuração (.properties), realizando a busca em tempo real e sem qualquer tipo de cache.
+   * <p>
+   * Quando é informado apenas o nome do arquivo (sem diretórios), a busca segue a mesma ordem de precedência adotada pelo Spring Boot para arquivos de configuração externos e de classpath:
+   * <ul>
+   * <li>{@code ./config/&lt;configPropertyFileName&gt;}</li>
+   * <li>{@code ./&lt;configPropertyFileName&gt;}</li>
+   * <li>{@code classpath:/config/&lt;configPropertyFileName&gt;}</li>
+   * <li>{@code classpath:/&lt;configPropertyFileName&gt;}</li>
+   * </ul>
+   * <p>
+   * Caso seja informado um caminho contendo diretórios (relativo ou absoluto), o mecanismo de fallback é ignorado e apenas o arquivo explicitamente indicado é considerado.
+   * <p>
+   * O método apenas localiza e abre o recurso, não realizando qualquer leitura do conteúdo. O {@link InputStream} retornado deve ser obrigatoriamente fechado pelo chamador.
+   * <p>
+   * Se nenhum recurso for encontrado no momento da chamada, o método retorna {@code null}.
+   *
+   * @param configPropertyFileName Nome do arquivo de propriedades ou caminho completo do arquivo.
+   * @return {@link InputStream} aberto para o recurso localizado, ou {@code null} se não encontrado.
+   * @throws RFWException
+   *           <li>Critical - RFWERR_000002 - Falha ao abrir arquivo de properties '${0}'.
+   * @since BIS Orion
+   */
+  public static InputStream searchConfigProperty(String configPropertyFileName) throws RFWException {
+    try {
+      File explicitFile = new File(configPropertyFileName);
+      if (explicitFile.getParent() != null) {
+        if (explicitFile.exists()) {
+          return new FileInputStream(explicitFile);
+        }
+      } else {
+        File f1 = new File("./config/" + configPropertyFileName);
+        if (f1.exists()) {
+          return new FileInputStream(f1);
+        }
+
+        File f2 = new File("./" + configPropertyFileName);
+        if (f2.exists()) {
+          return new FileInputStream(f2);
+        }
+
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+
+        InputStream is = cl.getResourceAsStream("config/" + configPropertyFileName);
+        if (is != null) {
+          return is;
+        }
+
+        is = cl.getResourceAsStream(configPropertyFileName);
+        if (is != null) {
+          return is;
+        }
+      }
+      return null;
+    } catch (IOException e) {
+      throw new RFWCriticalException("RFWERR_000002", new String[] { configPropertyFileName }, e); // Falha ao lêr arquivo de properties '${0}'!
+    }
+  }
 }
