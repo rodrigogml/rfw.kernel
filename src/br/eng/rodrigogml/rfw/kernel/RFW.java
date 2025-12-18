@@ -20,6 +20,7 @@ import java.util.TimerTask;
 import br.eng.rodrigogml.rfw.kernel.bundle.RFWBundle;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWException;
+import br.eng.rodrigogml.rfw.kernel.exceptions.RFWRunTimeException;
 import br.eng.rodrigogml.rfw.kernel.logger.RFWLogger;
 import br.eng.rodrigogml.rfw.kernel.logger.RFWLoggerImplementation;
 import br.eng.rodrigogml.rfw.kernel.utils.RUTypes;
@@ -72,8 +73,15 @@ public class RFW {
    */
   private static boolean shuttingDown = false;
 
+  /**
+   * @since BIS Orion
+   */
   static {
-    configurePropertySource();
+    try {
+      configurePropertySource();
+    } catch (RFWException e) {
+      throw new RFWRunTimeException(e);
+    }
   }
 
   /**
@@ -435,6 +443,7 @@ public class RFW {
    * <p>
    * A estratégia adotada é:
    * <ol>
+   * <li>Se definida a propriedade de sistema {@code rfw.application.location}, carregar o {@code application.properties} a partir do caminho informado. O valor pode apontar diretamente para o arquivo ou para um diretório que o contenha. Esta opção possui prioridade máxima.</li>
    * <li>Tentar localizar um {@code org.springframework.core.env.Environment} ativo via reflexão, delegando integralmente ao Spring a resolução de propriedades, respeitando sua ordem, sobreposição, profiles e variáveis de ambiente.</li>
    * <li>Na ausência do Spring, carregar manualmente o arquivo {@code application.properties} seguindo a mesma ordem de precedência do Spring Boot:
    * <ul>
@@ -443,14 +452,45 @@ public class RFW {
    * <li>{@code classpath:/config/application.properties}</li>
    * <li>{@code classpath:/application.properties}</li>
    * </ul>
-   * mantendo o comportamento de sobreposição.</li>
+   * respeitando a ordem de precedência, utilizando o primeiro recurso encontrado.</li>
    * </ol>
    * <p>
    * Este método é executado uma única vez, no carregamento da classe, e seu resultado é cacheado para evitar custo de reflexão ou I/O em chamadas subsequentes.
    *
+   * @throws RFWException
+   *
    * @since BIS Orion
    */
-  private static void configurePropertySource() {
+  private static void configurePropertySource() throws RFWException {
+    // 1) Override via propriedade de sistema
+    String externalLocation = System.getProperty("rfw.application.location");
+    if (externalLocation != null && !externalLocation.trim().isEmpty()) {
+      Properties p = new Properties();
+      FileInputStream is = null;
+      try {
+        File f = new File(externalLocation);
+        if (f.isDirectory()) {
+          f = new File(f, "application.properties");
+        }
+        if (f.exists() && f.isFile()) {
+          is = new FileInputStream(f);
+          p.load(is);
+          applicationProperties = p;
+          return;
+        }
+      } catch (IOException ignored) {
+        // Ignora vai para o fallback 2
+      } finally {
+        if (is != null) {
+          try {
+            is.close();
+          } catch (IOException e) {
+          }
+        }
+      }
+    }
+
+    // 2) Spring Environment (se disponível)
     try {
       Object applicationContext = Class.forName("org.springframework.context.ApplicationContextProvider").getMethod("getApplicationContext").invoke(null);
 
@@ -460,25 +500,28 @@ public class RFW {
         return;
       }
     } catch (Throwable ignored) {
+      // Ignora vai para o fallback 3
     }
 
-    Properties p = new Properties();
-
+    // 3) Fallback manual (ordem Spring Boot)
+    InputStream is = null;
     try {
-      File f1 = new File("./config/application.properties");
-      if (f1.exists()) p.load(new FileInputStream(f1));
-
-      File f2 = new File("./application.properties");
-      if (f2.exists()) p.load(new FileInputStream(f2));
-
-      InputStream c1 = Thread.currentThread().getContextClassLoader().getResourceAsStream("config/application.properties");
-      if (c1 != null) p.load(c1);
-
-      InputStream c2 = Thread.currentThread().getContextClassLoader().getResourceAsStream("application.properties");
-      if (c2 != null) p.load(c2);
-    } catch (IOException ignored) {
+      is = searchConfigProperty("application.properties");
+      if (is != null) {
+        Properties p = new Properties();
+        p.load(is);
+        applicationProperties = p;
+      }
+    } catch (IOException e) {
+      throw new RFWCriticalException("Falha ao carregar conteúdo do arquivo de configurações da aplicação!", e);
+    } finally {
+      if (is != null) {
+        try {
+          is.close();
+        } catch (IOException e) {
+        }
+      }
     }
-    applicationProperties = p.isEmpty() ? null : p;
   }
 
   /**
