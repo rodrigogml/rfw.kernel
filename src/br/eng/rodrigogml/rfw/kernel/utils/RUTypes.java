@@ -528,19 +528,19 @@ public class RUTypes {
   }
 
   /**
-   * Interpreta diversos formatos de data e os converte para {@link LocalDate}, ajustando a data para o timezone especificado antes de descartar a informação de horário.
+   * Interpreta múltiplos formatos de data e os converte para {@link LocalDate}.
    * <p>
-   * Os formatos suportados são os mesmos do método {@link #parseLocalDate(String)}, porém, caso a data contenha um timezone, ele será convertido para o {@link ZoneId} fornecido antes de extrair a data.
+   * Quando a string contém informação de fuso horário, a data/hora é convertida para o {@link ZoneId} informado antes de descartar a parte de horário. Quando não há fuso horário, a data/hora é assumida como pertencente ao {@link ZoneId} informado.
    * </p>
    *
    * <p>
-   * <b>Diferença para {@link #parseLocalDate(String)}:</b> Esse método converte o horário para o fuso horário recebido como argumento antes de extrair a data.
+   * <b>Diferença em relação a {@link #parseLocalDate(String)}:</b> este método ajusta a data/hora para o fuso horário recebido como argumento antes de extrair a data.
    * </p>
    *
    * @param date String representando a data.
-   * @param zoneID O {@link ZoneId} para o qual a data deve ser convertida antes de extrair a parte da data.
-   * @return {@link LocalDate} correspondente sem informações de horário.
-   * @throws RFWException Se o formato da data não for reconhecido ou se ocorrer um erro de conversão.
+   * @param zoneID {@link ZoneId} para conversão antes da extração da data.
+   * @return {@link LocalDate} sem informações de horário, ou {@code null} se a string for nula ou vazia.
+   * @throws RFWException Se o formato da data não for reconhecido ou ocorrer erro de conversão.
    */
   public static LocalDate parseLocalDate(String date, ZoneId zoneID) throws RFWException {
     if (date == null || date.trim().isEmpty()) {
@@ -549,25 +549,28 @@ public class RUTypes {
 
     try {
       if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]")) {
-        // yyyy-MM-dd (Apenas Data)
+        // yyyy-MM-dd
         return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
       } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9]:[0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ssXXX (UTC com TimeZone ex: -07:00)
+        // yyyy-MM-dd'T'HH:mm:ssXXX
         return OffsetDateTime.parse(date, DateTimeFormatter.ISO_OFFSET_DATE_TIME).atZoneSameInstant(zoneID).toLocalDate();
       } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\-|\\+)[0-2][0-9][0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ssZ (UTC com TimeZone sem separador ex: -0700)
+        // yyyy-MM-dd'T'HH:mm:ssZ
         return OffsetDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")).atZoneSameInstant(zoneID).toLocalDate();
+      } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9]{1,9}")) {
+        // yyyy-MM-dd'T'HH:mm:ss.SSS (ou nanos)
+        return LocalDateTime.parse(date, DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(zoneID).toLocalDate();
       } else if (date.matches("[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9]")) {
-        // yyyy-MM-dd'T'HH:mm:ss (Sem TimeZone)
+        // yyyy-MM-dd'T'HH:mm:ss
         return LocalDateTime.parse(date, DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(zoneID).toLocalDate();
       } else if (date.matches("[0-3][0-9]/[0-1][0-9]/[1-2][0-9]{3}")) {
         // dd/MM/yyyy
         return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
       } else {
-        throw new RFWValidationException("Formato da Data no suportado. Data: '${0}'", new String[] { date });
+        throw new RFWValidationException("Formato da data não suportado. Data: '${0}'", new String[] { date });
       }
     } catch (DateTimeParseException e) {
-      throw new RFWCriticalException("Falha ao realizar o parser da data. Data '${0}'.", new String[] { date }, e);
+      throw new RFWCriticalException("Falha ao realizar o parse da data. Data '${0}'.", new String[] { date }, e);
     }
   }
 

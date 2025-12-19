@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
@@ -27,8 +28,10 @@ import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
@@ -661,4 +664,178 @@ public class RUCert {
   public static String signTextSHA1withRSA(String text, RFWCertificate certificate) throws RFWException {
     return signTextSHA1withRSA(text, StandardCharsets.UTF_8, certificate);
   }
+
+  /**
+   * Abre uma conexão HTTPS autenticada via certificado digital (mTLS), utilizando um {@link RFWCertificate}.
+   *
+   * <p>
+   * Este método:
+   * <ul>
+   * <li>Carrega o certificado do usuário</li>
+   * <li>Cria KeyManager e TrustManager</li>
+   * <li>Inicializa um SSLContext TLS</li>
+   * <li>Configura o SSLSocketFactory na conexão</li>
+   * </ul>
+   * </p>
+   *
+   * @param url Endpoint HTTPS a ser acessado
+   * @param certificate Certificado digital do cliente
+   * @return {@link HttpsURLConnection} pronta para uso
+   * @throws RFWException Em caso de falha ao carregar ou usar o certificado
+   */
+  public static HttpsURLConnection openHttpsConnectionWithCertificate(URL url, RFWCertificate certificate) throws RFWException {
+    return openHttpsConnectionWithCertificate(url, certificate, null);
+  }
+
+  /**
+   * Abre uma conexão HTTPS autenticada via certificado digital (mTLS), utilizando um {@link RFWCertificate}.
+   *
+   * <p>
+   * Este método:
+   * <ul>
+   * <li>Carrega o certificado do usuário</li>
+   * <li>Cria KeyManager e TrustManager</li>
+   * <li>Inicializa um SSLContext TLS</li>
+   * <li>Configura o SSLSocketFactory na conexão</li>
+   * </ul>
+   * </p>
+   *
+   * @param url Endpoint HTTPS a ser acessado
+   * @param certificate Certificado digital do cliente
+   * @param trustManagers TrustManagers personalizados para validação do servidor (pode ser null para usar o padrão)
+   * @return {@link HttpsURLConnection} pronta para uso
+   * @throws RFWException Em caso de falha ao carregar ou usar o certificado
+   */
+  public static HttpsURLConnection openHttpsConnectionWithCertificate(URL url, RFWCertificate certificate, TrustManager[] trustManagers) throws RFWException {
+
+    if (url == null) {
+      throw new RFWCriticalException("URL não pode ser nula!");
+    }
+    if (certificate == null) {
+      throw new RFWCriticalException("Certificado não pode ser nulo!");
+    }
+
+    try {
+      // 1) Carrega KeyStore do certificado
+      KeyStore ks = RUCert.loadKeyStore(certificate);
+
+      // 2) KeyManager (autenticação mTLS)
+      KeyManager[] keyManagers = RUCert.createKeyManager(ks, certificate.getCertificateFilePassword());
+
+      // 3) TrustManager (se não informado, cria a partir do próprio KeyStore)
+      TrustManager[] tm = trustManagers;
+      if (tm == null) {
+        tm = RUCert.createTrustManager(ks);
+      }
+
+      // 4) SSLContext
+      SSLContext sslContext = SSLContext.getInstance("TLS");
+      sslContext.init(keyManagers, tm, null);
+
+      // 5) Abre conexão HTTPS
+      HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+      connection.setSSLSocketFactory(sslContext.getSocketFactory());
+
+      return connection;
+
+    } catch (RFWException e) {
+      throw e;
+    } catch (Exception e) {
+      throw new RFWCriticalException("Falha ao abrir conexão HTTPS com certificado digital.", e);
+    }
+  }
+
+  /**
+   * Cria um {@link TrustManager} que confia em QUALQUER certificado apresentado durante o handshake SSL/TLS.
+   *
+   * <p>
+   * <b> ATENÇÃO – RISCO DE SEGURANÇA</b>
+   * </p>
+   * <ul>
+   * <li>Este TrustManager <b>NÃO valida</b> cadeia de certificação</li>
+   * <li>Este TrustManager <b>NÃO valida</b> autoridade certificadora (CA)</li>
+   * <li>Este TrustManager <b>NÃO valida</b> expiração do certificado</li>
+   * <li>Este TrustManager <b>NÃO protege contra ataques Man-in-the-Middle (MITM)</b></li>
+   * </ul>
+   *
+   * <p>
+   * O uso deste método é aceitável apenas em cenários específicos, como:
+   * </p>
+   * <ul>
+   * <li>Ambientes de desenvolvimento ou homologação</li>
+   * <li>Integrações com endpoints internos e controlados</li>
+   * <li>Casos onde a autenticação do cliente via certificado (mTLS) é suficiente e o risco do endpoint é conhecido</li>
+   * </ul>
+   *
+   * <p>
+   * <b>NÃO UTILIZAR EM PRODUÇÃO</b> para serviços públicos, internet ou qualquer cenário onde segurança de transporte seja crítica.
+   * </p>
+   *
+   * @return Array de {@link TrustManager} que aceita qualquer certificado
+   */
+  public static TrustManager[] createTrustAllTrustManager() {
+
+    TrustManager trustAll = new javax.net.ssl.X509TrustManager() {
+
+      @Override
+      public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+        return new java.security.cert.X509Certificate[0];
+      }
+
+      @Override
+      public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+        // NÃO valida nada
+      }
+
+      @Override
+      public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+        // NÃO valida nada
+      }
+    };
+
+    return new TrustManager[] { trustAll };
+  }
+
+  /**
+   * Carrega o repositório de certificados do Windows (Windows-MY) em um {@link KeyStore}.
+   *
+   * <p>
+   * Este método acessa o repositório nativo do sistema operacional Windows, o mesmo utilizado por navegadores como Chrome e Edge, permitindo que o Java utilize certificados pessoais e suas cadeias completas (ex.: ICP-Brasil).
+   * </p>
+   *
+   * <p>
+   * Casos de uso típicos:
+   * <ul>
+   * <li>Autenticação mTLS com certificados ICP-Brasil sem necessidade de PFX</li>
+   * <li>Ambientes de desenvolvimento Windows simulando comportamento do navegador</li>
+   * <li>Diagnóstico e comparação entre execução Java e acesso via browser</li>
+   * </ul>
+   * </p>
+   *
+   * <p>
+   * ⚠ <b>Observações importantes:</b>
+   * <ul>
+   * <li>Este método funciona <b>apenas em Windows</b>.</li>
+   * <li>Em Linux ou containers, deve-se usar PFX + TrustStore (JKS).</li>
+   * <li>O KeyStore retornado pode conter múltiplos certificados.</li>
+   * </ul>
+   * </p>
+   *
+   * @return {@link KeyStore} carregado a partir do Windows Certificate Store (Windows-MY)
+   * @throws RFWException
+   *           <ul>
+   *           <li>Se o KeyStore não puder ser inicializado</li>
+   *           <li>Se o ambiente não suportar Windows-MY</li>
+   *           </ul>
+   */
+  public static KeyStore loadWindowsMyKeyStore() throws RFWException {
+    try {
+      KeyStore keyStore = KeyStore.getInstance("Windows-MY");
+      keyStore.load(null, null);
+      return keyStore;
+    } catch (Exception e) {
+      throw new RFWCriticalException("Falha ao carregar o repositório de certificados do Windows (Windows-MY)!", e);
+    }
+  }
+
 }
