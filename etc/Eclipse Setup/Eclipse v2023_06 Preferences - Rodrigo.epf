@@ -1,4 +1,4 @@
-#Sat Dec 20 13:39:59 BRT 2025
+#Sun Dec 21 13:15:35 BRT 2025
 \!/=
 /configuration/com.microsoft.copilot.eclipse.ui/copilotQuickStartVersion=1
 /configuration/com.microsoft.copilot.eclipse.ui/lastUsedCopilotPluginVersion=0.14
@@ -51,7 +51,7 @@
 /instance/org.eclipse.datatools.connectivity/org.eclipse.datatools.enablement.ibm.db2.luw.other.driverTemplate=true
 /instance/org.eclipse.debug.core/org.eclipse.debug.core.PREF_BREAKPOINT_MANAGER_ENABLED_STATE=true
 /instance/org.eclipse.debug.core/org.eclipse.debug.core.USE_STEP_FILTERS=true
-/instance/org.eclipse.debug.core/prefWatchExpressions=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<watchExpressions>\r\n    <expression enabled\="true" text\="buff.toString()"/>\r\n    <expression enabled\="true" text\="value"/>\r\n    <expression enabled\="true" text\="cleanCode"/>\r\n    <expression enabled\="true" text\="cleanCode.length() \=\= 8"/>\r\n</watchExpressions>\r\n
+/instance/org.eclipse.debug.core/prefWatchExpressions=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<watchExpressions>\r\n    <expression enabled\="true" text\="buff.toString()"/>\r\n    <expression enabled\="true" text\="value"/>\r\n    <expression enabled\="true" text\="cleanCode"/>\r\n    <expression enabled\="true" text\="cleanCode.length() \=\= 8"/>\r\n    <expression enabled\="true" text\="n.Codigo"/>\r\n    <expression enabled\="true" text\="parentVO.getFullDescription() + &quot;|&quot; + cleanDescription"/>\r\n</watchExpressions>\r\n
 /instance/org.eclipse.debug.ui/DEBUG.consoleOpenOnErr=false
 /instance/org.eclipse.debug.ui/DEBUG.consoleOpenOnOut=false
 /instance/org.eclipse.debug.ui/org.eclipse.debug.ui.PREF_LAUNCH_PERSPECTIVES=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<launchPerspectives/>\r\n
@@ -61,7 +61,7 @@
 /instance/org.eclipse.debug.ui/org.eclipse.debug.uiinspectPopupSashWeights=750\:250
 /instance/org.eclipse.debug.ui/pref_state_memento.org.eclipse.debug.ui.BreakpointView=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<VariablesViewMemento org.eclipse.debug.ui.SASH_DETAILS_PART\="315" org.eclipse.debug.ui.SASH_VIEW_PART\="684">\r\n<PRESENTATION_CONTEXT_PROPERTIES IMemento.internal.id\="org.eclipse.debug.ui.BreakpointView">\r\n<BOOLEAN BOOLEAN\="true" IMemento.internal.id\="org.eclipse.debug.ui.check"/>\r\n</PRESENTATION_CONTEXT_PROPERTIES>\r\n</VariablesViewMemento>
 /instance/org.eclipse.debug.ui/pref_state_memento.org.eclipse.debug.ui.DebugVieworg.eclipse.debug.ui.DebugView=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<DebugViewMemento org.eclipse.debug.ui.BREADCRUMB_DROPDOWN_AUTO_EXPAND\="false"/>
-/instance/org.eclipse.debug.ui/pref_state_memento.org.eclipse.debug.ui.ExpressionView=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<VariablesViewMemento org.eclipse.debug.ui.SASH_DETAILS_PART\="315" org.eclipse.debug.ui.SASH_VIEW_PART\="684">\r\n<PRESENTATION_CONTEXT_PROPERTIES IMemento.internal.id\="org.eclipse.debug.ui.ExpressionView">\r\n<BOOLEAN BOOLEAN\="true" IMemento.internal.id\="PRESENTATION_SHOW_LOGICAL_STRUCTURES"/>\r\n</PRESENTATION_CONTEXT_PROPERTIES>\r\n</VariablesViewMemento>
+/instance/org.eclipse.debug.ui/pref_state_memento.org.eclipse.debug.ui.ExpressionView=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<VariablesViewMemento org.eclipse.debug.ui.SASH_DETAILS_PART\="315" org.eclipse.debug.ui.SASH_VIEW_PART\="684">\r\n<COLUMN_SIZES IMemento.internal.id\="org.eclipse.debug.ui.VARIALBE_COLUMN_PRESENTATION.COL_VAR_VALUE" SIZE\="954"/>\r\n<COLUMN_SIZES IMemento.internal.id\="org.eclipse.debug.ui.VARIALBE_COLUMN_PRESENTATION.COL_VAR_NAME" SIZE\="549"/>\r\n<PRESENTATION_CONTEXT_PROPERTIES IMemento.internal.id\="org.eclipse.debug.ui.ExpressionView">\r\n<BOOLEAN BOOLEAN\="true" IMemento.internal.id\="PRESENTATION_SHOW_LOGICAL_STRUCTURES"/>\r\n</PRESENTATION_CONTEXT_PROPERTIES>\r\n</VariablesViewMemento>
 /instance/org.eclipse.debug.ui/pref_state_memento.org.eclipse.debug.ui.VariableView=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<VariablesViewMemento org.eclipse.debug.ui.SASH_DETAILS_PART\="315" org.eclipse.debug.ui.SASH_VIEW_PART\="684">\r\n<PRESENTATION_CONTEXT_PROPERTIES IMemento.internal.id\="org.eclipse.debug.ui.VariableView">\r\n<BOOLEAN BOOLEAN\="true" IMemento.internal.id\="PRESENTATION_SHOW_LOGICAL_STRUCTURES"/>\r\n</PRESENTATION_CONTEXT_PROPERTIES>\r\n</VariablesViewMemento>
 /instance/org.eclipse.debug.ui/preferredDetailPanes=DefaultDetailPane,org.eclipse.jdt.debug.ui.JAVA_VARIABLE_DETAIL_PANE_VARIABLES\:org.eclipse.jdt.debug.ui.JAVA_VARIABLE_DETAIL_PANE_VARIABLES|org.eclipse.jdt.debug.ui.DETAIL_PANE_WATCHPOINT\:org.eclipse.jdt.debug.ui.DETAIL_PANE_WATCHPOINT|org.eclipse.jdt.debug.ui.DETAIL_PANE_EXCEPTION_BREAKPOINT\:org.eclipse.jdt.debug.ui.DETAIL_PANE_EXCEPTION_BREAKPOINT|org.eclipse.jdt.debug.ui.DETAIL_PANE_LINE_BREAKPOINT\:org.eclipse.jdt.debug.ui.DETAIL_PANE_LINE_BREAKPOINT|org.eclipse.jdt.debug.ui.DETAIL_PANE_STANDARD\:org.eclipse.jdt.debug.ui.DETAIL_PANE_STANDARD|DefaultDetailPane\:DefaultDetailPane|
 /instance/org.eclipse.debug.ui/preferredTargets=default,org.eclipse.lsp4e.debug.toggleBreakpointTarget\:default|org.eclipse.lsp4e.debug.toggleBreakpointTarget\:org.eclipse.lsp4e.debug.toggleBreakpointTarget|
@@ -76,7 +76,7 @@
 /instance/org.eclipse.egit.ui/BranchProjectTracker__C\:\\x\\bis2.coreclient\\.git_5551d5f306a9d6158702c18aaf000de1cc32dbd4=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<projects>\r\n<project>/</project>\r\n</projects>
 /instance/org.eclipse.egit.ui/BranchProjectTracker__C\:\\x\\bis2.coreclient\\.git_main=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<projects>\r\n<project>/</project>\r\n</projects>
 /instance/org.eclipse.egit.ui/StagingView_Presentation=COMPACT_TREE
-/instance/org.eclipse.egit.ui/commit_dialog_history_messages=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<messages>\r\n<message>Implementa\u00E7\u00E3o ClassTrib</message>\r\n<message>Implementa\u00E7\u00E3o ClassTrib no ItemCode</message>\r\n<message>.</message>\r\n<message>Adequa\u00E7\u00E3o das pastas para o padr\u00E3o do Maven&\#x0A;Atualiza\u00E7\u00E3o da Tabela ClassTrib pelo Portal da Conformidade</message>\r\n<message>Atualiza\u00E7\u00E3o da Tabela ClassTrib pelo Portal da Conformidade</message>\r\n<message>Atualiza\u00E7\u00E3o do JKS do TrustManager.</message>\r\n<message>Reestrutura\u00E7\u00E3o dos diret\u00F3rios para o padr\u00E3o Maven.</message>\r\n<message>Atualiza\u00E7\u00E3o Tabela NCM e Importa\u00E7\u00E3o SISCOMEX</message>\r\n<message>Melhorias dos m\u00E9todos.</message>\r\n<message>Implementa\u00E7\u00E3o Corre\u00E7\u00E3o de XML de Conting\u00EAnia e Reenvio</message>\r\n</messages>
+/instance/org.eclipse.egit.ui/commit_dialog_history_messages=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<messages>\r\n<message>Refactor nome de Atributos e Script de rela\u00E7\u00E3o ncm x classtrib</message>\r\n<message>Refactor de Name de Atributo</message>\r\n<message>Implementa\u00E7\u00F5es do ClassTrib</message>\r\n<message>.</message>\r\n<message>Implementa\u00E7\u00F5es do IBS/CBS sobre Venda</message>\r\n<message>Altera\u00E7\u00F5es da Tabela de DocFiscalItem para campos do CBS/IBS</message>\r\n<message>Nomenclatura dos argumentos e classes/corre\u00E7\u00E3o de hierarquia</message>\r\n<message>Sincroniza\u00E7\u00E3o ClassTrib no BIS.PDV</message>\r\n<message>Implementa\u00E7\u00E3o Sincroniza\u00E7\u00E3o ClassTrib no BIS.PDV</message>\r\n<message>Implementa\u00E7\u00E3o ClassTrib</message>\r\n</messages>
 /instance/org.eclipse.egit.ui/repositories_view_filters=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<FilterCache/>
 /instance/org.eclipse.egit.ui/resourcehistory_graph_split=500,500
 /instance/org.eclipse.egit.ui/resourcehistory_rev_split=700,300
@@ -667,7 +667,7 @@
 /instance/org.eclipse.jdt.ui/cleanup_settings_version=2
 /instance/org.eclipse.jdt.ui/content_assist_autoinsert=false
 /instance/org.eclipse.jdt.ui/content_assist_disabled_computers=org.eclipse.jdt.ui.textProposalCategory\u0000org.eclipse.jdt.ui.javaPostfixProposalCategory\u0000org.eclipse.jdt.ui.javaAllProposalCategory\u0000org.eclipse.jdt.ui.javaTypeProposalCategory\u0000org.eclipse.jdt.ui.javaNoTypeProposalCategory\u0000org.eclipse.jdt.ui.javaChainProposalCategory\u0000
-/instance/org.eclipse.jdt.ui/content_assist_favorite_static_members=org.junit.Assert.*;org.junit.Assume.*;org.junit.jupiter.api.Assertions.*;org.junit.jupiter.api.Assumptions.*;org.junit.jupiter.api.DynamicContainer.*;org.junit.jupiter.api.DynamicTest.*;org.mockito.ArgumentMatchers.*;org.mockito.Mockito.*;org.assertj.core.api.Assertions.*;br.eng.rodrigogml.rfw.kernel.RFW.*;br.eng.rodrigogml.rfw.terminal.Terminal.*
+/instance/org.eclipse.jdt.ui/content_assist_favorite_static_members=org.junit.Assert.*;org.junit.Assume.*;org.junit.jupiter.api.Assertions.*;org.junit.jupiter.api.Assumptions.*;org.junit.jupiter.api.DynamicContainer.*;org.junit.jupiter.api.DynamicTest.*;org.mockito.ArgumentMatchers.*;org.mockito.Mockito.*;org.assertj.core.api.Assertions.*;br.eng.rodrigogml.rfw.kernel.RFW.*;br.eng.rodrigogml.rfw.kernel.preprocess.PreProcess.*
 /instance/org.eclipse.jdt.ui/content_assist_fill_method_arguments=true
 /instance/org.eclipse.jdt.ui/content_assist_guess_method_arguments=false
 /instance/org.eclipse.jdt.ui/content_assist_insert_completion=true
@@ -881,6 +881,7 @@
 /instance/org.eclipse.rse.core/org.eclipse.rse.systemtype.local.systemType.defaultUserId=rodri
 /instance/org.eclipse.rse.core/useridperkey=Hog.Local\=rodri;
 /instance/org.eclipse.rse.ui/org.eclipse.rse.preferences.order.connections=Hog.Local
+/instance/org.eclipse.search/org.eclipse.search.defaultPerspective=org.eclipse.search.defaultPerspective.none
 /instance/org.eclipse.team.ui/org.eclipse.team.ui.sychronizing_default_participant=org.eclipse.egit.ui.modelCompareParticipant
 /instance/org.eclipse.team.ui/org.eclipse.team.ui.sychronizing_default_participant_sec_id=1724103256576
 /instance/org.eclipse.team.ui/org.eclipse.team.ui.sychronizing_default_perspective_to_show=never
@@ -1040,6 +1041,7 @@
 @org.eclipse.pde.core=3.21.100.v20251118-2241
 @org.eclipse.rse.core=4.5.600.202401151652
 @org.eclipse.rse.ui=4.5.600.202401151652
+@org.eclipse.search=3.17.400.v20251107-0917
 @org.eclipse.team.ui=3.11.300.v20251105-1148
 @org.eclipse.ui=3.207.400.v20251015-1301
 @org.eclipse.ui.browser=3.8.700.v20251031-0712
