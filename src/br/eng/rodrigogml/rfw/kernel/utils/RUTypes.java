@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -18,6 +19,11 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeConstants;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import br.eng.rodrigogml.rfw.kernel.RFW;
 import br.eng.rodrigogml.rfw.kernel.exceptions.RFWCriticalException;
@@ -1574,6 +1580,48 @@ public class RUTypes {
    */
   public static java.math.BigDecimal abs(java.math.BigDecimal value) {
     return value == null ? null : value.abs();
+  }
+
+  /**
+   * Converte um {@link YearMonth} para {@link XMLGregorianCalendar} no padrão {@code xs:gYearMonth} (AAAA-MM).
+   * <p>
+   * A conversão preserva exclusivamente ano e mês, não definindo dia, hora ou fuso horário, garantindo compatibilidade total com schemas XSD do tipo {@code gYearMonth}.
+   * <p>
+   * Método null-safe: caso o valor informado seja {@code null}, retorna {@code null}.
+   *
+   * @param value {@link YearMonth} a ser convertido
+   * @return {@link XMLGregorianCalendar} representando ano e mês, ou {@code null}
+   * @throws IllegalStateException caso ocorra erro na criação do {@link XMLGregorianCalendar}
+   */
+  public static XMLGregorianCalendar parseXMLGregorianCalendar(YearMonth value) {
+    if (value == null) {
+      return null;
+    }
+    try {
+      DatatypeFactory factory = DatatypeFactory.newInstance();
+
+      return factory.newXMLGregorianCalendarDate(value.getYear(), value.getMonthValue(), DatatypeConstants.FIELD_UNDEFINED, DatatypeConstants.FIELD_UNDEFINED);
+
+    } catch (DatatypeConfigurationException e) {
+      throw new IllegalStateException("Erro ao converter YearMonth para XMLGregorianCalendar", e);
+    }
+  }
+
+  /**
+   * Converte um {@link XMLGregorianCalendar} para {@link YearMonth}.
+   * <p>
+   * Espera que o valor de entrada represente um {@code xs:gYearMonth}, considerando apenas os campos de ano e mês. Informações de dia, hora ou fuso horário, caso existam, são ignoradas.
+   * <p>
+   * Método null-safe: caso o valor informado seja {@code null}, retorna {@code null}.
+   *
+   * @param value {@link XMLGregorianCalendar} a ser convertido
+   * @return {@link YearMonth} correspondente ao ano e mês informados, ou {@code null}
+   */
+  public static YearMonth parseYearMonth(XMLGregorianCalendar value) {
+    if (value == null) {
+      return null;
+    }
+    return YearMonth.of(value.getYear(), value.getMonth());
   }
 
 }
