@@ -156,7 +156,7 @@ public class RUZip {
    * @throws RFWException
    */
   public static String createNewZipFile(String zipFileName, int compressionLevel, Object[][] content) throws RFWException {
-    File file = RUFile.createFileInTemporaryPath(zipFileName, StandardCharsets.ISO_8859_1);
+    File file = RUFile.createFileInGeneratedTemporaryPath(zipFileName, StandardCharsets.ISO_8859_1);
     try (ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(file))) {
       zip.setMethod(ZipOutputStream.DEFLATED);
       zip.setLevel(compressionLevel);

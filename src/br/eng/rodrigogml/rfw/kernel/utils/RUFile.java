@@ -230,13 +230,13 @@ public class RUFile {
    * @throws RFWException
    */
   public static File writeFileContentInTemporaryPathWithDelete(String fileName, byte[] fileContent, long delayToDelete) throws RFWException {
-    File file = createFileInTemporaryPathWithDelete(fileName, delayToDelete);
+    File file = createFileInGeneratedTemporaryPathWithDelete(fileName, delayToDelete);
     writeFileContent(file, fileContent);
     return file;
   }
 
   /**
-   * Equivalente ao método {@link #createFileInTemporaryPath(String, String, Charset)} passando como charset {@link StandardCharsets#UTF_8} Cria um arquivo em uma pasta temporária (em uma subpasta na pastas temporária de acordo com o sistema) e escreve o conteúdo no arquivo.<br>
+   * Equivalente ao método {@link #createFileInGeneratedTemporaryPath(String, String, Charset)} passando como charset {@link StandardCharsets#UTF_8} Cria um arquivo em uma pasta temporária (em uma subpasta na pastas temporária de acordo com o sistema) e escreve o conteúdo no arquivo.<br>
    * <br>
    * A diferença entre este método e o {@link #createTemporaryFile(String, String, String, Charset)} é que o nome do arquivo continuará sendo o que o usuário passou, só a pasta (caminho) é que receberá valores aleatórios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus métodos. O caminho completo para o arquivo pode ser recuperado com
    * file.getAbsolutePath(); já o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
@@ -246,8 +246,8 @@ public class RUFile {
    * @return File represetando o arquivo, usado para escrever o conteúdo.
    * @throws RFWException Em caso de falha durante a execução.
    */
-  public static File createFileInTemporaryPathWithDelete(String fileName, long delayToDelete) throws RFWException {
-    File file = createFileInTemporaryPath(fileName, null, StandardCharsets.UTF_8);
+  public static File createFileInGeneratedTemporaryPathWithDelete(String fileName, long delayToDelete) throws RFWException {
+    File file = createFileInGeneratedTemporaryPath(fileName, null, StandardCharsets.UTF_8);
     if (delayToDelete >= 0) {
       RFW.runLater("### RUFile Delete Temporary File", true, delayToDelete, new Runnable() {
         @Override
@@ -261,7 +261,7 @@ public class RUFile {
   }
 
   /**
-   * Equivalente ao método {@link #createFileInTemporaryPath(String, String, Charset)} passando como charset {@link StandardCharsets#UTF_8} Cria um arquivo em uma pasta temporária (em uma subpasta na pastas temporária de acordo com o sistema) e escreve o conteúdo no arquivo.<br>
+   * Equivalente ao método {@link #createFileInGeneratedTemporaryPath(String, String, Charset)} passando como charset {@link StandardCharsets#UTF_8} Cria um arquivo em uma pasta temporária (em uma subpasta na pastas temporária de acordo com o sistema) e escreve o conteúdo no arquivo.<br>
    * <b>A diferença entre este método e o {@link #createTemporaryFile(String, String, String, Charset)} é que o nome do arquivo continuará sendo o que o usuário passou, só a pasta (caminho) é que receberá valores aleatórios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus métodos. O caminho completo para o arquivo pode ser recuperado com
    * file.getAbsolutePath(); já o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
    *
@@ -270,8 +270,8 @@ public class RUFile {
    * @return File represetando o arquivo, usado para escrever o conteúdo.
    * @throws RFWException Em caso de falha durante a execução.
    */
-  public static File createFileInTemporaryPath(String fileName, Charset charSet) throws RFWException {
-    return createFileInTemporaryPath(fileName, null, charSet);
+  public static File createFileInGeneratedTemporaryPath(String fileName, Charset charSet) throws RFWException {
+    return createFileInGeneratedTemporaryPath(fileName, null, charSet);
   }
 
   /**
@@ -285,7 +285,7 @@ public class RUFile {
    * @return File represetando o arquivo, usado para escrever o conteúdo.
    * @throws RFWException Em caso de falha durante a execução.
    */
-  public static File createFileInTemporaryPath(String fileName, String content, Charset charSet) throws RFWException {
+  public static File createFileInGeneratedTemporaryPath(String fileName, String content, Charset charSet) throws RFWException {
     try {
       String mix = RUGenerators.generateString(4) + System.currentTimeMillis();
       Path path = Files.createTempDirectory(mix);
@@ -302,7 +302,7 @@ public class RUFile {
   }
 
   /**
-   * Equivalente ao método {@link #createFileInTemporaryPath(String, String, Charset)} passando como charset {@link StandardCharsets#UTF_8} Cria um arquivo em uma pasta temporária (em uma subpasta na pastas temporária de acordo com o sistema) e escreve o conteúdo no arquivo.<br>
+   * Equivalente ao método {@link #createFileInGeneratedTemporaryPath(String, String, Charset)} passando como charset {@link StandardCharsets#UTF_8} Cria um arquivo em uma pasta temporária (em uma subpasta na pastas temporária de acordo com o sistema) e escreve o conteúdo no arquivo.<br>
    * <b>A diferença entre este método e o {@link #createTemporaryFile(String, String, String, Charset)} é que o nome do arquivo continuará sendo o que o usuário passou, só a pasta (caminho) é que receberá valores aleatórios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus métodos. O caminho completo para o arquivo pode ser recuperado com
    * file.getAbsolutePath(); já o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
    *
@@ -311,8 +311,8 @@ public class RUFile {
    * @return File represetando o arquivo, usado para escrever o conteúdo.
    * @throws RFWException Em caso de falha durante a execução.
    */
-  public static File createFileInTemporaryPath(String fileName, String content) throws RFWException {
-    return createFileInTemporaryPath(fileName, content, StandardCharsets.UTF_8);
+  public static File createFileInGeneratedTemporaryPath(String fileName, String content) throws RFWException {
+    return createFileInGeneratedTemporaryPath(fileName, content, StandardCharsets.UTF_8);
   }
 
   /**
@@ -327,7 +327,7 @@ public class RUFile {
    * @return File represetando o arquivo, usado para escrever o conteúdo.
    * @throws RFWException Em caso de falha durante a execução.
    */
-  public static File createFileInTemporaryPathWithDelete(String fileName, String content, Charset charSet, long delayToDelete) throws RFWException {
+  public static File createFileInGeneratedTemporaryPathWithDelete(String fileName, String content, Charset charSet, long delayToDelete) throws RFWException {
     try {
       String mix = RUGenerators.generateString(4) + System.currentTimeMillis();
       Path path = Files.createTempDirectory(mix);
@@ -364,7 +364,7 @@ public class RUFile {
    * @return File represetando o arquivo, usado para escrever o conteúdo.
    * @throws RFWException Em caso de falha durante a execução.
    */
-  public static File createFileInTemporaryPath(String fileName, byte[] content) throws RFWException {
+  public static File createFileInGeneratedTemporaryPath(String fileName, byte[] content) throws RFWException {
     try {
       String mix = RUGenerators.generateString(4) + System.currentTimeMillis();
       Path path = Files.createTempDirectory(mix);
@@ -423,7 +423,7 @@ public class RUFile {
   }
 
   /**
-   * Equivalente ao método {@link #createFileInTemporaryPath(String, String, Charset)} passando como charset {@link StandardCharsets#UTF_8} Cria um arquivo em uma pasta temporária (em uma subpasta na pastas temporária de acordo com o sistema) e escreve o conteúdo no arquivo.<br>
+   * Equivalente ao método {@link #createFileInGeneratedTemporaryPath(String, String, Charset)} passando como charset {@link StandardCharsets#UTF_8} Cria um arquivo em uma pasta temporária (em uma subpasta na pastas temporária de acordo com o sistema) e escreve o conteúdo no arquivo.<br>
    * <b>A diferença entre este método e o {@link #createTemporaryFile(String, String, String, Charset)} é que o nome do arquivo continuará sendo o que o usuário passou, só a pasta (caminho) é que receberá valores aleatórios para evitar arquivos com o mesmo nome. Para obter o caminho do arquivo utilize o File retornado e seus métodos. O caminho completo para o arquivo pode ser recuperado com
    * file.getAbsolutePath(); já o caminho incluindo o arquivo pode ser obtido com file.getAbsoluteFile();
    *
@@ -431,8 +431,8 @@ public class RUFile {
    * @return File represetando o arquivo, usado para escrever o conteúdo.
    * @throws RFWException Em caso de falha durante a execução.
    */
-  public static File createFileInTemporaryPath(String fileName) throws RFWException {
-    return createFileInTemporaryPath(fileName, null, StandardCharsets.UTF_8);
+  public static File createFileInGeneratedTemporaryPath(String fileName) throws RFWException {
+    return createFileInGeneratedTemporaryPath(fileName, null, StandardCharsets.UTF_8);
   }
 
   /**
@@ -956,4 +956,18 @@ public class RUFile {
     }
   }
 
+  /**
+   * Cria uma referência para um arquivo com nome fixo dentro do diretório temporário padrão do sistema operacional.
+   * <p>
+   * Diferente de métodos que geram arquivos ou diretórios temporários aleatórios, este método apenas resolve o caminho do arquivo no diretório retornado pela propriedade {@code java.io.tmpdir}, permitindo controle total sobre o nome do arquivo e possibilitando reutilização (cache) entre execuções.
+   * <p>
+   * O arquivo não é criado fisicamente no disco. Cabe ao código chamador verificar sua existência ou escrever seu conteúdo.
+   *
+   * @param fileName nome fixo do arquivo a ser resolvido no diretório temporário
+   * @return {@link File} apontando para o arquivo no diretório temporário do sistema
+   */
+  public static File createFileInTemporaryPath(String fileName) {
+    String tempDir = System.getProperty("java.io.tmpdir");
+    return new File(tempDir, fileName);
+  }
 }
