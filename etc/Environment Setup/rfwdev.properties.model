@@ -1,11 +1,21 @@
-# Teste de operações com o certificado A1, informar o caminho para o arquivo tipo A1 e sua senha de arquivo:
+# Teste de operaï¿½ï¿½es com o certificado A1, informar o caminho para o arquivo tipo A1 e sua senha de arquivo:
 rfw.kernel.utils.rucerttest.a1certpath=
 rfw.kernel.utils.rucerttest.a1certpass=
 
-# Desabilita o warning de recomendação de troca de java.util.Date por LocalDate/Time durante o desenvolvimento
+# Chave para comunicaÃ§Ã£o com a API da OpenAI (GPT)
+rfw.openai.apisecret=
+
+# ConfiguraÃ§Ãµes do Banco de Dados do BIS2 do ambiente de desenvolvimento (utilizado em classes de teste de integraÃ§Ã£o)
+rfw.db.bis2.host=
+rfw.db.bis2.schema=
+rfw.db.bis2.user=
+rfw.db.bis2.pass=
+
+
+# Desabilita o warning de recomendaï¿½ï¿½o de troca de java.util.Date por LocalDate/Time durante o desenvolvimento
 rfw.orm.dao.disableLocalDateTimeRecomendation=(true|false)
 
-# Certificado digital para teste das operações com a SEFAZ, precisa ser um certificado válido, tipo A1
+# Certificado digital para teste das operaï¿½ï¿½es com a SEFAZ, precisa ser um certificado vï¿½lido, tipo A1
 rfw.sefaz.cert.path=
 rfw.sefaz.cert.pass=
 
@@ -13,13 +23,13 @@ rfw.sefaz.cert.pass=
 rfw.sefaz.trust.path=
 rfw.sefaz.trust.pass=
 
-# Teste de abertura e interpretação dos XMLs da NFe / SEFAZ. Informar o caminho de diretório onde podem ser encontrados arquivos XML de DANFEs para execução dos testes.
+# Teste de abertura e interpretaï¿½ï¿½o dos XMLs da NFe / SEFAZ. Informar o caminho de diretï¿½rio onde podem ser encontrados arquivos XML de DANFEs para execuï¿½ï¿½o dos testes.
 rfw.sefaz.pathToNFeXMLToTest=
 
-# Exporta o XML da NFe enviado para a SEFAZ e o Recebido para Log em pasta (cada comunicação, tanto envio quando retorno, devem ter arquivo distintos com o nome da tag raiz enviada, e substituir o arquivo anterior com o mesmo nome)
+# Exporta o XML da NFe enviado para a SEFAZ e o Recebido para Log em pasta (cada comunicaï¿½ï¿½o, tanto envio quando retorno, devem ter arquivo distintos com o nome da tag raiz enviada, e substituir o arquivo anterior com o mesmo nome)
 rfw.sefaz.pathToLogCommunicationXML=c:\\T\\
 
-# Chave e Secret de acesso do AWS S3 para testar classes de acesso e funcionalidades de integração com o S3 da AWS
+# Chave e Secret de acesso do AWS S3 para testar classes de acesso e funcionalidades de integraï¿½ï¿½o com o S3 da AWS
 aws.s3.key=
 aws.s3.secret=
 
