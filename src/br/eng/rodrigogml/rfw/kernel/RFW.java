@@ -391,6 +391,26 @@ public class RFW {
   }
 
   /**
+   * Lê uma propriedade definida no arquivo de configuração do ambiente de desenvolvimento com as seguintes condições:
+   * <li>- Só retorna booleano true ou false, tendo a finalidade apenas de validar uma configuração;</li>
+   * <li>- O atirbuto passado é acrescido do prefixo "dailySettings.", para separar das demais configurações;</li>
+   * <li>- Retornará true, caso a propriedade exista e esteja definida com o valor do dia atual no formato "yyyyMMdd".</li>
+   * <p>
+   * Esses perfil de propriedades de desenvolvimento foi criado para garantir que o valor da definição foi seja esquecido no amviente de desenvolvimento, precisando da renovação diária.<br>
+   * Recomenda para usos em que a definição dessa propriedade, se esquecida, pode causar problema sérios, como a utilização para debug em modo de produção ou a ativação de funcionalidades experimentais.<br>
+   *
+   * @param property Nome da propriedade a ser lida. (Sem o prefixo "dailySettings.")
+   * @return true se a propriedade existir e estiver definida com o valor do dia atual no formato "yyyyMMdd". False caso contrário.
+   * @throws RFWException
+   *           <li>Critical - RFWERR_000002 - Falha ao ler o arquivo de properties.
+   * @since BIS Orion
+   */
+  public static boolean hasDevDailyProperty(String property) throws RFWException {
+    String p = getDevProperty("dailySettings." + property);
+    return p != null && RUTypes.formatLocalDate(RFW.getDate(), "yyyyMMdd").equals(p);
+  }
+
+  /**
    * Obtém o valor de uma propriedade da aplicação.
    * <p>
    * Se o Spring estiver disponível, a resolução é delegada ao {@code Environment}, garantindo comportamento idêntico ao framework, incluindo precedência, profiles e variáveis externas.
