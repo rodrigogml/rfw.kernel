@@ -68,7 +68,7 @@ public class RFWPercentageDataFormatter extends RFWBigDecimalDataFormatter {
   }
 
   @Override
-  public int getMaxLenght() {
+  public int getMaxLength() {
     return 15;
   }
 

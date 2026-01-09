@@ -68,7 +68,7 @@ public class RFWCPFOrCNPJDataFormatter implements RFWDataFormatter<String, Strin
   }
 
   @Override
-  public int getMaxLenght() {
+  public int getMaxLength() {
     return 18;
   }
 }

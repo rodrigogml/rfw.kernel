@@ -54,7 +54,7 @@ public class RFWNFeAccessKeyDataFormatter implements RFWDataFormatter<String, Ob
   }
 
   @Override
-  public int getMaxLenght() {
+  public int getMaxLength() {
     return 54;
   }
 }

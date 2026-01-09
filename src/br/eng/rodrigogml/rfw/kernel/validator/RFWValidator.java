@@ -1629,15 +1629,15 @@ public class RFWValidator {
         }
         for (Entry<?, ?> entry : ((Map<?, ?>) value).entrySet()) {
           if (entry.getKey() instanceof String) {
-            if (ann.maxLenghtKey() > 0 && entry.getKey() != null && ((String) entry.getKey()).length() > ann.maxLenghtKey()) {
+            if (ann.maxLengthKey() > 0 && entry.getKey() != null && ((String) entry.getKey()).length() > ann.maxLengthKey()) {
               // Lançado como Critico pq o usuário provavelmente não define como chave, deve faltar limitador em algum ponto do sistema que valide a chave.
               throw new RFWCriticalException("A chave '${2}' do Map no atributo '${0}' da classe '${1}' é maior do que o limite definido de '${3}'.",
-                  new String[] { createPath(basepath, field.getName(), null), rootvo.getClass().getCanonicalName(), entry.getKey().toString(), "" + ann.maxLenghtKey() });
+                  new String[] { createPath(basepath, field.getName(), null), rootvo.getClass().getCanonicalName(), entry.getKey().toString(), "" + ann.maxLengthKey() });
             }
           }
           if (entry.getValue() instanceof String) {
-            if (ann.maxLenght() > 0 && entry.getValue() != null && ((String) entry.getValue()).length() > ann.maxLenght()) {
-              throw new RFWValidationException("O valor '${0}' é muito grande. Deve ter no máximo '${1}' caracteres.", new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()), "" + ann.maxLenght() }, createPath(basepath, field.getName(), null));
+            if (ann.maxLength() > 0 && entry.getValue() != null && ((String) entry.getValue()).length() > ann.maxLength()) {
+              throw new RFWValidationException("O valor '${0}' é muito grande. Deve ter no máximo '${1}' caracteres.", new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()), "" + ann.maxLength() }, createPath(basepath, field.getName(), null));
             }
           }
         }
@@ -1647,8 +1647,8 @@ public class RFWValidator {
         }
         for (Object item : ((List<?>) value)) {
           if (item instanceof String) {
-            if (ann.maxLenght() > 0 && item != null && ((String) item).length() > ann.maxLenght()) {
-              throw new RFWValidationException("O valor '${0}' é muito grande. Deve ter no máximo '${1}' caracteres.", new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()), "" + ann.maxLenght() }, createPath(basepath, field.getName(), null));
+            if (ann.maxLength() > 0 && item != null && ((String) item).length() > ann.maxLength()) {
+              throw new RFWValidationException("O valor '${0}' é muito grande. Deve ter no máximo '${1}' caracteres.", new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()), "" + ann.maxLength() }, createPath(basepath, field.getName(), null));
             }
           }
         }
@@ -1658,8 +1658,8 @@ public class RFWValidator {
         }
         for (Object item : ((HashSet<?>) value)) {
           if (item instanceof String) {
-            if (ann.maxLenght() > 0 && item != null && ((String) item).length() > ann.maxLenght()) {
-              throw new RFWValidationException("O valor '${0}' é muito grande. Deve ter no máximo '${1}' caracteres.", new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()), "" + ann.maxLenght() }, createPath(basepath, field.getName(), null));
+            if (ann.maxLength() > 0 && item != null && ((String) item).length() > ann.maxLength()) {
+              throw new RFWValidationException("O valor '${0}' é muito grande. Deve ter no máximo '${1}' caracteres.", new String[] { getAttributeFullCaption(rootvo.getClass(), basepath, field.getName()), "" + ann.maxLength() }, createPath(basepath, field.getName(), null));
             }
           }
         }

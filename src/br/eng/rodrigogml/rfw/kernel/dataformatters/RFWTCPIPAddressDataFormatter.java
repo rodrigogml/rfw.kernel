@@ -55,7 +55,7 @@ public class RFWTCPIPAddressDataFormatter implements RFWDataFormatter<String, Ob
   }
 
   @Override
-  public int getMaxLenght() {
+  public int getMaxLength() {
     return 15;
   }
 

@@ -61,14 +61,14 @@ public @interface RFWMetaCollectionField {
    * Define o tamanho máximo da chave do Map.<br>
    * <b>Este atrubuto é analizado apenas quando o tipo do atributo é um MAP e as chaves são do tipo String.</b>
    */
-  int maxLenghtKey() default -1;
+  int maxLengthKey() default -1;
 
   /**
    * Define o tamanho máximo de caracteres dos valores da coleção.<br>
    * Valido para os tipos:
    * <li>String
    */
-  int maxLenght() default -1;
+  int maxLength() default -1;
 
   /**
    * Coluna onde será colocado o ID do objeto pai para criar o relacionamento.

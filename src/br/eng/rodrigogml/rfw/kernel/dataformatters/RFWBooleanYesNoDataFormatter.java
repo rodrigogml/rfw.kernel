@@ -40,7 +40,7 @@ public class RFWBooleanYesNoDataFormatter implements RFWDataFormatter<String, Bo
   }
 
   @Override
-  public int getMaxLenght() {
+  public int getMaxLength() {
     return 0;
   }
 

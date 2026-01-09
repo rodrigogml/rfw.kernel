@@ -60,7 +60,7 @@ public class RFWNumericCodeBoletoDataFormatter implements RFWDataFormatter<Strin
   }
 
   @Override
-  public int getMaxLenght() {
+  public int getMaxLength() {
     return 14;
   }
 

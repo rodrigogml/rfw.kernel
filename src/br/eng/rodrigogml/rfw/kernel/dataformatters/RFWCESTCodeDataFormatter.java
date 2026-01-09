@@ -50,7 +50,7 @@ public class RFWCESTCodeDataFormatter implements RFWDataFormatter<String, Object
   }
 
   @Override
-  public int getMaxLenght() {
+  public int getMaxLength() {
     return 9;
   }
 

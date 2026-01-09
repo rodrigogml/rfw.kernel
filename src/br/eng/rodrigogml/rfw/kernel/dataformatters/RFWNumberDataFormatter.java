@@ -107,7 +107,7 @@ public abstract class RFWNumberDataFormatter implements RFWDataFormatter<String,
   }
 
   @Override
-  public int getMaxLenght() {
+  public int getMaxLength() {
     if (this.maxvalue != null) {
       return ("" + this.maxvalue.longValue()).length();
     } else {

@@ -44,7 +44,7 @@ public class RFWEnumerationCollectionDataFormatter<E extends Enum<?>> implements
   }
 
   @Override
-  public int getMaxLenght() {
+  public int getMaxLength() {
     return 100;
   }
 

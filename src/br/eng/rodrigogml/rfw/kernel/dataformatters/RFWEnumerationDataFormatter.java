@@ -25,7 +25,7 @@ public class RFWEnumerationDataFormatter implements RFWDataFormatter<String, Enu
   }
 
   @Override
-  public int getMaxLenght() {
+  public int getMaxLength() {
     return 500;
   }
 

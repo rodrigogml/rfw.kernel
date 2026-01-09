@@ -47,7 +47,7 @@ public interface RFWDataFormatter<PRESENTATIONTYPE, VOTYPE> {
    *
    * @return inteiro que determina a quantidade de dígitos no campo.
    */
-  public abstract int getMaxLenght();
+  public abstract int getMaxLength();
 
   /**
    * Este Método tem a função de "reformatar" o conteúdo do campo digitado pelo usuário e retornar o valor formatado para a própria apresentação novamente.<br>

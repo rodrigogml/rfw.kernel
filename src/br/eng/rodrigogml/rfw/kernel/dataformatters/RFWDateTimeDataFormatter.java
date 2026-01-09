@@ -79,7 +79,7 @@ public class RFWDateTimeDataFormatter implements RFWDataFormatter<String, Object
   }
 
   @Override
-  public int getMaxLenght() {
+  public int getMaxLength() {
     return 19;
   }
 }

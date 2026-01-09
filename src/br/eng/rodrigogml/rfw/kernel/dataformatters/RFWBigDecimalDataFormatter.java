@@ -124,7 +124,7 @@ public class RFWBigDecimalDataFormatter implements RFWDataFormatter<String, Obje
   }
 
   @Override
-  public int getMaxLenght() {
+  public int getMaxLength() {
     return 25;
   }
 

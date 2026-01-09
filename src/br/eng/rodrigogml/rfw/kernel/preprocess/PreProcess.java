@@ -191,7 +191,7 @@ public final class PreProcess {
    * @param value valor a ser processado
    * @return valor processado
    */
-  public static String processStringToZeroLenght(String value) {
+  public static String processStringToZeroLength(String value) {
     if (value == null) {
       value = "";
     } else {

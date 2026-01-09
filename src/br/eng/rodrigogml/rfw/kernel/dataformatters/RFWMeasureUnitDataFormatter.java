@@ -28,7 +28,7 @@ public class RFWMeasureUnitDataFormatter implements RFWDataFormatter<String, Mea
   }
 
   @Override
-  public int getMaxLenght() {
+  public int getMaxLength() {
     return 500;
   }
 
