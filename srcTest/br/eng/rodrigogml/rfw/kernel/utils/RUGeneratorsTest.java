@@ -12,7 +12,7 @@ import org.junit.Test;
  * Classe de testes para a classe {@link RUGenerators}.<br>
  * Verifica o funcionamento dos métodos de geração de dados da classe utilitária.
  *
- * @author BIS DEV
+ * @author Rodrigo Leitão
  * @since 10.0.0
  */
 public class RUGeneratorsTest {
@@ -36,8 +36,7 @@ public class RUGeneratorsTest {
       String result = RUGenerators.generateString(i);
       assertNotNull("String gerada não pode ser nula", result);
       assertEquals("Tamanho incorreto da string gerada", i, result.length());
-      assertTrue("String contém caracteres inválidos: " + result,
-          result.matches("[A-Za-z0-9]{" + i + "}"));
+      assertTrue("String contém caracteres inválidos: " + result, result.matches("[A-Za-z0-9]{" + i + "}"));
     }
   }
 
@@ -50,8 +49,7 @@ public class RUGeneratorsTest {
       String result = RUGenerators.generateStringDigits(i);
       assertNotNull("String de dígitos não pode ser nula", result);
       assertEquals("Tamanho incorreto da string de dígitos", i, result.length());
-      assertTrue("String de dígitos contém caracteres inválidos: " + result,
-          result.matches("[0-9]{" + i + "}"));
+      assertTrue("String de dígitos contém caracteres inválidos: " + result, result.matches("[0-9]{" + i + "}"));
     }
   }
 
@@ -64,8 +62,7 @@ public class RUGeneratorsTest {
       String result = RUGenerators.generateNumericSequence(i);
       assertNotNull("Sequência numérica não pode ser nula", result);
       assertEquals("Tamanho incorreto da sequência numérica", i, result.length());
-      assertTrue("Sequência numérica contém caracteres inválidos: " + result,
-          result.matches("[0-9]{" + i + "}"));
+      assertTrue("Sequência numérica contém caracteres inválidos: " + result, result.matches("[0-9]{" + i + "}"));
     }
   }
 }
