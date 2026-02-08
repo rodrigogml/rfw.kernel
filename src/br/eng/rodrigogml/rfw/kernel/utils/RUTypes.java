@@ -1459,6 +1459,19 @@ public class RUTypes {
   }
 
   /**
+   * Remove todos os caracteres que não são dígitos de uma string.
+   *
+   * @param value valor de entrada
+   * @return apenas dígitos ou {@code null} se {@code value} for {@code null}
+   */
+  public static String removeNonDigits(String value) {
+    if (value == null) {
+      return null;
+    }
+    return value.replaceAll("\\D", "");
+  }
+
+  /**
    * Retorna o maior valor entre os elementos informados, de forma segura para valores nulos.
    * <p>
    * O método ignora valores {@code null} e retorna {@code null} caso o array seja nulo, vazio ou contenha apenas valores nulos.
